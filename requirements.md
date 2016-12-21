@@ -62,7 +62,8 @@ A *message* refers to the data passed with an invocation of
 versa) in a reliable and in-order fashion.
 
 2. If a message cannot be delivered, then the controller must be able signal the
-receiver (or vice versa) that the connection was closed with reason `error`.
+receiver (or vice versa) that the connection should be closed with reason
+`error`.
 
 3. The controller and receiver must be able to send and receive `DOMString`
 messages (represented as `string` type in ECMAScript).
@@ -114,6 +115,3 @@ especially on the controller.
 
 TBD
 
-### Implemenation
-
-TBD
