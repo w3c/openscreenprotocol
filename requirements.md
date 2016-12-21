@@ -15,8 +15,8 @@ aspects of the protocols.
 The Presentation API allows one browser (the *controlling user agent*, or
 *controller*) to discover and initiate presentation of Web content on a second
 user agent (the *receiving user agent*, or *receiver*).  We use the term
-*display* to refer the entire device responsible for implementing the
-*receiver*, including browser, OS, networking and display.
+*display* to refer to the entire device responsible for implementing the
+*receiver*, including browser, OS, networking and screen.
 
 A *presentation* is initated at the request of a *controlling browsing context*
 (Web page), which creates a *receiving browsing context* to load a *presentation
@@ -34,26 +34,30 @@ the same IPv4 or IPv6 subnet and reachable by IP multicast.
 a friendly name for the display, and an IP port number for establishing a
 network transport to the display.
 
-3. A controller must be able to determine if the receiver is capable of
-displaying a specific presentation request URL.
+3. A controller must be able to determine if the receiver is reasonably capable
+of displaying a specific presentation request URL.
 
-### <a name="REQ-P2"></a>Presentation Connections
+### <a name="REQ-P2"></a>Presentation Initiation
 
 1. The controller must be able to start a new presentation on a receiver given a
 presentation request URL and a presentation ID.
 
-2. The controller must be able to reconnect to an active presentation on the
-receiver, given a presentation request URL and presentation ID.
+### <a name="REQ-P3"></a>Presentation Resumption
 
-3. The controller or receiver must be able to close a connection between a
+1. The controller must be able to reconnect to an active presentation on the
+receiver, given its presentation request URL and presentation ID.
+
+### <a name="REQ-P4"></a>Presentation Connections
+
+1. The controller or receiver must be able to close a connection between a
 controlling browsing context and the presentation, and signal the other party
 with the reason why the connection was closed (`closed` or `wentaway`).
 
-4. Multiple controlling browsing contexts must be able to connect to a
+2. Multiple controlling browsing contexts must be able to connect to a
 presentation simultaneously (either from one controller, or multiple
 controllers).
 
-### <a name="REQ-P3"></a>Presentation Connection Messaging
+### <a name="REQ-P5"></a>Presentation Connection Messaging
 
 A *message* refers to the data passed with an invocation of
 `PresentationConnection.send()` by the controller or receiver.
@@ -61,8 +65,8 @@ A *message* refers to the data passed with an invocation of
 1. Messages sent by the controller must be delivered to the receiver (or vice
 versa) in a reliable and in-order fashion.
 
-2. If a message cannot be delivered, then the controller must be able signal the
-receiver (or vice versa) that the connection should be closed with reason
+2. If a message cannot be delivered, then the controller must be able to signal
+the receiver (or vice versa) that the connection should be closed with reason
 `error`.
 
 3. The controller and receiver must be able to send and receive `DOMString`
@@ -72,7 +76,7 @@ messages (represented as `string` type in ECMAScript).
 (represented as `Blob` objects in HTML5, or `ArrayBuffer` or `ArrayBufferView`
 types in ECMAScript).
 
-### <a name="REQ-P4"></a>Presentation Termination
+### <a name="REQ-P6"></a>Presentation Termination
 
 1. The controller must be able to signal to the receiver to terminate a
 presentation, given its presentation request URL and presentation ID.
