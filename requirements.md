@@ -48,7 +48,7 @@ described below, please consult the Presentation API specification.
 ### <a name="req-p2-initiation"></a>Presentation Initiation
 
 1. The controller must be able to start a new presentation on a receiver given a
-   presentation request URL and a presentation ID.
+   presentation request URL and presentation ID.
 
 ### <a name="req-p3-resumption"></a>Presentation Resumption
 
@@ -138,13 +138,19 @@ TBD
    it was a network error, authentication error, or the presentation content
    failed to load.
 
-3. It is preferable that controllers be able to remember authenticated displays.
-   This means it is not required for the user to intervene and re-authenticate
-   each time the controller connects to a pre-authenticated display.
+3. The controller should be able to remember authenticated displays.  This means it
+   is not required for the user to intervene and re-authenticate each time the
+   controller connects to a pre-authenticated display.
 
 4. Message latency between the controlling browsing context and a presentation
-   should be minimized to permit interactive use.  For example, typing in a form
-   in the controlling page and having the text appear in the presentation.
-   Real-time latency for gaming or mouse use is ideal, but not a requirement.
+   should be minimized to permit interactive use.  For example, it should be
+   comfortable to type in a form in the controlling page and having the text
+   appear in the presentation.  Real-time latency for gaming or mouse use is
+   ideal, but not a requirement.
+   
+5. The controller initiating presentation should communicate its preferred
+   locale to the display, so it can render the presentation content in that
+   locale.
+   
 
 
