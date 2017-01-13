@@ -3,7 +3,7 @@
 This document lists specifications for the types of devices that serve as
 controllers or receivers implementing the Open Screen Protocol.
 
-Below are a selection of older and lower-end devices (2015) to serve as a
+Below are a selection of older (2015) and lower-end devices to serve as a
 baseline for future evaluation, under the assumption that newer and more capable
 devices would not be likely to encounter hardware limitations.
 

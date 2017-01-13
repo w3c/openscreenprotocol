@@ -106,7 +106,7 @@ TBD
    expected receiver device specifications.
 
 2. It should be possible to implement an Open Screen controller on a low-end
-   smartphone. the [Device Specifications](device_specs.md) document for
+   smartphone. See the [Device Specifications](device_specs.md) document for
    expected controller device specifications.
    
 3. The discovery and connection protocols should minimize power consumption,
@@ -151,6 +151,3 @@ TBD
 5. The controller initiating presentation should communicate its preferred
    locale to the display, so it can render the presentation content in that
    locale.
-   
-
-
