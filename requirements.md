@@ -151,3 +151,10 @@ TBD
 5. The controller initiating presentation should communicate its preferred
    locale to the display, so it can render the presentation content in that
    locale.
+
+### <a name="req-nf4-extend"></a>Extensibility
+
+1. It should be possible to extend the application level protocol (above the
+   discovery and transport levels) with features not defined explicitly by the
+   specification, to facilitate experimentation and enhancement of the base
+   protocols.
