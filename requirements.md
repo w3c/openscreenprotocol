@@ -118,7 +118,7 @@ TBD
    network observer about the identity of the controller or activity on the
    receiver.
    
-2. The protocol should prevent passive network observers from learning
+2. The protocol should prevent passive network eavesdroppers from learning
    presentation URLs, presentation IDs, or the content of presentation messages
    passed between controllers and receivers.
    
