@@ -155,6 +155,6 @@ TBD
 ### <a name="req-nf4-extend"></a>Extensibility
 
 1. It should be possible to extend the application level protocol (above the
-   discovery and transport levels) with features not defined explicitly by the
-   specification, to facilitate experimentation and enhancement of the base
-   protocols.
+   discovery and transport levels) with optional features not defined explicitly
+   by the specification, to facilitate experimentation and enhancement of the
+   base protocols.
