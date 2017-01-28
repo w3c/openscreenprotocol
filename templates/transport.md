@@ -16,7 +16,8 @@ API](../requirements.md#req-p2-initiation), especially requirements 2-6.
 Describe how the transport meets functional requirements for the Remote Playback
 API.
 
-*TODO:* Fill in when Remote Playback equirements are known. See Issue #3.
+**TODO:** Fill in when Remote Playback equirements are known.
+See [Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3).
 
 # Reliability
 
