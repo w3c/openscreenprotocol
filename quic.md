@@ -1,7 +1,7 @@
 # QUIC
 
 [QUIC](https://www.chromium.org/quic) is a multiplexed stream transport over
-UDP.  It advertises the following benefits:
+UDP.  It advertises the following benefits over TCP:
 
 - Dramatically reduced connection establishment time
 - Improved congestion control
@@ -31,7 +31,7 @@ Assume that a single QUIC connection is used to transmit data between the
 controller and display.  The following mapping could be used to associate
 streams with Presentation API concepts:
 
-- One reserved stream 5 for control messages between the controller and display.
+- One reserved stream with ID 5 for control messages between the controller and display.
 - One stream with ID >= 10 for each PresentationConnection.
 
 Within each stream, an Open Screen specific framing would have to be defined to
