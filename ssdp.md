@@ -27,7 +27,7 @@ We will consider the functional requirements of the Prensentation API (and later
 
 The entry point in the Presentation API to monitor display availability is the [PresentationRequest](https://w3c.github.io/presentation-api/#interface-presentationrequest) interface. The algorithm [Monitoring the list of available presentation displays](https://w3c.github.io/presentation-api/#dfn-monitor-the-list-of-available-presentation-displays) is used in [PresentationRequest.start()](https://w3c.github.io/presentation-api/#dom-presentationrequest-start) an in [PresentationRequest.getAvailability()] (https://w3c.github.io/presentation-api/#dom-presentationrequest-getavailability) methods. Only presentation displays that can open at least one of the URLs passed as input in the PresentationRequest constructor should be considered. There are two methods how SSDP can be used to monitor display availability in Presentation API:
 
-Method 1: It is similar to of SSDP as discovery in DIAL. The main steps are listed below:
+**Method 1**: It is similar to of SSDP as discovery in DIAL. The main steps are listed below:
 
 * The display advertises the presentation receiver service when it is added on the network using SSDP and the service type `urn:example-org:service:osp:1` (this is just an example). The SSDP alive message contains a LOCATION header which points to the XML device description (contains friendly name, device capabilites, etc.). The display should adertise a SSDP byebye message before it is not more available. 
 * The controller starts "Monitor Display Availability" algorithm by sending a SSDP search message with the service type `urn:example-org:service:osp:1` and waits for responses from devices running a presentation receiver service. The controller should wait for SSDP alive/byebye messages on the multicast address to keep the list of available displays up-to-date (e.g. when a new display in added or an exiting one is removed).  
@@ -38,7 +38,7 @@ Method 1: It is similar to of SSDP as discovery in DIAL. The main steps are list
     * how to send the endpoint of the receiver service: one solution is to use a HTTP header parameter in the the response of the HTTP GET request for device description. DIAL uses this solution to send the endpoint of the DIAL server in the `Application-URL` HTTP response header. Another solution is to extend the XML device description with a new element to define the endpoint.
     * How to check if the display can open a certain URL or not. One solution is to extend the XML device description with new elements to allow a display to express its capabilites and the controller can do the check. Another possible solution is to ask the receiver service using the provided endpoint by sending the presenation URLs. 
 
-Method 2: This method uses only the SSDP messages without requesting the device description XML. Idea is to send the presentation URLs in a new header of the SSDP search message. Only receivers that can open at least one of the URLs response to the search request. The search response contains also a new header for device friendly name and another header for service endpoint (section 1.1.3 of the UPnP device architecture document allows to use vendor specific headers). The search response can still send the device desctiption URL in the Location header to stay comaptible with UPnP but controller devices dont need to use it since all necessary information are send directly in the SSDP search response. This method is more efficient since no additional HTTP calls and XML parsing is needed. Below are the steps that illustrate the idea of this method:
+**Method 2**: This method uses only the SSDP messages without requesting the device description XML. Idea is to send the presentation URLs in a new header of the SSDP search message. Only receivers that can open at least one of the URLs response to the search request. The search response contains also a new header for device friendly name and another header for service endpoint (section 1.1.3 of the UPnP device architecture document allows to use vendor specific headers). The search response can still send the device desctiption URL in the Location header to stay comaptible with UPnP but controller devices dont need to use it since all necessary information are send directly in the SSDP search response. This method is more efficient since no additional HTTP calls and XML parsing is needed. Below are the steps that illustrate the idea of this method:
 
 * New display with presentation receiver service that appears on the network advertises the following SSDP alive message. The new header `FRIENDLY-NAME.example.org` is used for friendly name and `PRESENTATION-ENDPOINT.example.org` for endpoint of the receiver service. The value `urn:example-org:service:osp:1` of header `NT` is used for presentation receiver service.
 
@@ -96,18 +96,40 @@ TODO (it should be very similar to the Presentation API display availability but
 
 ### Reliability
 
+UPnP recommend due to the unreliable nature of UDP to send the SSDP messages more than once (and max three times to avoid network congestion) with some delay of few hundred milliseconds. In addition, the device must re-send its advertisements periodically prior to expiration of the duration specified in
+the `CACHE-CONTROL` header (minimum value is 1800s).  
+
 ### Latency of device discovery / device removal
+
+New devices added or removed can be immediatly detected if the controller listens to the multicast address for "ssdp:alive" and "ssdp:byebye" messages. For search requests the latency depends on the `MX` SSDP header which contains the maximun wait time in seconds. According to UPnP specification, it must be greater than or equal to 1 and should be less than 5 inclusive. SSDP responses should be delayed a random duration between 0 and the value of `MX` to balance load for the controller when it processes responses.
 
 ### Ease of implementation / deployment
 
+It is very easy to implement the SSDP protocol. It is based on UDP and the messages are easy to create and parse. [peer-ssdp](https://github.com/fraunhoferfokus/peer-ssdp) is a open source implementation for Node.js by Fraunhofer FOKUS and shows how easy to implement the protocol. Another implemenation by Fraunhofer FOKUS for Android (part of a [cordova plugin](https://github.com/fraunhoferfokus/cordova-plugin-hbbtv/tree/master/src/android/ssdp)) is also availablel. 
+
 ### Security - both of the implementation, and whether it can be leveraged to enhance security of the entire protocol
+
+SSDP consider local network as secure envioronment. Any device on the network can discover other devices or services. Security can be implemented on service level. In our case the output of the discovery is a list of displays that contain friendly names and endpoints of presentation receiver services. Any security mechanism can be implemented during session establishement and communication independent from the method used for discovery. 
 
 ### Privacy: what device information is exposed
 
+The standard UPnP device description exposes parameters about the device/service like unique identifier, friendly name, software, manufacturer, service endpoints, etc.
+
 ### Network efficiency
+
+It depends on multiple factors like the number of devices in the network using SSDP (includes devices that support DLNA, DIAL, HbbTV 2.0, etc.), the number of services provided by each device, the interval to re-send refreshment messages (value of `CACHE-CONTROL` header), the number of devices/applications sending discovery messages.
 
 ### Power efficiency
 
+This depends on many factors like the used method (see section [Presentation API: Monitor Display Availability](#presentation-api-monitor-display-availability)), number of devices in the Network using UPnP/DIAL and the way how to monitor the display availability.
+
+* regarding the used the method, "Method 2" is better than "Method 1" regarding power efficiency. In Method 1 the controller needs to create and send SSDP search requests, receive and parse SSDP messages, make HTTP requests to get device descriptions and parse device description XML to get friendly name and check capabilities. In method 2 the controller needs only to create and send seach requests and receive and parse SSDP messages. 
+* The way how controllers search for presentation displays has an impact on power efficiency. If a controller needs to immedialty react to apperance/disapearence of presentation displays, it needs to listen to the multicast address. This means the controller will receive and need to parse all kind of SSDP messages even search requests sent by other controllers. One exception are unicast search response messages sent to other controllers. If the controller needs to get only a snapshot of availabe displays ,then it only needs to send a search message to the multicast address and listen only to search response messages.
+
 ### IPv4 and IPv6 support
 
+SSDP supports IPv4 and IPv6. "Appendix A: IP Version 6 Support" of the UPnP Device architecture document descibes all details about usage of IPv6.
+
 ### Standardization status and likelihood of successful interop
+
+SSDP is part of the UPnP device architecture. Last version of the specification is [UPnP Device Architecture 2.0](http://upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v2.0.pdf) from Febraury 20, 2015. UPnP Forum assigned their assets to the [Open Connectivity Foundation (OCF)](https://openconnectivity.org/resources/specifications/upnp) since January 1, 2016. UPnP/SSDP is used in many products like Smart TVs, printers, Gateways/Routers, NAS, PCs, etc. According to [DLNA](https://www.dlna.org/), there are over four billion certified devices available on the market. There are also non-DLNA certified devices that use UPnP/SSDP like Smart TVs and digital media receivers that support DIAL and HbbTV 2.0 and other products like [SONOS](http://musicpartners.sonos.com/?q=docs), [Philips Hue](https://www.developers.meethue.com/) and many others.
