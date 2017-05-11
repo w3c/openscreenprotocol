@@ -18,8 +18,8 @@ which extends DIAL as to discover HbbTV devices and launch HbbTV applications.
 
 [Fraunhofer FOKUS](https://www.fokus.fraunhofer.de/fame) has
 [proposed](https://github.com/google/physical-web/blob/master/documentation/ssdp_support.md)
-the use of SSDP to advertise and find URLs in local network, as part of the
-[Physical Web Project](https://github.com/google/physical-web).
+the use of SSDP to advertise and find URLs in a local area network, as part of
+the [Physical Web Project](https://github.com/google/physical-web).
 
 
 ## Design and Specification
@@ -31,7 +31,7 @@ the messages exchanged between control points and root devices.
 
 SSDP advertisements contain specific information about the service or device,
 including its type and a unique identifier.  SSDP messages adopt the header field
-format of HTTP 1.1.  However, the rest of the protocol is not based on the HTTP
+format of HTTP 1.1.  However, the rest of the protocol is not based on HTTP
 1.1, as it uses UDP instead of TCP and it has its own processing rules.
 
 The following sequence diagram shows the SSDP message exchange between a control
@@ -42,23 +42,23 @@ point and root device.
 
 ### Message Flow
 
-1. The root device advertises its services on the network by sending for each
-   service it offers a `NOTIFY` message of type `ssdp:alive` to the multicast
-   address `239.255.255.250:1900` with all the information needed to access the
+1. The root device advertises itself on the network by sending a `NOTIFY`
+   message of type `ssdp:alive` for each service it offers to the multicast
+   address `239.255.255.250:1900` with all the information needed to access that
    service.  Control points listening on the multicast address receive the
    message and check the service type (`NT`) header to determine if it is
    relevant or not.
 
-   To obtain more information about the device, the control point makes an HTTP
-   request to the device description URL provided in the `LOCATION` header of
-   the SSDP advertisement. The device description is a XML document that
-   contains information about the device like friendly name and capabilities, as
-   well as information about each of the services it offers.
+   To obtain more information, the control point makes an HTTP request to the
+   device description URL provided in the `LOCATION` header of the `NOTIFY`
+   message. The device description is a XML document that contains information
+   about the device like its friendly name and capabilities, as well as
+   information about each of the services it offers.
 
-1. A control point can search for root devices at any time by sending a `M-SEARCH`
-   query to the multicast address. The query contains the search target (`ST`)
-   header specifying the service type the control point wants.  All devices
-   listing to the multicast address will receive the query.
+1. A control point can search for root devices at any time by sending a
+   `M-SEARCH` query to the same multicast address. The query contains the search
+   target (`ST`) header specifying the service type the control point wants.
+   All devices listing to the multicast address will receive the query.
 
 1. When a root device receives a query, it checks the `ST` header against the
    list of services offered.  If there is a match it replies with a unicast
@@ -75,27 +75,27 @@ according to several functional and non-functional requirements.
 
 ### Functional Requirements: Presentation API
 
-We will consider the functional requirements of the Presentation API and the
-Remote Playback API. For the Presentation API, the requirement is the ability to
-"Monitor Display Availability" by a controlling user agent (_controller_) as
-described in
+For the Presentation API, the requirement is the ability to "Monitor Display
+Availability" by a controlling user agent (_controller_) as described
+in
 [6.4 Interface PresentationAvailability](https://w3c.github.io/presentation-api/#interface-presentationavailability).
 
 The entry point in the Presentation API to monitor display availability is the
 [PresentationRequest](https://w3c.github.io/presentation-api/#interface-presentationrequest)
 interface. The algorithm
-[Monitoring the list of available presentation displays](https://w3c.github.io/presentation-api/#dfn-monitor-the-list-of-available-presentation-displays)
+[_monitoring the list of available presentation displays_](https://w3c.github.io/presentation-api/#dfn-monitor-the-list-of-available-presentation-displays)
 is used in
 [PresentationRequest.start()](https://w3c.github.io/presentation-api/#dom-presentationrequest-start)
 and in
 [PresentationRequest.getAvailability()](https://w3c.github.io/presentation-api/#dom-presentationrequest-getavailability).
 Only presentation displays that can open at least one of the URLs passed as
-input in the PresentationRequest constructor should be considered. There are two
-ways SSDP can be used to monitor display availability for the Presentation API:
+input in the PresentationRequest constructor are considered available for that
+request. There are at least three ways SSDP can be used to monitor display
+availability for the Presentation API:
 
 #### Method 1
 
-Similar to of SSDP as discovery in DIAL. The main steps are listed below:
+Similar to of SSDP discovery in DIAL. The main steps are listed below:
 
 1. The presentation display device advertises using SSDP the presentation
    receiver service when it is connected to the network with the service type
@@ -132,7 +132,7 @@ Similar to of SSDP as discovery in DIAL. The main steps are listed below:
 
 1. Each presentation display connected to the network running a presentation
    receiver service replies to the search request with a SSDP message similar to
-   the alive message.
+   the `ssdp:alive` message.
 
     ```
     HTTP/1.1 200 OK
@@ -152,7 +152,7 @@ Similar to of SSDP as discovery in DIAL. The main steps are listed below:
    of the display and checks if the display can open one of the URLs associated
    with an existing call to `PresentationRequest.start()` or
    `PresentationRequest.getAvailability()`.  If yes, the presentation display
-   will be added to the list of available displays, and results sent back to
+   will be added to the list of available displays, and the result sent back to
    pages through the Presentation API.
 
 1. When a presentation display is disconnected it should advertise a
@@ -246,7 +246,7 @@ Below are the steps that illustrate this method:
     PRESENTATION-ENDPOINT.openscreen.org: 192.168.1.100:3000
     SUPPORTED-URL.openscreen.org: https://example.com/foo.html
     ```
-    
+
 1. The display sends the following SSDP message when the receiver service is no
    longer available. There are no new headers added to the `ssdp:byebye` message.
 
@@ -260,19 +260,21 @@ Below are the steps that illustrate this method:
 
 *Open questions*
 
-1. This approach requires that Presentation URLs and friendly names fit into one
-   SSDP message, which are limited to ~1400 bytes on a typical network.
-2. This approach advertises presentation URLs and friendly names to all devices
-   on the local area network, which may expose private information in an
-   unintended way.
-   
+1. SSDP messages are limited to ~1400 bytes on a typical network. Will the
+   Presentation URLs and friendly names fit into message?
+
+2. Is there a privacy issue regarding the advertisement of presentation URLs and
+   friendly names to all devices on the local area network?
+
 #### Method 3
 
-This approach is identical to Method 2, except that the friendly name and
-presentation URLs are not included in SSDP messages. Only the
-`PRESENTATION-ENDPOINT.openscreen.org` header is added to the search response,
-and that information from the presentation receiver service is obtained from the
-application level protocol implemented on that endpoint.
+This approach is identical to Method 2, except that presentation URLs are not
+included in SSDP messages. Only the `PRESENTATION-ENDPOINT.openscreen.org`
+header is added to the search response, and additional information from the
+presentation receiver service (including presentation URL compatibility) is
+obtained from the application level protocol implemented on that endpoint.  The
+friendly name may or may not be included in advertisements, based on a tradeoff
+between usability, efficiency and privacy.
 
 #### Functional Requirements: Remote Playback API
 
@@ -283,9 +285,10 @@ application level protocol implemented on that endpoint.
 #### Reliability
 
 As UDP is unreliable, UPnP recommends sending SSDP messages 2 or 3 times with a
-delay of few hundred milliseconds between messages.  In addition, the device
-must re-broadcast advertisements periodically prior to expiration of the
-duration specified in the `CACHE-CONTROL` header (whose minimum value is 1800s).
+delay of few hundred milliseconds between messages.  In addition, the
+presentation display must re-broadcast advertisements periodically prior to
+expiration of the duration specified in the `CACHE-CONTROL` header (whose
+minimum value is 1800s).
 
 #### Latency of device discovery / device removal
 
@@ -293,7 +296,7 @@ New presentation displays added or removed can be immediately detected if the
 controller listens to the multicast address for `ssdp:alive` and `ssdp:byebye`
 messages. For search requests, the latency depends on the `MX` SSDP header which
 contains the maximum wait time in seconds (and must be between 1 and 5 seconds).
-SSDP responses from presentationd displays should be delayed a random duration
+SSDP responses from presentation displays should be delayed a random duration
 between 0 and `MX` to balance load for the controller when it processes
 responses.
 
@@ -350,14 +353,14 @@ The way how controllers search for presentation displays has an impact on power
 efficiency. If a controller needs to immediately react to connection and
 disconnection of presentation displays, it will need to continuously receive
 data on the multicast address, including all SSDP messages sent by other
-controllers.  (An exception are unicast search response messages sent to other
+controllers.  (An exception is unicast search response messages sent to other
 controllers.)
 
 If the controller needs to get only a snapshot of available displays, then it
-only needs to send a search message to the multicast address and listen only to
-search response messages.
+only needs to send a search message to the multicast address and listen for
+search response messages for 2-10 seconds.
 
-[Issue #26](https://github.com/webscreens/openscreenprotocol/issues/26): Collect data regarding network and power efficiency 
+[Issue #26](https://github.com/webscreens/openscreenprotocol/issues/26): Collect data regarding network and power efficiency
 
 #### IPv4 and IPv6 support
 
@@ -366,19 +369,18 @@ Device architecture document describes all details about support for IPv6.
 
 #### Standardization status and likelihood of successful interop
 
-SSDP is part of the UPnP device architecture. Last version of the specification
-is
+SSDP is part of the UPnP device architecture. The most recent version of the
+specification is
 [UPnP Device Architecture 2.0](http://upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v2.0.pdf) from
-February 20, 2015. UPnP Forum assigned their assets to the
-[Open Connectivity Foundation (OCF)](https://openconnectivity.org/resources/specifications/upnp) since
-January 1, 2016. UPnP/SSDP is used in many products like Smart TVs, printers,
-Gateways/Routers, NAS, PCs, etc. According to [DLNA](https://www.dlna.org/),
-there are over four billion certified devices available on the market. There are
-also non-DLNA certified devices that use UPnP/SSDP like Smart TVs and digital
-media receivers that support DIAL and HbbTV 2.0 and other products like
-[SONOS](http://musicpartners.sonos.com/?q=docs),
-[Philips Hue](https://www.developers.meethue.com/),
-and many others.
+February 20, 2015. On January 1, 2016, the UPnP Forum assigned their assets to the
+[Open Connectivity Foundation (OCF)](https://openconnectivity.org/resources/specifications/upnp).
+UPnP/SSDP is used in many products like smart TVs, printers, gateways/routers,
+NAS, and PCs. According to [DLNA](https://www.dlna.org/), there are over four
+billion DLNA-certified devices available on the market. SSDP is also used in
+non-DLNA certified devices that support DIAL and HbbTV 2.0, including smart TVs and
+digital media receivers, as well as proprietary products like
+[SONOS](http://musicpartners.sonos.com/?q=docs) and
+[Philips Hue](https://www.developers.meethue.com/).
 
 [Issue #27](https://github.com/webscreens/openscreenprotocol/issues/27): Investigate uPnP licensing requirements
 
