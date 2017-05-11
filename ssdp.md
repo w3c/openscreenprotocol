@@ -141,7 +141,7 @@ Similar to of SSDP discovery in DIAL. The main steps are listed below:
     LOCATION: http://192.168.0.123:8080/desc.xml [device description URL]
     SERVER: OS/version UPnP/1.0 product/version
     USN: XXX-XXX-XXX-XXX [UUID for device]
-    ST: urn:openscreen-org:service:osp:1
+    ST: urn:openscreen-org:service:openscreenreceiver:1
     ```
 
 1. When the controller receives a response from a newly connected display, it
@@ -161,7 +161,7 @@ Similar to of SSDP discovery in DIAL. The main steps are listed below:
     ```
     NOTIFY * HTTP/1.1
     HOST: 239.255.255.250:1900
-    NT: urn:openscreen-org:service:osp:1
+    NT: urn:openscreen-org:service:openscreenreceiver:1
     NTS: ssdp:byebye
     USN: XXX-XXX-XXX-XXX [UUID for device]
     ```
@@ -215,6 +215,9 @@ Below are the steps that illustrate this method:
     FRIENDLY-NAME.openscreen.org: My Presentation Display
     PRESENTATION-ENDPOINT.openscreen.org: 192.168.1.100:3000
     ```
+    
+    [Issue #22](https://github.com/webscreens/openscreenprotocol/issues/22):
+    Ensure that advertised friendly names are i18n capable
 
 1. A controller sends the following SSDP search message to the multicast
    address. The new header `PRESENTATION-URLS.openscreen.org` allows the controller
@@ -228,6 +231,9 @@ Below are the steps that illustrate this method:
     ST: urn:openscreen-org:service:openscreenreceiver:1
     PRESENTATION-URLS.openscreen.org: https://example.com/foo.html, https://example.com/bar.html
     ```
+
+    [Issue #21](https://github.com/webscreens/openscreenprotocol/issues/21):
+    Investigate mechanisms to pre-filter devices by Presentation URL
 
 1. A display that can open one of the URLs replies (unicast) with the following
    SSDP message. The new SSDP header `SUPPORTED-URLS.openscreen.org` contains the
