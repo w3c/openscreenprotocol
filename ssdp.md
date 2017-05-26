@@ -282,7 +282,7 @@ obtained from the application level protocol implemented on that endpoint.  The
 friendly name may or may not be included in advertisements, based on a tradeoff
 between usability, efficiency and privacy.
 
-#### Functional Requirements: Remote Playback API
+### Functional Requirements: Remote Playback API
 
 [Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3): Add requirements for Remote Playback API
 
