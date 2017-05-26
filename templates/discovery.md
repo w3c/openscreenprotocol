@@ -1,6 +1,6 @@
 # Protocol name
 
-Describe discovery protocol at a high level here.
+Describe the discovery protocol at a high level here.
 
 # Design and specification
 
@@ -8,14 +8,14 @@ Add links to specifications and design docs.
 
 # Presentation API functionality
 
-Describe how the transport meets
+Describe how the discovery protocol meets
 [functional requirements for the Presentation API](../requirements.md#presentation-display-availability)
 for presentation display availability.
 
 # Remote Playback API functionality
 
-Describe how the transport meets functional requirements for the Remote Playback
-API.
+Describe how the discovery protocol meets functional requirements for the Remote
+Playback API.
 
 **TODO:** Fill in when Remote Playback equirements are known.
 See [Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3).
@@ -41,8 +41,9 @@ Including availability of open source implementations.
 
 # Hardware requirements
 
-The minimum specifications needed to use the transport, and whether the devices
-in [Sample Device Specifications](../device_specs.md) are sufficient.
+The minimum specifications needed to use the discovery protocol, and whether
+the devices in [Sample Device Specifications](../device_specs.md) are
+sufficient.
 
 # Standardization status
 
