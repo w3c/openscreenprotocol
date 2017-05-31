@@ -1,5 +1,8 @@
 # SSDP
 
+This document evaluates SSDP as a discovery protocol for the Open Screen
+Protocol according to several functional and non-functional requirements.
+
 SSDP (Simple Service Discovery Protocol) is the first layer in the
 [UPnP (Universal Plug and Play) Device Architecture](http://www.upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.1.pdf).
 It allows user devices like smartphones or tablets (called _control points_) to
@@ -22,7 +25,7 @@ the use of SSDP to advertise and find URLs in a local area network, as part of
 the [Physical Web Project](https://github.com/google/physical-web).
 
 
-## Design and Specification
+# Design and Specification
 
 SSDP allows uPnP _root devices_ (that offer services like TVs, printers, etc.)
 to advertise services to control points on the network. It also allows control
@@ -40,7 +43,7 @@ point and root device.
 ![](images/ssdp.png)
 
 
-### Message Flow
+## Message Flow
 
 1. The root device advertises itself on the network by sending a `NOTIFY`
    message of type `ssdp:alive` for each service it offers to the multicast
@@ -68,12 +71,7 @@ point and root device.
    message of type `ssdp:byebye` with `ST` set to the service type.  Control
    points can remove the service from any caches.
 
-## Evaluation
-
-This section evaluates SSDP as a discovery protocol for the Open Screen Protocol
-according to several functional and non-functional requirements.
-
-### Functional Requirements: Presentation API
+# Presentation API functionality
 
 For the Presentation API, the requirement is the ability to "Monitor Display
 Availability" by a controlling user agent (_controller_) as described
@@ -93,7 +91,7 @@ input in the PresentationRequest constructor are considered available for that
 request. There are at least three ways SSDP can be used to monitor display
 availability for the Presentation API:
 
-#### Method 1
+## Method 1
 
 Similar to of SSDP discovery in DIAL. The main steps are listed below:
 
@@ -181,7 +179,7 @@ Similar to of SSDP discovery in DIAL. The main steps are listed below:
    possible solution is to ask the receiver service using the provided endpoint
    by sending the presentation URLs.
 
-#### Method 2
+## Method 2
 
 This method uses only the SSDP messages without requiring the device description
 XML. The presentation request URLs are sent by the controller in a new header of
@@ -272,7 +270,7 @@ Below are the steps that illustrate this method:
 2. Is there a privacy issue regarding the advertisement of presentation URLs and
    friendly names to all devices on the local area network?
 
-#### Method 3
+## Method 3
 
 This approach is identical to Method 2, except that presentation URLs are not
 included in SSDP messages. Only the `PRESENTATION-ENDPOINT.openscreen.org`
@@ -282,13 +280,11 @@ obtained from the application level protocol implemented on that endpoint.  The
 friendly name may or may not be included in advertisements, based on a tradeoff
 between usability, efficiency and privacy.
 
-### Functional Requirements: Remote Playback API
+# Remote Playback API functionality
 
 [Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3): Add requirements for Remote Playback API
 
-### Non-functional Requirements
-
-#### Reliability
+# Reliability
 
 As UDP is unreliable, UPnP recommends sending SSDP messages 2 or 3 times with a
 delay of few hundred milliseconds between messages.  In addition, the
@@ -296,7 +292,7 @@ presentation display must re-broadcast advertisements periodically prior to
 expiration of the duration specified in the `CACHE-CONTROL` header (whose
 minimum value is 1800s).
 
-#### Latency of device discovery / device removal
+# Latency of device discovery / device removal
 
 New presentation displays added or removed can be immediately detected if the
 controller listens to the multicast address for `ssdp:alive` and `ssdp:byebye`
@@ -306,37 +302,7 @@ SSDP responses from presentation displays should be delayed a random duration
 between 0 and `MX` to balance load for the controller when it processes
 responses.
 
-#### Ease of implementation / deployment
-
-It is very easy to implement the SSDP protocol, as it is based soley on UDP and
-the messages are easy to create and parse.  Fraunhofer FOKUS offers two open
-source implementations:
-* [peer-ssdp](https://github.com/fraunhoferfokus/peer-ssdp) for Node.js
-* [cordova plugin](https://github.com/fraunhoferfokus/cordova-plugin-hbbtv/tree/master/src/android/ssdp)
-for Android
-
-#### Security - both of the implementation, and whether it can be leveraged to enhance security of the entire protocol
-
-SSDP considers local network as secure environment; any device on the local area
-network can discover other devices or services.  Authentication and data privacy
-must be implemented on the service or application level. In our case, the output
-of discovery is a list of displays and friendly names, which are available to
-all devices on the local area network.  If Method 2 is adopted, presentation
-URLs and endpoints of presentation receiver services are also broadcast .
-Additional security mechanisms can be implemented during session establishment
-and communication.
-
-[Issue #25](https://github.com/webscreens/openscreenprotocol/issues/25): Address history of uPnP exploits.
-
-#### Privacy: what device information is exposed
-
-The standard UPnP device description exposes parameters about the device/service
-like unique identifier, friendly name, software, manufacturer, and service
-endpoints. In addition, the SSDP vendor extensions proposed in Method 2
-advertise presentation URLs and friendly names to all devices on the local area
-network, which may expose private information in an unintended way.
-
-#### Network efficiency
+# Network efficiency
 
 It depends on multiple factors like the number of devices in the network using
 SSDP (includes devices that support DLNA, DIAL, HbbTV 2.0, etc.), the number of
@@ -344,7 +310,7 @@ services provided by each device, the interval to re-send refreshment messages
 (value of `CACHE-CONTROL` header), the number of devices/applications sending
 discovery messages.
 
-#### Power efficiency
+# Power efficiency
 
 This depends on many factors including the method chosen above; Methods 2 and 3 are
 better than Method 1 regarding power efficiency.  In Method 1, the controller
@@ -368,12 +334,28 @@ search response messages for 2-10 seconds.
 
 [Issue #26](https://github.com/webscreens/openscreenprotocol/issues/26): Collect data regarding network and power efficiency
 
-#### IPv4 and IPv6 support
+# Ease of implementation / deployment
+
+It is very easy to implement the SSDP protocol, as it is based soley on UDP and
+the messages are easy to create and parse.  Fraunhofer FOKUS offers two open
+source implementations:
+* [peer-ssdp](https://github.com/fraunhoferfokus/peer-ssdp) for Node.js
+* [cordova plugin](https://github.com/fraunhoferfokus/cordova-plugin-hbbtv/tree/master/src/android/ssdp)
+for Android
+
+# IPv4 and IPv6 support
 
 SSDP supports IPv4 and IPv6. "Appendix A: IP Version 6 Support" of the UPnP
 Device architecture document describes all details about support for IPv6.
 
-#### Standardization status and likelihood of successful interop
+# Hardware requirements
+
+The SSDP layer of uPnP has been implemented on a variety of consumer hardware
+devices generations older than those listed in
+the [Sample Device Specifications](device_specs.md).  It should be feasible to
+implement it on the devices listed there.
+
+# Standardization status
 
 SSDP is part of the UPnP device architecture. The most recent version of the
 specification is
@@ -390,7 +372,28 @@ digital media receivers, as well as proprietary products like
 
 [Issue #27](https://github.com/webscreens/openscreenprotocol/issues/27): Investigate uPnP licensing requirements
 
-### Notes
+# Privacy
+
+The standard UPnP device description exposes parameters about the device/service
+like unique identifier, friendly name, software, manufacturer, and service
+endpoints. In addition, the SSDP vendor extensions proposed in Method 2
+advertise presentation URLs and friendly names to all devices on the local area
+network, which may expose private information in an unintended way.
+
+# Security
+
+SSDP considers local network as secure environment; any device on the local area
+network can discover other devices or services.  Authentication and data privacy
+must be implemented on the service or application level. In our case, the output
+of discovery is a list of displays and friendly names, which are available to
+all devices on the local area network.  If Method 2 is adopted, presentation
+URLs and endpoints of presentation receiver services are also broadcast .
+Additional security mechanisms can be implemented during session establishment
+and communication.
+
+[Issue #25](https://github.com/webscreens/openscreenprotocol/issues/25): Address history of uPnP exploits.
+
+# Notes
 
 * The identifiers `urn:openscreen-org:service:openscreenreceiver:1` and
   `openscreen.org` are used for illustrative purposes and may not be the
