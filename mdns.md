@@ -21,8 +21,11 @@ clients and servers.
 
 ## Example
 
-The following are example records that would be sent for an openscreen mDNS service
-instance.
+The following are example records that could be exchanged for an openscreen mDNS
+service instance.  The Query is sent from the client (controller) and the other
+records are sent as part of the response from the server (presentation display).
+The `PTR` record is sent with `SRV`, `TXT`, `A` and `AAAA` records sent as
+additional records in the query response.
 
 ### Query
 
@@ -36,6 +39,7 @@ Type:  PTR (Domain name pointer)
 ### PTR
 
 ```
+Type:        PTR
 Class:       IN
 Flags:       0x8400 (Authoritative response)
 TTL:         5 minutes
@@ -45,6 +49,7 @@ Domain Name: Living Room._openscreen._quic.local
 ### SRV
 
 ```
+Type:        SRV
 Class:       IN
 Service:     Living Room
 Protocol:    _openscreen
@@ -58,10 +63,31 @@ Target:      Living Room.local
 
 ### TXT
 
-
+```
+Type:        TXT
+Name:        Livng Room._openscreen._quic.local
+Class:       IN
+TTL:         60 minutes
+Text:        nm=Living Room TV
+Text:        id=9b16f21968fabb4d1d00a9f8a741a2dc
+Text:        <etc>
+```
 
 ### A/AAAA
 
+```
+Type:        A
+Class:       IN
+Name:        Living Room.local
+TTL:         5 minutes
+Addr:        192.168.0.3
+
+Type:        AAAA
+Class:       IN
+Name:        Living Room.local
+TTL:         5 minutes
+Addr:        2620:0:1009:fd00:1d8a:2595:7e02:61db/64
+```
 
 # Design and specification
 
@@ -77,9 +103,49 @@ contains additional documentation and example code.
 
 # Presentation API functionality
 
-Describe how the discovery protocol meets
-[functional requirements for the Presentation API](../requirements.md#presentation-display-availability)
-for presentation display availability.
+We discuss below how mDNS meets the requirements for
+[presentation display availability](requirements.md#presentation-display-availability).
+
+## Discovery of receiver services
+
+mDNS allows a controller to discover presentation displays on the same local
+area network running a presentation receiver service on a given IP:port.  Once
+the IP:port is known, the controller can initiate a control channel to the
+receiver service using QUIC, TCP, or another transport mechanism to implement
+both control messaging and application messaging for the Presentation API.
+
+## Advertisement of friendly name
+
+mDNS allows a friendly name for the display to be provided in two ways:
+
+1. By setting the Service (hostname) part of the `SRV` record.
+2. By adding an entry to the `TXT` record, i.e. `nm=Living Room TV`.
+
+However, advertising friendly names through DNS suffers from some inherent
+limitations of the DNS protocol.
+
+First, records are limited by the size of an Ethernet packet, effectively about
+1400 bytes.  Some software and routers may further reject DNS packets over 512
+bytes as invalid.  This may not be large enough to encode all friendly names and
+some may require truncation.
+
+Second, `SRV` hostnames tend to follow DNS naming conventions, which discourage
+special characters and disallow Unicode.  TODO: Find out what rules actually
+exist, if any.
+
+Only `TXT` records may contain a full Unicode string in UTF-8.  `TXT` values are
+limited to 255 octets, which may turn out to be a practical limitation in some
+character sets.
+
+## Query for presentation URL compatibility
+
+There doesn't appear to be a practical way to do this over mDNS, as the mDNS
+query record is not easily extensible to encode URLs.  It may be possible for
+the presentation display to provide URL patterns in its `TXT` record to allow
+controllers to pre-filter presentation displays.
+
+For mDNS based discovery, querying for URL compatibility will likely be done
+using the control channel established to the presentation receiver service.
 
 # Remote Playback API functionality
 
