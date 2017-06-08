@@ -15,16 +15,26 @@ Records are sent with a time-to-live (TTL).  Listeners may cache records they
 receive from previous multicasts to answer future queries locally, but should
 periodically refresh these cached records before the TTL expires.
 
-## Architecture
-
-**TODO**: Add diagram
-
 ## Message Flow
 
 The following message flow illustrates how queries and records are sent between
-mDNS listeners and responders.
+mDNS listeners and responders.  The listener begins by multicasting a QUERY to
+the multicast address 224.0.0.251:5300.  Responders that receive the request
+respond by multicasting resource records to the same address.  (The class, flags and TTL of
+these records are omitted for brevity.)
 
-**TODO**: Add diagram.
+If a responder is about to disconnect from the network, it multicasts the same
+records with a TTL of 0.  This instructs listeners that may have cached the
+records to discard them.
+
+![](images/mdns.png)
+
+If a responder has updated information to propagate to listeners (for example, a
+change in TXT data or IP address), or it has just connected to a network, it can
+send an unsolicited multicast of its current resource records with the "cache
+flush" bit set to 1.  Listeners will overwrite any existing cached records for
+that host.  More details on cache flush semantics can be found in 
+[RFC 6762 Section 10.2](https://tools.ietf.org/html/rfc6762#section-10.2).
 
 ## Example
 
@@ -123,10 +133,11 @@ We discuss below how mDNS meets the requirements for
 ## Discovery of presentation displays
 
 mDNS allows a controller to discover presentation displays on the same local
-area network running a presentation receiver service on a given IP:port.  Once
-the IP:port is known, the controller can initiate a control channel to the
-receiver service using QUIC, TCP, or another transport mechanism to implement
-both control messaging and application messaging for the Presentation API.
+area network running a presentation receiver service on a given IP:port.  mDNS
+does not support reliable message exchange, so once the IP:port is known, the
+controller will initiate a control channel to the receiver service using QUIC,
+TCP, or another reliable transport protocol.  The control channel can then be
+used for control of presentations and/or `PresentationConnection` messaging.
 
 ## Advertisement of friendly name
 
@@ -146,13 +157,9 @@ encode all friendly names and some may require truncation.
 Second, `SRV` hostnames tend to follow DNS naming conventions, which discourage
 special characters and disallow Unicode.
 
-**TODO**: Find out what rules actually exist, if any.
-
 Only `TXT` records may contain a full Unicode string in UTF-8.  Individual `TXT`
 values are limited to 255 octets, which may turn out to be a practical
 limitation in some character sets.
-
-**TODO**: Find out if that is true.
 
 ## Query for presentation URL compatibility
 
@@ -174,10 +181,33 @@ known. See [Issue #3](issues/3).
 
 # Reliability
 
+## Protocol issues
+
 mDNS relies on UDP multicast; individual packets (containing queries or
 answers) may not be delivered.  The implementation of mDNS for
 Chrome/Chromecast sends queries and answers three times each to minimize the
 chance that packets are dropped.
+
+There is a risk that listeners have cached data from previous answers that is
+out of date (providing the wrong host name, IP address or other metadata).  The
+mDNS protocol addresses cache coherency by several mechanisms:
+* Responders should sent unsolicited multicasts of updated data with the "cache
+  flush" bit set. 
+* Listeners should attempt to revalidate cached records at 80%, 90%, and 95% of
+  TTL lifetime.
+* If there are other listeners connected to their network, the listener will
+  also receive multicast responses to their queries, and can use them to
+  maintain its cached records.
+* The listener should aggressivly flush cached records on a network topology
+  change (interface up/down, change of WiFi SSID, etc.)
+  
+There is also a risk that listeners will cache records for a presentation
+display that is no longer connected to the network, especially if the display
+was abruptly disconnected.  This can be mitigated by using other signals, such
+as disconnection or keep-alive failure of the control channel, to track when a
+presentation display has disconnected.
+
+## Platform issues
 
 Some operating systems (such as Mac OS X/iOS) implement their own mDNS listener,
 or installed software may include an mDNS listener that binds port 5353.  A user
@@ -187,7 +217,7 @@ listener on these systems if port 5353 is not bound for shared use.
 mDNS is also subject to general issues affecting multicast discovery.  Operating
 system configuration, router configuration, and firewall software may block its
 operation.  Users may not even be aware of the situation, and it can be
-difficult or impossible for user agents to detect what component is blocking
+difficult or impossible for user agents to determine what component is blocking
 mDNS; users will just be unable to discover any presentation displays.
 
 [Issue #37: Share data on mDNS reliability](issues/37)
@@ -198,9 +228,9 @@ One interesting aspect of mDNS is the ability for intervening layers of software
 between the controller and the presentation display (such as the underlying
 controller OS or the router firmware) to cache mDNS records and respond to
 queries, even if the original presentation display is unable to communicate
-directly with the controller.  If this were implemented correctly, this may
-improve reliability by making mDNS more tolerant of transient network
-interruptions.
+directly with the controller.  If this is implemented with correct support for
+cache coherency, this may improve reliability by making mDNS more tolerant of
+transient network interruptions.
 
 # Latency of device discovery / device removal
 
@@ -245,7 +275,7 @@ of network activity given assumptions about the factors above.
 ## Platform support
 
 mDNS has been supported on Mac OS X since version 10.2 (released in 2002) under
-the brand name Rendezvous (later Bonjour), and iOS since its initial release
+the brand name Rendezvous (now Bonjour), and iOS since its initial release
 in 2007.  It has been supported in Android since version 4.1 (Jelly Bean,
 released in 2012).
 
@@ -295,10 +325,10 @@ mDNS is not secure.  All devices on the local network can observe all other
 devices and manipulate the operation of mDNS.  An active attacker with access to
 the same LAN can either hide the existence of presentation displays (denial of
 service), present false information about displays that do exist (spoofing), or
-respond as a fake display and try to get the browser to interact with it
-(spoofing).
+respond as a fake display/browser and try to get a browser/display to interact
+with it (spoofing).
 
-These issues must be migated by other security aspects of Open Screen such as
+These issues must be migated by other security features of Open Screen such as
 device authentication and transport security.
 
 [Issue #39: Investigate history of mDNS related exploits.](issues/39)
