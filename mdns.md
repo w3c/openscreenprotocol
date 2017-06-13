@@ -277,7 +277,12 @@ of network activity given assumptions about the factors above.
 mDNS has been supported on Mac OS X since version 10.2 (released in 2002) under
 the brand name Rendezvous (now Bonjour), and iOS since its initial release
 in 2007.  It has been supported in Android since version 4.1 (Jelly Bean,
-released in 2012).
+released in 2012).  On Windows, mDNS is supported for UWP applications in
+Windows 10 via
+[advertisement](https://docs.microsoft.com/en-us/uwp/api/Windows.Networking.ServiceDiscovery.Dnssd)
+and
+[device enumeration](https://docs.microsoft.com/en-us/uwp/api/windows.devices.enumeration)
+APIs.
 
 ## Open source implementations
 
