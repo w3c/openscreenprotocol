@@ -17,7 +17,7 @@ consoles.
 
 Another example is
 [HbbTV 2.0 (Hybrid broadcast broadband TV)](https://www.hbbtv.org/resource-library/),
-which extends DIAL as to discover HbbTV devices and launch HbbTV applications.
+which extends DIAL to discover HbbTV devices and launch HbbTV applications.
 
 [Fraunhofer FOKUS](https://www.fokus.fraunhofer.de/fame) has
 [proposed](https://github.com/google/physical-web/blob/master/documentation/ssdp_support.md)
@@ -61,7 +61,7 @@ point and root device.
 1. A control point can search for root devices at any time by sending a
    `M-SEARCH` query to the same multicast address. The query contains the search
    target (`ST`) header specifying the service type the control point wants.
-   All devices listing to the multicast address will receive the query.
+   All devices listening to the multicast address will receive the query.
 
 1. When a root device receives a query, it checks the `ST` header against the
    list of services offered.  If there is a match it replies with a unicast
@@ -93,7 +93,7 @@ availability for the Presentation API:
 
 ## Method 1
 
-Similar to of SSDP discovery in DIAL. The main steps are listed below:
+Similar to SSDP discovery in DIAL. The main steps are listed below:
 
 1. The presentation display device advertises using SSDP the presentation
    receiver service when it is connected to the network with the service type

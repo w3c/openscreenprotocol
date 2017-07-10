@@ -1,11 +1,11 @@
 # Data Channel
 
 [Data Channel](https://tools.ietf.org/html/draft-ietf-rtcweb-data-channel-13)
-is a non-media transport protocol in WebRTC framework, designed for exchanging
+is a non-media transport protocol in the WebRTC framework, designed for exchanging
 data from peer to peer. It advertises the following benefits:
 
 - Implemented in major browsers (except Safari).
-- Supports heterogeneous network environment e.g. NAT, firewall.
+- Supports heterogeneous network environments, e.g., NAT, firewall.
 - Easily supports media transport for remote playback.
 - Data framing format is already defined.
 
@@ -40,9 +40,9 @@ Presentation Connection Establishment.
 1. To start a presentation, the controller sends a message to the display on the
    control channel with the presentation ID and URL of the initial presentation
    connection.
-2. Receiver spawns a Data Channel on the same RTC connection as the control
+2. The receiver spawns a Data Channel on the same RTC connection as the control
    channel, with a unique session ID generated as the label.
-3. Controller gets a reply on the control channel with the presentation ID, URL,
+3. The controller gets a reply on the control channel with the presentation ID, URL,
    and session ID to confirm success (or report an error).
 
 ## Presentation Resumption
@@ -53,7 +53,7 @@ Presentation Connection Establishment.
 2. If there is a corresponding presentation to be resumed, the receiver spawns a
    Data Channel on the same RTC connection as the control channel, with the session
    ID as the label.
-3. Controller gets a reply on control channel with the presentation ID, URL, and
+3. The controller gets a reply on control channel with the presentation ID, URL, and
    session ID to confirm success (or report an error).
 
 ## Presentation Connection Establishment
@@ -89,10 +89,10 @@ For receiver initiated termination:
 
 # Remote Playback API functionality
 
-WebRTC framework supports media codec negociation and real-time media transport.
+The WebRTC framework supports media codec negotiation and real-time media transport.
 
 [Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3): Fill in
-when Remote Playback equirements are known.
+when Remote Playback requirements are known.
 
 # Reliability
 
@@ -105,7 +105,7 @@ Get reliability data.
 # Latency to establish a new connection
 
 There are three sources of latency:
-1. Connecting a reliable channel the first time for for ICE negotiation.
+1. Connecting a reliable channel the first time for ICE negotiation.
 2. Establishing the first Data Channel.
 3. Adding an additional Data Channel on top of an existing peer-to-peer connection.
 
@@ -179,6 +179,6 @@ authentication.
 
 This should be covered by the latency evaluations above.  The relevant user
 experience requirements ar met by evaluating:
-1. The latency to establish a presentation connection
+1. The latency to establish a presentation connection.
 2. The latency to transmit an application message.
 

@@ -118,7 +118,7 @@ Addr:        2620:0:1009:fd00:1d8a:2595:7e02:61db/64
 Multicast DNS and DNS-SD are defined by two IETF RFCs.
 
 * [RFC 6762: Multicast DNS](https://tools.ietf.org/html/rfc6762)
-* [RFC 6762: DNS-Based Service Discovery](https://tools.ietf.org/html/rfc6763)
+* [RFC 6763: DNS-Based Service Discovery](https://tools.ietf.org/html/rfc6763)
 
 In addition the site [dns-sd.org](http://www.dns-sd.org/) contains more
 background information on the use of these protocols, and the book
@@ -176,7 +176,7 @@ separate control channel established to the presentation receiver service.
 Describe how the discovery protocol meets functional requirements for the Remote
 Playback API.
 
-**TODO:** Fill in when Remote Playback equirements are
+**TODO:** Fill in when Remote Playback requirements are
 known. See [Issue #3](issues/3).
 
 # Reliability
@@ -191,14 +191,14 @@ chance that packets are dropped.
 There is a risk that listeners have cached data from previous answers that is
 out of date (providing the wrong host name, IP address or other metadata).  The
 mDNS protocol addresses cache coherency by several mechanisms:
-* Responders should sent unsolicited multicasts of updated data with the "cache
+* Responders should send unsolicited multicasts of updated data with the "cache
   flush" bit set. 
 * Listeners should attempt to revalidate cached records at 80%, 90%, and 95% of
   TTL lifetime.
-* If there are other listeners connected to their network, the listener will
+* If there are other listeners connected to the same network, the listener will
   also receive multicast responses to their queries, and can use them to
   maintain its cached records.
-* The listener should aggressivly flush cached records on a network topology
+* The listener should aggressively flush cached records on a network topology
   change (interface up/down, change of WiFi SSID, etc.)
   
 There is also a risk that listeners will cache records for a presentation
@@ -333,7 +333,7 @@ service), present false information about displays that do exist (spoofing), or
 respond as a fake display/browser and try to get a browser/display to interact
 with it (spoofing).
 
-These issues must be migated by other security features of Open Screen such as
+These issues must be mitigated by other security features of Open Screen such as
 device authentication and transport security.
 
 [Issue #39: Investigate history of mDNS related exploits.](issues/39)
