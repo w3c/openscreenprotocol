@@ -213,7 +213,7 @@ Below are the steps that illustrate this method:
     FRIENDLY-NAME.openscreen.org: My Presentation Display
     PRESENTATION-ENDPOINT.openscreen.org: 192.168.1.100:3000
     ```
-    
+
     [Issue #22](https://github.com/webscreens/openscreenprotocol/issues/22):
     Ensure that advertised friendly names are i18n capable
 
@@ -321,7 +321,7 @@ to get friendly name and check capabilities.
 In Methods 2 and 3, the controller needs only to create and send search requests
 and receive and parse SSDP messages.
 
-The way how controllers search for presentation displays has an impact on power
+The way that controllers search for presentation displays has an impact on power
 efficiency. If a controller needs to immediately react to connection and
 disconnection of presentation displays, it will need to continuously receive
 data on the multicast address, including all SSDP messages sent by other
@@ -374,8 +374,8 @@ digital media receivers, as well as proprietary products like
 
 # Privacy
 
-The standard UPnP device description exposes parameters about the device/service
-like unique identifier, friendly name, software, manufacturer, and service
+The standard UPnP device description exposes parameters about the device/service,
+such as its unique identifier, friendly name, software, manufacturer, and service
 endpoints. In addition, the SSDP vendor extensions proposed in Method 2
 advertise presentation URLs and friendly names to all devices on the local area
 network, which may expose private information in an unintended way.
