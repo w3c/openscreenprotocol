@@ -22,7 +22,7 @@ or *receiver*).  We use the term
 refer to the entire device responsible for implementing the *receiver*,
 including browser, OS, networking and screen.
 
-A *presentation* is initated at the request of a
+A *presentation* is initiated at the request of a
 [*controlling browsing context*](https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context)
 (Web page), which creates a
 [*receiving browsing context*](https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context)
@@ -126,10 +126,10 @@ TBD
    display and observing or altering data intended for the controller or
    receiver.
 
-###  <a name="req-nf3-ux"></a>User Experience
+### <a name="req-nf3-ux"></a>User Experience
 
-1. The controller should be able to discover quickly a when display becomes
-   available or unavailable (i.e. when it connects or disconnects from the
+1. The controller should be able to discover quickly when a display becomes
+   available or unavailable (i.e., when it connects or disconnects from the
    network).
    
 2. The controller should present sensible information to the user when a
@@ -148,7 +148,7 @@ TBD
    appear in the presentation.  Real-time latency for gaming or mouse use is
    ideal, but not a requirement.
    
-5. The controller initiating presentation should communicate its preferred
+5. The controller initiating a presentation should communicate its preferred
    locale to the display, so it can render the presentation content in that
    locale.
 

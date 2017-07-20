@@ -17,7 +17,7 @@ consoles.
 
 Another example is
 [HbbTV 2.0 (Hybrid broadcast broadband TV)](https://www.hbbtv.org/resource-library/),
-which extends DIAL as to discover HbbTV devices and launch HbbTV applications.
+which extends DIAL to discover HbbTV devices and launch HbbTV applications.
 
 [Fraunhofer FOKUS](https://www.fokus.fraunhofer.de/fame) has
 [proposed](https://github.com/google/physical-web/blob/master/documentation/ssdp_support.md)
@@ -61,7 +61,7 @@ point and root device.
 1. A control point can search for root devices at any time by sending a
    `M-SEARCH` query to the same multicast address. The query contains the search
    target (`ST`) header specifying the service type the control point wants.
-   All devices listing to the multicast address will receive the query.
+   All devices listening to the multicast address will receive the query.
 
 1. When a root device receives a query, it checks the `ST` header against the
    list of services offered.  If there is a match it replies with a unicast
@@ -93,7 +93,7 @@ availability for the Presentation API:
 
 ## Method 1
 
-Similar to of SSDP discovery in DIAL. The main steps are listed below:
+Similar to SSDP discovery in DIAL. The main steps are listed below:
 
 1. The presentation display device advertises using SSDP the presentation
    receiver service when it is connected to the network with the service type
@@ -213,7 +213,7 @@ Below are the steps that illustrate this method:
     FRIENDLY-NAME.openscreen.org: My Presentation Display
     PRESENTATION-ENDPOINT.openscreen.org: 192.168.1.100:3000
     ```
-    
+
     [Issue #22](https://github.com/webscreens/openscreenprotocol/issues/22):
     Ensure that advertised friendly names are i18n capable
 
@@ -321,7 +321,7 @@ to get friendly name and check capabilities.
 In Methods 2 and 3, the controller needs only to create and send search requests
 and receive and parse SSDP messages.
 
-The way how controllers search for presentation displays has an impact on power
+The way that controllers search for presentation displays has an impact on power
 efficiency. If a controller needs to immediately react to connection and
 disconnection of presentation displays, it will need to continuously receive
 data on the multicast address, including all SSDP messages sent by other
@@ -374,8 +374,8 @@ digital media receivers, as well as proprietary products like
 
 # Privacy
 
-The standard UPnP device description exposes parameters about the device/service
-like unique identifier, friendly name, software, manufacturer, and service
+The standard UPnP device description exposes parameters about the device/service,
+such as its unique identifier, friendly name, software, manufacturer, and service
 endpoints. In addition, the SSDP vendor extensions proposed in Method 2
 advertise presentation URLs and friendly names to all devices on the local area
 network, which may expose private information in an unintended way.
