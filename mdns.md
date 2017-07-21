@@ -336,7 +336,81 @@ with it (spoofing).
 These issues must be mitigated by other security features of Open Screen such as
 device authentication and transport security.
 
-[Issue #39: Investigate history of mDNS related exploits.](issues/39)
+## Security History
+
+The [CVE database](https://cve.mitre.org/index.html) has at least 23 past
+vulnerability disclosures related to mDNS.  They can be broken down into the
+following categories.
+
+### Denial of Service
+
+The most common vulnerability occured when the mDNS responder was unable to handle
+an invalid request, resulting in an application crash or other denial of
+service.
+
+* [CVE-2006-2288](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-2288)
+* [CVE-2007-0613](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-0613)
+* [CVE-2007-0614](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-0614)
+* [CVE-2007-0710](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-0710)
+* [CVE-2008-2326](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-2326)
+* [CVE-2008-5081](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-5081)
+* [CVE-2009-0758](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-0758)
+* [CVE-2011-1002](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-1002)
+* [CVE-2013-1141](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-1141)
+* [CVE-2014-3357](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-3357)
+* [CVE-2014-3358](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-3358)
+* [CVE-2015-0650](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-0650)
+* [CVE-2017-6520](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-6520)
+
+### WAN mDNS responses
+
+Some mDNS responders were vulnerable because they answered unicast mDNS queries
+on their WAN interface, allowing a remote host to query for LAN internal
+services and possibly disrupt LAN service discovery through denial of service
+attacks.
+
+* [CVE-2015-1892](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-1892)
+* [CVE-2015-2809](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-2809)
+* [CVE-2015-6586](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-6586)
+
+### Arbitrary Code Execution
+
+These are the most serious attacks that could lead to a temporary or persistent
+exploit of the presentation screen by permitting arbitrary code execution.
+Below there is a one-line summary of the nature of the exploit when known.
+
+* [CVE-2007-3744](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-3744) -
+Related to a port mapping protocol, not mDNS itself.
+* [CVE-2007-3828](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-3828)
+* [CVE-2008-0989](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-0989) -
+Format string issue with local hostnames.
+* [CVE-2015-7987](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-7987) -
+Multiple buffer overflows.
+* [CVE-2015-7988](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-7988)
+
+### Other
+
+* [CVE-2008-3630](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-3630)
+* [CVE-2014-3290](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-3290)
+
+### Analysis
+
+Based on the vulnerability history, mDNS carries a potential risk of two
+intersecting vulnerabilities creating a new remote exploit vector:
+1. Presentation screen's mDNS responder listens for mDNS queries that originate
+   from the WAN.
+2. Presentation screen's mDNS responder allows remote code execution through a
+   malformed query.
+
+To mitigate these risks, any implementation of an mDNS responder should leverage
+good security practices, including but not limited to:
+
+* Sandboxing the process that hosts the mDNS responder to prevent exploits from
+  gaining access to priveleged system APIs.
+* Network and OS-level firewalls to block mDNS queries originating from the WAN.
+* Regular security audits of the mDNS responder code, including fuzz testing to
+  proble handling of malformed input.
+* Regular software updates to patch known vulnerabilities.
 
 # User experience
 
