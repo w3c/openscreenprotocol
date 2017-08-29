@@ -1,19 +1,21 @@
 # Open Screen Control Protocol
 
-This document outlines a control protocol suitable to support the implementation
-of the [Presentation API](https://w3c.github.io/presentation-api/)
-and the [Remote Playback API](https://w3c.github.io/remote-playback/).
-It is intended to be implemented on top of one of the proposed Open Screen
-transport mechanisms such as [QUIC](quic.md) or [RTCDataChannel](datachannel.md).
+This document describes a control protocol suitable to support the
+implementation of
+the [Presentation API](https://w3c.github.io/presentation-api/) and
+the [Remote Playback API](https://w3c.github.io/remote-playback/).  It is
+intended to be implemented on top of one of the proposed Open Screen transport
+mechanisms such as [QUIC](quic.md) or [RTCDataChannel](datachannel.md).
 
-The control protocol is responsible for mapping Web API operations and data
-provided by Web applications onto network messages for transmission between
-controlling user agents and receiving user agents (or remote playback devices).
+The control protocol is responsible for mapping Web application requests and
+data provided by Web applications onto a network transport for transmission
+between controlling user agents (controllers) and receiving user agents
+(presentations screens and remote playback devices).
 
 This document focuses on the syntax and semantics of the network messages
-themselves.  The exact content and sequencing of the messages in response to Web
-API behavior (to implement the steps of the Presentation API and Remote Playback
-API) will be explained in future updates to this document.
+themselves.  A future update will map these messages onto specific steps in the
+algorithms described in the respective specifications for the Presentation API
+and the Remote Playback API.
 
 ## Requirements
 
@@ -23,22 +25,28 @@ API) will be explained in future updates to this document.
   the [functional requirements for the Remote Playback API](requirements.md#remote-playback-api-requirements).
 * The control protocol must meet [non-functional requirements](requirements.md#non-functional-requirements).
 
+If an [RTCDataChannel](datachannel.md) is used as the transport, additional
+messages will be required to exchange WebRTC signaling messages to establish the
+channel.
+
 ## Message Transport
 
 To meet the requirements above, a message oriented control protocol is
 necessary.  That means that each party should be able to transmit a sequence of
-variable-length messages from the other, and have that message received as a
-whole by the other party, intact and in-order.
+variable-length messages from the other, and have every message received by the
+other party, intact and in-order.
 
 The RTCDataChannel does support variable length messages (**TODO:** find a spec
 for it!), although there are
 [message size limits and possible interoperability issues](https://stackoverflow.com/questions/35381237/webrtc-data-channel-max-data-size).
 Meanwhile, QUIC is stream-oriented and not message oriented, so a message
 oriented framing must be defined on top of it.  In light of this, this control
-protocol will define its own message framing format.
+protocol defines its own message framing format.
 
-It is assumed that reliability, in-order delivery, and message integrity
-are ensured by the tranport and security layer, and they are not addressed here.
+It is assumed that reliability, in-order delivery, and message integrity are
+ensured by the tranport and security layer, and they are not addressed here.
+(Note that each message does have a sequence ID that allows user agents
+to process messages in the order they were generated.)
 
 ## Message Format
 
@@ -55,7 +63,7 @@ Messages come in four flavors: Commands, Requests, Responses, and Events.
   recipient.  No response is expected from the recipient.
 - Requests are sent from one party to a single recipient.  That recipient must
   reply with a Response back to the initial sender that contains a reference to
-  that Request.
+  the sequence ID of the Request.
 - Events are sent from a single party to one or more recipients.  No
   responses are expected from any recipient.
   
@@ -67,6 +75,8 @@ length message body.
 ```
 Byte offset
   0           +-------------------+
+              +    PROTOCOL_ID    +
+  4           +-------------------+
               +      FLAGS        +
   8           +-------------------+
               +  MESSAGE_LENGTH   +
@@ -93,62 +103,55 @@ transmitting messages in a reasonable amount of time.
 All integers are to be represented in [network byte order](https://tools.ietf.org/html/rfc1700).
 
 
-- `FLAGS`: A 64-bit flag value explained below.
+- `PROTOCOL_ID`: A 32-bit value explained below.
+- `FLAGS`: A 32-bit value explained below.
 - `MESSAGE_LENGTH`: A 64-bit unsigned integer that contains the number of bytes
-  in the entire message (including these header fields).
-- `MESSAGE_TYPE`: A 64-bit value that identifies the message content.  See below for types.
-- `SEQUENCE_ID`: A 64-bit, positive unsigned integer that is used to uniquely identify
-  messages originating from one party, and to ensure that messages are handled
-  in the proper order by the recipient.
-- `REQUEST_ID`: A 64-bit unsigned integer.  If the message flavor is a Response,
-  it contains the `SEQUENCE_ID` of the Request that the response is replying to.
-  For other flavors, it is a zero.
+  in the entire message (including all header fields).
+- `MESSAGE_TYPE`: A 64-bit value that identifies the message content.
+- `SEQUENCE_ID`: A 64-bit, positive unsigned integer that is used to uniquely
+  identify messages originating from one party, and to ensure that messages are
+  handled in the proper order by the recipient.
+- `REQUEST_ID`: An optional 64-bit unsigned integer.  If the message flavor is a
+  Response, it contains the `SEQUENCE_ID` of the Request that the response is
+  replying to.  For other flavors, it is not present.
 
-The content of the `MESSAGE_BODY` is not constrained by the generic message structure and
-is interpreted according to the contents of the `MESSAGE_TYPE`.
+The content of the `MESSAGE_BODY` is not constrained by the generic message
+structure, and must be interpreted according to the `MESSAGE_TYPE`.
 
-**TODOs:**
-- Make REQUEST_ID optional for non-Responses when defining how messages are
-  processed, to save 8 bytes.
-- Shorten some header fields to 32-bit if possible to save more bytes.
-- Investigate variable length integer for MESSAGE_LENGTH to save yet a few more
-bytes for short messages.
+**TODO:** Investigate variable length integers for MESSAGE_LENGTH, SEQUENCE_ID
+to save bytes for short messages.
 
-### Message Flags
+### Protocol ID
 
-The `FLAGS` value contains a bitfield used to inform the recipient how to
-process the following message, including the remaining headers.
+The `PROTOCOL_ID` informs the recipient how to process the following
+message, including the remaining headers.
 
 ```
 Bit offset
   0           +---------------------------+
-              +        PROTOCOL_ID        +
+              +       PROTOCOL_TYPE       +
   16          +---------------------------+
-              +  PROTOCOL_VERSION_MAJOR   +
+              +       VERSION_MAJOR       +
   24          +---------------------------+
-              +  PROTOCOL_VERSION_MINOR   +
+              +       VERSION_MINOR       +
   32          +---------------------------+
-              +        RESERVED           +
-  64          +---------------------------+
 ```
 
-`PROTOCOL_ID` is a 16-bit unsigned integer that identifies the specific API,
+`PROTOCOL_TYPE` is a 16-bit unsigned integer that identifies the specific API,
 protocol, or feature that will generate and consume this message.
-Protocol ID 0 is not valid, and IDs 1-32,767 will be reserved for publicly
-defined control protocols.  We assign the following two IDs:
+Protocol type 0 is not valid, and types 1-32,767 will be reserved for publicly
+defined control protocols.  We assign the following two types:
 
 - 1 for Presentation API Control Protocol
 - 2 for Remote Playback API Control Protocol
 
-IDs 32,768 - 65,535 are reserved for private or vendor-specific control protocols.
+Types 32,768 - 65,535 are reserved for private or vendor-specific control protocols.
 
-`PROTOCOL_VERSION_MAJOR` and `PROTOCOL_VERSION_MINOR` identify the version of
+`VERSION_MAJOR` and `VERSION_MINOR` identify the version of
 the control protocol in use.  It's expected, but not required, that the same
 version will be used throughout the lifetime of a connection between two user
 agents.  The `MAJOR` and `MINOR` fields are 8-bit unsigned integers that specify
 a conventional major.minor version number.  The smallest legal version number is 0.1.
-
-Bit offsets 32-63 are reserved for future use.
 
 ### Version Numbers and Cross-Version Compatibility
 
@@ -157,30 +160,37 @@ require minimal or no code changes by the sender or receiver.  It's expected
 that a sender using version X.Z would be able to interoperate with a receiver
 supporting version X.Y, for any value of Z and Y.
 
-Major versions indicate significant (and backwards/forwards incompatible)
-changes to a control protocol.  Controlling user agents should support as many
+Major versions indicate significant (and possibly backwards/forwards
+incompatible) changes to a control protocol.  Controllers should support as many
 major versions of a control protocol as there are receivers "in the field."
 
-Through discovery, the controlling user agent should obtain the the maxmimum
-major protocol version supported by the presentation display.  That major
-version of the protocol should be used by the controller going forward.
+Through discovery, the controller should obtain the the maxmimum protocol
+version supported by the receiver that is also supported by the controller.
+That version of the protocol should be used by the controller going forward.
 
 **TODO:** Update discovery proposals with means for controllers to discover
 supported protocols & versions.
 
+### Flags
+
+The `FLAGS` value is a 32-bit array of flags, each carrying a true/set or
+false/unset value.  The table below lists the meaning of each position.
+
+Position | Meaning when set  | Meaning when not set
+---------|-------------------|---------------------
+0        | Sequence ID reset | Ignored
+1-31     | Reserved          | Reserved
+
 ### Sequence IDs
 
 Sequence IDs begin at 1 and are incremented by 1 each time a message is
-generated by a party.  IDs originating from the same source (that is, endpoint
-or stream of the transport) should not be duplicated.  Typically, IDs
-originating from the same source will be contiguous, but this is not required;
-only that they are monotonically increasing.
+generated by a controller or receiver.  IDs originating from the same source
+must not be duplicated.  Typically, IDs originating from the same source will be
+contiguous, but this is not required; only that they are monotonically
+increasing.
 
-**TODO:** Specify when the sequence number is reset as part of the transport
-definition; should it reset across reconnections?
-
-**TODO:** In the unlikely event that this 64-bit counter wraps around, consider
-setting a flag indicating when this happends.
+If the sequence ID reaches `2^64 - 1`, it will wrap around to 1 for the next
+message, and that message will have its flag 0 set.
 
 ### Message Types
 
@@ -208,30 +218,9 @@ Value | Flavor
 2     | Response
 3     | Event
 
-`MESSAGE_TYPE_ID` and `MESSAGE_SUBTYPE_ID` are protocol-specific.  The `TYPE_ID`
-is used to group related messages together, and `SUBTYPE_ID` can distinguish
-individual message types within that group.
-
-**TODO:** Maybe we could name these MESSAGE_GROUP_ID and MESSAGE_TYPE_ID instead.
-
-### Default, Event, and Request Message Format
-
-Default, Event, and Request messages have no extra fields appended to the basic
-message header.
-
-### Response Message Format
-
-Response messages have one additional header field:
-
-```
-Byte offset
-  32           +-----------------------+
-               +  REQUEST_SEQUENCE_ID  +
-  40           +-----------------------+
-```
-
-The `REQUEST_SEQUENCE_ID` identifies the `SEQUENCE_ID` of the request that the
-message is responding to.
+`MESSAGE_TYPE_ID` and `MESSAGE_SUBTYPE_ID` are protocol-specific.  The
+`MESSAGE_TYPE_ID` is used to group related messages together, and
+`MESSAGE_SUBTYPE_ID` can distinguish individual message types within that group.
 
 ## Presentation API Control Protocol
 
@@ -313,32 +302,126 @@ Byte Offset
                +-----------------------+
 ```
 
-- `NUM_URLS` is an unsigned positive 16-bit integer that matches `NUM_URLS` in
-  the corresponding request.
+- `NUM_URLS` is an unsigned positive 16-bit integer that is identical to
+  `NUM_URLS` in the corresponding Presentation Display Availability Request.
 - Each `AVAILABILITY_RESULT` is an unsigned 8-bit integer containing the
-  availability result for the Nth URL in the request.
-  - A result of 0 means that the URL is not compatible with the display.
-  - A result of 1 means that the URL is compatible with the display.
-  - Any other result represents an error processing the request, and the
-    availability is unknown. **TODO**: Define error result codes.
+  availability result for the Nth URL in the request.  The results are as follows:
+  
+Availability Result | Meaning
+--------------------|--------
+0                   | The URL is not compatible with the display.
+1                   | The URL is compatible with the display.
+10                  | The URL was not valid URL.
+100                 | The availability check timed out.
+101                 | The availability check failed (transient error).
+102                 | The availability check failed (permanent error).
+199                 | Unknown or other error processing URL.
 
 
-### Presentation Intiation
+### Presentation Intiation Request
 
-### Presentation Resumption
+This message is sent by a controller to start presentation on a presentation
+display.  The URL must be one that has been previously reported as compatible by
+that display.
+```
+Flavor:  Request
+Type:    0x0001
+Subtype: 0x0003
 
-### Presentation Connection
+Byte Offset
+  32           +-----------------------+
+               +  PRESENTATION_ID      +
+  160          +-----------------------+
+               +  URL_LENGTH           +
+  164          +-----------------------+
+               +  URL_CONTENT          +
+               +-----------------------+
+```
 
-### Sending a Presentation Connection Message
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of at most 128
+  bytes that communicates the ID for the presentation.
+- `URL_LENGTH` is an unsigned positive 32-bit integer with the length, in bytes,
+  of the presentation URL.
+- `URL_CONTENT` is the presentation URL, encoded according to RFC 3986.
 
-### Terminating a Presentation
+### Presentation Intiation Response
+
+This message is sent by the presentation screen in reponse to a Presentation
+Initiation Request.  It should be sent when either the presentation display is
+ready to receive connections to the presentation, or presentation initiation
+encounters an error that prevents intiation from proceeding.
+
+```
+Flavor:  Response
+Type:    0x0001
+Subtype: 0x0004
+
+Byte Offset
+  40           +-----------------------+
+               + PRESENTATION_ID       +
+  42           +-----------------------+
+               + INITIATION_RESULT     +
+  43           +-----------------------+
+               + HTTP_RESPONSE_CODE    +
+  47           +-----------------------+
+```
+
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of at most 128
+  bytes that matches the Presentation ID sent in the Request.
+- `INITIATION_RESULT` is a one-byte result code as follows:
+
+Availability Result | Meaning
+--------------------|--------
+1                   | The presentation was loaded successfully.
+10                  | The URL in the request was not valid URL.
+100                 | The initation request timed out.
+101                 | The initiation request failed (transient, non-HTTP error).
+102                 | The initiation request failed (permanent, non-HTTP error).
+103                 | The URL encountered an HTTP error while loading.
+199                 | Unknown or other error processing initiation request.
+
+- The `HTTP_RESPONSE_CODE` contains an unsigned 32-bit integer with the numeric
+  HTTP response code resulting from loading the presentation URL for the
+  request.
+
+### Presentation Connection Request
+
+**TODO**: Complete
+
+### Presentation Connection Response
+
+**TODO**: Complete
+
+### Presentation Connection Closed Event
+
+**TODO**: Complete
+
+### Sending a Presentation Connection String Message
+
+**TODO**: Complete
+
+### Sending a Presentation Connection Binary Message
+
+**TODO**: Complete
+
+### Presentation Termination Request
+
+**TODO**: Complete
+
+### Presentation Termination Event
+
+**TODO**: Complete
+
+### Presentation Receiver Status Event
+
+**TODO**: Complete
 
 ## Remote Playback API Control Protocol
 
 **TODO:** Fill in when Remote Playback requirements are
 known. See [Issue #3](issues/3).
 
-## Design Questions
+## Design Discussion
 
 ### JSON
 
@@ -347,7 +430,7 @@ syntax for the control protocol.  It is Web friendly and human readable. However
 
 - JSON is less efficient for translating a given set of structured data to the
   wire, especially binary data.
-- JSON generation and parsing will likely require a larger code footprint.
+- JSON generation and parsing requires a larger code footprint.
 - JSON parsing is a potential source of security vulnerabilities.
 - JSON is a very generic and untyped syntax; a full protocol specification would
   need to clearly define how to handle missing fields, non-conformant types,
@@ -361,10 +444,10 @@ protocol messages into human readable strings for logging and debugging.
 ### Message Routing
 
 It may be desirable to add additional routing data to the basic message
-structure.  It's reasonable to assume that messages between multiple
-presentation and remote playback controllers are handled in the same code paths
-in the controlling and receiving user agents.  This routing information would be
-used to ensure that the messages are sent between the correct processes (in a
+structure.  It's reasonable to assume that messages between controlling and
+receiving browsing contexts are handled by the same code paths in
+controlling and receiving user agents.  This routing information would be used
+to ensure that the messages are sent between the correct processes (in a
 multi-process browser) and ultimately to the correct browsing contexts to
 activate the corresponding Web APIs.
 
@@ -375,5 +458,21 @@ user agent.
 If a separate transport (or transport stream) is always used to connect one
 browsing context with another, then there may be no need for additional routing
 at the message protocol layer.  QUIC supports the layering of streams over a
-single device-to-device transport, while RTCDataChannel does not; so a separate
-RTCDataChannel would be required for each frame-to-frame connection.
+single device-to-device transport, while RTCDataChannel does not.  If we don't
+include routing data, a separate RTCDataChannel would be required for each
+frame-to-frame connection.
+
+### Role Reversal
+
+The underlying control protocol should be symmetric; meaning, that either end of
+the network transport can take the role of the controller or receiver
+(regardless of who discovered whom).  This could enable scenarios whereby an
+application loaded on a presentation display initiates presentation on a mobile
+or laptop device whose user agent implements the receiver role of the protocol
+(responding to availability and presentation requests, etc.)
+
+To fully realize this, the protocol needs to be extended with a capabilities
+exchange so that each party knows what roles the other may assume (controller,
+receiver, or both).
+**TODO**: Add protocol support for capability/role advertisement.
+
