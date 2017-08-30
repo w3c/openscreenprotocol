@@ -36,9 +36,16 @@ necessary.  That means that each party should be able to transmit a sequence of
 variable-length messages from the other, and have every message received by the
 other party, intact and in-order.
 
-The RTCDataChannel does support variable length messages (**TODO:** find a spec
-for it!), although there are
-[message size limits and possible interoperability issues](https://stackoverflow.com/questions/35381237/webrtc-data-channel-max-data-size).
+The RTCDataChannel supports variable length messages by virtue of
+adopting [SCTP](https://tools.ietf.org/html/rfc4960) as its message transmission
+protocol. The
+[RTCDataChannel specification](https://tools.ietf.org/html/draft-ietf-rtcweb-data-channel-13)
+suggests there may be
+[implementation restrictions on message size](https://tools.ietf.org/html/draft-ietf-rtcweb-data-channel-13#section-4)
+and that implementations should
+[interleave messages](https://tools.ietf.org/html/draft-ietf-rtcweb-data-channel-13#section-6.6)
+for fairness.
+
 Meanwhile, QUIC is stream-oriented and not message oriented, so a message
 oriented framing must be defined on top of it.  In light of this, this control
 protocol defines its own message framing format.
@@ -118,8 +125,8 @@ All integers are to be represented in [network byte order](https://tools.ietf.or
 The content of the `MESSAGE_BODY` is not constrained by the generic message
 structure, and must be interpreted according to the `MESSAGE_TYPE`.
 
-**TODO:** Investigate variable length integers for MESSAGE_LENGTH, SEQUENCE_ID
-to save bytes for short messages.
+**TODO:** Investigate variable length integers for `MESSAGE_LENGTH`,
+`SEQUENCE_ID` to save bytes for short messages.  See [Issue #45](issues/45).
 
 ### Protocol ID
 
@@ -279,6 +286,13 @@ Byte Offset
   Nth URL.
 - `URL_N_CONTENT` is the Nth URL contained in the message, encoded according to
   [RFC 3986](https://tools.ietf.org/html/rfc3986#section-2).
+  
+Note that this request will send presentation URLs from controllers to
+presentation displays, even before the user has selected a display for
+presentation.  An alternative mechanism would allow the controller to retrieve
+URL patterns from a display that match the URLs supported by that display.
+
+**TODO**: Add messages for this based on conclusion to [Issue #21](issues/21).
 
 #### Presentation Display Availablity Response
 
@@ -332,14 +346,22 @@ Byte Offset
   32           +-----------------------+
                +  PRESENTATION_ID      +
   160          +-----------------------+
+               +  ACCEPT_LANGUAGE      +
+  288          +-----------------------+
                +  URL_LENGTH           +
-  164          +-----------------------+
+  292          +-----------------------+
                +  URL_CONTENT          +
                +-----------------------+
 ```
 
-- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of at most 128
-  bytes that communicates the ID for the presentation.
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of 128 bytes
+  that communicates the ID for the presentation.  Values shorter than 128 bytes
+  should be zero-byte padded.
+- `ACCEPT_LANGUAGE` is a null (zero-byte) terminated ASCII string of 128 bytes
+  that communicates the preferred locale for the presentation.  It is in the
+  format defined by the `Accept-Language:` header for HTTP, defined
+  in [RFC 7231](https://tools.ietf.org/html/rfc7231#section-5.3.5).
+  Values shorter than 128 bytes should be zero-byte padded.
 - `URL_LENGTH` is an unsigned positive 32-bit integer with the length, in bytes,
   of the presentation URL.
 - `URL_CONTENT` is the presentation URL, encoded according to RFC 3986.
