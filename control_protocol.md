@@ -73,7 +73,7 @@ Messages come in four flavors: Commands, Requests, Responses, and Events.
   the sequence ID of the Request.
 - Events are sent from a single party to one or more recipients.  No
   responses are expected from any recipient.
-  
+
 ### Message Structure
 
 Messages are structured as a 36 byte message header, followed by a variable
@@ -286,7 +286,7 @@ Byte Offset
   Nth URL.
 - `URL_N_CONTENT` is the Nth URL contained in the message, encoded according to
   [RFC 3986](https://tools.ietf.org/html/rfc3986#section-2).
-  
+
 Note that this request will send presentation URLs from controllers to
 presentation displays, even before the user has selected a display for
 presentation.  An alternative mechanism would allow the controller to retrieve
@@ -297,7 +297,9 @@ URL patterns from a display that match the URLs supported by that display.
 #### Presentation Display Availablity Response
 
 The presentation display shall send a response for each Presentation Display
-Availability Request as follows.
+Availability Request as follows.  The presentation display may use the order it
+returns its availability results to indicate its preference for which URL should
+be presented on this display.
 
 ```
 Flavor:  Response
@@ -308,9 +310,13 @@ Byte Offset
   40           +-----------------------+
                + NUM_URLS              +
   42           +-----------------------+
+               + INDEX_1               +
+  44           +-----------------------+
                + AVAILABILITY_RESULT_1 +
-  43           +-----------------------+
+  45           +-----------------------+
                .                       .
+               +-----------------------+
+               + INDEX_N               +
                +-----------------------+
                + AVAILABILITY_RESULT_N +
                +-----------------------+
@@ -318,9 +324,13 @@ Byte Offset
 
 - `NUM_URLS` is an unsigned positive 16-bit integer that is identical to
   `NUM_URLS` in the corresponding Presentation Display Availability Request.
-- Each `AVAILABILITY_RESULT` is an unsigned 8-bit integer containing the
-  availability result for the Nth URL in the request.  The results are as follows:
-  
+- Each `INDEX_N` is an unsigned 16-bit integer corresponding to the index
+  position of the Nth URL in the Presentation Availability Request (starting
+  from zero).
+- Each `AVAILABILITY_RESULT_N` is an unsigned 8-bit integer containing the
+  availability result for the `INDEX_N`th URL in the request.  The results are
+  as follows:
+
 Availability Result | Meaning
 --------------------|--------
 0                   | The URL is not compatible with the display.
@@ -346,10 +356,12 @@ Byte Offset
   32           +-----------------------+
                +  PRESENTATION_ID      +
   160          +-----------------------+
-               +  ACCEPT_LANGUAGE      +
-  288          +-----------------------+
+               +  HEADERS_LENGTH       +
+  162          +-----------------------+
+               +  HEADERS_CONTENT      +
+               +-----------------------+
                +  URL_LENGTH           +
-  292          +-----------------------+
+               +-----------------------+
                +  URL_CONTENT          +
                +-----------------------+
 ```
@@ -357,14 +369,19 @@ Byte Offset
 - `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of 128 bytes
   that communicates the ID for the presentation.  Values shorter than 128 bytes
   should be zero-byte padded.
-- `ACCEPT_LANGUAGE` is a null (zero-byte) terminated ASCII string of 128 bytes
-  that communicates the preferred locale for the presentation.  It is in the
-  format defined by the `Accept-Language:` header for HTTP, defined
-  in [RFC 7231](https://tools.ietf.org/html/rfc7231#section-5.3.5).
-  Values shorter than 128 bytes should be zero-byte padded.
+- `HEADERS_LENGTH` is a unsigned positive 16-bit integer with the length, in bytes,
+  of the headers to include with the request to fetch the presentation URL.
+- `HEADERS_CONTENT` is the content of HTTP headers to include in the request to
+  fetch the presentation URL.  This field must be exactly `HEADERS_LENGTH` bytes
+  in length and should follow the syntax of
+  [RFC 7230](https://tools.ietf.org/html/rfc7230#section-3.2).
+- The `HEADERS_CONTENT` field must include an `Accept-Language` header as
+  defined in [RFC 7231](https://tools.ietf.org/html/rfc7231#section-5.3.5) that
+  communicates the preferred locale for the presentation.
 - `URL_LENGTH` is an unsigned positive 32-bit integer with the length, in bytes,
   of the presentation URL.
-- `URL_CONTENT` is the presentation URL, encoded according to RFC 3986.
+- `URL_CONTENT` is the presentation URL, encoded according to RFC 3986.  This
+  field must be exactly `URL_LENGTH` bytes in length.
 
 ### Presentation Intiation Response
 
@@ -497,4 +514,3 @@ To fully realize this, the protocol needs to be extended with a capabilities
 exchange so that each party knows what roles the other may assume (controller,
 receiver, or both).
 **TODO**: Add protocol support for capability/role advertisement.
-
