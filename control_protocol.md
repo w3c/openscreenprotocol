@@ -398,15 +398,16 @@ Subtype: 0x0004
 Byte Offset
   40           +-----------------------+
                + PRESENTATION_ID       +
-  42           +-----------------------+
+  168          +-----------------------+
                + INITIATION_RESULT     +
-  43           +-----------------------+
+  169          +-----------------------+
                + HTTP_RESPONSE_CODE    +
-  47           +-----------------------+
+  173          +-----------------------+
 ```
 
-- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of at most 128
-  bytes that matches the Presentation ID sent in the Request.
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of exactly 128
+  bytes that matches the Presentation ID sent in the Request.  Values shorter
+  than 128 bytes should be zero-byte padded.
 - `INITIATION_RESULT` is a one-byte result code as follows:
 
 Availability Result | Meaning
@@ -425,11 +426,74 @@ Availability Result | Meaning
 
 ### Presentation Connection Request
 
-**TODO**: Complete
+This message is sent by a controller to connect to a presentation receiver
+running on a presentation display.  The Presentation URL and Presentation ID
+should correspond to a presentation that has been started on the display through
+a successful Presentation Initiation Request.
+
+```
+Flavor:  Request
+Type:    0x0002
+Subtype: 0x0001
+
+Byte Offset
+  32           +-----------------------+
+               +  PRESENTATION_ID      +
+  160          +-----------------------+
+               +  URL_LENGTH           +
+  164          +-----------------------+
+               +  URL_CONTENT          +
+               +-----------------------+
+```
+
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of exactly 128
+  bytes that communicates the ID for the presentation.  Values shorter than 128
+  bytes should be zero-byte padded.
+- `URL_LENGTH` is an unsigned positive 32-bit integer with the length, in bytes,
+  of the presentation URL that was sent in the corresponding Presentation
+  Initiation Request.
+- `URL_CONTENT` is the presentation URL, encoded according to RFC 3986.  This
+  field must be exactly `URL_LENGTH` bytes in length.
 
 ### Presentation Connection Response
 
-**TODO**: Complete
+This message is sent by the presentation receiver to the presentation controller
+in reponse to a Presentation Connection Request.  One should be sent for every
+Presentation Connection Request regardless of whether it was successful or not.
+
+```
+Flavor:  Response
+Type:    0x0001
+Subtype: 0x0004
+
+Byte Offset
+  40           +-----------------------+
+               + PRESENTATION_ID       +
+  42           +-----------------------+
+               + CONNECTION_ID         +
+  46           +-----------------------+
+               + CONNECTION_RESULT     +
+  47           +-----------------------+
+```
+
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of at most 128
+  bytes that matches the Presentation ID sent in the Request.
+- `CONNECTION_ID` is a 32-bit positive integer that starts at 1 and is
+  incremented by one for each successful connection to the presentation page.
+  If there was an error connecting to the page, it is zero.
+- `CONNECTION_RESULT` is a one-byte result code as follows:
+
+Connection Result   | Meaning
+--------------------|--------
+1                   | A connection was created successfully.
+10                  | The URL in the request was not valid URL.
+11                  | The ID in the request was not a valid ID.
+12                  | The URL and ID do not match any known presentation.
+100                 | The connection request timed out.
+101                 | The connection request could not be handled at this time (transient).
+102                 | The connection request was refused (permanent).
+103                 | The presentation is in the process of terminating and cannot accept new connections.
+199                 | Unknown or other error processing connection request.
 
 ### Presentation Connection Closed Event
 
