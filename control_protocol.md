@@ -476,8 +476,9 @@ Byte Offset
   47           +-----------------------+
 ```
 
-- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of at most 128
-  bytes that matches the Presentation ID sent in the Request.
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of exactly 128
+  bytes that communicates the ID for the presentation.  Values shorter than 128
+  bytes should be zero-byte padded.
 - `CONNECTION_ID` is a 32-bit positive integer that starts at 1 and is
   incremented by one for each successful connection to the presentation page.
   If there was an error connecting to the page, it is zero.
