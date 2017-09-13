@@ -463,7 +463,7 @@ Presentation Connection Request regardless of whether it was successful or not.
 
 ```
 Flavor:  Response
-Type:    0x0001
+Type:    0x0002
 Subtype: 0x0004
 
 Byte Offset
