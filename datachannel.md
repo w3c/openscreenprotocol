@@ -27,9 +27,9 @@ a unique integer ID and a label.  Mutiple Data Channels can share the same DTLS
 connection.
 
 Assume that a single Data Channel is used as a control channel to transmit
-control messages between the controlling user agent and presentation display,
-and one Data Channel is created for each presentation connection to exchange
-application data.
+control messages between the controlling user agent and receiver, and one Data
+Channel is created for each presentation connection to exchange application
+data.
 
 An extra signalling channel and protocol for exchanging ICE candidates is
 required to bootstrap the control channel. The bootstrapping procedure needs to

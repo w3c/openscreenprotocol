@@ -32,7 +32,7 @@ controlling user agent and receiver.  The following mapping could be used to
 associate streams with Presentation API concepts:
 
 - One reserved stream with ID 5 for control messages between the controlling
-  user agent and display.
+  user agent and receiver.
 - One stream with ID >= 10 for each PresentationConnection.
 
 Within each stream, an Open Screen specific framing would have to be defined to

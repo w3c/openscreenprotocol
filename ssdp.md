@@ -74,9 +74,8 @@ point and root device.
 # Presentation API functionality
 
 For the Presentation API, the requirement is the ability to "Monitor Display
-Availability" by a controlling user agent (_controller_) as described
-in
-[6.4 Interface PresentationAvailability](https://w3c.github.io/presentation-api/#interface-presentationavailability).
+Availability" by a controlling user agent as described in [6.4 Interface
+PresentationAvailability](https://w3c.github.io/presentation-api/#interface-presentationavailability).
 
 The entry point in the Presentation API to monitor display availability is the
 [PresentationRequest](https://w3c.github.io/presentation-api/#interface-presentationrequest)
@@ -112,13 +111,13 @@ Similar to SSDP discovery in DIAL. The main steps are listed below:
     NT: urn:openscreen-org:service:openscreenreceiver:1
     ```
 
-1. The controller starts to monitor presentation display availability by sending
-   an SSDP `M-SEARCH` query with the service type
+1. The controlling user agent starts to monitor presentation display
+   availability by sending an SSDP `M-SEARCH` query with the service type
    `urn:openscreen-org:service:openscreenreceiver:1` and waits for responses
-   from presentation displays.  The controller should wait for `ssdp:alive` and
-   `ssdp:byebye` messages on the multicast address to keep its list of available
-   displays up-to-date when a new display is connected or an existing one is
-   disconnected.
+   from presentation displays.  The controlling user agent should wait for
+   `ssdp:alive` and `ssdp:byebye` messages on the multicast address to keep its
+   list of available displays up-to-date when a new display is connected or an
+   existing one is disconnected.
 
     ```
     M-SEARCH * HTTP/1.1
@@ -142,13 +141,13 @@ Similar to SSDP discovery in DIAL. The main steps are listed below:
     ST: urn:openscreen-org:service:openscreenreceiver:1
     ```
 
-1. When the controller receives a response from a newly connected presentation
-   display, it issues an HTTP GET request to the URL in the `LOCATION` header to
-   get the device description XML.
+1. When the controlling user agent receives a response from a newly connected
+   presentation display, it issues an HTTP GET request to the URL in the
+   `LOCATION` header to get the device description XML.
 
-1. The controller parses the device description XML, extracts the friendly name
-   of the display and checks if the display can open one of the URLs associated
-   with an existing call to `PresentationRequest.start()` or
+1. The controlling user agent parses the device description XML, extracts the
+   friendly name of the display and checks if the display can open one of the
+   URLs associated with an existing call to `PresentationRequest.start()` or
    `PresentationRequest.getAvailability()`.  If yes, the presentation display
    will be added to the list of available displays, and the result sent back to
    pages through the Presentation API.
@@ -173,25 +172,25 @@ Similar to SSDP discovery in DIAL. The main steps are listed below:
    solution is to extend the XML device description with a new element to define
    the endpoint.
 
-1. How to check if the presentation display can present a certain URL or not?
-   One solution is to extend the XML device description with new elements to
-   allow a display to express its capabilities and the controller can do the
+1. How to check if the receiver can present a certain URL or not?  One solution
+   is to extend the XML device description with new elements to allow a receiver
+   to express its capabilities and the controlling user agent can do the
    check. Another possible solution is to ask the receiver using the provided
    endpoint by sending the presentation URLs.
 
 ## Method 2
 
 This method uses only the SSDP messages without requiring the device description
-XML. The presentation request URLs are sent by the controller in a new header of
-the SSDP `M-SEARCH` message.  If a receiver can open one of the URLs,
-it responds with that URL in the search response.
+XML. The presentation request URLs are sent by the controlling user agent in a
+new header of the SSDP `M-SEARCH` message.  If a receiver can open one of the
+URLs, it responds with that URL in the search response.
 
 The search response also adds new headers for the device friendly name and the
 service endpoint.  (Note that Section 1.1.3 of the UPnP device architecture
 document allows to use vendor specific headers).  The search response can still
 send the device description URL in the `LOCATION` header to stay compatible with
-UPnP, but controllers will ignore it.  This method is more efficient and secure
-since no additional HTTP calls and XML parsing are required.
+UPnP, but controlling user agents will ignore it.  This method is more efficient
+and secure since no additional HTTP calls and XML parsing are required.
 
 Below are the steps that illustrate this method:
 
@@ -217,9 +216,9 @@ Below are the steps that illustrate this method:
     [Issue #22](https://github.com/webscreens/openscreenprotocol/issues/22):
     Ensure that advertised friendly names are i18n capable
 
-1. A controller sends the following SSDP search message to the multicast
-   address. The new header `PRESENTATION-URLS.openscreen.org` allows the
-   controller to send the presentation URLs to the display.
+1. A controlling user agent sends the following SSDP search message to the
+   multicast address. The new header `PRESENTATION-URLS.openscreen.org` allows
+   the controlling user agent to send the presentation URLs to the display.
 
     ```
     M-SEARCH * HTTP/1.1
@@ -297,12 +296,12 @@ minimum value is 1800s).
 # Latency of device discovery / device removal
 
 New presentation displays added or removed can be immediately detected if the
-controller listens to the multicast address for `ssdp:alive` and `ssdp:byebye`
-messages. For search requests, the latency depends on the `MX` SSDP header which
-contains the maximum wait time in seconds (and must be between 1 and 5 seconds).
-SSDP responses from presentation displays should be delayed a random duration
-between 0 and `MX` to balance load for the controller when it processes
-responses.
+controlling user agent listens to the multicast address for `ssdp:alive` and
+`ssdp:byebye` messages. For search requests, the latency depends on the `MX`
+SSDP header which contains the maximum wait time in seconds (and must be between
+1 and 5 seconds).  SSDP responses from presentation displays should be delayed a
+random duration between 0 and `MX` to balance load for the controlling user
+agent when it processes responses.
 
 # Network efficiency
 
@@ -316,23 +315,23 @@ discovery messages.
 
 This depends on many factors including the method chosen above; Methods 2 and 3
 are better than Method 1 regarding power efficiency.  In Method 1, the
-controller needs to create and send SSDP search requests, receive and parse SSDP
-messages, make HTTP requests to get device descriptions and parse device
-description XML to get friendly name and check capabilities.
+controlling user agent needs to create and send SSDP search requests, receive
+and parse SSDP messages, make HTTP requests to get device descriptions and parse
+device description XML to get friendly name and check capabilities.
 
-In Methods 2 and 3, the controller needs only to create and send search requests
-and receive and parse SSDP messages.
+In Methods 2 and 3, the controlling user agent needs only to create and send
+search requests and receive and parse SSDP messages.
 
-The way that controllers search for presentation displays has an impact on power
-efficiency. If a controller needs to immediately react to connection and
-disconnection of presentation displays, it will need to continuously receive
-data on the multicast address, including all SSDP messages sent by other
-controllers.  (An exception is unicast search response messages sent to other
-controllers.)
+The way that controlling user agents search for presentation displays has an
+impact on power efficiency. If a controlling user agent needs to immediately
+react to connection and disconnection of presentation displays, it will need to
+continuously receive data on the multicast address, including all SSDP messages
+sent by other controlling user agents.  (An exception is unicast search response
+messages sent to other controlling user agents.)
 
-If the controller needs to get only a snapshot of available displays, then it
-only needs to send a search message to the multicast address and listen for
-search response messages for 2-10 seconds.
+If the controlling user agent needs to get only a snapshot of available
+displays, then it only needs to send a search message to the multicast address
+and listen for search response messages for 2-10 seconds.
 
 [Issue #26](https://github.com/webscreens/openscreenprotocol/issues/26):
 Collect data regarding network and power efficiency
