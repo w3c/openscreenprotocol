@@ -239,6 +239,19 @@ of the
 For brevity, each message is described by its flavor, its type, its subtype, and
 the structure of the message body.
 
+### Message types
+
+The Presentation API control protocol uses five message types according to the
+functionality implemented by the message.
+
+Message Type (hex) | Functionality
+-------------------|---------------
+0x0001             | Presentation Display Availability
+0x0002             | Presentation Lifecycle
+0x0003             | Presentation Connection Management
+0x0004             | Presentation Application Messages
+0x0005             | Receiver Status
+
 ### Presentation Display Availability
 
 To meet the [Presentation Display
@@ -345,7 +358,9 @@ Availability Result | Meaning
 199                 | Unknown or other error processing URL.
 
 
-### Presentation Intiation Request
+### Presentation Lifecycle
+
+#### Presentation Initiation Request
 
 This message is sent by a controlling user agent to start presentation on a
 receiver.  The URL must be one that has been previously reported as compatible
@@ -353,8 +368,8 @@ by that display.
 
 ```
 Flavor:  Request
-Type:    0x0001
-Subtype: 0x0003
+Type:    0x0002
+Subtype: 0x0001
 
 Byte Offset
   32           +-----------------------+
@@ -388,7 +403,7 @@ Byte Offset
 - `URL_CONTENT` is the presentation URL, encoded according to RFC 3986.  This
   field must be exactly `URL_LENGTH` bytes in length.
 
-### Presentation Intiation Response
+#### Presentation Initiation Response
 
 This message is sent by the receiver in reponse to a Presentation
 Initiation Request.  It should be sent when either the receiver is ready to
@@ -397,8 +412,8 @@ an error that prevents intiation from proceeding.
 
 ```
 Flavor:  Response
-Type:    0x0001
-Subtype: 0x0004
+Type:    0x0002
+Subtype: 0x0002
 
 Byte Offset
   40           +-----------------------+
@@ -429,7 +444,91 @@ Availability Result | Meaning
   HTTP response code resulting from loading the presentation URL for the
   request.
 
-### Presentation Connection Request
+#### Presentation Termination Request
+
+This message is sent by a controlling user agent to terminate a presentation.
+In general, the simplest and most usable approach is to allow any connected
+controlling user agents to terminate a presentation if they know its ID and URL.
+There is no response to this request, instead the controlling user agent should
+wait to receive the Presentation Termination Event to determine whether it was
+successful.
+
+**TODO**: If we need to return errors, then consider defining a Response.
+
+```
+Flavor:  Command
+Type:    0x0002
+Subtype: 0x0003
+
+Byte Offset
+  32           +-----------------------+
+               +  PRESENTATION_ID      +
+  40           +-----------------------+
+               +  URL_LENGTH           +
+               +-----------------------+
+               +  URL_CONTENT          +
+               +-----------------------+
+               +  TERMINATION_SOURCE   +
+               +-----------------------+
+```
+
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of 128 bytes
+  that communicates the ID for the presentation.  Values shorter than 128 bytes
+  should be zero-byte padded.
+- `URL_LENGTH` is an unsigned positive 32-bit integer with the length, in bytes,
+  of the presentation URL.
+- `URL_CONTENT` is the presentation URL, encoded according to RFC 3986.  This
+  field must be exactly `URL_LENGTH` bytes in length.
+- `TERMINATION_SOURCE` is a one-byte code describing the source of the
+  termination request.
+
+Termination Source | Meaning
+-------------------|--------
+10                 | A connected controller called connection.terminate().
+11                 | A user terminated the presentation via the controlling user agent.
+
+Note that these codes must match up with reason codes in the Presenation
+Termination Event for terminations that come from a controlling user agent.
+
+#### Presentation Termination Event
+
+This event is sent by the receiver to all connected controlling user agents to
+inform them that a presentation has been terminated.
+
+```
+Flavor:  Event
+Type:    0x0002
+Subtype: 0x0004
+
+Byte Offset
+  40           +-----------------------+
+               +  PRESENTATION_ID      +
+  168          +-----------------------+
+               +  TERMINATION_REASON   +
+               ------------------------+
+```
+
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of exactly 128
+  bytes that communicates the ID for the presentation that was terminated.
+  Values shorter than 128 bytes should be zero-byte padded.
+- `TERMINATION_REASON` is a one-byte reason code as follows:
+
+Termination Reason | Meaning
+-------------------|--------
+1                  | The presentation called connection.terminate().
+2                  | A user terminated the presentation via the receiver or presentation display.
+10                 | A connected controller called connection.terminate().
+11                 | A user terminated the presentation via the controlling user agent.
+20                 | A new presentation was started and replaced the current presentation.
+30                 | The presentation was terminated because it was idle for too long.
+31                 | The presentation was terminated because it attempted to navigate.
+100                | The presentation display is powering down or the receiver is shutting down.
+101                | The receiver had a fatal software error (i.e. crash).
+255                | Unknown or other reason.
+
+### Presentation Connection Management
+
+#### Presentation Connection Request
 
 This message is sent by a controlling user agent to connect to a receiver.  The
 Presentation URL and Presentation ID should correspond to a presentation that
@@ -501,29 +600,99 @@ Connection Result   | Meaning
 103                 | The presentation is in the process of terminating and cannot accept new connections.
 199                 | Unknown or other error processing connection request.
 
-### Presentation Connection Closed Event
+#### Presentation Connection Close Event
 
-**TODO**: Complete
+This message is sent by either the receiver or the controlling user agent to the
+other party to notify that a presentation connection has been closed.  Note that
+there is no specific response to this event, as it's main purpose is to fire a
+correct `PresentationConnectionCloseEvent` on the other party's connection
+object.
 
-### Sending a Presentation Connection String Message
+```
+Flavor:  Event
+Type:    0x0002
+Subtype: 0x0005
 
-**TODO**: Complete
+Byte Offset
+  40           +-----------------------+
+               + PRESENTATION_ID       +
+  42           +-----------------------+
+               + CONNECTION_ID         +
+  46           +-----------------------+
+               + CLOSE_REASON          +
+  47           +-----------------------+
+               + ERROR_MESSAGE         +
+  559          +-----------------------+
+```
 
-### Sending a Presentation Connection Binary Message
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of exactly 128
+  bytes that communicates the ID for the presentation.  Values shorter than 128
+  bytes should be zero-byte padded.
+- `CONNECTION_ID` is a 32-bit positive integer that corresponds to a connection
+  to between the controller and receiver.
+- `CLOSE_REASON` is a one-byte reason code as follows:
 
-**TODO**: Complete
+Close Reason   | Meaning
+---------------|--------
+1              | The controller or presentation called `close()` on the connection object.
+10             | The controller or presentation discarded the connection object or navigated away.
+100            | The connection encountered an unrecoverable error while sending or receiving a message.
 
-### Presentation Termination Request
+- `ERROR_MESSAGE` is an optional, null (zero-byte) terminated ASCII string of
+  exactly 512 bytes describing the error that occurred handling a message.
+  If it is less than 512 bytes, it should be zero padded.  If there is no
+  message, it should be all zeros.
 
-**TODO**: Complete
+It's not expected that either party send a Close Event when encountering a
+network or tranport level error, as an invalid transport would prevent the
+reliable delivery of the command anyway.  Instead the user agent should fire the
+`PresentationConnectionClose` event locally on connection objects based on its
+observation of the network state.
 
-### Presentation Termination Event
+### Presentation Application Message
 
-**TODO**: Complete
+This message is used to transmit an application message between the controller
+and presentation, via the `send()` method on the connection object.
+
+```
+Flavor:  Command
+Type:    0x0004
+Subtype: 0x0001
+
+Byte Offset
+  32           +-----------------------+
+               +  PRESENTATION_ID      +
+  40           +-----------------------+
+               +  CONNECTION_ID        +
+  44           +-----------------------+
+               +  MESSAGE_TYPE         +
+  45           +-----------------------+
+               +  MESSAGE_LENGTH       +
+  49           +-----------------------+
+               +  MESSAGE_CONTENT      +
+               +-----------------------+
+```
+
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of 128 bytes
+  that communicates the ID for the presentation.  Values shorter than 128 bytes
+  should be zero-byte padded.
+- `MESSAGE_LENGTH` is an unsigned 32-bit integer with the length, in bytes,
+  of the message content.
+- `MESSAGE_CONTENT` is the content of the message.  It must be exactly
+  `MESSAGE_LENGTH` bytes in length.
+- `MESSAGE_TYPE` is a one-byte code describing the message type:
+
+Message Type | Meaning
+-------------|--------
+1            | Text message
+2            | Binary message
+
+**TODO**: Define text encoding
+**TODO**: Include locale slot?
 
 ### Presentation Receiver Status Event
 
-**TODO**: Complete
+**TODO:** Finish
 
 ## Remote Playback API Control Protocol
 
