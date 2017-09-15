@@ -649,6 +649,11 @@ reliable delivery of the command anyway.  Instead the user agent should fire the
 `PresentationConnectionClose` event locally on connection objects based on its
 observation of the network state.
 
+**NOTE:** If the control channel and individual presentation connections use
+different network connections or transports, it would make sense to enumerate
+specific network errors here for the network failure of an individual
+presentation connection.
+
 ### Presentation Application Message
 
 This message is used to transmit an application message between the controller
