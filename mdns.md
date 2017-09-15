@@ -20,8 +20,8 @@ periodically refresh these cached records before the TTL expires.
 The following message flow illustrates how queries and records are sent between
 mDNS listeners and responders.  The listener begins by multicasting a QUERY to
 the multicast address 224.0.0.251:5300.  Responders that receive the request
-respond by multicasting resource records to the same address.  (The class, flags and TTL of
-these records are omitted for brevity.)
+respond by multicasting resource records to the same address.  (The class, flags
+and TTL of these records are omitted for brevity.)
 
 If a responder is about to disconnect from the network, it multicasts the same
 records with a TTL of 0.  This instructs listeners that may have cached the
@@ -33,17 +33,17 @@ If a responder has updated information to propagate to listeners (for example, a
 change in TXT data or IP address), or it has just connected to a network, it can
 send an unsolicited multicast of its current resource records with the "cache
 flush" bit set to 1.  Listeners will overwrite any existing cached records for
-that host.  More details on cache flush semantics can be found in 
+that host.  More details on cache flush semantics can be found in
 [RFC 6762 Section 10.2](https://tools.ietf.org/html/rfc6762#section-10.2).
 
 ## Example
 
-The following are example records that could be exchanged between a controller
-and an openscreen display using mDNS.  The Query is sent from the controller,
-and other records are sent as part of the answer from the presentation display.
-Typically all answer records are sent together if they fit into one packet.  All
-records below have class `IN`. The friendly names, TTLs, and text record
-contents are examples for illustration.
+The following are example records that could be exchanged between a controlling
+user agent and a presentation display using mDNS.  The Query is sent from the
+controlling user agent, and other records are sent as part of the answer from
+the presentation display.  Typically all answer records are sent together if
+they fit into one packet.  All records below have class `IN`. The friendly
+names, TTLs, and text record contents are examples for illustration.
 
 ### Query
 
@@ -55,7 +55,8 @@ Type:  PTR (Domain name pointer)
 
 ### PTR
 
-A `PTR` record is a pointer to a specific domain name that can be further resolved.
+A `PTR` record is a pointer to a specific domain name that can be further
+resolved.
 
 ```
 Type:        PTR
@@ -132,16 +133,18 @@ We discuss below how mDNS meets the requirements for
 
 ## Discovery of presentation displays
 
-mDNS allows a controller to discover presentation displays on the same local
-area network running a presentation receiver service on a given IP:port.  mDNS
-does not support reliable message exchange, so once the IP:port is known, the
-controller will initiate a control channel to the receiver service using QUIC,
-TCP, or another reliable transport protocol.  The control channel can then be
-used for control of presentations and/or `PresentationConnection` messaging.
+mDNS allows a controlling user agent to discover presentation displays on the
+same local area network running a receiver on a given
+IP:port.  mDNS does not support reliable message exchange, so once the IP:port
+is known, the controlling user agent will initiate a control channel to the
+receiver using QUIC, TCP, or another reliable transport protocol.  The
+control channel can then be used for control of presentations and/or
+`PresentationConnection` messaging.
 
 ## Advertisement of friendly name
 
-mDNS allows a friendly name for the display to be provided in two ways:
+mDNS allows a friendly name for the presentation display to be provided in two
+ways:
 
 1. By setting the Service (hostname) part of the `SRV` record.
 2. By adding an entry to the `TXT` record, i.e. `nm=Living Room TV`.
@@ -166,10 +169,10 @@ limitation in some character sets.
 There doesn't appear to be a practical way to do this over mDNS, as an mDNS
 query record is not easily extensible to include URLs.  It may be possible for
 the presentation display to advertise URL patterns in its `TXT` record to allow
-controllers to pre-filter presentation displays by URL.
+controlling user agents to pre-filter presentation displays by URL.
 
 For mDNS based discovery, querying for URL compatibility must be done using a
-separate control channel established to the presentation receiver service.
+separate control channel established to the receiver.
 
 # Remote Playback API functionality
 
@@ -192,7 +195,7 @@ There is a risk that listeners have cached data from previous answers that is
 out of date (providing the wrong host name, IP address or other metadata).  The
 mDNS protocol addresses cache coherency by several mechanisms:
 * Responders should send unsolicited multicasts of updated data with the "cache
-  flush" bit set. 
+  flush" bit set.
 * Listeners should attempt to revalidate cached records at 80%, 90%, and 95% of
   TTL lifetime.
 * If there are other listeners connected to the same network, the listener will
@@ -200,7 +203,7 @@ mDNS protocol addresses cache coherency by several mechanisms:
   maintain its cached records.
 * The listener should aggressively flush cached records on a network topology
   change (interface up/down, change of WiFi SSID, etc.)
-  
+
 There is also a risk that listeners will cache records for a presentation
 display that is no longer connected to the network, especially if the display
 was abruptly disconnected.  This can be mitigated by using other signals, such
@@ -225,12 +228,12 @@ mDNS; users will just be unable to discover any presentation displays.
 ## Record caching
 
 One interesting aspect of mDNS is the ability for intervening layers of software
-between the controller and the presentation display (such as the underlying
-controller OS or the router firmware) to cache mDNS records and respond to
-queries, even if the original presentation display is unable to communicate
-directly with the controller.  If this is implemented with correct support for
-cache coherency, this may improve reliability by making mDNS more tolerant of
-transient network interruptions.
+between the controlling user agent and the presentation display (such as the
+underlying controlling user agent OS or the router firmware) to cache mDNS
+records and respond to queries, even if the original presentation display is
+unable to communicate directly with the controlling user agent.  If this is
+implemented with correct support for cache coherency, this may improve
+reliability by making mDNS more tolerant of transient network interruptions.
 
 # Latency of device discovery / device removal
 
@@ -257,8 +260,8 @@ TTL set with these records.
 # Network and power efficiency
 
 The network utilization of mDNS depends on several factors including:
-* The number of controllers and presentation displays connected to the network
-  at any one time.
+* The number of controlling user agents and presentation displays connected to
+  the network at any one time.
 * The frequency that devices enter and leave the network.
 * TTL for mDNS answers and cache behavior on listeners.
 * The use of Known Answer suppression, which allows listeners to include
@@ -297,8 +300,8 @@ of mDNS targeted for Linux under GPL 2.1.
 
 # IPv4 and IPv6 support
 
-IPv6 is fully supported, as a presentation display can add AAAA records to its answers
-to provide IPv6 address(es) for itself. DNS AAAA records are defined by
+IPv6 is fully supported, as a presentation display can add AAAA records to its
+answers to provide IPv6 address(es) for itself. DNS AAAA records are defined by
 [RFC 3596: DNS Extensions to Support IP Version 6](https://tools.ietf.org/html/rfc3596).
 
 # Hardware requirements
@@ -319,7 +322,7 @@ continues to evolve DNS-SD in the
 
 The following information may be revealed through mDNS:
 * The friendly name of the presentation display.
-* IP address(es) and port numbers of a presentation receiver service.
+* IP address(es) and port numbers of a receiver.
 * Additional data exposed through `TXT` records, such as:
   * A full friendly name.
   * URL patterns for compatible presentation URLs.
@@ -344,8 +347,8 @@ following categories.
 
 ### Denial of Service
 
-The most common vulnerability occured when the mDNS responder was unable to handle
-an invalid request, resulting in an application crash or other denial of
+The most common vulnerability occured when the mDNS responder was unable to
+handle an invalid request, resulting in an application crash or other denial of
 service.
 
 * [CVE-2006-2288](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-2288)
@@ -376,7 +379,7 @@ attacks.
 ### Arbitrary Code Execution
 
 These are the most serious attacks that could lead to a temporary or persistent
-exploit of the presentation screen by permitting arbitrary code execution.
+exploit of the presentation display by permitting arbitrary code execution.
 Below there is a one-line summary of the nature of the exploit when known.
 
 * [CVE-2007-3744](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-3744) -
@@ -397,9 +400,9 @@ Multiple buffer overflows.
 
 Based on the vulnerability history, mDNS carries a potential risk of two
 intersecting vulnerabilities creating a new remote exploit vector:
-1. Presentation screen's mDNS responder listens for mDNS queries that originate
+1. Presentation display's mDNS responder listens for mDNS queries that originate
    from the WAN.
-2. Presentation screen's mDNS responder allows remote code execution through a
+2. Presentation display's mDNS responder allows remote code execution through a
    malformed query.
 
 To mitigate these risks, any implementation of an mDNS responder should leverage
@@ -421,8 +424,8 @@ good security practices, including but not limited to:
   through mDNS may be truncated because of DNS record size limitations.
 
 * As mentioned in _Latency of device removal_, DNS caching induces a delay
-  between the disconnection of a presentation display and controllers updating
-  their screen availability information.
+  between the disconnection of a presentation display and controlling user
+  agents updating their display availability information.
 
 # Notes
 
@@ -436,6 +439,5 @@ discovery can also use unicast DNS mechanisms that exist currently for the
 Internet, as proposed in e.g.
 [Hybrid Unicast/Multicast DNS-Based Service Discovery](https://tools.ietf.org/html/draft-cheshire-mdnsext-hybrid-02).
 A mechanism such as this could be used to enable 'guest mode' discovery of
-presentation displays for controllers that are not connected to the same
-LAN.
-
+presentation displays for controlling user agents that are not connected to the
+same LAN.

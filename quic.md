@@ -28,10 +28,11 @@ Each Stream represents a bidrectional reliable sequence of data packets, can
 originate from the server or client, and has a unique integer ID.
 
 Assume that a single QUIC connection is used to transmit data between the
-controller and display.  The following mapping could be used to associate
-streams with Presentation API concepts:
+controlling user agent and receiver.  The following mapping could be used to
+associate streams with Presentation API concepts:
 
-- One reserved stream with ID 5 for control messages between the controller and display.
+- One reserved stream with ID 5 for control messages between the controlling
+  user agent and receiver.
 - One stream with ID >= 10 for each PresentationConnection.
 
 Within each stream, an Open Screen specific framing would have to be defined to
@@ -46,25 +47,25 @@ met as follows:
 
 ## Presentation Initiation
 
-1. Send a control message on Stream 5 from the controller to the display to
-   start the presentation with ID, URL, and a Stream ID for the initial
-   presentation connection.
+1. Send a control message on Stream 5 from the controlling user agent to the
+   reciever to start the presentation with ID, URL, and a Stream ID for the
+   initial presentation connection.
 2. Get a reply on Stream 5 with the ID, URL, and stream ID to confirm success
    (or report an error).
 
 ## Presentation Resumption
 
-1. Send a control message on Stream 5 from the controller to the display
-   reconnect to a presentation with ID, URL, and a Stream ID for the initial
-   presentation connection.
+1. Send a control message on Stream 5 from the controlling user agent to the
+   receiver reconnect to a presentation with ID, URL, and a Stream ID for the
+   initial presentation connection.
 2. Get a reply on Stream 5 with the ID, URL, and stream ID to confirm success
    (or report an error).
 
 ## Presentation Connections
 
-Multiple connections from a controller can be handled by assigning unique Stream
-IDs, and the display can use stream IDs to disambiguate the sources of incoming
-messages.
+Multiple connections from a controlling user agent can be handled by assigning
+unique Stream IDs, and the receiver can use stream IDs to disambiguate the
+sources of incoming messages.
 
 Either side may close the stream it uses to send messages to the destination
 browsing context by setting the
@@ -80,10 +81,10 @@ defined.
 
 ## Presentation Termination
 
-A controller can send a control message with URL and ID on Stream 5 to
-instruct a display to terminate a presentation.
+A controlling user agent can send a control message with URL and ID on Stream 5
+to instruct a receiver to terminate a presentation.
 
-The display can send a
+The receiver can send a
 [RST_STREAM](https://tools.ietf.org/html/draft-ietf-quic-transport-00#section-6.6)
 frame with a custom error code to inform all presentation connections that a
 presentation is about to be terminated.
@@ -120,9 +121,10 @@ By relying on UDP, the IP addresses of both endpoints are visible to network
 observers.  The plaintext portions of the authentication handshake are also
 visible to observers.
 
-Once authentication is established, the current
-[QUIC crypto](https://docs.google.com/document/d/1g5nIXAIkN_Y-7XJW5K45IblHd_L2f5LTaDUDwvZ5L6g/edit)
-implementation encrypts full datagrams including all QUIC stream framing information.
+Once authentication is established, the current [QUIC
+crypto](https://docs.google.com/document/d/1g5nIXAIkN_Y-7XJW5K45IblHd_L2f5LTaDUDwvZ5L6g/edit)
+implementation encrypts full datagrams including all QUIC stream framing
+information.
 
 # IPv4 and IPv6 support
 
@@ -160,6 +162,6 @@ was based on an earlier version of TLS 1.3.  It's expected to be replaced with a
 # User Experience
 
 QUIC allows human readable error messages to be sent with a
-[CONNECTION_CLOSE](https://tools.ietf.org/html/draft-ietf-quic-transport-00#section-6.9) frame.
-This could be used to surface information via the Presentation API or the user
-agent when a presentation connection is closed in an error state.
+[CONNECTION_CLOSE](https://tools.ietf.org/html/draft-ietf-quic-transport-00#section-6.9)
+frame.  This could be used to surface information via the Presentation API or
+the user agent when a presentation connection is closed in an error state.
