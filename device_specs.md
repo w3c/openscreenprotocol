@@ -1,7 +1,8 @@
 # Sample Device Specifications
 
-This document lists specifications for the types of devices that serve as
-controlling user agents or receivers implementing the Open Screen Protocol.
+This document lists specifications for the types of devices that run controlling
+user agents or serve as presentation displays implementing the Open Screen
+Protocol.
 
 Below are a selection of older (2015) and lower-end devices to serve as a
 baseline for future evaluation, under the assumption that newer and more capable
