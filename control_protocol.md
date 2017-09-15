@@ -448,7 +448,7 @@ Availability Result | Meaning
 
 This message is sent by a controlling user agent to terminate a presentation.
 In general, the simplest and most usable approach is to allow any connected
-controlling user agents to terminate a presentation if they know its ID and URL.
+controlling user agent to terminate a presentation if they know its ID and URL.
 There is no response to this request, instead the controlling user agent should
 wait to receive the Presentation Termination Event to determine whether it was
 successful.
@@ -484,7 +484,7 @@ Byte Offset
 
 Termination Source | Meaning
 -------------------|--------
-10                 | A connected controller called connection.terminate().
+10                 | A connected controller called `terminate()` on the connection object.
 11                 | A user terminated the presentation via the controlling user agent.
 
 Note that these codes must match up with reason codes in the Presenation
@@ -530,14 +530,14 @@ Termination Reason | Meaning
 
 #### Presentation Connection Request
 
-This message is sent by a controlling user agent to connect to a receiver.  The
-Presentation URL and Presentation ID should correspond to a presentation that
-has been started on the receiver through a successful Presentation Initiation
-Request.
+This message is sent by a controlling user agent to a reciever to connect a
+controller to a presentation.  The Presentation URL and Presentation ID should
+correspond to a presentation that has been started on the receiver through a
+successful Presentation Initiation Request.
 
 ```
 Flavor:  Request
-Type:    0x0002
+Type:    0x0003
 Subtype: 0x0001
 
 Byte Offset
@@ -567,8 +567,8 @@ Connection Request regardless of whether it was successful or not.
 
 ```
 Flavor:  Response
-Type:    0x0002
-Subtype: 0x0004
+Type:    0x0003
+Subtype: 0x0002
 
 Byte Offset
   40           +-----------------------+
@@ -610,8 +610,8 @@ object.
 
 ```
 Flavor:  Event
-Type:    0x0002
-Subtype: 0x0005
+Type:    0x0003
+Subtype: 0x0003
 
 Byte Offset
   40           +-----------------------+
