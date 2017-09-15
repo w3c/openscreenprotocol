@@ -1,7 +1,7 @@
 # Data Channel
 
-[Data Channel](https://tools.ietf.org/html/draft-ietf-rtcweb-data-channel-13)
-is a non-media transport protocol in the WebRTC framework, designed for exchanging
+[Data Channel](https://tools.ietf.org/html/draft-ietf-rtcweb-data-channel-13) is
+a non-media transport protocol in the WebRTC framework, designed for exchanging
 data from peer to peer. It advertises the following benefits:
 
 - Implemented in major browsers (except Safari).
@@ -26,9 +26,10 @@ protocol stack, which supports reliable data transmission. Each Data Channel has
 a unique integer ID and a label.  Mutiple Data Channels can share the same DTLS
 connection.
 
-Assume that a single Data Channel is used as a control channel to transmit control
-messages between the controller and receiver, and one Data Channel is created for each
-presentation connection to exchange application data.
+Assume that a single Data Channel is used as a control channel to transmit
+control messages between the controlling user agent and presentation display,
+and one Data Channel is created for each presentation connection to exchange
+application data.
 
 An extra signalling channel and protocol for exchanging ICE candidates is
 required to bootstrap the control channel. The bootstrapping procedure needs to
@@ -37,30 +38,30 @@ Presentation Connection Establishment.
 
 ## Presentation Initiation
 
-1. To start a presentation, the controller sends a message to the display on the
-   control channel with the presentation ID and URL of the initial presentation
-   connection.
+1. To start a presentation, the controlling user agent sends a message to the
+   receiver on the control channel with the presentation ID and URL of the
+   initial presentation connection.
 2. The receiver spawns a Data Channel on the same RTC connection as the control
    channel, with a unique session ID generated as the label.
-3. The controller gets a reply on the control channel with the presentation ID, URL,
-   and session ID to confirm success (or report an error).
+3. The controlling user agent gets a reply on the control channel with the
+   presentation ID, URL, and session ID to confirm success (or report an error).
 
 ## Presentation Resumption
 
-1. To reconnect to a presentation, the controller sends a message to the display
-   on the control channel with the presentation ID, URL, and session ID of the
-   initial presentation connection.
+1. To reconnect to a presentation, the controlling user agent sends a message to
+   the receiver on the control channel with the presentation ID, URL, and
+   session ID of the initial presentation connection.
 2. If there is a corresponding presentation to be resumed, the receiver spawns a
-   Data Channel on the same RTC connection as the control channel, with the session
-   ID as the label.
-3. The controller gets a reply on control channel with the presentation ID, URL, and
-   session ID to confirm success (or report an error).
+   Data Channel on the same RTC connection as the control channel, with the
+   session ID as the label.
+3. The controlling user agent gets a reply on control channel with the
+   presentation ID, URL, and session ID to confirm success (or report an error).
 
 ## Presentation Connection Establishment
 
-Multiple connections from a controller can be handled by creating unique Data
-Channels for each peer. A unique stream ID will be selected for muxing/demuxing
-messages on the underlying SCTP transport, see
+Multiple connections from a controlling user agent can be handled by creating
+unique Data Channels for each peer. A unique stream ID will be selected for
+muxing/demuxing messages on the underlying SCTP transport, see
 [draft-ietf-rtcweb-data-protocol-09](https://tools.ietf.org/html/draft-ietf-rtcweb-data-protocol-09#section-6).
 
 ## Presentation Connection Messaging
@@ -77,9 +78,10 @@ Either side may close the Presentation Connection through the following procedur
 
 ## Presentation Termination
 
-For controller initiated termination:
-1. The controller sends a control message with the presentation URL and ID on
-   the control channel to instruct a display to terminate a presentation.
+For controlling user agent initiated termination:
+1. The controlling user agent sends a control message with the presentation URL
+   and ID on the control channel to instruct a receiver to terminate a
+   presentation.
 2. The receiver sends a reply to all associated control channels to inform all
    remote peers that a presentation is about to be terminated.
 
@@ -89,7 +91,8 @@ For receiver initiated termination:
 
 # Remote Playback API functionality
 
-The WebRTC framework supports media codec negotiation and real-time media transport.
+The WebRTC framework supports media codec negotiation and real-time media
+transport.
 
 [Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3): Fill in
 when Remote Playback requirements are known.
@@ -107,7 +110,8 @@ Get reliability data.
 There are three sources of latency:
 1. Connecting a reliable channel the first time for ICE negotiation.
 2. Establishing the first Data Channel.
-3. Adding an additional Data Channel on top of an existing peer-to-peer connection.
+3. Adding an additional Data Channel on top of an existing peer-to-peer
+   connection.
 
 [Issue #31](https://github.com/webscreens/openscreenprotocol/issues/31):
 Get connection latency data.
@@ -124,10 +128,11 @@ Get supporting data.
 # Ease of implementation / deployment
 
 Four major browsers (Chrome/Firefox/Edge/Opera) already implement and ship in
-the latest release version. An open source library [WebRTC.org](https://webrtc.org/)
-is ready with production level quality.
+the latest release version. An open source library
+[WebRTC.org](https://webrtc.org/) is ready with production level quality.
 
-A common signaling channel/protocol for exchanging ICE candidates needs to be defined.
+A common signaling channel/protocol for exchanging ICE candidates needs to be
+defined.
 
 # Privacy
 
@@ -181,4 +186,3 @@ This should be covered by the latency evaluations above.  The relevant user
 experience requirements ar met by evaluating:
 1. The latency to establish a presentation connection.
 2. The latency to transmit an application message.
-

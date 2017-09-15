@@ -26,8 +26,8 @@ Data describing reliability in different network requirements.
 
 # Latency of device discovery / device removal
 
-Data on the latency of discovering a new display device added to the network, or
-discovering that a display device was disconnected from the network.
+Data on the latency of discovering a new presentation display added to the
+network, or discovering that a display was disconnected from the network.
 
 # Network and power efficiency
 
@@ -57,8 +57,8 @@ discovery protocol?
 
 # Security
 
-Describe any impact on the security of the controller or presentation display,
-including threats and potential mitigations.
+Describe any impact on the security of the controlling user agent or
+presentation display, including threats and potential mitigations.
 
 # User experience
 

@@ -33,9 +33,9 @@ points to search for devices or services of interest at any time. SSDP specifies
 the messages exchanged between control points and root devices.
 
 SSDP advertisements contain specific information about the service or device,
-including its type and a unique identifier.  SSDP messages adopt the header field
-format of HTTP 1.1.  However, the rest of the protocol is not based on HTTP
-1.1, as it uses UDP instead of TCP and it has its own processing rules.
+including its type and a unique identifier.  SSDP messages adopt the header
+field format of HTTP 1.1.  However, the rest of the protocol is not based on
+HTTP 1.1, as it uses UDP instead of TCP and it has its own processing rules.
 
 The following sequence diagram shows the SSDP message exchange between a control
 point and root device.
@@ -95,8 +95,8 @@ availability for the Presentation API:
 
 Similar to SSDP discovery in DIAL. The main steps are listed below:
 
-1. The presentation display device advertises using SSDP the presentation
-   receiver service when it is connected to the network with the service type
+1. The presentation display device advertises using SSDP the
+   receiver when it is connected to the network with the service type
    `urn:openscreen-org:service:openscreenreceiver:1`.  The `ssdp:alive` message
    contains a `LOCATION` header which points to the XML device description,
    which includes the friendly name, device capabilities, and other device data.
@@ -112,13 +112,13 @@ Similar to SSDP discovery in DIAL. The main steps are listed below:
     NT: urn:openscreen-org:service:openscreenreceiver:1
     ```
 
-1. The controller starts to monitor display availability by sending an SSDP
-   `M-SEARCH` query with the service type
-   `urn:openscreen-org:service:openscreenreceiver:1` and waits for responses from
-   presentation displays.  The controller should wait for `ssdp:alive` and
+1. The controller starts to monitor presentation display availability by sending
+   an SSDP `M-SEARCH` query with the service type
+   `urn:openscreen-org:service:openscreenreceiver:1` and waits for responses
+   from presentation displays.  The controller should wait for `ssdp:alive` and
    `ssdp:byebye` messages on the multicast address to keep its list of available
-   displays up-to-date when a new display is connected or an existing one
-   is disconnected.
+   displays up-to-date when a new display is connected or an existing one is
+   disconnected.
 
     ```
     M-SEARCH * HTTP/1.1
@@ -128,9 +128,9 @@ Similar to SSDP discovery in DIAL. The main steps are listed below:
     ST: urn:openscreen-org:service:openscreenreceiver:1
     ```
 
-1. Each presentation display connected to the network running a presentation
-   receiver service replies to the search request with a SSDP message similar to
-   the `ssdp:alive` message.
+1. Each presentation display connected to the network running a receiver replies
+   to the search request with a SSDP message similar to the `ssdp:alive`
+   message.
 
     ```
     HTTP/1.1 200 OK
@@ -142,9 +142,9 @@ Similar to SSDP discovery in DIAL. The main steps are listed below:
     ST: urn:openscreen-org:service:openscreenreceiver:1
     ```
 
-1. When the controller receives a response from a newly connected display, it
-   issues an HTTP GET request to the URL in the `LOCATION` header to get the
-   device description XML.
+1. When the controller receives a response from a newly connected presentation
+   display, it issues an HTTP GET request to the URL in the `LOCATION` header to
+   get the device description XML.
 
 1. The controller parses the device description XML, extracts the friendly name
    of the display and checks if the display can open one of the URLs associated
@@ -166,24 +166,24 @@ Similar to SSDP discovery in DIAL. The main steps are listed below:
 
 *Open questions:*
 
-1. How to advertise the endpoint of the Open Screen receiver service? One
+1. How to advertise the endpoint of the Open Screen receiver? One
    solution is to use a HTTP header parameter in the response of the HTTP GET
    request for device description.  DIAL uses this solution to send the endpoint
    of the DIAL server in the `Application-URL` HTTP response header. Another
    solution is to extend the XML device description with a new element to define
    the endpoint.
 
-1. How to check if the display can present a certain URL or not?  One solution
-   is to extend the XML device description with new elements to allow a display
-   to express its capabilities and the controller can do the check. Another
-   possible solution is to ask the receiver service using the provided endpoint
-   by sending the presentation URLs.
+1. How to check if the presentation display can present a certain URL or not?
+   One solution is to extend the XML device description with new elements to
+   allow a display to express its capabilities and the controller can do the
+   check. Another possible solution is to ask the receiver using the provided
+   endpoint by sending the presentation URLs.
 
 ## Method 2
 
 This method uses only the SSDP messages without requiring the device description
 XML. The presentation request URLs are sent by the controller in a new header of
-the SSDP `M-SEARCH` message.  If a presentation receiver can open one of the URLs,
+the SSDP `M-SEARCH` message.  If a receiver can open one of the URLs,
 it responds with that URL in the search response.
 
 The search response also adds new headers for the device friendly name and the
@@ -218,8 +218,8 @@ Below are the steps that illustrate this method:
     Ensure that advertised friendly names are i18n capable
 
 1. A controller sends the following SSDP search message to the multicast
-   address. The new header `PRESENTATION-URLS.openscreen.org` allows the controller
-   to send the presentation URLs to the display.
+   address. The new header `PRESENTATION-URLS.openscreen.org` allows the
+   controller to send the presentation URLs to the display.
 
     ```
     M-SEARCH * HTTP/1.1
@@ -233,10 +233,11 @@ Below are the steps that illustrate this method:
     [Issue #21](https://github.com/webscreens/openscreenprotocol/issues/21):
     Investigate mechanisms to pre-filter devices by Presentation URL
 
-1. A display that can open one of the URLs replies (unicast) with the following
-   SSDP message. The new SSDP header `SUPPORTED-URLS.openscreen.org` contains the
-   URLs the receiver can open from the list of the URLs
-   `PRESENTATION-URLS.openscreen.org` sent in the search SSDP message.
+1. A presentation display that can open one of the URLs replies (unicast) with
+   the following SSDP message. The new SSDP header
+   `SUPPORTED-URLS.openscreen.org` contains the URLs the receiver can open from
+   the list of the URLs `PRESENTATION-URLS.openscreen.org` sent in the search
+   SSDP message.
 
     ```
     HTTP/1.1 200 OK
@@ -251,7 +252,7 @@ Below are the steps that illustrate this method:
     SUPPORTED-URL.openscreen.org: https://example.com/foo.html
     ```
 
-1. The display sends the following SSDP message when the receiver service is no
+1. The display sends the following SSDP message when the receiver is no
    longer available. There are no new headers added to the `ssdp:byebye` message.
 
     ```
@@ -275,14 +276,15 @@ Below are the steps that illustrate this method:
 This approach is identical to Method 2, except that presentation URLs are not
 included in SSDP messages. Only the `PRESENTATION-ENDPOINT.openscreen.org`
 header is added to the search response, and additional information from the
-presentation receiver service (including presentation URL compatibility) is
-obtained from the application level protocol implemented on that endpoint.  The
-friendly name may or may not be included in advertisements, based on a tradeoff
-between usability, efficiency and privacy.
+receiver (including presentation URL compatibility) is obtained from the
+application level protocol implemented on that endpoint.  The friendly name may
+or may not be included in advertisements, based on a tradeoff between usability,
+efficiency and privacy.
 
 # Remote Playback API functionality
 
-[Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3): Add requirements for Remote Playback API
+[Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3):
+Add requirements for Remote Playback API
 
 # Reliability
 
@@ -312,11 +314,11 @@ discovery messages.
 
 # Power efficiency
 
-This depends on many factors including the method chosen above; Methods 2 and 3 are
-better than Method 1 regarding power efficiency.  In Method 1, the controller
-needs to create and send SSDP search requests, receive and parse SSDP messages,
-make HTTP requests to get device descriptions and parse device description XML
-to get friendly name and check capabilities.
+This depends on many factors including the method chosen above; Methods 2 and 3
+are better than Method 1 regarding power efficiency.  In Method 1, the
+controller needs to create and send SSDP search requests, receive and parse SSDP
+messages, make HTTP requests to get device descriptions and parse device
+description XML to get friendly name and check capabilities.
 
 In Methods 2 and 3, the controller needs only to create and send search requests
 and receive and parse SSDP messages.
@@ -332,7 +334,8 @@ If the controller needs to get only a snapshot of available displays, then it
 only needs to send a search message to the multicast address and listen for
 search response messages for 2-10 seconds.
 
-[Issue #26](https://github.com/webscreens/openscreenprotocol/issues/26): Collect data regarding network and power efficiency
+[Issue #26](https://github.com/webscreens/openscreenprotocol/issues/26):
+Collect data regarding network and power efficiency
 
 # Ease of implementation / deployment
 
@@ -358,27 +361,30 @@ implement it on the devices listed there.
 # Standardization status
 
 SSDP is part of the UPnP device architecture. The most recent version of the
-specification is
-[UPnP Device Architecture 2.0](http://upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v2.0.pdf) from
-February 20, 2015. On January 1, 2016, the UPnP Forum assigned their assets to the
-[Open Connectivity Foundation (OCF)](https://openconnectivity.org/resources/specifications/upnp).
-UPnP/SSDP is used in many products like smart TVs, printers, gateways/routers,
-NAS, and PCs. According to [DLNA](https://www.dlna.org/), there are over four
-billion DLNA-certified devices available on the market. SSDP is also used in
-non-DLNA certified devices that support DIAL and HbbTV 2.0, including smart TVs and
+specification is [UPnP Device Architecture
+2.0](http://upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v2.0.pdf) from
+February 20, 2015. On January 1, 2016, the UPnP Forum assigned their assets to
+the [Open Connectivity Foundation
+(OCF)](https://openconnectivity.org/resources/specifications/upnp).  UPnP/SSDP
+is used in many products like smart TVs, printers, gateways/routers, NAS, and
+PCs. According to [DLNA](https://www.dlna.org/), there are over four billion
+DLNA-certified devices available on the market. SSDP is also used in non-DLNA
+certified devices that support DIAL and HbbTV 2.0, including smart TVs and
 digital media receivers, as well as proprietary products like
-[SONOS](http://musicpartners.sonos.com/?q=docs) and
-[Philips Hue](https://www.developers.meethue.com/).
+[SONOS](http://musicpartners.sonos.com/?q=docs) and [Philips
+Hue](https://www.developers.meethue.com/).
 
-[Issue #27](https://github.com/webscreens/openscreenprotocol/issues/27): Investigate uPnP licensing requirements
+[Issue #27](https://github.com/webscreens/openscreenprotocol/issues/27):
+Investigate uPnP licensing requirements
 
 # Privacy
 
-The standard UPnP device description exposes parameters about the device/service,
-such as its unique identifier, friendly name, software, manufacturer, and service
-endpoints. In addition, the SSDP vendor extensions proposed in Method 2
-advertise presentation URLs and friendly names to all devices on the local area
-network, which may expose private information in an unintended way.
+The standard UPnP device description exposes parameters about the
+device/service, such as its unique identifier, friendly name, software,
+manufacturer, and service endpoints. In addition, the SSDP vendor extensions
+proposed in Method 2 advertise presentation URLs and friendly names to all
+devices on the local area network, which may expose private information in an
+unintended way.
 
 # Security
 
@@ -387,11 +393,11 @@ network can discover other devices or services.  Authentication and data privacy
 must be implemented on the service or application level. In our case, the output
 of discovery is a list of displays and friendly names, which are available to
 all devices on the local area network.  If Method 2 is adopted, presentation
-URLs and endpoints of presentation receiver services are also broadcast .
-Additional security mechanisms can be implemented during session establishment
-and communication.
+URLs and endpoints of receivers are also broadcast.  Additional security
+mechanisms can be implemented during session establishment and communication.
 
-[Issue #25](https://github.com/webscreens/openscreenprotocol/issues/25): Address history of uPnP exploits.
+[Issue #25](https://github.com/webscreens/openscreenprotocol/issues/25):
+Address history of uPnP exploits.
 
 # Notes
 
