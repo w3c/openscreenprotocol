@@ -22,12 +22,12 @@ submitted:
 
 - Discovery
   - [SSDP](ssdp.md)
-  - [mDNS / DNS-SD)(mdns.md)
+  - [mDNS / DNS-SD](mdns.md)
 - Tranport
   - [QUIC](quic.md)
   - [WebRTC Data Channel](datachannel.md)
 - [Control Protocol](control_protocol.md)
-- Authentication (TBD)
+- Authentication ([Issue #13](https://github.com/webscreens/openscreenprotocol/issues/13))
 
   
   
