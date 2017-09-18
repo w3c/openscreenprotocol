@@ -28,6 +28,3 @@ submitted:
   - [WebRTC Data Channel](datachannel.md)
 - [Control Protocol](control_protocol.md)
 - Authentication ([Issue #13](https://github.com/webscreens/openscreenprotocol/issues/13))
-
-  
-  
