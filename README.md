@@ -8,3 +8,26 @@ protocols that implement the
 This work is in scope for the
 [W3C Second Screen Community Group](https://www.w3.org/community/webscreens/)
 ([Charter](https://webscreens.github.io/cg-charter/)).
+
+The protocol will meet the
+[functional and non-functional requirements](requirements.md) of the
+respective APIs as well as [hardware requirements](device_specs.md)
+for prospective implementations.
+
+### Submitted Proposals
+
+The community group is currently evaluating proposals to implement different
+aspects of the Open Screen Protocol.  The following proposals have been
+submitted:
+
+- Discovery
+  - [SSDP](ssdp.md)
+  - [mDNS / DNS-SD)(mdns.md)
+- Tranport
+  - [QUIC](quic.md)
+  - [WebRTC Data Channel](datachannel.md)
+- [Control Protocol](control_protocol.md)
+- Authentication (TBD)
+
+  
+  
