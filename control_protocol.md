@@ -675,10 +675,8 @@ Byte Offset
   164          +-----------------------+
                +  MESSAGE_TYPE         +
   165          +-----------------------+
-               +  MESSAGE_LOCALE       +
-  199          +-----------------------+
                +  MESSAGE_LENGTH       +
-  203          +-----------------------+
+  197          +-----------------------+
                +  MESSAGE_CONTENT      +
                +-----------------------+
 ```
@@ -696,10 +694,6 @@ Message Type | Meaning
 2            | Binary message
 3            | Empty text message
 
-- `MESSAGE_LOCALE` is an optional [BCP-47 language
-  code](https://tools.ietf.org/html/bcp47) that identifies the locale of a text
-  message.  It is a zero-terminated 64-byte ASCII string, zero padded on the
-  right.  If the `MESSAGE_TYPE` is not 1, this is all zeroes.
 - `MESSAGE_LENGTH` is an unsigned 32-bit integer with the length, in bytes,
   of the message content.
 - `MESSAGE_CONTENT` is the content of the message.  It must be exactly
