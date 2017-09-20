@@ -23,7 +23,7 @@ submitted:
 - Discovery
   - [SSDP](ssdp.md)
   - [mDNS / DNS-SD](mdns.md)
-- Tranport
+- Transport
   - [QUIC](quic.md)
   - [WebRTC Data Channel](datachannel.md)
 - [Control Protocol](control_protocol.md)
