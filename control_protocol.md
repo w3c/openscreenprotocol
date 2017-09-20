@@ -807,11 +807,12 @@ Byte Offset
 - `NUM_CONNECTIONS` is an unsigned 2-byte integer that holds the number of
   presentation connections that are in a `connected` state.  If omitted, this
   field is zero.
-- `TITLE_LOCALE` is is a 64-byte, zero terminated ASCII value with the
-  BCP-47 language code of the friendly name.  If it is shorter than 64 bytes, it
-  should be right-padded by zeroes.  If omitted, it is all zeros.
+- `TITLE_LOCALE` is is a 64-byte, zero terminated ASCII value with the BCP-47
+  language code of the friendly name.  If it is shorter than 64 bytes, it should
+  be right-padded by zeroes.  If the presentation title omitted, it is all
+  zeros.
 - `TITLE_LENGTH` is a 2-byte positive unsigned integer with the length
-  of `TITLE_CONTENT`.  If omitted, this is zero.
+  of `TITLE_CONTENT`.  If the presentation title is omitted, this is zero.
 - `TITLE_CONTENT` is a valid UTF-8 encoded string with the [title of the
   presentation document](https://html.spec.whatwg.org/multipage/semantics.html#the-title-element).
   It is exactly `TITLE_LENGTH` bytes in length.  If the presentation title is
