@@ -763,6 +763,8 @@ Byte Offset
 - `FRIENDLY_NAME_CONTENT` is a valid UTF-8 encoded string with the friendly name
   of the presentation display.  It is exactly `FRIENDLY_NAME_LENGTH` bytes in
   length.
+  
+**TODO:** [Representation of BCP-47 language tags](issues/47)
 
 ### Presentation Info
 
@@ -881,3 +883,7 @@ exchange so that each party knows what roles the other may assume (controlling
 user agent, receiver, or both).
 
 **TODO**: Add protocol support for capability/role advertisement.
+
+### Language Tags
+
+
