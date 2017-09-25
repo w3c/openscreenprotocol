@@ -231,6 +231,9 @@ Value | Flavor
 `MESSAGE_TYPE_ID` is used to group related messages together, and
 `MESSAGE_SUBTYPE_ID` can distinguish individual message types within that group.
 
+**TODO**: Define an extensions format to allow additional data to be bundled
+with a defined message type.
+
 ## Presentation API Control Protocol
 
 To outline the control protocol, we describe the messages used to implement each
@@ -667,13 +670,13 @@ Subtype: 0x0001
 Byte Offset
   32           +-----------------------+
                +  PRESENTATION_ID      +
-  40           +-----------------------+
+  160          +-----------------------+
                +  CONNECTION_ID        +
-  44           +-----------------------+
+  164          +-----------------------+
                +  MESSAGE_TYPE         +
-  45           +-----------------------+
+  165          +-----------------------+
                +  MESSAGE_LENGTH       +
-  49           +-----------------------+
+  197          +-----------------------+
                +  MESSAGE_CONTENT      +
                +-----------------------+
 ```
@@ -681,28 +684,148 @@ Byte Offset
 - `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of 128 bytes
   that communicates the ID for the presentation.  Values shorter than 128 bytes
   should be zero-byte padded.
-- `MESSAGE_LENGTH` is an unsigned 32-bit integer with the length, in bytes,
-  of the message content.
-- `MESSAGE_CONTENT` is the content of the message.  It must be exactly
-  `MESSAGE_LENGTH` bytes in length.
-- `MESSAGE_TYPE` is a one-byte code describing the message type:
+- `CONNECTION_ID` is a 32-bit positive integer that corresponds to the ID of the
+  receiver `PresentationConnection` that is conveying the message.
+- `MESSAGE_TYPE` is a one-byte code describing the message type as follows:
 
 Message Type | Meaning
 -------------|--------
 1            | Text message
 2            | Binary message
+3            | Empty text message
 
-**TODO**: Define text encoding
-**TODO**: Include locale slot?
+- `MESSAGE_LENGTH` is an unsigned 32-bit integer with the length, in bytes,
+  of the message content.
+- `MESSAGE_CONTENT` is the content of the message.  It must be exactly
+  `MESSAGE_LENGTH` bytes in length. For text messages, the `MESSAGE_CONTENT`
+  must correspond to a valid and non-empty UTF-8 string.  For binary messages,
+  the content is arbitrary binary data.
+
+A `MESSAGE_TYPE` of 3 corresponds to an empty string, i.e. `send('')`.
+If the `MESSAGE_TYPE` is 3, the `MESSAGE_LENGTH` must be zero.
+
+**TODO:** Do we need special handling of empty binary messages, i.e. `new
+ArrayBuffer(0)`
 
 ### Presentation Receiver Status Event
 
-**TODO:** Finish
+This message allows the receiver to broadcast status information to all
+connected controlling user agents.  It may be sent at any time, but should be
+sent when the content of a Display Info or Presentation Info has changed since
+the last broadcast.  The receiver may be configured to broadcast a subset of the
+information in this message or none at all depending on the policies and privacy
+preferences of the user.
+
+This Receiver Status event is a composition of sub-messages.  See below for the
+breakout of the sub-message formats.
+
+```
+Flavor:  Event
+Type:    0x0005
+Subtype: 0x0001
+
+Byte Offset
+  32           +-----------------------+
+               + DISPLAY_INFO          +
+  K            +-----------------------+
+               + NUM_PRESENTATION_INFO +
+  K+4          +-----------------------+
+               + PRESENTATION_INFO_1   +
+               +-----------------------+
+               + ...                   +
+               +-----------------------+
+               + PRESENTATION_INFO_N   +
+               +-----------------------+
+```
+
+### Display Info
+
+The Display Info struct conveys information about the presentation display
+device itself.  Currently this includes information about the friendly name
+which may be too long to fit in a discovery protocol message.
+
+```
+Byte Offset
+  0            +-----------------------+
+               + FRIENDLY_NAME_LOCALE  +
+  64           +-----------------------+
+               + FRIENDLY_NAME_LENGTH  +
+  66           +-----------------------+
+               + FRIENDLY_NAME_CONTENT +
+               +-----------------------+
+```
+
+- `FRIENDLY_NAME_LOCALE` is a 64-byte, zero terminated ASCII value with the
+  BCP-47 language code of the friendly name.  If it is shorter than 64 bytes, it
+  should be right-padded by zeroes.
+- `FRIENDLY_NAME_LENGTH` is a 2-byte positive unsigned integer with the length
+  of `FRIENDLY_NAME_CONTENT`.
+- `FRIENDLY_NAME_CONTENT` is a valid UTF-8 encoded string with the friendly name
+  of the presentation display.  It is exactly `FRIENDLY_NAME_LENGTH` bytes in
+  length.
+  
+**TODO:** [Representation of BCP-47 language tags](issues/47)
+
+### Presentation Info
+
+The Presentation Info struct conveys information about a running presentation.
+All fields are optional.  By advertising a presentation's URL and ID, the
+receiver will allow any connected controlling user agent to connect to that
+presentation.
+
+```
+Byte Offset
+  0            +-----------------------+
+               +  PRESENTATION_ID      +
+  128          +-----------------------+
+               +  URL_LENGTH           +
+  132          +-----------------------+
+               +  URL_CONTENT          +
+  K            +-----------------------+
+               +  NUM_CONNECTIONS      +
+  K+2          +-----------------------+
+               +  TITLE_LOCALE         +
+  K+66         +-----------------------+
+               +  TITLE_LENGTH         +
+  K+78         +-----------------------+
+               +  TITLE_CONTENT        +
+               +-----------------------+
+```
+
+- `PRESENTATION_ID` is a null (zero-byte) terminated ASCII string of 128 bytes
+  that communicates the ID for the presentation.  Values shorter than 128 bytes
+  should be zero-byte padded.  If omitted, it should be all zeros.
+- `URL_LENGTH` is an unsigned positive 32-bit integer with the length, in bytes,
+  of the presentation URL.  The presentation URL is omitted, it should be zero.
+- `URL_CONTENT` is the presentation URL, encoded according to RFC 3986.  This
+  field must be exactly `URL_LENGTH` bytes in length.  If the presentation URL
+  is omitted, this field is not present.
+- `NUM_CONNECTIONS` is an unsigned 2-byte integer that holds the number of
+  presentation connections that are in a `connected` state.  If omitted, this
+  field is zero.
+- `TITLE_LOCALE` is is a 64-byte, zero terminated ASCII value with the BCP-47
+  language code of the friendly name.  If it is shorter than 64 bytes, it should
+  be right-padded by zeroes.  If the presentation title omitted, it is all
+  zeros.
+- `TITLE_LENGTH` is a 2-byte positive unsigned integer with the length
+  of `TITLE_CONTENT`.  If the presentation title is omitted, this is zero.
+- `TITLE_CONTENT` is a valid UTF-8 encoded string with the [title of the
+  presentation document](https://html.spec.whatwg.org/multipage/semantics.html#the-title-element).
+  It is exactly `TITLE_LENGTH` bytes in length.  If the presentation title is
+  omitted, this field is not present.
+
+**NOTE**: We could add a status flag to tell controlling user agents the status
+of the presentation (loading/ready/terminating/terminated).
+
+**NOTE:** We could allow the receiver to broadcast only the origin of the
+presentation, not the full URL, for display purposes in the controlling user
+agent.  In that case, we would need to add a flag to convey this so the
+controller knows not to attempt reconnection with just the origin.
 
 ## Remote Playback API Control Protocol
 
-**TODO:** Fill in when Remote Playback requirements are
-known. See [Issue #3](issues/3).
+**TODO:** Fill in when Remote Playback requirements are known. See [Issue
+#3](issues/3).
 
 ## Design Discussion
 
@@ -760,3 +883,7 @@ exchange so that each party knows what roles the other may assume (controlling
 user agent, receiver, or both).
 
 **TODO**: Add protocol support for capability/role advertisement.
+
+### Language Tags
+
+
