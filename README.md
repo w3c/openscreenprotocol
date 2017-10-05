@@ -28,3 +28,10 @@ submitted:
   - [WebRTC Data Channel](datachannel.md)
 - [Control Protocol](control_protocol.md)
 - Authentication ([Issue #13](https://github.com/webscreens/openscreenprotocol/issues/13))
+
+### Background Information
+
+The excellent
+[Discovery and Pairing Literature Review](https://github.com/bbc/device-discovery-pairing)
+by @chrisneedham and @libbymiller covers a wide range of technologies for interconnection
+among personal devices, including mDNS/DNS-SD and SSDP.
