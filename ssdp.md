@@ -362,19 +362,26 @@ implement it on the devices listed there.
 SSDP is part of the UPnP device architecture. The most recent version of the
 specification is [UPnP Device Architecture
 2.0](http://upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v2.0.pdf) from
-February 20, 2015. On January 1, 2016, the UPnP Forum assigned their assets to
-the [Open Connectivity Foundation
-(OCF)](https://openconnectivity.org/resources/specifications/upnp).  UPnP/SSDP
-is used in many products like smart TVs, printers, gateways/routers, NAS, and
-PCs. According to [DLNA](https://www.dlna.org/), there are over four billion
-DLNA-certified devices available on the market. SSDP is also used in non-DLNA
-certified devices that support DIAL and HbbTV 2.0, including smart TVs and
-digital media receivers, as well as proprietary products like
+February 20, 2015.  The original specification for SSDP was as a standalone
+[Internet Draft](https://tools.ietf.org/html/draft-cai-ssdp-v1-03) which expired
+in April 2000.
+
+UPnP/SSDP is used in many products like smart TVs, printers, gateways/routers,
+NAS, and PCs. According to [DLNA](https://www.dlna.org/), there are over four
+billion DLNA-certified devices available on the market. SSDP is also used in
+non-DLNA certified devices that support DIAL and HbbTV 2.0, including smart TVs
+and digital media receivers, as well as proprietary products like
 [SONOS](http://musicpartners.sonos.com/?q=docs) and [Philips
 Hue](https://www.developers.meethue.com/).
 
-[Issue #27](https://github.com/webscreens/openscreenprotocol/issues/27):
-Investigate uPnP licensing requirements
+On January 1, 2016, the UPnP Forum assigned their assets to the [Open
+Connectivity Foundation
+(OCF)](https://openconnectivity.org/resources/specifications/upnp).  The OCF
+requires [membership and
+licensing](https://openconnectivity.org/certification/upnp-certification) to
+access the uPnP test suite and obtain uPnP certification for a specific device.
+Since Open Screen is explicitly *not* a uPnP defined service, OCF membership
+should not be required for Open Screen implementers.
 
 # Privacy
 
@@ -395,8 +402,46 @@ all devices on the local area network.  If Method 2 is adopted, presentation
 URLs and endpoints of receivers are also broadcast.  Additional security
 mechanisms can be implemented during session establishment and communication.
 
-[Issue #25](https://github.com/webscreens/openscreenprotocol/issues/25):
-Address history of uPnP exploits.
+## Security History
+
+Unfortunately there is a long history of exploits related to inappropriate
+exposure of uPnP services to the WAN and poor input handling.  The January 2013
+paper by security firm Rapid7, [Unplug, Don't
+Play](https://drive.google.com/open?id=0B0RlZr4vrjIKbV9FVk0yTGg5dFE) discusses
+the exent of these problems.
+
+Here is a sampling of other papers detailing security issues with uPnp/SSDP:
+
+* [Vulnerability Note VU#357851](http://www.kb.cert.org/vuls/id/357851): UPnP requests accepted over router WAN interfaces - 30 Nov 2012
+* [Millions of devices vulnerable via UPnP - Update](http://www.h-online.com/security/news/item/Millions-of-devices-vulnerable-via-UPnP-Update-1794032.html) - 30 January 2013
+* [DEFCON 19 presentation](https://www.defcon.org/images/defcon-19/dc-19-presentations/Garcia/DEFCON-19-Garcia-UPnP-Mapping.pdf) about exploit - 11 September 2014
+
+Publicly accessible uPnP devices are leveraged by malicious parties to implement
+distributed denial of service attacks through SSDP amplification.  See [this
+article](https://blog.cloudflare.com/ssdp-100gbps/) for a detailed explanation
+of how this is done.
+
+## Other Exploits
+
+The CVE database currently lists
+[58 vulnerability disclosures](https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=UPNP)
+related to uPnP in general.  Of these,
+[17 vulnerability disclosures](https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=SSDP)
+are related specifically to improper handling of SSDP requests or responses.
+These can be used to issue denial of service attacks (crashing the device) or
+achieve remote code execution.
+
+## Mitigations
+
+Any implementation of SSDP should be code audited for security vulnerabilities,
+and undergo
+[fuzz testing](https://blog.chromium.org/2012/04/fuzzing-for-security.html)
+to evaluate input handling.  These implementations should have careful handling
+of UDP sockets to prevent WAN exposure.
+
+This proposal should be specifically constrained and updated to prevent
+amplification, unicast M-SEARCH and IP spoofing, which are used to implement
+DDoS attacks with SSDP.  [Issue #57](issues/57): Update this spec accordingly
 
 # Notes
 
