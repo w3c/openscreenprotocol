@@ -146,6 +146,26 @@ control message and data will be encrypted.
 
 Data Channel depends on SCTP over UDP, which is supported for both IPv4 and IPv6.
 
+# Guest mode support
+
+As part of WebRTC, Data Channel works in conjunction with the network traversal
+services in WebRTC ([STUN](https://tools.ietf.org/html/rfc5389),
+[TURN](https://tools.ietf.org/rfc/rfc5766) and
+[ICE](https://tools.ietf.org/html/rfc5245)) to enable connections between
+endpoints on different LANs.
+
+However, in order to use these services, the two parties must be able to
+exchange offer and answer messages as well as ICE candidates.  WebRTC does not
+define how this is done, but often a cloud service is used to facilitate this
+exchange.
+
+In addition, to operate STUN and TURN additional cloud services (STUN and TURN
+servers) are required.
+
+While feasible, additional APIs and specifications would be required to define
+how the controlling user agent and presentation display provision and gain
+access to the necessary cloud services.
+
 # Hardware requirements
 
 Major desktop, laptop, and high-end mobile phone should be able to create single

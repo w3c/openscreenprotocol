@@ -130,6 +130,30 @@ information.
 
 QUIC depends only on UDP, which is supported for both IPv4 and IPv6.
 
+# Guest Mode support
+
+QUIC requires the ability route IP packets between both endpoints.  If both
+IP:port combinations are already exposed on the WAN, then no additional changes
+are required once those addresses are known.
+
+However, in the common case, the endpoints will be behind a firewall or NAT and
+a traversal solution is required.  Two possible solutions to this include:
+
+* The use of [STUN](https://tools.ietf.org/html/rfc5389) to create a publicly
+  accessible IP:port for each endpoint and facilitate their secure exchange.
+* The use of a cloud proxy to reflect QUIC packets between a pair of
+  publicly-accessible IP:ports.
+
+Either solution requires an additional cloud service to coordinate the exchange
+of publicly accessible IP:port pairs and possibly act as a data proxy.
+
+In some cases restrictive firewalls prevent the distribution of UDP traffic
+outside of the LAN, which will render this transport inoperative.
+
+While feasible, additional APIs and specifications would be required to define
+how the controlling user agent and presentation display provision and gain
+access to the necessary cloud services.
+
 # Hardware requirements
 
 *TODO*: Obtain data on hardware requirements

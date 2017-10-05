@@ -41,6 +41,15 @@ Including availability of open source implementations.
 
 # IPv4 and IPv6 support
 
+# Guest Mode support
+
+Can this tranport be used to connect controlling user agents and presentation
+displays outside of a local area network?  If so, what modifications would be
+required, if any?
+
+Note that detailed specifications for use of Open Screen outside the LAN are not
+in scope; this is an assessment of feasibility.
+
 # Hardware requirements
 
 The minimum specifications needed to use the transport, and whether the devices
