@@ -33,5 +33,4 @@ submitted:
 
 The excellent
 [Discovery and Pairing Literature Review](https://github.com/bbc/device-discovery-pairing)
-by @chrisneedham and @libbymiller covers a wide range of technologies for interconnection
-among personal devices, including mDNS/DNS-SD and SSDP.
+by [@chrisn](https://github.com/chrisn) and [@libbymiller](https://github.com/libbymiller) covers a wide range of technologies for interconnection among personal devices, including mDNS/DNS-SD and SSDP.
