@@ -224,12 +224,12 @@ Below are the steps that illustrate this method:
 1. A presentation display that has a running presentation receiver responds to
    the following SSDP message.  The `openscreen.org` header fields have the same
    meanings as in the advertisement message.
-   
+
     ```
     HTTP/1.1 200 OK
     CACHE-CONTROL: max-age = 1800 [response lifetime]
     DATE: [when response was generated]
-    SERVER: [OS]/[version] 
+    SERVER: [OS]/[version]
     USN: XXX-XXX-XXX-XXX [UUID for device]
     ST: urn:openscreen-org:service:openscreenreceiver:1
     FRIENDLY-NAME.openscreen.org: TXkgUHJlc2VudGF0aW9uIERpc3BsYXk= [My Presentation Display]
@@ -237,7 +237,7 @@ Below are the steps that illustrate this method:
     PROTOCOLS.openscreen.org: cast,dial
     HOSTS.openscreen.org: www.youtube.com,www.netflix.com:1000
     ```
-    
+
 1. The display sends the following SSDP message when the receiver is no
    longer available. There are no new headers added to the `ssdp:byebye` message.
 
@@ -248,11 +248,11 @@ Below are the steps that illustrate this method:
     NTS: ssdp:byebye
     USN: XXX-XXX-XXX-XXX [UUID for device]
     ```
-    
+
 ### Custom headers
 
 There are four Open Screen specific headers in the advertisement and response:
-    
+
 Header        | Mandatory? | Meaning
 --------------|------------|---------
 FRIENDLY-NAME |    Yes     | base64 encoded, UTF-8 friendly name of the presentation display.
@@ -265,12 +265,12 @@ dropped or shortened.  (The advertisement example above is approximately 439
 bytes.)
 
 ### Display Compatibility
-    
+
 The controlling user agent can use the information in the `HOSTS` and
 `PROTOCOLS` headers to determine compatibility of some presentation URLs
 without requiring a connection to the presentation display.  The algorithm
 to use these headers is as follows:
-    
+
 ```
 Given `O`, the origin of a presentation URL:
 
@@ -287,7 +287,7 @@ ELSE
 
 If the algorithm returns `unknown,` a connection to the display and a query
 with the full URL is required to determine compatibility.
-    
+
 ## Method 3
 
 This approach is identical to Method 2, except that presentation URL protocols
