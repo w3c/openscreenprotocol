@@ -204,7 +204,7 @@ Below are the steps that illustrate this method:
     SERVER: OS/version product/version
     USN: XXX-XXX-XXX-XXX [UUID for device]
     NT: urn:openscreen-org:service:openscreenreceiver:1
-    FRIENDLY-NAME.openscreen.org: My Presentation Display
+    FRIENDLY-NAME.openscreen.org: TXkgUHJlc2VudGF0aW9uIERpc3BsYXk= [My Presentation Display]
     RECEIVER.openscreen.org: 192.168.1.100:3000
     PROTOCOLS.openscreen.org: cast,dial
     HOSTS.openscreen.org: www.youtube.com,www.netflix.com:1000
@@ -232,7 +232,7 @@ Below are the steps that illustrate this method:
     SERVER: [OS]/[version] 
     USN: XXX-XXX-XXX-XXX [UUID for device]
     ST: urn:openscreen-org:service:openscreenreceiver:1
-    FRIENDLY-NAME.openscreen.org: My Presentation Display
+    FRIENDLY-NAME.openscreen.org: TXkgUHJlc2VudGF0aW9uIERpc3BsYXk= [My Presentation Display]
     RECEIVER.openscreen.org: 192.168.1.100:3000
     PROTOCOLS.openscreen.org: cast,dial
     HOSTS.openscreen.org: www.youtube.com,www.netflix.com:1000
@@ -255,13 +255,14 @@ There are four Open Screen specific headers in the advertisement and response:
     
 Header        | Mandatory? | Meaning
 --------------|------------|---------
-FRIENDLY-NAME |    Yes     | The friendly name of the presentation display.
+FRIENDLY-NAME |    Yes     | base64 encoded, UTF-8 friendly name of the presentation display.
 RECEIVER      |    Yes     | The IP address:port of the presentation receiver service being advertised.
 PROTOCOLS     |    No      | A comma-delimited list of additional URL protocols *other* than https that are compatible with the receiver.
 HOSTS         |    No      | A comma-delimited list of URL hosts that are known to be compatible with the presentation display.
 
-To ensure that the SSDP response fits into 1400 bytes, the HOSTS header may
-be dropped or shortened.  (The example above is approximately 411 bytes.)
+To ensure that the SSDP response fits into 1400 bytes, the HOSTS header may be
+dropped or shortened.  (The advertisement example above is approximately 439
+bytes.)
 
 ### Display Compatibility
     
