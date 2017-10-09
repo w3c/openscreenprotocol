@@ -23,7 +23,8 @@ Each Stream represents a bidrectional reliable sequence of data packets, can
 originate from the server or client, and has a unique integer ID.
 
 For the Presentation API, the most common case is that the controlling user
-agent plays the role of the client and server
+agent plays the role of the client and the presentation display the role of the
+server.
 
 Assume that a single QUIC connection is used to transmit data between the
 controlling user agent and receiver.  The following mapping could be used to
