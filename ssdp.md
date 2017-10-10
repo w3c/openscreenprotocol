@@ -282,8 +282,7 @@ efficiency and privacy.
 
 # Remote Playback API functionality
 
-[Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3):
-Add requirements for Remote Playback API
+[Issue #3](issues/3): Add requirements for Remote Playback API.
 
 # Reliability
 
@@ -292,6 +291,8 @@ delay of few hundred milliseconds between messages.  In addition, the
 presentation display must re-broadcast advertisements periodically prior to
 expiration of the duration specified in the `CACHE-CONTROL` header (whose
 minimum value is 1800s).
+
+[Issue #26](issues/68): Get reliability data.
 
 # Latency of device discovery / device removal
 
@@ -302,6 +303,8 @@ SSDP header which contains the maximum wait time in seconds (and must be between
 1 and 5 seconds).  SSDP responses from presentation displays should be delayed a
 random duration between 0 and `MX` to balance load for the controlling user
 agent when it processes responses.
+
+[Issue #69](issues/69): Collect data on latency of discovery.
 
 # Network efficiency
 
@@ -333,8 +336,7 @@ If the controlling user agent needs to get only a snapshot of available
 displays, then it only needs to send a search message to the multicast address
 and listen for search response messages for 2-10 seconds.
 
-[Issue #26](https://github.com/webscreens/openscreenprotocol/issues/26):
-Collect data regarding network and power efficiency
+[Issue #26](issues/26): Get network and power efficiency data.
 
 # Ease of implementation / deployment
 

@@ -223,7 +223,7 @@ operation.  Users may not even be aware of the situation, and it can be
 difficult or impossible for user agents to determine what component is blocking
 mDNS; users will just be unable to discover any presentation displays.
 
-[Issue #37: Share data on mDNS reliability](issues/37)
+[Issue #37](issues/37): Get reliability data.
 
 ## Record caching
 
@@ -257,6 +257,8 @@ able to transmit a goodbye packet, listeners must wait for the expiration of
 their cached records to show the display as unavailable.  This depends on the
 TTL set with these records.
 
+[Issue #69](issues/69): Collect data on latency of discovery.
+
 # Network and power efficiency
 
 The network utilization of mDNS depends on several factors including:
@@ -271,7 +273,7 @@ The network utilization of mDNS depends on several factors including:
 Because mDNS behavior is specified, it should be possible to construct a model
 of network activity given assumptions about the factors above.
 
-[Issue #38: Obtain data on mDNS network and power efficiency](issues/38)
+[Issue #38](issues/38): Get network and power efficiency data.
 
 # Ease of implementation / deployment
 
