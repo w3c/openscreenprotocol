@@ -257,6 +257,8 @@ able to transmit a goodbye packet, listeners must wait for the expiration of
 their cached records to show the display as unavailable.  This depends on the
 TTL set with these records.
 
+[Issue #69](issues/69): Collect data on latency of discovery.
+
 # Network and power efficiency
 
 The network utilization of mDNS depends on several factors including:
