@@ -282,8 +282,7 @@ efficiency and privacy.
 
 # Remote Playback API functionality
 
-[Issue #3](issues/3):
-Add requirements for Remote Playback API
+[Issue #3](issues/3): Add requirements for Remote Playback API.
 
 # Reliability
 
