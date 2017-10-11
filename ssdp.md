@@ -185,40 +185,33 @@ XML. The presentation request URLs are sent by the controlling user agent in a
 new header of the SSDP `M-SEARCH` message.  If a receiver can open one of the
 URLs, it responds with that URL in the search response.
 
-The search response also adds new headers for the device friendly name and the
-service endpoint.  (Note that Section 1.1.3 of the UPnP device architecture
-document allows to use vendor specific headers).  The search response can still
-send the device description URL in the `LOCATION` header to stay compatible with
-UPnP, but controlling user agents will ignore it.  This method is more efficient
-and secure since no additional HTTP calls and XML parsing are required.
+The search response also adds new headers for the device friendly name, the
+service endpoint, and data on URL compatibility.  (Note that Section 1.1.3 of
+the UPnP device architecture document allows to use vendor specific headers.)
+This method is more efficient and secure since no additional HTTP calls and XML
+parsing are required.
 
 Below are the steps that illustrate this method:
 
 1. A new presentation display that connects to the network advertises
-   the following `ssdp:alive` message. The new header
-   `FRIENDLY-NAME.openscreen.org` is used for the friendly name and
-   `PRESENTATION-ENDPOINT.openscreen.org` for the endpoint of the receiver
-   service.
+   the following `ssdp:alive` message.
 
     ```
     NOTIFY * HTTP/1.1
     HOST: 239.255.255.250:1900
     CACHE-CONTROL: max-age = 1800 [response lifetime]
-    LOCATION: [ignored]
     NTS: ssdp:alive
-    SERVER: OS/version UPnP/1.0 product/version
+    SERVER: OS/version product/version
     USN: XXX-XXX-XXX-XXX [UUID for device]
     NT: urn:openscreen-org:service:openscreenreceiver:1
-    FRIENDLY-NAME.openscreen.org: My Presentation Display
-    PRESENTATION-ENDPOINT.openscreen.org: 192.168.1.100:3000
+    FRIENDLY-NAME.openscreen.org: TXkgUHJlc2VudGF0aW9uIERpc3BsYXk= [My Presentation Display]
+    RECEIVER.openscreen.org: 192.168.1.100:3000
+    PROTOCOLS.openscreen.org: cast,dial
+    HOSTS.openscreen.org: www.youtube.com,www.netflix.com:1000
     ```
 
-    [Issue #22](https://github.com/webscreens/openscreenprotocol/issues/22):
-    Ensure that advertised friendly names are i18n capable
-
 1. A controlling user agent sends the following SSDP search message to the
-   multicast address. The new header `PRESENTATION-URLS.openscreen.org` allows
-   the controlling user agent to send the presentation URLs to the display.
+   multicast address.
 
     ```
     M-SEARCH * HTTP/1.1
@@ -226,29 +219,23 @@ Below are the steps that illustrate this method:
     MAN: "ssdp:discover"
     MX: seconds to delay response
     ST: urn:openscreen-org:service:openscreenreceiver:1
-    PRESENTATION-URLS.openscreen.org: https://example.com/foo.html, https://example.com/bar.html
     ```
 
-    [Issue #21](https://github.com/webscreens/openscreenprotocol/issues/21):
-    Investigate mechanisms to pre-filter devices by Presentation URL
-
-1. A presentation display that can open one of the URLs replies (unicast) with
-   the following SSDP message. The new SSDP header
-   `SUPPORTED-URLS.openscreen.org` contains the URLs the receiver can open from
-   the list of the URLs `PRESENTATION-URLS.openscreen.org` sent in the search
-   SSDP message.
+1. A presentation display that has a running presentation receiver responds to
+   the following SSDP message.  The `openscreen.org` header fields have the same
+   meanings as in the advertisement message.
 
     ```
     HTTP/1.1 200 OK
     CACHE-CONTROL: max-age = 1800 [response lifetime]
-    DATE: when response was generated
-    LOCATION: [ignored]
-    SERVER: OS/version UPnP/1.0 product/version
+    DATE: [when response was generated]
+    SERVER: [OS]/[version]
     USN: XXX-XXX-XXX-XXX [UUID for device]
     ST: urn:openscreen-org:service:openscreenreceiver:1
-    FRIENDLY-NAME.openscreen.org: My Presentation Display
-    PRESENTATION-ENDPOINT.openscreen.org: 192.168.1.100:3000
-    SUPPORTED-URL.openscreen.org: https://example.com/foo.html
+    FRIENDLY-NAME.openscreen.org: TXkgUHJlc2VudGF0aW9uIERpc3BsYXk= [My Presentation Display]
+    RECEIVER.openscreen.org: 192.168.1.100:3000
+    PROTOCOLS.openscreen.org: cast,dial
+    HOSTS.openscreen.org: www.youtube.com,www.netflix.com:1000
     ```
 
 1. The display sends the following SSDP message when the receiver is no
@@ -262,18 +249,49 @@ Below are the steps that illustrate this method:
     USN: XXX-XXX-XXX-XXX [UUID for device]
     ```
 
-*Open questions*
+### Custom headers
 
-1. SSDP messages are limited to ~1400 bytes on a typical network. Will the
-   Presentation URLs and friendly names fit into message?
+There are four Open Screen specific headers in the advertisement and response:
 
-2. Is there a privacy issue regarding the advertisement of presentation URLs and
-   friendly names to all devices on the local area network?
+Header        | Mandatory? | Meaning
+--------------|------------|---------
+FRIENDLY-NAME |    Yes     | base64 encoded, UTF-8 friendly name of the presentation display.
+RECEIVER      |    Yes     | The IP address:port of the presentation receiver service being advertised.
+PROTOCOLS     |    No      | A comma-delimited list of additional URL protocols *other* than https that are compatible with the receiver.
+HOSTS         |    No      | A comma-delimited list of URL hosts that are known to be compatible with the presentation display.
+
+To ensure that the SSDP response fits into 1400 bytes, the HOSTS header may be
+dropped or shortened.  (The advertisement example above is approximately 439
+bytes.)
+
+### Display Compatibility
+
+The controlling user agent can use the information in the `HOSTS` and
+`PROTOCOLS` headers to determine compatibility of some presentation URLs
+without requiring a connection to the presentation display.  The algorithm
+to use these headers is as follows:
+
+```
+Given `O`, the origin of a presentation URL:
+
+IF the protocol of O is 'https', THEN
+   IF the host of O matches any entry in HOSTS, THEN
+     RETURN 'compatible'
+   ELSE
+     RETURN 'unknown'
+ELSE IF the protocol of O does not match an entry in PROTOCOLS, THEN
+   RETURN 'not compatible'
+ELSE
+   RETURN 'unknown'
+```
+
+If the algorithm returns `unknown,` a connection to the display and a query
+with the full URL is required to determine compatibility.
 
 ## Method 3
 
-This approach is identical to Method 2, except that presentation URLs are not
-included in SSDP messages. Only the `PRESENTATION-ENDPOINT.openscreen.org`
+This approach is identical to Method 2, except that presentation URL protocols
+or hosts are not included in SSDP messages. Only the `RECEIVER.openscreen.org`
 header is added to the search response, and additional information from the
 receiver (including presentation URL compatibility) is obtained from the
 application level protocol implemented on that endpoint.  The friendly name may
