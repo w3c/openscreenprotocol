@@ -63,12 +63,12 @@ software that is available as a Debian package.
 
 For SSDP, we will either:
 
-1. Fork and customize
-[libupnp](http://pupnp.sourceforge.net/) for the [Open Screen SSDP discovery
-protocol](../ssdp.md).
+1. Fork and customize [libupnp](http://pupnp.sourceforge.net/) for the
+[Open Screen SSDP discovery protocol](../ssdp.md).
 2. Write our own SSDP implementation from scratch, possibly based on the
-   [Chromium](https://cs.chromium.org/chromium/src/chrome/browser/media/router/discovery/dial/dial_service.h)
-   implementation.
+[Chromium](https://cs.chromium.org/chromium/src/chrome/browser/media/router/discovery/dial/dial_service.h)
+implementation or the [Fraunhofer FOKUS](https://github.com/fraunhoferfokus/peer-ssdp/blob/master/lib/peer-ssdp.js)
+SSDP implementation based on Node.js.
 
 As part of these implementations, we will instrument them to log data related to
 the Observables above, including (but not limited to):
@@ -125,6 +125,7 @@ additional congestion and packet loss, or simply move devices further away.
 ## SSDP specific
 
 * Interval between `M-SEARCH` requests.
+* Value of `MX` which is the maximum delay in an `M-SEARCH` response.
 
 ## mDNS specific
 
@@ -138,11 +139,32 @@ N = 30 times and the 50%, 75%, and 95% values computed, as well as time series.
 One experimental condition (the control) will have no senders or responders to
 collect baseline data.
 
-# Notes
+# Notes / Future Work
+
+## Mobile Device Benchmarking
 
 Power consumption measurement only makes sense as a relative measurement, and
 depends heavily on the power saving capabilities of a specific device.  We need
-to revisit this by designing power benchmarks that can be accurately collected
-on mobile phones.
+to revisit this by designing power benchmarks that can be run on mobile phones and
+mobile OSes (Android, iOS).  As a first approximation we can allow discovery to run
+to a steady state and look at the resulting battery level.
+
+[Issue #72: Investigate power consumption measurement](issues/72)
+
+### SSDP
+
+For benchmarking on mobile devices (e.g., for power consumption), the
+[Fraunhofer FOKUS Cordova Plugin](https://github.com/fraunhoferfokus/cordova-plugin-hbbtv/tree/master/src/android/ssdp)
+can be used as an SSDP responder.
+
+## Steady State Benchmarks
+
+The benchmarks proposed here are intended to run over the course of several minutes,
+until discovery hits a "steady state" and no new devices are discovered.  Benchmarks
+of network efficiency over the course of hours would also be informative, as most of
+the time devices on a network exist in a steady state.  For these benchmarks,
+different protocol-specific parameters may need to be investigated like `CACHE-CONTROL`
+for SSDP.
+
 
 
