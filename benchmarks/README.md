@@ -10,6 +10,7 @@ and [transport](../templates/transport.md).
 
 The following designs have been submitted:
 - [Discovery Protocol Benchmark Design](discovery.md)
+- [Transport Protocol Benchmark Design](transport.md)
 
 ## Results
 
