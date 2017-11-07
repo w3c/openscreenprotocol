@@ -300,7 +300,7 @@ efficiency and privacy.
 
 # Remote Playback API functionality
 
-[Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3): Add requirements for Remote Playback API.
+[Issue #3](../../issues/3): Add requirements for Remote Playback API.
 
 # Reliability
 
@@ -310,7 +310,7 @@ presentation display must re-broadcast advertisements periodically prior to
 expiration of the duration specified in the `CACHE-CONTROL` header (whose
 minimum value is 1800s).
 
-[Issue #26](https://github.com/webscreens/openscreenprotocol/issues/68): Get reliability data.
+[Issue #68](../../issues/68): Get reliability data.
 
 # Latency of device discovery / device removal
 
@@ -322,7 +322,7 @@ SSDP header which contains the maximum wait time in seconds (and must be between
 random duration between 0 and `MX` to balance load for the controlling user
 agent when it processes responses.
 
-[Issue #69](https://github.com/webscreens/openscreenprotocol/issues/69): Collect data on latency of discovery.
+[Issue #69](../../issues/69): Collect data on latency of discovery.
 
 # Network efficiency
 
@@ -354,7 +354,7 @@ If the controlling user agent needs to get only a snapshot of available
 displays, then it only needs to send a search message to the multicast address
 and listen for search response messages for 2-10 seconds.
 
-[Issue #26](https://github.com/webscreens/openscreenprotocol/issues/26): Get network and power efficiency data.
+[Issue #26](../../issues/26): Get network and power efficiency data.
 
 # Ease of implementation / deployment
 
@@ -461,7 +461,7 @@ of UDP sockets to prevent WAN exposure.
 
 This proposal should be specifically constrained and updated to prevent
 amplification, unicast M-SEARCH and IP spoofing, which are used to implement
-DDoS attacks with SSDP.  [Issue #57](https://github.com/webscreens/openscreenprotocol/issues/57): Update this spec accordingly
+DDoS attacks with SSDP.  [Issue #57](../../issues/57): Update this spec accordingly
 
 # Notes
 
