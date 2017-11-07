@@ -4,7 +4,7 @@
 a non-media transport protocol in the WebRTC framework, designed for exchanging
 data from peer to peer. It advertises the following benefits:
 
-- Implemented in major browsers (except Safari).
+- Implemented in major browsers.
 - Supports heterogeneous network environments, e.g., NAT, firewall.
 - Easily supports media transport for remote playback.
 - Data framing format is already defined.
