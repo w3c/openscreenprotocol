@@ -94,7 +94,7 @@ For receiver initiated termination:
 The WebRTC framework supports media codec negotiation and real-time media
 transport.
 
-[Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3): Fill in
+[Issue #3](../../issues/3): Fill in
 when Remote Playback requirements are known.
 
 # Reliability
@@ -102,7 +102,7 @@ when Remote Playback requirements are known.
 WebRTC is designed to be operated in a heterogeneous network environment, using
 ICE for address discovery and built-in negotiation/re-negotiation mechanism.
 
-[Issue #30](https://github.com/webscreens/openscreenprotocol/issues/30):
+[Issue #30](../../issues/30):
 Get reliability data.
 
 # Latency to establish a new connection
@@ -113,7 +113,7 @@ There are three sources of latency:
 3. Adding an additional Data Channel on top of an existing peer-to-peer
    connection.
 
-[Issue #31](https://github.com/webscreens/openscreenprotocol/issues/31):
+[Issue #31](../../issues/31):
 Get connection latency data.
 
 # Latency to transmit a message
@@ -122,7 +122,7 @@ Data Channel is based on SCTP, which allows for out of order packet delivery and
 may improve the latency to deliver presentation connection messages on a
 congested or lossy network.
 
-[Issue #31](https://github.com/webscreens/openscreenprotocol/issues/31):
+[Issue #31](../../issues/31):
 Get supporting data.
 
 # Ease of implementation / deployment
@@ -151,14 +151,14 @@ Data Channel depends on SCTP over UDP, which is supported for both IPv4 and IPv6
 Major desktop, laptop, and high-end mobile phone should be able to create single
 RTC connection since major browser on desktop and mobile already ship WebRTC.
 
-[Issue #32](https://github.com/webscreens/openscreenprotocol/issues/32):
+[Issue #32](../../issues/32):
 Obtain data on hardware requirements.
 
 # Network and power efficiency
 
 Maintaining a long-lived Data Channel might not be power efficient.
 
-[Issue #33](https://github.com/webscreens/openscreenprotocol/issues/33):
+[Issue #33](../../issues/33):
 Obtain data on network and power efficiency.
 
 # Standardization status
