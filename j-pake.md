@@ -54,9 +54,6 @@ could keep symmetric protocol architecture.
 
 *TODO*: consider which variant would be more suitable for Open Screen Protocol
 
-*TODO*: discuss whether negotiation for cryptographic parameters such as
-cipher suite, elliptic curve name, etc. is needed or not
-
 ### Common Key Generation
 
 As a result of two rounds of J-PAKE protocol, both Alice and Bob can
