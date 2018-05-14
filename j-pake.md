@@ -10,8 +10,10 @@ variants of J-PAKE protocol: J-PAKE over Finite Field and J-PAKE over
 Elliptic Curve. Their relationship is very similar to the relationship
 between DH and ECDH.
 
-*TODO*: consider whether supporting only J-PAKE over Elliptic Curve
-(ECJ-PAKE) would be sufficient or not
+Note that elliptic curve is generally recommended since
+elliptic curve cryptography requires much shorter key length than finite field cryptography
+to achieve the same level of cryptographic strength. For details, see
+[ECDSA: The digital signature algorithm of a better internet](https://blog.cloudflare.com/ecdsa-the-digital-signature-algorithm-of-a-better-internet/).
 
 ## Protocol Overview
 
@@ -20,7 +22,7 @@ respectively.
 
 ### Protocol Setup
 
-- `(gn, xn)` denotes a key pair of public key `gn` and a private key `xn` in finite field.
+- `(gn, xn)` denotes a key pair of public key `gn` and a private key `xn`.
 - Alice generates two key pairs, `(g1, x1)`, `(g2, x2)`.
 - Bob generates two key pairs, `(g3, x3)`, `(g4, x4)`.
 - Both Alice and Bob know the shared secret `s`.
@@ -33,11 +35,11 @@ respectively.
 J-PAKE protocol has two challenge rounds:
 
 - Round 1:
-  - Alice send `g1`, `g2`, and Zero Knowledge Proof (ZKP) for `x1`, `x2` to Bob
-  - Bob send `g3`, `g4`, and ZKP for `x3`, `x4`
+  - Alice sends `g1`, `g2`, and Zero Knowledge Proof (ZKP) for `x1`, `x2` to Bob
+  - Bob sends `g3`, `g4`, and ZKP for `x3`, `x4`
 - Round 2:
-  - Alice send `A = f(g1, g3, g4, x2*s)` and ZKP for `x2*s`
-  - Bob send `B = f(g1, g2, g3, x4*s)` and ZKP for `x4*s`
+  - Alice sends `A = f(g1, g3, g4, x2*s)` and ZKP for `x2*s`
+  - Bob sends `B = f(g1, g2, g3, x4*s)` and ZKP for `x4*s`
 
 While these two round requires 2 RTT,
 [Section 4](https://tools.ietf.org/html/rfc8236#section-4) in [RFC8236]
@@ -47,19 +49,32 @@ shows the three-pass variant, i.e. 1.5 RTT protocol:
 - Bob sends `g3`, `g4`, `B = f(g1, g2, g3, x4*s)`, and ZKP for `g3`, `g4`, `x4*s`
 - Alice sends `A = f(g1, g3, g4, x2*s)` and ZKP for `x2*s`
 
+The three-pass variant would be simpler to implement, while the two-round variant
+could keep symmetric protocol architecture.
+
+*TODO*: consider which variant would be more suitable for Open Screen Protocol
+
+*TODO*: discuss whether negotiation for cryptographic parameters such as
+cipher suite, elliptic curve name, etc. is needed or not
+
 ### Common Key Generation
 
 As a result of two rounds of J-PAKE protocol, both Alice and Bob can
 compute the common key with `A, x2, s` or `B, x4, s`.
+This step will be done when J-PAKE is used to generate common encryption key
+as well as to authenticate each other.
 
 Generally, it is recommended that the common key should finally be derived
-from a Key Derivation Function (KDF). For example, message encryption for
-Web Push [[RFC8291](https://datatracker.ietf.org/doc/rfc8291/)] uses
+from a Key Derivation Function (KDF). For example, TLS 1.3
+[[draft-ietf-tls-tls13-28](https://tools.ietf.org/html/draft-ietf-tls-tls13-28)]
+and message encryption for Web Push
+[[RFC8291](https://datatracker.ietf.org/doc/rfc8291/)] uses
 HMAC-based Key Derivation Function (HKDF)
 [[RFC5869](https://datatracker.ietf.org/doc/rfc5869/)]
 to generate the common encryption key.
 
-*TODO*: define detailed steps for common encryption key derivation
+*TODO*: clarify whether J-PAKE is needed for common key generation or not
+in Open Screen Protocol
 
 ## Incorporating J-PAKE into Open Screen Protocol
 
@@ -110,14 +125,22 @@ working group mailing list:
   ClientHello, which might remove all ability to do negotiation in TLS.
   [[TLS02](https://www.ietf.org/mail-archive/web/tls/current/msg20646.html)]
 
+Note that TLS 1.3
+[[draft-ietf-tls-tls13-28](https://tools.ietf.org/html/draft-ietf-tls-tls13-28)]
+offers 1- and 0-RTT handshake protocols and exchanges keys via ClientHello and
+ServerHello messages.
+
 ## Open Source Implementations
 
-- [NSS](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS) had
-  implementation of J-PAKE over Finite Field used by Firefox Sync, but it
-  was already discontinued.
 - [Mbed TLS](https://github.com/ARMmbed/mbedtls) has implementation of
   TLS-ECJ-PAKE. [OpenThread](https://github.com/openthread/openthread)
   refers to Mbed TLS to incorporate TLS-ECJ-PAKE into its protocol stack.
+- [Bouncy Castle Cryptography Library](https://www.bouncycastle.org/) has
+  [Java implementation of J-PAKE over Finite Field](https://www.bouncycastle.org/docs/docs1.5on/org/bouncycastle/crypto/agreement/jpake/package-summary.html).
+- Python 3 has implmementation of J-PAKE over Finite Field as a [Python3 module](https://pypi.org/project/jpake/).
+- [NSS](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS) had
+  implementation of J-PAKE over Finite Field used by Firefox Sync, but it
+  was already discontinued.
 
 ## Appendix: Protocol Details
 
@@ -138,7 +161,7 @@ DSA.
 Regarding a key pair `(D, d)`, ZKP for `d` is calculated by the following
 steps:
 
-- Randomly generate a key pair `(V, v)` (`0 &le; v &le; q-1`)
+- Randomly generate a key pair `(V, v)` (`0 ≤ v ≤ q-1`)
 - Generate `c = H(g || V || D || User_ID)`, note that `USER_ID` can be any
   pre-shared string
 - Compute `r = v - d * c mod q`
@@ -147,7 +170,7 @@ Then Alice sends `V` and `r` as ZKP for `d` to Bob.
 
 ZKP is verified by the following steps:
 
-- Verify `1 &le; D &le; p-1`, `D^q = 1 mod p`, and `D != 1 mod p`
+- Verify `1 ≤ D ≤ p-1`, `D^q = 1 mod p`, and `D != 1 mod p`
 - Verify `V = g^r * D^c mod p`
 
 #### J-PAKE over Finite Field: Round 2
@@ -179,7 +202,7 @@ P-521, etc.
 Regarding a key pair `(D, d)`, ZKP for `d` is calculated by the following
 steps:
 
-- Randomly generate a key pair `(V, v)` (`0 &le; v &le; n-1`)
+- Randomly generate a key pair `(V, v)` (`0 ≤ v ≤ n-1`)
 - Generate `c = H(G || V || D || User_ID)`, note that `USER_ID` can be any
   pre-shared string
 - Compute `r = v - d * c mod n`
