@@ -360,8 +360,8 @@ and listen for search response messages for 2-10 seconds.
 
 It is very easy to implement the SSDP protocol, as it is based soley on UDP and
 the messages are easy to create and parse. Examples of open source implementations:
-* [libupnp](http://pupnp.sourceforge.net/) (Java)
-* [peer-ssdp](https://github.com/fraunhoferfokus/peer-ssdp) (Node.js)
+* [libupnp](http://pupnp.sourceforge.net/) (C Library)
+* [peer-ssdp](https://github.com/fraunhoferfokus/peer-ssdp) (Node.js Library)
 
 # IPv4 and IPv6 support
 
