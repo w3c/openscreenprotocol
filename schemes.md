@@ -24,7 +24,15 @@ This example provides three urls with different schemes: `hbbtv`, `https` and `c
 
 ## Extensibility
 
-The mechanism of using schemes in the OSP allows to extend the supported application types on receiver devices. For example Android TV can implement the OSP (receiver part) for native TV applications in the future e.g. using the scheme `android` (the TV App uses in this case a native library that implements the OSP with similar interface to Presentation API). There is no need to update/extend the controlling UA to support new schemes.
+The mechanism of using schemes in the OSP allows to extend the supported application types on receiver devices. For example Android TV can implement the OSP (receiver part) for native TV applications in the future e.g. using the scheme `android` (the TV App uses in this case a native library that implements the OSP with similar interface to Presentation API). There is no need to update/extend the controlling UA to support new schemes, but it is up to the vendor of controlling UA to white/blacklist specific url schemes. 
 
+## Scheme based filtering
 
+As discussed before, schemes can be used as a mechanism to filter devices during discovery. Two possible options:
 
+1. The controlling UA sends the list requested schemes in the discovery request and receivers that support at least one scheme from the requested list should reply. Furthermore, discovery response of the receiver should include a sublist of supported schemes. 
+2. The controller UA don't send any scheme in the discovery request. The receiving UA should reply to any discovery request with a list of all supported schemes. The controlling UA matches the list of requested schemes with the list of supported schemes from each receiver to decide which device to consider.
+
+## HbbTV scheme
+
+The example above shows the usage of `hbbtv` scheme. Basically, all required parameters to address an HbbTV application on the terminal can be serialized as url query parameters. The HbbTV url in the example above contains the parameters `appId` (application ID) , `orgId` (organization ID), `appName` (application name) and `appUrl` (application URL), but other parameters can be supported in the same way. A receiver that advertises itself (e.g. Receiver Device 1 depicted in the figure above) as a HbbTV terminal should use the scheme `hbbtv` during discovery.
