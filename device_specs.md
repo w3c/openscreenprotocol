@@ -50,4 +50,4 @@ devices would not be likely to encounter hardware limitations.
 - 10BASE-T / 100BASE-TX Ethernet
 - [More details](https://www.displayspecifications.com/en/model/7e5a14a)
 
-*TODO: Typical 2015 smart TV, Android TV stick*
+*TODO: Android TV stick*
