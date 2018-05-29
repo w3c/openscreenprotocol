@@ -42,4 +42,12 @@ devices would not be likely to encounter hardware limitations.
 - 1GB DRAM
 - 10/100base-T Ethernet via USB
 
-*TODO: Typical 2015 smart TV, Android TV stick*
+### [Sony KDL-43W756C Smart 43-inch Full HD TV (Android TV)](https://www.sony.co.uk/electronics/support/televisions-projectors-lcd-tvs-android-/kdl-43w756c/specifications)
+
+- CPU: MediaTek MT5890 32-bit dual-core ARM Cortex-A17 @ 1 GHz
+- Memory ?
+- IEEE 802.11 a/b/g/n WiFi
+- 10BASE-T / 100BASE-TX Ethernet
+- [More details](https://www.displayspecifications.com/en/model/7e5a14a)
+
+*TODO: Android TV stick*
