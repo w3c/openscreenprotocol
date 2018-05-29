@@ -316,11 +316,15 @@ minimum value is 1800s).
 
 New presentation displays added or removed can be immediately detected if the
 controlling user agent listens to the multicast address for `ssdp:alive` and
-`ssdp:byebye` messages. For search requests, the latency depends on the `MX`
-SSDP header which contains the maximum wait time in seconds (and must be between
-1 and 5 seconds).  SSDP responses from presentation displays should be delayed a
-random duration between 0 and `MX` to balance load for the controlling user
-agent when it processes responses.
+`ssdp:byebye` messages.
+
+For search requests, the latency depends on the `MX` SSDP header which contains
+the maximum wait time in seconds (and must be between 1 and 5 seconds).  SSDP
+responses from presentation displays should be delayed a random duration between
+0 and `MX` to balance load for the controlling user agent when it processes responses.
+
+Chrome sets an `MX` value of 2 seconds for its implementation of SSDP for DIAL
+([code reference](https://cs.chromium.org/chromium/src/chrome/browser/media/router/discovery/dial/dial_service.cc?rcl=43fcb5eb66460fb63755f3a9383e4a6131afcc82&l=103)).
 
 [Issue #69](../../issues/69): Collect data on latency of discovery.
 
