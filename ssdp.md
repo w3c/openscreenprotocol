@@ -359,11 +359,9 @@ and listen for search response messages for 2-10 seconds.
 # Ease of implementation / deployment
 
 It is very easy to implement the SSDP protocol, as it is based soley on UDP and
-the messages are easy to create and parse.  Fraunhofer FOKUS offers two open
-source implementations:
-* [peer-ssdp](https://github.com/fraunhoferfokus/peer-ssdp) for Node.js
-* [cordova plugin](https://github.com/fraunhoferfokus/cordova-plugin-hbbtv/tree/master/src/android/ssdp)
-for Android
+the messages are easy to create and parse. Examples of open source implementations:
+* [libupnp](http://pupnp.sourceforge.net/) (C Library)
+* [peer-ssdp](https://github.com/fraunhoferfokus/peer-ssdp) (Node.js Library)
 
 # IPv4 and IPv6 support
 
