@@ -313,6 +313,10 @@ receiver.
 
 **TODO**: Add messages for this based on conclusion to [Issue #21](issues/21).
 
+Note that the URLs sent by the Presentation Availability Request may contain
+custom (non-https) schemes.  Please review [Schemes and Open Screen
+Protocol](schemes.md) for how custom schemes are handled in OSP.
+
 #### Presentation Display Availablity Response
 
 The receiver shall send a response for each Presentation Display Availability
@@ -405,6 +409,10 @@ Byte Offset
   of the presentation URL.
 - `URL_CONTENT` is the presentation URL, encoded according to RFC 3986.  This
   field must be exactly `URL_LENGTH` bytes in length.
+
+Note that the URL sent in the Presentation Initiation Request may contain a
+custom (non-https) scheme.  Please review [Schemes and Open Screen
+Protocol](schemes.md) for how custom schemes are handled in OSP.
 
 #### Presentation Initiation Response
 
