@@ -461,9 +461,25 @@ and undergo
 to evaluate input handling.  These implementations should have careful handling
 of UDP sockets to prevent WAN exposure.
 
-This proposal should be specifically constrained and updated to prevent
-amplification, unicast M-SEARCH and IP spoofing, which are used to implement
-DDoS attacks with SSDP.  [Issue #57](../../issues/57): Update this spec accordingly
+Open Screen Protocol implementations of SSDP must be designed to block
+amplification attacks, even in the case of firewalls that leave port 1900 open.
+Specifically:
+
+* They MUST ignore any unicast `M-SEARCH` request, that does not arrive via the
+  IPv4 or IPv6 multicast address.
+* They MUST ignore any `M-SEARCH` request whose source IP is not part of the
+  Open Screen receiver's subnet.
+* `M-SEARCH` responses MUST only be sent to IP addresses that are part of the
+  Open Screen receiver's subnet.
+* They MUST ignore any `M-SEARCH` request with a `ST` other than the specific
+  target for Open Screen.
+  * Specifically, any request for a `ST` of `ssdp:all` MUST be ignored.
+* Open Screen Receivers SHOULD ignore `M-SEARCH` requests from IP addresses that
+  are not [RFC1918](https://tools.ietf.org/html/rfc1918) or
+  [RFC4193](https://tools.ietf.org/html/rfc4193.html) private addresses.
+  Responses SHOULD be sent only to these addresses.
+    * This restriction SHOULD be end user configurable, as some LANs re-use the
+      public IP address space.
 
 # Notes
 
