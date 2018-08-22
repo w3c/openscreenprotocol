@@ -1,0 +1,46 @@
+<pre class='metadata'>
+Title: Open Screen Protocol
+Shortname: openscreenprotocol
+Level: 1
+Status: w3c/ED
+URL: https://webscreens.github.io/openscreenprotocol/
+Canonical URL: ED
+Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
+Repository: webscreens/openscreenprotocol
+Abstract: The Open Screen Protocol is a layered series of network protocols that allow user agents to implement the Presentation API and the Remote Playback API in an interoperable fashion.
+Group: Second Screen Community Group
+Mailing List: public-webscreens@w3c.org
+Mailing List Archives: https://lists.w3.org/Archives/Public/public-webscreens/
+Markup Shorthands: markdown yes
+</pre>
+
+Status of this Document {#status}
+=================================
+
+Introduction {#introduction}
+============================
+
+Use Cases and Requirements {#requirements}
+==========================================
+
+Terminology {#terminology}
+==========================
+
+Receiver Discovery {#discovery}
+===============================
+
+Transport Establishment {#transport}
+====================================
+
+Authentication {#authentication}
+================================
+
+Presentation API Protocol {#presentation-api}
+=============================================
+
+Remote Playback API Protocol {#remote-playback}
+===============================================
+
+Security and Privacy {#security}
+================================
+
