@@ -42,7 +42,7 @@ capabilities can be added over time.
 Requirements {#requirements}
 ==========================
 
-TODO: Incorporate and elaborate on material from the [Requirements](requirements.md)
+Issue(99): Incorporate and elaborate on material from the [Requirements](requirements.md)
 document.
 
 Terminology {#terminology}
@@ -51,17 +51,17 @@ Terminology {#terminology}
 Receiver Discovery {#discovery}
 ===============================
 
-TODO: Incorporate material from the [mDNS](mdns.md) document.
+Issue(100): Incorporate material from the [mDNS](mdns.md) document.
 
 Transport Establishment {#transport}
 ====================================
 
-TODO: Incorporate material from the \[QUIC](quic.md) document.
+Issue(101): Incorporate material from the \[QUIC](quic.md) document.
 
 Authentication {#authentication}
 ================================
 
-TODO: Incorporate material from the \[J-PAKE](j-pake.md) document.
+Issue(102): Incorporate material from the \[J-PAKE](j-pake.md) document.
 
 Control Protocols {#control}
 ============================
