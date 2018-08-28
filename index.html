@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 454724823b153983cf241cda29cb9a5620a857bf" name="generator">
+  <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="3a170bd00c247585e5a9b86b9460963fb9e1639d" name="document-revision">
+  <meta content="0da4eb33a5763e80ce962ae74166b37e21bf26b3" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1254,6 +1254,43 @@ figcaption {
 figcaption:not(.no-marker)::before {
     content: "Figure " counter(figure) " ";
 }</style>
+<style>/* style-dfn-panel */
+
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    height: auto;
+    width: -webkit-fit-content;
+    width: fit-content;
+    max-width: 300px;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: #DDDDDD;
+    color: black;
+    border: outset 0.2em;
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: black; }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0; }
+.dfn-panel li { list-style: inside; }
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: .5em;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+}
+
+.dfn-paneled { cursor: pointer; }
+</style>
 <style>/* style-selflinks */
 
 .heading, .issue, .note, .example, li, dt {
@@ -1366,7 +1403,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-08-27">27 August 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-08-28">28 August 2018</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1386,18 +1423,24 @@ pre .property::before, pre .property::after {
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>The Open Screen Protocol is a layered series of network protocols that allow user agents to implement the Presentation API and the Remote Playback API in an interoperable fashion.</p>
+   <p>The Open Screen Protocol is a suite of network protocols that allow user agents to implement the Presentation API and the Remote Playback API in an interoperable fashion.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
     <li><a href="#status"><span class="secno">1</span> <span class="content">Status of this Document</span></a>
-    <li><a href="#introduction"><span class="secno">2</span> <span class="content">Introduction</span></a>
+    <li>
+     <a href="#introduction"><span class="secno">2</span> <span class="content">Introduction</span></a>
+     <ol class="toc">
+      <li><a href="#terminology"><span class="secno">2.1</span> <span class="content">Terminology</span></a>
+     </ol>
     <li>
      <a href="#requirements"><span class="secno">3</span> <span class="content">Requirements</span></a>
      <ol class="toc">
-      <li><a href="#terminology"><span class="secno">3.1</span> <span class="content">Terminology</span></a>
+      <li><a href="#requirements-presentation-api"><span class="secno">3.1</span> <span class="content">Presentation API Requirements</span></a>
+      <li><a href="#requirements-remote-playback"><span class="secno">3.2</span> <span class="content">Remote Playback API Requirements</span></a>
+      <li><a href="#requirements-non-functional"><span class="secno">3.3</span> <span class="content">Non-Functional Requirements</span></a>
      </ol>
     <li><a href="#discovery"><span class="secno">4</span> <span class="content">Receiver Discovery</span></a>
     <li><a href="#transport"><span class="secno">5</span> <span class="content">Transport Establishment</span></a>
@@ -1417,6 +1460,11 @@ pre .property::before, pre .property::after {
      </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
+    <li>
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
@@ -1432,16 +1480,154 @@ viewed as a stable specification, and may change in substantial ways at any
 time.  A future version of this document will be published as a Community Group
 Report.</p>
    <h2 class="heading settled" data-level="2" id="introduction"><span class="secno">2. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
-   <p>The Open Screen Protocol describes a layered set of network protocols that
-enable two user agents to implement the Presentation API and Remote Playback
-APIs in an interoperable fashion.  This means that a user can expect the APIs
-work as intended when connecting two devices from independent implementations of
-the Open Screen Protocol.</p>
+   <p>The Open Screen Protocol connects browsers to devices capable of rendering Web
+content for a shared audience.  Typically, these are devices like
+Internet-connected TVs, HDMI dongles, or "smart" speakers.</p>
+   <p>The protocol is suite of subsidiary network protocols that enable two user
+agents to implement the <a href="https://w3c.github.io/presentation-api/">Presentation
+API</a> and <a href="https://w3c.github.io/remote-playback/">Remote Playback
+API</a> in an interoperable fashion.  This
+means that a user can expect these APIs work as intended when connecting two
+devices from independent implementations of the Open Screen Protocol.</p>
+   <p>The Open Screen Protocol is a specific implementation of these two APIs, meaning
+that it does not handle all possible ways that browsers and presentation
+displays could support these APIs.  The Open Screen Protocol specifically
+supports browsers and displays that are connected via the same local area
+network, and that initiate presentation or remote playback by sending a URL
+from the browser to the target display.</p>
    <p>The Open Screen Protocol is intended to be extensible, so that additional
-capabilities can be added over time.</p>
+capabilities can be added over time.  This may include new implementations of
+existing APIs, or new APIs.</p>
+   <h3 class="heading settled" data-level="2.1" id="terminology"><span class="secno">2.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
+   <p>We borrow terminology from the <a href="https://w3c.github.io/presentation-api/">Presentation
+API</a> and <a href="https://w3c.github.io/remote-playback/">Remote Playback
+API</a> for terms used in this document.
+These terms are summarized here.</p>
+   <p>We call the browser that is used to discover and initiate presentation of Web
+content on another device the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent">controlling user agent</a>.  We call the
+user agent on the device rendering the Web content the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent">receiving user agent</a>, or <em>receiver</em> for short.  We use
+the term <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display" id="ref-for-dfn-presentation-display">presentation display</a> to refer to the entire platform and
+responsible for implementing the <em>receiver</em>, including browser, OS, networking,
+audio and graphics.</p>
+   <p>For the Presentation API, presentation of Web content is initiated at the
+request of a <a data-link-type="dfn" data-local-lt="controller" href="https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context" id="ref-for-dfn-controlling-browsing-context">controlling browsing context</a>, (or <em>controller</em>), which creates a <a data-link-type="dfn" data-local-lt="presentation" href="https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context" id="ref-for-dfn-receiving-browsing-context">receiving browsing
+context</a> (or <em>presentation</em>) to load a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a> and
+exchange messages with the resulting document.</p>
+   <p>Before this can happen, the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agent</a> must determine which <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver">receivers</a>, if any, are compatible with the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a>.  This
+happens by determining the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display-availability" id="ref-for-dfn-presentation-display-availability">presentation display availability</a> for the
+presentation request URL.</p>
+   <p>For the Remote Playback API, the device responsible for rendering the content of
+a <a data-link-type="dfn" href="https://www.w3.org/TR/html51/single-page.html#media-element" id="ref-for-media-element">media element</a> when remote playback is connected is called the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device" id="ref-for-dfn-remote-playback-device">remote
+playback device</a>.</p>
+   <p>For additional terms and idioms specific to the Presentation API or Remote
+Playback API, please consult the respective specifications.</p>
    <h2 class="heading settled" data-level="3" id="requirements"><span class="secno">3. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
-   <p class="issue" id="issue-e92c6eb2"><a class="self-link" href="#issue-e92c6eb2"></a> Incorporate and elaborate on material from the <a href="requirements.md">Requirements</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/99">&lt;https://github.com/webscreens/openscreenprotocol/issues/99></a></p>
-   <h3 class="heading settled" data-level="3.1" id="terminology"><span class="secno">3.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
+   <h3 class="heading settled" data-level="3.1" id="requirements-presentation-api"><span class="secno">3.1. </span><span class="content">Presentation API Requirements</span><a class="self-link" href="#requirements-presentation-api"></a></h3>
+   <ol>
+    <li data-md>
+     <p>A controlling user agent must be able to discover the presence of a
+presentation display connected to the same IPv4 or IPv6 subnet and reachable
+by IP multicast.</p>
+    <li data-md>
+     <p>A controlling user agent must be able to obtain the IPv4 or IPv6 address of
+the display, a friendly name for the display, and an IP port number for
+establishing a network transport to the display.</p>
+    <li data-md>
+     <p>A controlling user agent must be able to determine if the receiver is
+reasonably capable of rendering a specific <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request URL</a>.</p>
+    <li data-md>
+     <p>A controlling user agent must be able to start a new presentation on a receiver given a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url③">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id">presentation ID</a>.</p>
+    <li data-md>
+     <p>A controlling user agent must be able to create a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection">PresentationConnection</a></code> to an existing presentation on the
+receiver, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url④">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id①">presentation ID</a>.</p>
+    <li data-md>
+     <p>It must be possible to to close a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection①">PresentationConnection</a></code> between a
+controller and a presentation, and signal both parties with the
+reason why the connection was closed.</p>
+    <li data-md>
+     <p>Multiple controllers must be able to connect to a single presentation
+simultaneously, possibly from from one or more <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agents</a>.</p>
+    <li data-md>
+     <p>Messages sent by the controller must be delivered to the presentation (or
+vice versa) in a reliable and in-order fashion.</p>
+    <li data-md>
+     <p>If a message cannot be delivered, then the controlling user agent must be
+able to signal the receiver (or vice versa) that the connection should be
+closed with reason <code>error</code>.</p>
+    <li data-md>
+     <p>The controller and presentation must be able to send and receive <code>DOMString</code> messages (represented as <code>string</code> type in ECMAScript).</p>
+    <li data-md>
+     <p>The controller and presentation must be able to send and receive binary
+messages (represented as <code>Blob</code> objects in HTML5, or <code>ArrayBuffer</code> or <code>ArrayBufferView</code> types in ECMAScript).</p>
+    <li data-md>
+     <p>The controlling user agent must be able to signal to the receiver to
+terminate a presentation, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url⑤">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id②">presentation
+ID</a>.</p>
+    <li data-md>
+     <p>The receiver must be able to signal all connected controlling user agents
+when a presentation is terminated.</p>
+   </ol>
+   <h3 class="heading settled" data-level="3.2" id="requirements-remote-playback"><span class="secno">3.2. </span><span class="content">Remote Playback API Requirements</span><a class="self-link" href="#requirements-remote-playback"></a></h3>
+   <p class="issue" id="issue-a1f35a95"><a class="self-link" href="#issue-a1f35a95"></a> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a></p>
+   <h3 class="heading settled" data-level="3.3" id="requirements-non-functional"><span class="secno">3.3. </span><span class="content">Non-Functional Requirements</span><a class="self-link" href="#requirements-non-functional"></a></h3>
+   <ol>
+    <li data-md>
+     <p>It should be possible to implement an Open Screen presentation display using
+modest hardware requirements, similar to what is found in a low end
+smartphone, smart TV or streaming device. See the <a href="device_specs.md">Device
+Specifications</a> document for expected presentation display
+hardware specifications.</p>
+    <li data-md>
+     <p>It should be possible to implement an Open Screen controlling user agent on a
+low-end smartphone. See the <a href="device_specs.md">Device Specifications</a> document
+for expected controlling user agent hardware specifications.</p>
+    <li data-md>
+     <p>The discovery and connection protocols should minimize power consumption,
+especially on the controlling user agent which is likely to be battery
+powered.</p>
+    <li data-md>
+     <p>The protocol should minimize the amount of information provided to a passive
+network observer about the identity of the user, activity on the controlling
+user agent and activity on the receiver.</p>
+    <li data-md>
+     <p>The protocol should prevent passive network eavesdroppers from learning
+presentation URLs, presentation IDs, or the content of presentation messages
+passed between controllers and presentations.</p>
+    <li data-md>
+     <p>The protocol should prevent active network attackers from impersonating a
+display and observing or altering data intended for the controller or
+presentation.</p>
+    <li data-md>
+     <p>The controlling user agent should be able to discover quickly when a
+presentation display becomes available or unavailable (i.e., when it connects
+or disconnects from the network).</p>
+    <li data-md>
+     <p>The controlling user agent should present sensible information to the user
+when a protocol operation fails.  For example, if a controlling user agent is
+unable to start a presentation, it should be possible to report in the
+controlling user agent interface if it was a network error, authentication
+error, or the presentation content failed to load.</p>
+    <li data-md>
+     <p>The controlling user agent should be able to remember authenticated
+presentation displays.  This means it is not required for the user to
+intervene and re-authenticate each time the controlling user agent connects
+to a pre-authenticated display.</p>
+    <li data-md>
+     <p>Message latency between the controller and a presentation should be minimized
+to permit interactive use.  For example, it should be comfortable to type in
+a form in the controller and have the text appear in the presentation in real
+time.  Real-time latency for gaming or mouse use is ideal, but not a
+requirement.</p>
+    <li data-md>
+     <p>The controlling user agent initiating a presentation should communicate its
+preferred locale to the receiver, so it can render the presentation content
+in that locale.</p>
+    <li data-md>
+     <p>It should be possible to extend the control protocol (above the discovery and
+transport levels) with optional features not defined explicitly by the
+specification, to facilitate experimentation and enhancement of the base
+APIs.</p>
+   </ol>
    <h2 class="heading settled" data-level="4" id="discovery"><span class="secno">4. </span><span class="content">Receiver Discovery</span><a class="self-link" href="#discovery"></a></h2>
    <p class="issue" id="issue-b7e254cb"><a class="self-link" href="#issue-b7e254cb"></a> Incorporate material from the <a href="mdns.md">mDNS</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/100">&lt;https://github.com/webscreens/openscreenprotocol/issues/100></a></p>
    <h2 class="heading settled" data-level="5" id="transport"><span class="secno">5. </span><span class="content">Transport Establishment</span><a class="self-link" href="#transport"></a></h2>
@@ -1608,15 +1794,123 @@ Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/1
 
 })();
 </script>
+  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <aside class="dfn-panel" data-for="term-for-media-element">
+   <a href="https://www.w3.org/TR/html51/single-page.html#media-element">https://www.w3.org/TR/html51/single-page.html#media-element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-media-element">2.1. Terminology</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-presentationconnection">
+   <a href="https://w3c.github.io/presentation-api/#presentationconnection">https://w3c.github.io/presentation-api/#presentationconnection</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentationconnection">3.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-controlling-browsing-context">
+   <a href="https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context">https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-controlling-browsing-context">2.1. Terminology</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-controlling-user-agent">
+   <a href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent">https://w3c.github.io/presentation-api/#dfn-controlling-user-agent</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-controlling-user-agent">2.1. Terminology</a> <a href="#ref-for-dfn-controlling-user-agent①">(2)</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent②">3.1. Presentation API Requirements</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-presentation-display">
+   <a href="https://w3c.github.io/presentation-api/#dfn-presentation-display">https://w3c.github.io/presentation-api/#dfn-presentation-display</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-presentation-display">2.1. Terminology</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-presentation-display-availability">
+   <a href="https://w3c.github.io/presentation-api/#dfn-presentation-display-availability">https://w3c.github.io/presentation-api/#dfn-presentation-display-availability</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-presentation-display-availability">2.1. Terminology</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-presentation-id">
+   <a href="https://w3c.github.io/presentation-api/#dfn-presentation-id">https://w3c.github.io/presentation-api/#dfn-presentation-id</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-presentation-id">3.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
+   <a href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url">https://w3c.github.io/presentation-api/#dfn-presentation-request-url</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-presentation-request-url">2.1. Terminology</a> <a href="#ref-for-dfn-presentation-request-url①">(2)</a>
+    <li><a href="#ref-for-dfn-presentation-request-url②">3.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-request-url③">(2)</a> <a href="#ref-for-dfn-presentation-request-url④">(3)</a> <a href="#ref-for-dfn-presentation-request-url⑤">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-receiver">
+   <a href="https://w3c.github.io/presentation-api/#dfn-receiver">https://w3c.github.io/presentation-api/#dfn-receiver</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-receiver">2.1. Terminology</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-receiving-browsing-context">
+   <a href="https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context">https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-receiving-browsing-context">2.1. Terminology</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-receiving-user-agent">
+   <a href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent">https://w3c.github.io/presentation-api/#dfn-receiving-user-agent</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-receiving-user-agent">2.1. Terminology</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-device">
+   <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device">https://w3c.github.io/remote-playback/#dfn-remote-playback-device</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-remote-playback-device">2.1. Terminology</a>
+   </ul>
+  </aside>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[html51]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-media-element" style="color:initial">media element</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-presentationconnection" style="color:initial">PresentationConnection</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-controlling-browsing-context" style="color:initial">controlling browsing context</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-controlling-user-agent" style="color:initial">controlling user agent</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-presentation-display" style="color:initial">presentation display</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-presentation-display-availability" style="color:initial">presentation display availability</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-presentation-id" style="color:initial">presentation id</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-presentation-request-url" style="color:initial">presentation request url</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-receiver" style="color:initial">receiver</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-receiving-browsing-context" style="color:initial">receiving browsing context</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-receiving-user-agent" style="color:initial">receiving user agent</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[REMOTE-PLAYBACK]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-device" style="color:initial">remote playback device</span>
+    </ul>
+  </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-html51">[HTML51]
+   <dd>Steve Faulkner; et al. <a href="https://www.w3.org/TR/html51/">HTML 5.1 2nd Edition</a>. 3 October 2017. REC. URL: <a href="https://www.w3.org/TR/html51/">https://www.w3.org/TR/html51/</a>
+   <dt id="biblio-presentation-api">[PRESENTATION-API]
+   <dd>Mark Foltz; Dominik Röttsches. <a href="https://www.w3.org/TR/presentation-api/">Presentation API</a>. 01 June 2017. CR. URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
+   <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
+   <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/">Remote Playback API</a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Incorporate and elaborate on material from the <a href="requirements.md">Requirements</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/99">&lt;https://github.com/webscreens/openscreenprotocol/issues/99></a><a href="#issue-e92c6eb2"> ↵ </a></div>
+   <div class="issue"> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a><a href="#issue-a1f35a95"> ↵ </a></div>
    <div class="issue"> Incorporate material from the <a href="mdns.md">mDNS</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/100">&lt;https://github.com/webscreens/openscreenprotocol/issues/100></a><a href="#issue-b7e254cb"> ↵ </a></div>
    <div class="issue"> Incorporate material from the <a href="quic.md">QUIC</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/101">&lt;https://github.com/webscreens/openscreenprotocol/issues/101></a><a href="#issue-e6fb7d40"> ↵ </a></div>
    <div class="issue"> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a><a href="#issue-7d8c18ff"> ↵ </a></div>
@@ -1627,3 +1921,59 @@ exchanging control messages, results, and events. <a href="https://github.com/we
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a><a href="#issue-eaed3698"> ↵ </a></div>
    <div class="issue"> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a><a href="#issue-ab35c2a2"> ↵ </a></div>
   </div>
+<script>/* script-dfn-panel */
+
+document.body.addEventListener("click", function(e) {
+    var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+    // Find the dfn element or panel, if any, that was clicked on.
+    var el = e.target;
+    var target;
+    var hitALink = false;
+    while(el.parentElement) {
+        if(el.tagName == "A") {
+            // Clicking on a link in a <dfn> shouldn't summon the panel
+            hitALink = true;
+        }
+        if(el.classList.contains("dfn-paneled")) {
+            target = "dfn";
+            break;
+        }
+        if(el.classList.contains("dfn-panel")) {
+            target = "dfn-panel";
+            break;
+        }
+        el = el.parentElement;
+    }
+    if(target != "dfn-panel") {
+        // Turn off any currently "on" or "activated" panels.
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
+            el.classList.remove("on");
+            el.classList.remove("activated");
+        });
+    }
+    if(target == "dfn" && !hitALink) {
+        // open the panel
+        var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
+        if(dfnPanel) {
+            dfnPanel.classList.add("on");
+            var rect = el.getBoundingClientRect();
+            dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
+            dfnPanel.style.top = window.scrollY + rect.top + "px";
+            var panelRect = dfnPanel.getBoundingClientRect();
+            var panelWidth = panelRect.right - panelRect.left;
+            if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
+                // Reposition, because the panel is overflowing
+                dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
+            }
+        } else {
+            console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
+        }
+    } else if(target == "dfn-panel") {
+        // Switch it to "activated" state, which pins it.
+        el.classList.add("activated");
+        el.style.left = null;
+        el.style.top = null;
+    }
+
+});
+</script>
