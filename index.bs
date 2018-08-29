@@ -1,0 +1,99 @@
+<pre class='metadata'>
+Title: Open Screen Protocol
+Shortname: openscreenprotocol
+Level: 1
+Status: w3c/ED
+ED: https://webscreens.github.io/openscreenprotocol/
+Canonical URL: ED
+Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
+Repository: webscreens/openscreenprotocol
+Abstract: The Open Screen Protocol is a layered series of network protocols that allow user agents to implement the Presentation API and the Remote Playback API in an interoperable fashion.
+Group: Second Screen Community Group
+Mailing List: public-webscreens@w3c.org
+Mailing List Archives: https://lists.w3.org/Archives/Public/public-webscreens/
+Markup Shorthands: markdown yes
+</pre>
+
+<p boilerplate="copyright">
+<a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © [YEAR] <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a> rules apply.
+</p>
+
+Status of this Document {#status}
+=================================
+
+This document reflects a snapshot of the work product of the [Second Screen
+Community Group](https://www.w3.org/community/webscreens/).  It should not be
+viewed as a stable specification, and may change in substantial ways at any
+time.  A future version of this document will be published as a Community Group
+Report.
+
+Introduction {#introduction}
+============================
+
+The Open Screen Protocol describes a layered set of network protocols that
+enable two user agents to implement the Presentation API and Remote Playback
+APIs in an interoperable fashion.  This means that a user can expect the APIs
+work as intended when connecting two devices from independent implementations of
+the Open Screen Protocol.
+
+The Open Screen Protocol is intended to be extensible, so that additional
+capabilities can be added over time.
+
+Requirements {#requirements}
+==========================
+
+Issue(99): Incorporate and elaborate on material from the [Requirements](requirements.md)
+document.
+
+Terminology {#terminology}
+--------------------------
+
+Receiver Discovery {#discovery}
+===============================
+
+Issue(100): Incorporate material from the [mDNS](mdns.md) document.
+
+Transport Establishment {#transport}
+====================================
+
+Issue(101): Incorporate material from the \[QUIC](quic.md) document.
+
+Authentication {#authentication}
+================================
+
+Issue(102): Incorporate material from the \[J-PAKE](j-pake.md) document.
+
+Control Protocols {#control}
+============================
+
+Issue(77): Describe CBOR based mechanism for
+exchanging control messages, results, and events.
+
+Presentation API Protocol {#presentation-api}
+---------------------------------------------
+
+Issue(55): Incorporate material from the
+[Protocol](protocol.md) document.
+
+Remote Playback API Protocol {#remote-playback}
+-----------------------------------------------
+
+Issue(12): Propose control protocol for Remote
+Playback API.
+
+Security and Privacy {#security}
+================================
+
+Issue(13): Describe security architecture.
+
+Data to be secured {#security-data}
+-----------------------------------
+
+Threat model {#security-threat}
+-------------------------------
+
+Mitigations and defenses {#security-defenses}
+---------------------------------------------
+
+
+
