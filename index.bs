@@ -41,44 +41,6 @@ urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML5
     text: media element
 </pre>
 
-<pre class="biblio">
-{
-	"PRESENTATION-API": {
-		"authors": [
-			"Mark Foltz",
-			"Dominik Röttsches"
-		],
-		"href": "https://www.w3.org/TR/presentation-api/",
-                "date": "01 June 2017",
-                "edDraft": "https://w3c.github.io/presentation-api/",
-                "repository": "https://github.com/w3c/presentation-api/",
-		"title": "Presentation API",
-		"status": "CR",
-		"publisher": "W3C",
-		"deliveredBy": [
-			"https://www.w3.org/2014/secondscreen/"
-		]
-	},
-	"REMOTE-PLAYBACK": {
-		"authors": [
-			"Mounir Lamouri",
-			"Anton Vayvod"
-		],
-		"href": "https://www.w3.org/TR/remote-playback/",
-                "date": "19 October 2017",
-                "edDraft": "https://w3c.github.io/remote-playback/",
-                "repository": "https://github.com/w3c/remote-playback/",
-		"title": "Remote Playback API",
-		"status": "CR",
-		"publisher": "W3C",
-		"deliveredBy": [
-			"https://www.w3.org/2014/secondscreen/"
-		]
-	}
-}
-</pre>
-
-
 Status of this Document {#status}
 =================================
 
