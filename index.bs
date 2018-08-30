@@ -130,10 +130,9 @@ responsible for implementing the *receiver*, including browser, OS, networking,
 audio and graphics.
 
 For the Presentation API, presentation of Web content is initiated at the
-request of a <a local-lt="controller">controlling browsing context</a>, (or
-*controller*), which creates a <a local-lt="presentation">receiving browsing
-context</a> (or *presentation*) to load a [=presentation request URL=] and
-exchange messages with the resulting document.
+request of a [=controlling browsing context=] (or *controller*), which creates
+a [=receiving browsing context=] (or *presentation*) to load a [=presentation
+request URL=] and exchange messages with the resulting document.
 
 Before this can happen, the [=controlling user agent=] must determine which
 [=receivers=], if any, are compatible with the [=presentation request URL=].  This
