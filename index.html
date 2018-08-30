@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 454724823b153983cf241cda29cb9a5620a857bf" name="generator">
+  <meta content="Bikeshed version 2f11ef4daf647c3cb228d2af493a42c493579ee0" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="3a170bd00c247585e5a9b86b9460963fb9e1639d" name="document-revision">
+  <meta content="d10dbde1da853338acea38b62f4407ba3f02f8c6" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1366,7 +1366,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-08-27">27 August 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-08-30">30 August 2018</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1381,7 +1381,8 @@ pre .property::before, pre .property::after {
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2018 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2018 the Contributors to the Open Screen Protocol Specification, published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
+A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -1392,28 +1393,27 @@ pre .property::before, pre .property::after {
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
-    <li><a href="#status"><span class="secno">1</span> <span class="content">Status of this Document</span></a>
-    <li><a href="#introduction"><span class="secno">2</span> <span class="content">Introduction</span></a>
+    <li><a href="#introduction"><span class="secno">1</span> <span class="content">Introduction</span></a>
     <li>
-     <a href="#requirements"><span class="secno">3</span> <span class="content">Requirements</span></a>
+     <a href="#requirements"><span class="secno">2</span> <span class="content">Requirements</span></a>
      <ol class="toc">
-      <li><a href="#terminology"><span class="secno">3.1</span> <span class="content">Terminology</span></a>
+      <li><a href="#terminology"><span class="secno">2.1</span> <span class="content">Terminology</span></a>
      </ol>
-    <li><a href="#discovery"><span class="secno">4</span> <span class="content">Receiver Discovery</span></a>
-    <li><a href="#transport"><span class="secno">5</span> <span class="content">Transport Establishment</span></a>
-    <li><a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
+    <li><a href="#discovery"><span class="secno">3</span> <span class="content">Receiver Discovery</span></a>
+    <li><a href="#transport"><span class="secno">4</span> <span class="content">Transport Establishment</span></a>
+    <li><a href="#authentication"><span class="secno">5</span> <span class="content">Authentication</span></a>
     <li>
-     <a href="#control"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
+     <a href="#control"><span class="secno">6</span> <span class="content">Control Protocols</span></a>
      <ol class="toc">
-      <li><a href="#presentation-api"><span class="secno">7.1</span> <span class="content">Presentation API Protocol</span></a>
-      <li><a href="#remote-playback"><span class="secno">7.2</span> <span class="content">Remote Playback API Protocol</span></a>
+      <li><a href="#presentation-api"><span class="secno">6.1</span> <span class="content">Presentation API Protocol</span></a>
+      <li><a href="#remote-playback"><span class="secno">6.2</span> <span class="content">Remote Playback API Protocol</span></a>
      </ol>
     <li>
-     <a href="#security"><span class="secno">8</span> <span class="content">Security and Privacy</span></a>
+     <a href="#security"><span class="secno">7</span> <span class="content">Security and Privacy</span></a>
      <ol class="toc">
-      <li><a href="#security-data"><span class="secno">8.1</span> <span class="content">Data to be secured</span></a>
-      <li><a href="#security-threat"><span class="secno">8.2</span> <span class="content">Threat model</span></a>
-      <li><a href="#security-defenses"><span class="secno">8.3</span> <span class="content">Mitigations and defenses</span></a>
+      <li><a href="#security-data"><span class="secno">7.1</span> <span class="content">Data to be secured</span></a>
+      <li><a href="#security-threat"><span class="secno">7.2</span> <span class="content">Threat model</span></a>
+      <li><a href="#security-defenses"><span class="secno">7.3</span> <span class="content">Mitigations and defenses</span></a>
      </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
@@ -1425,13 +1425,18 @@ pre .property::before, pre .property::after {
    </ol>
   </nav>
   <main>
-   <h2 class="heading settled" data-level="1" id="status"><span class="secno">1. </span><span class="content">Status of this Document</span><a class="self-link" href="#status"></a></h2>
-   <p>This document reflects a snapshot of the work product of the <a href="https://www.w3.org/community/webscreens/">Second Screen
-Community Group</a>.  It should not be
-viewed as a stable specification, and may change in substantial ways at any
-time.  A future version of this document will be published as a Community Group
-Report.</p>
-   <h2 class="heading settled" data-level="2" id="introduction"><span class="secno">2. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+   <p>This specification was published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community
+Group</a>. It is not a W3C Standard nor
+is it on the W3C Standards Track. It should not be viewed as a stable
+specification, and may change in substantial ways at any time. A future version
+of this document will be published as a Community Group Report.</p>
+   <p>Please note that under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement
+(CLA)</a> there is a limited
+opt-out and other conditions apply.</p>
+   <p>Learn more about <a href="http://www.w3.org/community/">W3C Community and Business
+Groups</a>.</p>
+   <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
    <p>The Open Screen Protocol describes a layered set of network protocols that
 enable two user agents to implement the Presentation API and Remote Playback
 APIs in an interoperable fashion.  This means that a user can expect the APIs
@@ -1439,28 +1444,28 @@ work as intended when connecting two devices from independent implementations of
 the Open Screen Protocol.</p>
    <p>The Open Screen Protocol is intended to be extensible, so that additional
 capabilities can be added over time.</p>
-   <h2 class="heading settled" data-level="3" id="requirements"><span class="secno">3. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
+   <h2 class="heading settled" data-level="2" id="requirements"><span class="secno">2. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
    <p class="issue" id="issue-e92c6eb2"><a class="self-link" href="#issue-e92c6eb2"></a> Incorporate and elaborate on material from the <a href="requirements.md">Requirements</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/99">&lt;https://github.com/webscreens/openscreenprotocol/issues/99></a></p>
-   <h3 class="heading settled" data-level="3.1" id="terminology"><span class="secno">3.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
-   <h2 class="heading settled" data-level="4" id="discovery"><span class="secno">4. </span><span class="content">Receiver Discovery</span><a class="self-link" href="#discovery"></a></h2>
+   <h3 class="heading settled" data-level="2.1" id="terminology"><span class="secno">2.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
+   <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Receiver Discovery</span><a class="self-link" href="#discovery"></a></h2>
    <p class="issue" id="issue-b7e254cb"><a class="self-link" href="#issue-b7e254cb"></a> Incorporate material from the <a href="mdns.md">mDNS</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/100">&lt;https://github.com/webscreens/openscreenprotocol/issues/100></a></p>
-   <h2 class="heading settled" data-level="5" id="transport"><span class="secno">5. </span><span class="content">Transport Establishment</span><a class="self-link" href="#transport"></a></h2>
+   <h2 class="heading settled" data-level="4" id="transport"><span class="secno">4. </span><span class="content">Transport Establishment</span><a class="self-link" href="#transport"></a></h2>
    <p class="issue" id="issue-e6fb7d40"><a class="self-link" href="#issue-e6fb7d40"></a> Incorporate material from the <a href="quic.md">QUIC</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/101">&lt;https://github.com/webscreens/openscreenprotocol/issues/101></a></p>
-   <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
+   <h2 class="heading settled" data-level="5" id="authentication"><span class="secno">5. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p class="issue" id="issue-7d8c18ff"><a class="self-link" href="#issue-7d8c18ff"></a> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a></p>
-   <h2 class="heading settled" data-level="7" id="control"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control"></a></h2>
+   <h2 class="heading settled" data-level="6" id="control"><span class="secno">6. </span><span class="content">Control Protocols</span><a class="self-link" href="#control"></a></h2>
    <p class="issue" id="issue-35428ee4"><a class="self-link" href="#issue-35428ee4"></a> Describe CBOR based mechanism for
 exchanging control messages, results, and events. <a href="https://github.com/webscreens/openscreenprotocol/issues/77">&lt;https://github.com/webscreens/openscreenprotocol/issues/77></a></p>
-   <h3 class="heading settled" data-level="7.1" id="presentation-api"><span class="secno">7.1. </span><span class="content">Presentation API Protocol</span><a class="self-link" href="#presentation-api"></a></h3>
+   <h3 class="heading settled" data-level="6.1" id="presentation-api"><span class="secno">6.1. </span><span class="content">Presentation API Protocol</span><a class="self-link" href="#presentation-api"></a></h3>
    <p class="issue" id="issue-7e667595"><a class="self-link" href="#issue-7e667595"></a> Incorporate material from the <a href="protocol.md">Protocol</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/55">&lt;https://github.com/webscreens/openscreenprotocol/issues/55></a></p>
-   <h3 class="heading settled" data-level="7.2" id="remote-playback"><span class="secno">7.2. </span><span class="content">Remote Playback API Protocol</span><a class="self-link" href="#remote-playback"></a></h3>
+   <h3 class="heading settled" data-level="6.2" id="remote-playback"><span class="secno">6.2. </span><span class="content">Remote Playback API Protocol</span><a class="self-link" href="#remote-playback"></a></h3>
    <p class="issue" id="issue-eaed3698"><a class="self-link" href="#issue-eaed3698"></a> Propose control protocol for Remote
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a></p>
-   <h2 class="heading settled" data-level="8" id="security"><span class="secno">8. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security"></a></h2>
+   <h2 class="heading settled" data-level="7" id="security"><span class="secno">7. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security"></a></h2>
    <p class="issue" id="issue-ab35c2a2"><a class="self-link" href="#issue-ab35c2a2"></a> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a></p>
-   <h3 class="heading settled" data-level="8.1" id="security-data"><span class="secno">8.1. </span><span class="content">Data to be secured</span><a class="self-link" href="#security-data"></a></h3>
-   <h3 class="heading settled" data-level="8.2" id="security-threat"><span class="secno">8.2. </span><span class="content">Threat model</span><a class="self-link" href="#security-threat"></a></h3>
-   <h3 class="heading settled" data-level="8.3" id="security-defenses"><span class="secno">8.3. </span><span class="content">Mitigations and defenses</span><a class="self-link" href="#security-defenses"></a></h3>
+   <h3 class="heading settled" data-level="7.1" id="security-data"><span class="secno">7.1. </span><span class="content">Data to be secured</span><a class="self-link" href="#security-data"></a></h3>
+   <h3 class="heading settled" data-level="7.2" id="security-threat"><span class="secno">7.2. </span><span class="content">Threat model</span><a class="self-link" href="#security-threat"></a></h3>
+   <h3 class="heading settled" data-level="7.3" id="security-defenses"><span class="secno">7.3. </span><span class="content">Mitigations and defenses</span><a class="self-link" href="#security-defenses"></a></h3>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
