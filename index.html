@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="cf91f68b1c34b9f79060501bbe69d113d94ac3fe" name="document-revision">
+  <meta content="855c73f7658cc0157756010fb6694b5b53f0d730" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1423,7 +1423,7 @@ pre .property::before, pre .property::after {
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>The Open Screen Protocol is a suite of network protocols that allow user agents to implement the Presentation API and the Remote Playback API in an interoperable fashion.</p>
+   <p>The Open Screen Protocol is a suite of network protocols that allow user agents to implement the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> in an interoperable fashion.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -1484,11 +1484,9 @@ Report.</p>
 content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, or "smart" speakers.</p>
    <p>The protocol is suite of subsidiary network protocols that enable two user
-agents to implement the <a href="https://w3c.github.io/presentation-api/">Presentation
-API</a> and <a href="https://w3c.github.io/remote-playback/">Remote Playback
-API</a> in an interoperable fashion.  This
-means that a user can expect these APIs work as intended when connecting two
-devices from independent implementations of the Open Screen Protocol.</p>
+agents to implement the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> in an interoperable fashion.  This means
+that a user can expect these APIs work as intended when connecting two devices
+from independent implementations of the Open Screen Protocol.</p>
    <p>The Open Screen Protocol is a specific implementation of these two APIs, meaning
 that it does not handle all possible ways that browsers and presentation
 displays could support these APIs.  The Open Screen Protocol specifically
@@ -1499,28 +1497,25 @@ from the browser to the target display.</p>
 capabilities can be added over time.  This may include new implementations of
 existing APIs, or new APIs.</p>
    <h3 class="heading settled" data-level="2.1" id="terminology"><span class="secno">2.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
-   <p>We borrow terminology from the <a href="https://w3c.github.io/presentation-api/">Presentation
-API</a> and <a href="https://w3c.github.io/remote-playback/">Remote Playback
-API</a> for terms used in this document.
-These terms are summarized here.</p>
+   <p>We borrow terminology from the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> for terms used in this document.  These
+terms are summarized here.</p>
    <p>We call the browser that is used to discover and initiate presentation of Web
 content on another device the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent">controlling user agent</a>.  We call the
 user agent on the device rendering the Web content the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent">receiving user agent</a>, or <em>receiver</em> for short.  We use
 the term <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display" id="ref-for-dfn-presentation-display">presentation display</a> to refer to the entire platform and
 responsible for implementing the <em>receiver</em>, including browser, OS, networking,
 audio and graphics.</p>
-   <p>For the Presentation API, presentation of Web content is initiated at the
-request of a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context" id="ref-for-dfn-controlling-browsing-context">controlling browsing context</a> (or <em>controller</em>), which creates
-a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context" id="ref-for-dfn-receiving-browsing-context">receiving browsing context</a> (or <em>presentation</em>) to load a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation
-request URL</a> and exchange messages with the resulting document.</p>
+   <p>For the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>, presentation of Web content is
+initiated at the request of a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context" id="ref-for-dfn-controlling-browsing-context">controlling browsing context</a> (or <em>controller</em>), which creates a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context" id="ref-for-dfn-receiving-browsing-context">receiving browsing context</a> (or <em>presentation</em>) to load a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a> and exchange messages
+with the resulting document.</p>
    <p>Before this can happen, the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agent</a> must determine which <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver">receivers</a>, if any, are compatible with the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a>.  This
 happens by determining the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display-availability" id="ref-for-dfn-presentation-display-availability">presentation display availability</a> for the
 presentation request URL.</p>
-   <p>For the Remote Playback API, the device responsible for rendering the content of
-a <a data-link-type="dfn" href="https://www.w3.org/TR/html51/single-page.html#media-element" id="ref-for-media-element">media element</a> when remote playback is connected is called the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device" id="ref-for-dfn-remote-playback-device">remote
-playback device</a>.</p>
-   <p>For additional terms and idioms specific to the Presentation API or Remote
-Playback API, please consult the respective specifications.</p>
+   <p>For the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>, the device responsible for
+rendering the content of a <a data-link-type="dfn" href="https://www.w3.org/TR/html51/single-page.html#media-element" id="ref-for-media-element">media element</a> when remote playback is connected
+is called the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device" id="ref-for-dfn-remote-playback-device">remote playback device</a>.</p>
+   <p>For additional terms and idioms specific to the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> or
+Remote Playback API, please consult the respective specifications.</p>
    <h2 class="heading settled" data-level="3" id="requirements"><span class="secno">3. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
    <h3 class="heading settled" data-level="3.1" id="requirements-presentation-api"><span class="secno">3.1. </span><span class="content">Presentation API Requirements</span><a class="self-link" href="#requirements-presentation-api"></a></h3>
    <ol>
@@ -1877,7 +1872,7 @@ Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/1
      <li><span class="dfn-paneled" id="term-for-media-element" style="color:initial">media element</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[presentation-api]</a> defines the following terms:
+    <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-presentationconnection" style="color:initial">PresentationConnection</span>
      <li><span class="dfn-paneled" id="term-for-dfn-controlling-browsing-context" style="color:initial">controlling browsing context</span>
@@ -1891,7 +1886,7 @@ Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/1
      <li><span class="dfn-paneled" id="term-for-dfn-receiving-user-agent" style="color:initial">receiving user agent</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[remote-playback]</a> defines the following terms:
+    <a data-link-type="biblio">[REMOTE-PLAYBACK]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-device" style="color:initial">remote playback device</span>
     </ul>

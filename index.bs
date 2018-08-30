@@ -7,7 +7,7 @@ ED: https://webscreens.github.io/openscreenprotocol/
 Canonical URL: ED
 Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
 Repository: webscreens/openscreenprotocol
-Abstract: The Open Screen Protocol is a suite of network protocols that allow user agents to implement the Presentation API and the Remote Playback API in an interoperable fashion.
+Abstract: The Open Screen Protocol is a suite of network protocols that allow user agents to implement the [[PRESENTATION-API|Presentation API]] and the [[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable fashion.
 Group: Second Screen Community Group
 Mailing List: public-webscreens@w3c.org
 Mailing List Archives: https://lists.w3.org/Archives/Public/public-webscreens/
@@ -58,11 +58,10 @@ content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, or "smart" speakers.
 
 The protocol is suite of subsidiary network protocols that enable two user
-agents to implement the [Presentation
-API](https://w3c.github.io/presentation-api/) and [Remote Playback
-API](https://w3c.github.io/remote-playback/) in an interoperable fashion.  This
-means that a user can expect these APIs work as intended when connecting two
-devices from independent implementations of the Open Screen Protocol.
+agents to implement the [[PRESENTATION-API|Presentation API]] and
+[[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable fashion.  This means
+that a user can expect these APIs work as intended when connecting two devices
+from independent implementations of the Open Screen Protocol.
 
 The Open Screen Protocol is a specific implementation of these two APIs, meaning
 that it does not handle all possible ways that browsers and presentation
@@ -78,10 +77,9 @@ existing APIs, or new APIs.
 Terminology {#terminology}
 --------------------------
 
-We borrow terminology from the [Presentation
-API](https://w3c.github.io/presentation-api/) and [Remote Playback
-API](https://w3c.github.io/remote-playback/) for terms used in this document.
-These terms are summarized here.
+We borrow terminology from the [[PRESENTATION-API|Presentation API]] and
+[[REMOTE-PLAYBACK|Remote Playback API]] for terms used in this document.  These
+terms are summarized here.
 
 We call the browser that is used to discover and initiate presentation of Web
 content on another device the [=controlling user agent=].  We call the
@@ -91,22 +89,23 @@ the term [=presentation display=] to refer to the entire platform and
 responsible for implementing the *receiver*, including browser, OS, networking,
 audio and graphics.
 
-For the Presentation API, presentation of Web content is initiated at the
-request of a [=controlling browsing context=] (or *controller*), which creates
-a [=receiving browsing context=] (or *presentation*) to load a [=presentation
-request URL=] and exchange messages with the resulting document.
+For the [[PRESENTATION-API|Presentation API]], presentation of Web content is
+initiated at the request of a [=controlling browsing context=] (or
+*controller*), which creates a [=receiving browsing context=] (or
+*presentation*) to load a [=presentation request URL=] and exchange messages
+with the resulting document.
 
 Before this can happen, the [=controlling user agent=] must determine which
 [=receivers=], if any, are compatible with the [=presentation request URL=].  This
 happens by determining the [=presentation display availability=] for the
 presentation request URL.
 
-For the Remote Playback API, the device responsible for rendering the content of
-a [=media element=] when remote playback is connected is called the [=remote
-playback device=].
+For the [[REMOTE-PLAYBACK|Remote Playback API]], the device responsible for
+rendering the content of a [=media element=] when remote playback is connected
+is called the [=remote playback device=].
 
-For additional terms and idioms specific to the Presentation API or Remote
-Playback API, please consult the respective specifications.
+For additional terms and idioms specific to the [[PRESENTATION-API|Presentation API]] or
+Remote Playback API, please consult the respective specifications.
 
 Requirements {#requirements}
 ============================
