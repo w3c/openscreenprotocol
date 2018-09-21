@@ -42,8 +42,7 @@ urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML5
     text: media element
 </pre>
 
-Status of this Document {#status}
-=================================
+<h2 class='no-num no-toc no-ref' id='status'>Status of this document</h2>
 
 This specification was published by the [Second Screen Community
 Group](https://www.w3.org/community/webscreens/). It is not a W3C Standard nor
