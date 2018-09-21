@@ -15,7 +15,8 @@ Markup Shorthands: markdown yes, dfn yes, idl yes
 </pre>
 
 <p boilerplate="copyright">
-<a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © [YEAR] <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a> rules apply.
+<a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © [YEAR] the Contributors to the [TITLE] Specification, published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
+A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.
 </p>
 
 <!-- TODO: Add short names to Presentation API spec, so that BS autolinking works as designed. -->
@@ -44,11 +45,18 @@ urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML5
 Status of this Document {#status}
 =================================
 
-This document reflects a snapshot of the work product of the [Second Screen
-Community Group](https://www.w3.org/community/webscreens/).  It should not be
-viewed as a stable specification, and may change in substantial ways at any
-time.  A future version of this document will be published as a Community Group
-Report.
+This specification was published by the [Second Screen Community
+Group](https://www.w3.org/community/webscreens/). It is not a W3C Standard nor
+is it on the W3C Standards Track. It should not be viewed as a stable
+specification, and may change in substantial ways at any time. A future version
+of this document will be published as a Community Group Report.
+
+Please note that under the [W3C Community Contributor License Agreement
+(CLA)](https://www.w3.org/community/about/agreements/cla/) there is a limited
+opt-out and other conditions apply.
+
+Learn more about [W3C Community and Business
+Groups](http://www.w3.org/community/).
 
 Introduction {#introduction}
 ============================
