@@ -1,9 +1,11 @@
 ## Open Screen Protocol
 
-This repository is used to incubate and develop specifications of network
-protocols that implement the
-[Presentation API](https://w3c.github.io/presentation-api/) and
-[Remote Playback API](https://w3c.github.io/remote-playback/).
+This repository is used to incubate and develop the
+[Open Screen Protocol](https://webscreens.github.io/openscreenprotocol/),
+which is a suite of network protocols that allow user agents to
+implement the [Presentation API](https://w3c.github.io/presentation-api/)
+and [Remote Playback API](https://w3c.github.io/remote-playback/)
+in an interoperable fashion.
 
 This work is in scope for the
 [W3C Second Screen Community Group](https://www.w3.org/community/webscreens/)
