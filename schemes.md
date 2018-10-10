@@ -65,7 +65,7 @@ the OSP with similar interface to Presentation API). There is no need to
 update/extend the controlling UA to support new schemes, but it is up to the
 vendor of controlling UA to white/blacklist specific URL schemes.
 
-*TODO:* [Issue #93: Custom schemes and interop](issues/93)
+*TODO:* [Issue #93: Custom schemes and interop](https://github.com/webscreens/openscreenprotocol/issues/93)
 
 ## Scheme based filtering
 
@@ -93,4 +93,5 @@ the same way. A receiver that advertises itself (e.g. `Receiver Device 1`
 depicted in the figure above) as a HbbTV terminal should use the scheme `hbbtv`
 during discovery.
 
-*TODO:* [Issue #94: Semantics of hbbtv: URLs](issues/94) 
+*TODO:* [Issue #94: Semantics of hbbtv: URLs](https://github.com/webscreens/openscreenprotocol/issues/94)
+
