@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="77585e07f782e3b3875243939fc66e52e76efd96" name="document-revision">
+  <meta content="366fde95a501e55aff3123d8c2117a22e77b76a3" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1403,7 +1403,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-09-20">20 September 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-11-02">2 November 2018</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1430,34 +1430,38 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
-    <li><a href="#status"><span class="secno">1</span> <span class="content">Status of this Document</span></a>
     <li>
-     <a href="#introduction"><span class="secno">2</span> <span class="content">Introduction</span></a>
+     <a href="#introduction"><span class="secno">1</span> <span class="content">Introduction</span></a>
      <ol class="toc">
-      <li><a href="#terminology"><span class="secno">2.1</span> <span class="content">Terminology</span></a>
+      <li><a href="#terminology"><span class="secno">1.1</span> <span class="content">Terminology</span></a>
      </ol>
     <li>
-     <a href="#requirements"><span class="secno">3</span> <span class="content">Requirements</span></a>
+     <a href="#requirements"><span class="secno">2</span> <span class="content">Requirements</span></a>
      <ol class="toc">
-      <li><a href="#requirements-presentation-api"><span class="secno">3.1</span> <span class="content">Presentation API Requirements</span></a>
-      <li><a href="#requirements-remote-playback"><span class="secno">3.2</span> <span class="content">Remote Playback API Requirements</span></a>
-      <li><a href="#requirements-non-functional"><span class="secno">3.3</span> <span class="content">Non-Functional Requirements</span></a>
+      <li><a href="#requirements-presentation-api"><span class="secno">2.1</span> <span class="content">Presentation API Requirements</span></a>
+      <li><a href="#requirements-remote-playback"><span class="secno">2.2</span> <span class="content">Remote Playback API Requirements</span></a>
+      <li><a href="#requirements-non-functional"><span class="secno">2.3</span> <span class="content">Non-Functional Requirements</span></a>
      </ol>
-    <li><a href="#discovery"><span class="secno">4</span> <span class="content">Receiver Discovery</span></a>
-    <li><a href="#transport"><span class="secno">5</span> <span class="content">Transport Establishment</span></a>
-    <li><a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
+    <li><a href="#discovery"><span class="secno">3</span> <span class="content">Receiver Discovery</span></a>
+    <li><a href="#transport"><span class="secno">4</span> <span class="content">Transport Establishment</span></a>
+    <li><a href="#authentication"><span class="secno">5</span> <span class="content">Authentication</span></a>
     <li>
-     <a href="#control"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
+     <a href="#control"><span class="secno">6</span> <span class="content">Control Protocols</span></a>
      <ol class="toc">
-      <li><a href="#presentation-api"><span class="secno">7.1</span> <span class="content">Presentation API Protocol</span></a>
-      <li><a href="#remote-playback"><span class="secno">7.2</span> <span class="content">Remote Playback API Protocol</span></a>
+      <li><a href="#presentation-api"><span class="secno">6.1</span> <span class="content">Presentation API Protocol</span></a>
+      <li><a href="#remote-playback"><span class="secno">6.2</span> <span class="content">Remote Playback API Protocol</span></a>
      </ol>
     <li>
-     <a href="#security"><span class="secno">8</span> <span class="content">Security and Privacy</span></a>
+     <a href="#security"><span class="secno">7</span> <span class="content">Security and Privacy</span></a>
      <ol class="toc">
-      <li><a href="#security-data"><span class="secno">8.1</span> <span class="content">Data to be secured</span></a>
-      <li><a href="#security-threat"><span class="secno">8.2</span> <span class="content">Threat model</span></a>
-      <li><a href="#security-defenses"><span class="secno">8.3</span> <span class="content">Mitigations and defenses</span></a>
+      <li><a href="#presentation-api-security-and-privacy"><span class="secno">7.1</span> <span class="content">Presentation API Security and Privacy</span></a>
+      <li><a href="#remote-playback-api-security-and-privacy"><span class="secno">7.2</span> <span class="content">Remote Playback API Security and Privacy</span></a>
+      <li><a href="#security-threat"><span class="secno">7.3</span> <span class="content">Threat Models</span></a>
+      <li><a href="#passive-attacks"><span class="secno">7.4</span> <span class="content">Passive Attacks</span></a>
+      <li><a href="#active-attacks"><span class="secno">7.5</span> <span class="content">Active Attacks</span></a>
+      <li><a href="#denial-of-service"><span class="secno">7.6</span> <span class="content">Denial of Service</span></a>
+      <li><a href="#security-data"><span class="secno">7.7</span> <span class="content">Data to be secured</span></a>
+      <li><a href="#security-mitigation"><span class="secno">7.8</span> <span class="content">Mitigation Strategies</span></a>
      </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
@@ -1474,7 +1478,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    </ol>
   </nav>
   <main>
-   <h2 class="heading settled" data-level="1" id="status"><span class="secno">1. </span><span class="content">Status of this Document</span><a class="self-link" href="#status"></a></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
    <p>This specification was published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community
 Group</a>. It is not a W3C Standard nor
 is it on the W3C Standards Track. It should not be viewed as a stable
@@ -1485,7 +1489,7 @@ of this document will be published as a Community Group Report.</p>
 opt-out and other conditions apply.</p>
    <p>Learn more about <a href="http://www.w3.org/community/">W3C Community and Business
 Groups</a>.</p>
-   <h2 class="heading settled" data-level="2" id="introduction"><span class="secno">2. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
+   <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
    <p>The Open Screen Protocol connects browsers to devices capable of rendering Web
 content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, or "smart" speakers.</p>
@@ -1502,7 +1506,7 @@ from the browser to the target display.</p>
    <p>The Open Screen Protocol is intended to be extensible, so that additional
 capabilities can be added over time.  This may include new implementations of
 existing APIs, or new APIs.</p>
-   <h3 class="heading settled" data-level="2.1" id="terminology"><span class="secno">2.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
+   <h3 class="heading settled" data-level="1.1" id="terminology"><span class="secno">1.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
    <p>We borrow terminology from the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> for terms used in this document.  These
 terms are summarized here.</p>
    <p>We call the browser that is used to discover and initiate presentation of Web
@@ -1522,8 +1526,8 @@ rendering the content of a <a data-link-type="dfn" href="https://www.w3.org/TR/h
 is called the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device" id="ref-for-dfn-remote-playback-device">remote playback device</a>.</p>
    <p>For additional terms and idioms specific to the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> or
 Remote Playback API, please consult the respective specifications.</p>
-   <h2 class="heading settled" data-level="3" id="requirements"><span class="secno">3. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
-   <h3 class="heading settled" data-level="3.1" id="requirements-presentation-api"><span class="secno">3.1. </span><span class="content">Presentation API Requirements</span><a class="self-link" href="#requirements-presentation-api"></a></h3>
+   <h2 class="heading settled" data-level="2" id="requirements"><span class="secno">2. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
+   <h3 class="heading settled" data-level="2.1" id="requirements-presentation-api"><span class="secno">2.1. </span><span class="content">Presentation API Requirements</span><a class="self-link" href="#requirements-presentation-api"></a></h3>
    <ol>
     <li data-md>
      <p>A controlling user agent must be able to discover the presence of a
@@ -1568,9 +1572,9 @@ ID</a>.</p>
      <p>The receiver must be able to signal all connected controlling user agents
 when a presentation is terminated.</p>
    </ol>
-   <h3 class="heading settled" data-level="3.2" id="requirements-remote-playback"><span class="secno">3.2. </span><span class="content">Remote Playback API Requirements</span><a class="self-link" href="#requirements-remote-playback"></a></h3>
+   <h3 class="heading settled" data-level="2.2" id="requirements-remote-playback"><span class="secno">2.2. </span><span class="content">Remote Playback API Requirements</span><a class="self-link" href="#requirements-remote-playback"></a></h3>
    <p class="issue" id="issue-a1f35a95"><a class="self-link" href="#issue-a1f35a95"></a> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a></p>
-   <h3 class="heading settled" data-level="3.3" id="requirements-non-functional"><span class="secno">3.3. </span><span class="content">Non-Functional Requirements</span><a class="self-link" href="#requirements-non-functional"></a></h3>
+   <h3 class="heading settled" data-level="2.3" id="requirements-non-functional"><span class="secno">2.3. </span><span class="content">Non-Functional Requirements</span><a class="self-link" href="#requirements-non-functional"></a></h3>
    <ol>
     <li data-md>
      <p>It should be possible to implement an Open Screen presentation display using
@@ -1629,25 +1633,91 @@ transport levels) with optional features not defined explicitly by the
 specification, to facilitate experimentation and enhancement of the base
 APIs.</p>
    </ol>
-   <h2 class="heading settled" data-level="4" id="discovery"><span class="secno">4. </span><span class="content">Receiver Discovery</span><a class="self-link" href="#discovery"></a></h2>
+   <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Receiver Discovery</span><a class="self-link" href="#discovery"></a></h2>
    <p class="issue" id="issue-b7e254cb"><a class="self-link" href="#issue-b7e254cb"></a> Incorporate material from the <a href="mdns.md">mDNS</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/100">&lt;https://github.com/webscreens/openscreenprotocol/issues/100></a></p>
-   <h2 class="heading settled" data-level="5" id="transport"><span class="secno">5. </span><span class="content">Transport Establishment</span><a class="self-link" href="#transport"></a></h2>
+   <h2 class="heading settled" data-level="4" id="transport"><span class="secno">4. </span><span class="content">Transport Establishment</span><a class="self-link" href="#transport"></a></h2>
    <p class="issue" id="issue-e6fb7d40"><a class="self-link" href="#issue-e6fb7d40"></a> Incorporate material from the <a href="quic.md">QUIC</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/101">&lt;https://github.com/webscreens/openscreenprotocol/issues/101></a></p>
-   <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
+   <h2 class="heading settled" data-level="5" id="authentication"><span class="secno">5. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p class="issue" id="issue-7d8c18ff"><a class="self-link" href="#issue-7d8c18ff"></a> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a></p>
-   <h2 class="heading settled" data-level="7" id="control"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control"></a></h2>
+   <h2 class="heading settled" data-level="6" id="control"><span class="secno">6. </span><span class="content">Control Protocols</span><a class="self-link" href="#control"></a></h2>
    <p class="issue" id="issue-35428ee4"><a class="self-link" href="#issue-35428ee4"></a> Describe CBOR based mechanism for
 exchanging control messages, results, and events. <a href="https://github.com/webscreens/openscreenprotocol/issues/77">&lt;https://github.com/webscreens/openscreenprotocol/issues/77></a></p>
-   <h3 class="heading settled" data-level="7.1" id="presentation-api"><span class="secno">7.1. </span><span class="content">Presentation API Protocol</span><a class="self-link" href="#presentation-api"></a></h3>
+   <h3 class="heading settled" data-level="6.1" id="presentation-api"><span class="secno">6.1. </span><span class="content">Presentation API Protocol</span><a class="self-link" href="#presentation-api"></a></h3>
    <p class="issue" id="issue-7e667595"><a class="self-link" href="#issue-7e667595"></a> Incorporate material from the <a href="protocol.md">Protocol</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/55">&lt;https://github.com/webscreens/openscreenprotocol/issues/55></a></p>
-   <h3 class="heading settled" data-level="7.2" id="remote-playback"><span class="secno">7.2. </span><span class="content">Remote Playback API Protocol</span><a class="self-link" href="#remote-playback"></a></h3>
+   <h3 class="heading settled" data-level="6.2" id="remote-playback"><span class="secno">6.2. </span><span class="content">Remote Playback API Protocol</span><a class="self-link" href="#remote-playback"></a></h3>
    <p class="issue" id="issue-eaed3698"><a class="self-link" href="#issue-eaed3698"></a> Propose control protocol for Remote
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a></p>
-   <h2 class="heading settled" data-level="8" id="security"><span class="secno">8. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security"></a></h2>
-   <p class="issue" id="issue-ab35c2a2"><a class="self-link" href="#issue-ab35c2a2"></a> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a></p>
-   <h3 class="heading settled" data-level="8.1" id="security-data"><span class="secno">8.1. </span><span class="content">Data to be secured</span><a class="self-link" href="#security-data"></a></h3>
-   <h3 class="heading settled" data-level="8.2" id="security-threat"><span class="secno">8.2. </span><span class="content">Threat model</span><a class="self-link" href="#security-threat"></a></h3>
-   <h3 class="heading settled" data-level="8.3" id="security-defenses"><span class="secno">8.3. </span><span class="content">Mitigations and defenses</span><a class="self-link" href="#security-defenses"></a></h3>
+   <h2 class="heading settled" data-level="7" id="security"><span class="secno">7. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security"></a></h2>
+   <p>The Open Screen Protocol should, at a minimum, conform to the security and
+privacy guidelines recommended by the [[PRESENTATION-API][Presentation API]] and
+the [[REMOTE-PLAYBACK][Remote Playback API]].</p>
+   <p>In addition, the Open Screen Protocol itself has additional security and privacy
+considerations.</p>
+   <h3 class="heading settled" data-level="7.1" id="presentation-api-security-and-privacy"><span class="secno">7.1. </span><span class="content">Presentation API Security and Privacy</span><a class="self-link" href="#presentation-api-security-and-privacy"></a></h3>
+   <p>The [[PRESENTATION-API#security-and-privacy-considerations][Presentation API
+Security and Privacy Considerations]] place these requirements on the Open
+Screen Protocol:</p>
+   <ol>
+    <li data-md>
+     <p>Presentation URLs and presentation IDs should remain private among the
+parties that are allowed to connect to a presentation, per the
+cross-origin access guidelines.</p>
+    <li data-md>
+     <p>Controllers and recievers should be notified when multiple connections have
+been made to a presentation, per the user interface guidelines.</p>
+    <li data-md>
+     <p>Messaging between presentations and controllers should be authenticated and
+confidential, per the guidelines for messaging between presentation
+connections.</p>
+   </ol>
+   <h3 class="heading settled" data-level="7.2" id="remote-playback-api-security-and-privacy"><span class="secno">7.2. </span><span class="content">Remote Playback API Security and Privacy</span><a class="self-link" href="#remote-playback-api-security-and-privacy"></a></h3>
+   <p>The [[REMOTE-PLAYBACK#security-and-privacy-considerations][Remote Playback API
+Security and Privacy Considerations]] also state that messaging between local
+and remote playback devices should also be authenticated and confidential.</p>
+   <h3 class="heading settled" data-level="7.3" id="security-threat"><span class="secno">7.3. </span><span class="content">Threat Models</span><a class="self-link" href="#security-threat"></a></h3>
+   <h3 class="heading settled" data-level="7.4" id="passive-attacks"><span class="secno">7.4. </span><span class="content">Passive Attacks</span><a class="self-link" href="#passive-attacks"></a></h3>
+   <p>The Open Screen Protocol should assume that all parties that are able
+access the LAN, either through a wired connection or through WiFi, are able to
+observe all data flowing between Open Screen controllers and receivers.</p>
+   <p>These parties will be able collect any data exposed through unencrypted
+messages, such as mDNS records and the QUIC handshake.</p>
+   <h3 class="heading settled" data-level="7.5" id="active-attacks"><span class="secno">7.5. </span><span class="content">Active Attacks</span><a class="self-link" href="#active-attacks"></a></h3>
+   <p>In addition, all parties with access to the LAN will be able to manipulate data
+exchanged between controllers and receivers and inititate QUIC connections.
+This can be used to attempt attacks such as:</p>
+   <ul>
+    <li data-md>
+     <p>Impersonating a new receiver or one already known to the user, in an attempt
+to convince the user to authenticate it as a trusted receiver.</p>
+    <li data-md>
+     <p>Connecting to a receiver and querying its capabilities, or attempting to
+connect to a running presentation or remote playback.</p>
+   </ul>
+   <h3 class="heading settled" data-level="7.6" id="denial-of-service"><span class="secno">7.6. </span><span class="content">Denial of Service</span><a class="self-link" href="#denial-of-service"></a></h3>
+   <h3 class="heading settled" data-level="7.7" id="security-data"><span class="secno">7.7. </span><span class="content">Data to be secured</span><a class="self-link" href="#security-data"></a></h3>
+   <p>There are two kinds of data</p>
+   <ol>
+    <li data-md>
+     <p>Presentation URLs</p>
+    <li data-md>
+     <p>Presentation IDs</p>
+    <li data-md>
+     <p>Presentation connection messages</p>
+    <li data-md>
+     <p>Remote playback URLs</p>
+    <li data-md>
+     <p>Remote playback commands and status messages</p>
+   </ol>
+   <p>The following data cannot be reasonably secured and should be considered public
+and untrusted data:</p>
+   <ol>
+    <li data-md>
+     <p>IP addresses and ports used by the Open Screen Protocol.</p>
+    <li data-md>
+     <p>Friendly names or other data advertised through mDNS.</p>
+    <li data-md>
+   </ol>
+   <h3 class="heading settled" data-level="7.8" id="security-mitigation"><span class="secno">7.8. </span><span class="content">Mitigation Strategies</span><a class="self-link" href="#security-mitigation"></a></h3>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
@@ -1799,75 +1869,75 @@ Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/1
   <aside class="dfn-panel" data-for="term-for-media-element">
    <a href="https://www.w3.org/TR/html51/single-page.html#media-element">https://www.w3.org/TR/html51/single-page.html#media-element</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-media-element">2.1. Terminology</a>
+    <li><a href="#ref-for-media-element">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-presentationconnection">
    <a href="https://w3c.github.io/presentation-api/#presentationconnection">https://w3c.github.io/presentation-api/#presentationconnection</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-presentationconnection">3.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
+    <li><a href="#ref-for-presentationconnection">2.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-controlling-browsing-context">
    <a href="https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context">https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-controlling-browsing-context">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-controlling-browsing-context">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-controlling-user-agent">
    <a href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent">https://w3c.github.io/presentation-api/#dfn-controlling-user-agent</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-controlling-user-agent">2.1. Terminology</a> <a href="#ref-for-dfn-controlling-user-agent①">(2)</a>
-    <li><a href="#ref-for-dfn-controlling-user-agent②">3.1. Presentation API Requirements</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent">1.1. Terminology</a> <a href="#ref-for-dfn-controlling-user-agent①">(2)</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent②">2.1. Presentation API Requirements</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-display">
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-display">https://w3c.github.io/presentation-api/#dfn-presentation-display</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-presentation-display">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-presentation-display">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-display-availability">
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-display-availability">https://w3c.github.io/presentation-api/#dfn-presentation-display-availability</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-presentation-display-availability">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-presentation-display-availability">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-id">
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-id">https://w3c.github.io/presentation-api/#dfn-presentation-id</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-presentation-id">3.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
+    <li><a href="#ref-for-dfn-presentation-id">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url">https://w3c.github.io/presentation-api/#dfn-presentation-request-url</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-presentation-request-url">2.1. Terminology</a> <a href="#ref-for-dfn-presentation-request-url①">(2)</a>
-    <li><a href="#ref-for-dfn-presentation-request-url②">3.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-request-url③">(2)</a> <a href="#ref-for-dfn-presentation-request-url④">(3)</a> <a href="#ref-for-dfn-presentation-request-url⑤">(4)</a>
+    <li><a href="#ref-for-dfn-presentation-request-url">1.1. Terminology</a> <a href="#ref-for-dfn-presentation-request-url①">(2)</a>
+    <li><a href="#ref-for-dfn-presentation-request-url②">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-request-url③">(2)</a> <a href="#ref-for-dfn-presentation-request-url④">(3)</a> <a href="#ref-for-dfn-presentation-request-url⑤">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiver">
    <a href="https://w3c.github.io/presentation-api/#dfn-receiver">https://w3c.github.io/presentation-api/#dfn-receiver</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-receiver">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-receiver">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiving-browsing-context">
    <a href="https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context">https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-receiving-browsing-context">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-receiving-browsing-context">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiving-user-agent">
    <a href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent">https://w3c.github.io/presentation-api/#dfn-receiving-user-agent</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-receiving-user-agent">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-receiving-user-agent">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-device">
    <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device">https://w3c.github.io/remote-playback/#dfn-remote-playback-device</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-remote-playback-device">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-remote-playback-device">1.1. Terminology</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1920,7 +1990,6 @@ exchanging control messages, results, and events. <a href="https://github.com/we
    <div class="issue"> Incorporate material from the <a href="protocol.md">Protocol</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/55">&lt;https://github.com/webscreens/openscreenprotocol/issues/55></a><a href="#issue-7e667595"> ↵ </a></div>
    <div class="issue"> Propose control protocol for Remote
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a><a href="#issue-eaed3698"> ↵ </a></div>
-   <div class="issue"> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a><a href="#issue-ab35c2a2"> ↵ </a></div>
   </div>
 <script>/* script-dfn-panel */
 
