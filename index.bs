@@ -232,26 +232,116 @@ Non-Functional Requirements {#requirements-non-functional}
     APIs.
  
 
-Receiver Discovery {#discovery}
+Discovery with mDNS {#discovery}
 ===============================
 
-Issue(100): Incorporate material from the [mDNS](mdns.md) document.
+Endpoints may discover one another using
+[mDNS](https://tools.ietf.org/html/rfc6762) and
+[DNS-SD](https://tools.ietf.org/html/rfc6763).  To do so, endpoints must use the
+service name "_openscreen._udp.local".
 
-Transport Establishment {#transport}
+Endpoints must include DNS TXT records with the following keys and values: 
+- key "v" with value of the version of this protocol the endpoint understands.  
+  The current version of this protocol is "1". 
+- key "fp" with value of the certificate fingerpint of the endpoint.  The format
+  of the fingerprint is defined by 
+  [RFC 8122 section 5](https://tools.ietf.org/html/rfc8122#section-5),
+  excluding the "fingerprint:" prefix and including the hash function, space, and
+  hex-encoded fingerprint.  The fingerprint value also functions as an ID for the
+  endpoint. All endpoints must support the following hash functions: "sha-256",
+  "sha-512".  Endpoints must not support the following hash functions: "md2",
+  "md5". 
+- key 'time" with value of the last time the endpoint updated its
+  metadata.  The time value is respesented as zero or a positive integer.  The
+  clock and timescale are chosen by the advertising endpoint, but are not
+  important, except that the clock must be montonic.  A larger value is an
+  indication to discovering clients that they should reconnect to the adverisiting
+  client to learn updated metadata.  
+ 
+If an endpoint wishes to advertise support for more than one version of the
+protocol, it may do so by advertising more than one DNS-SD entry, which may have
+the same DNS TXT fingerprint value.
+
+
+Transport and metadata discovery with QUIC {#transport}
 ====================================
 
-Issue(101): Incorporate material from the \[QUIC](quic.md) document.
+If a discovering endpoint wants to connect to an advertising endpoint, or to
+learn further metdata about it, it initiates a
+[QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16) connection to
+the IP and port of the mDNS entry.  Prior to authentication, some message may be
+exchanged (such as further metadata), but such info should be treated as
+unathenticated (such as indicating to a user that a display name of an
+unathenticated endpoint is unathenticated).  
+
+To learn further metadata, the an endpoint may send a endpoint-info-request
+message (see Appendix A) and receive back a endpoint-info-response message.  The
+messages may contain the following information with the following meaning. 
+- display-name: The display name of the responding endpoint intended to be
+  displayed to a user by the requesting endpoint.  If the responding endpoint is
+  not yet authenticated, the requesting endpoint should make UI affordance for
+  indicating to the user that the display name is not yet authenticated.  If the
+  responding endpoint changes it display name, the requesting endpoing should make
+  UI affordance for indicating to the user that the display name has changed. 
+- model-name: The model name of the device (if it is a device), used mainly for
+  debugging purpuses, but may be displayed to the user of the requesting endpoint.
+- TODO: Add device type and/or capabilities
+
+If a discovering endpoint (acting as a QUIC client) wishes to receive messages
+from an advertising endpoint (acting as a QUIC server) or an advertising
+endpoint (acting as a QUIC server) wishes to send message to a discovering
+endpoint (acting as a client endpoint), it may wish to keep the QUIC connection
+alive.  Once neither side needs to keep the connection alive for the purposes of
+sending or receiving messages, the connection should be closed.  In order to
+keep a QUIC connection alive, an endpoint may send an endpoint-status-request
+message, and any endpoint that receives an endpoint-status-request message
+should send an endpoint-status-response message.  Such messages should be sent
+every 25 seconds.  If, however, other mechanisms or traffic (such as other
+requests and responses) are serving the purpose of keeping the connection alive,
+these messages should be delayed or not used at all.  A QUIC connection should
+not be closed because of idle timeout unless no such mechanisms or traffic has
+been received from the remote side for 35 seconds (allowing for a keep-alive
+frequency of 25 seconds and message delivery delay of 10 seconds).
+
+The endpoint-info-response message and endpoint-status-response messages may be
+extended to include additional information not defined in this spec.  If done
+adhoc by applications and not in future specs, keys should be chosen to avoid
+collision, such as by choosing large integers or long strings.  
+
+Messages delivery using CBOR and QUIC streams {#control}
+========================================================
+
+Messages are serialized using [CBOR](https://tools.ietf.org/html/rfc7049).  To
+send a group of messages in order, that group of messages must be sent in one
+QUIC stream.  Different groups of messages which are ordered within the group
+but not across groups must be sent in different QUIC streams.  In order to put
+multiple CBOR-serialiezd messages into the the same QUIC stream, the following
+is used.
+
+For each message, the sender must write to the QUIC stream the following: 
+1. A type key representing the type of the message, encoded as a variable-length
+   integer (see Appendix A for type keys) 
+2. The message length encoded as a variable-length integer 
+3. The messge encoded as CBOR (whose length must match the prefixed length)
+
+Future message type keys may indicate the use of custom message formats that are
+not CBOR, or use of CBOR without the length prefix, so receiving endpoints must
+disregard messages with type keys that it does not recognize and must not assume
+that they are serialized using CBOR nor that they have a length prefix.
+
+Variable-length integers are encoded in the same format as defined by [QUIC
+transport section
+16](https://tools.ietf.org/html/draft-ietf-quic-transport-16#section-16).
+
+Many messages are requests and responses, so a common format is defined for
+those.  A request and a response includes a request ID which is an unsigned
+integer chosen by the requester.  Responses must include the request ID of the
+request they are associated with.  
 
 Authentication {#authentication}
 ================================
 
 Issue(102): Incorporate material from the \[J-PAKE](j-pake.md) document.
-
-Control Protocols {#control}
-============================
-
-Issue(77): Describe CBOR based mechanism for
-exchanging control messages, results, and events.
 
 Presentation API Protocol {#presentation-api}
 ---------------------------------------------
@@ -278,6 +368,57 @@ Threat model {#security-threat}
 
 Mitigations and defenses {#security-defenses}
 ---------------------------------------------
+
+Appending A: Messages
+=====================
+The following messages are defined with [CDDL](https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/). When integer keys are used, a comment is appended to the line to indicate the name of the field. Each root message (one that can be put into a QUIC stream without being inclosed by another message) has a comment indicating the message type key.
+
+Smaller numbers should be reserved for message that will be sent more frequently or are very small or both and larger numbers should be reserved for messsages that are infrequently sent or large or both because smaller type keys encode on the wire smaller.
+
+<pre>
+; type key 10
+endpoint-info-request = {
+  request
+}
+
+; type key 11
+endpoint-info-response = {
+  response
+  1: endpoint-info;
+}
+
+endpoint-info = {
+  0: text ; friendly-name
+  1: text ; model-name
+  ; ...
+}
+
+; type key 12
+status-request = {
+  request
+  ? 1: status ; status
+}
+
+; type key 13
+status-response = {
+  response
+  ? 1: status ; status
+}
+
+status = {
+}
+
+request = (
+ 0: request-id ; request-id
+)
+
+response = (
+ 0: request-id ; request-id
+)
+
+request-id = uint
+
+</pre>
 
 
 
