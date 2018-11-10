@@ -256,8 +256,189 @@ exchanging control messages, results, and events.
 Presentation API Protocol {#presentation-api}
 ---------------------------------------------
 
-Issue(55): Incorporate material from the
-[Protocol](protocol.md) document.
+This section defines the use of the Open Screen Protocol for the
+[[PRESENTATION-API|Presentation API]].  When sections are quoted here, they are
+from the [[PRESENTATION-API|Presentation API]].  When the
+[[PRESENTATION-API|Presentation API]] refers to "implementation specific
+mechanisms", this spec defines the behavior when the choosen mechanism is the
+Open Sceen Protocol.  For all references messages, see Appendix A for the full
+CDDL definitions.
+
+When section 6.4.2 says "This list of presentation displays ... is populated
+based on an implementation specific discovery mechanism", the user agent, or
+controlling endpoint, may use the the mDNS, QUIC, and endpoint-info-request
+message define previously in this spec to discover endpoints capable of
+receiving presentation API messages.
+
+<!-- TODO: Add a capability that indicates support for the presentation API -->
+
+To learn which receiving endpoints are "available presentation displays" for a
+particular URL or set of URLs, controlling endpoint may send a
+presentation-url-availability-request message with the following values:
+
+- urls: A list of presentation URLs
+
+- watch-duration: The period of time that the controlling endpoint is interested
+in receiving updates about the URLs, should the availability change.
+
+- watch-id: An indentifier the receiving endpoint may use when sending updates
+about URL availability so that controlling endpoint knows which URLs the
+receiving endpoint is referring to.
+
+In response, the receiving endpoint should send one
+presentation-url-availability-response message with the following values:
+
+- url-availabilities: A list of URL availability states (available, unavailable,
+or invalid).  Each state must correspond to the matching URL from the request
+by list index.
+
+The receiving endpoints should also, later (up to the current time plus request
+watch-duration) send presentation-url-availability-event messages if URL
+availabilities change.  Such events contain the following values:
+
+- watch-id: The watch-id given in the presentation-url-availability-response,
+used to refer to the presentation URLs whose availability has changed.
+
+- url-availabilities: A list of URL availability states (available, unavailable,
+or invalid).  Each state must correspond to the URLs from the request referred
+to by the watch-id.
+
+Note that these message are not broadcast to all controlling endpoints.  They
+are sent individually to controlling endpoints that have requested availability
+for the URLs that have changed in availability state within the watch duration
+of the original availability request.
+
+
+When section 6.4.2 says "To further save power, ... implementation specific
+discovery of presentation displays can be resumed or suspended.", the user
+agent, or controlling endpoint, may disconnect the QUIC connection or reconnect
+or keep connections alive as needed to send availablity requests and receive
+availability responses and updates.
+
+
+When section 6.3.4 says "Using an implementation specific mechanism, tell U to
+create a receiving browsing context with D, presentationUrl, and I as
+parameters.", U (the user agent, or controlling endpoint) may send a
+presentation-start-request message to D (the selected presentation display, or
+receiving endpoint), with the following values:
+
+- presentation-id: I (the presentation identifier)
+
+- url: presentationUrl (the selected presentation URL)
+
+- headers: headers that the receiving endpoint should use to fetch the
+presentationUrl.  For example, section 6.6.1 says that the Accept-Language
+header should be provided.
+
+When the receiving endpoint receives the presentation-start-request, it should
+send back a presentation-start-response message after either the presentation
+URL has been feteched and loaded or the receiving endpoint has failed to do so.
+If it has failed, it must respond with the appropriate result (such as
+invalid-url or timeout).  If it has succeeded, it must reply with a success
+result.  Additionally, the response must include the following:
+
+- connection-id: An ID that both endpoints can use to send connection messages
+to each other.  It is chosen by the receiving endpoint for ease of
+implementation (if the receiver chooses the connection-id, it may keep the ID
+unique across connections, thus making message routing easier).
+
+<!-- TODO: Add optional HTTP response code to the response? -->
+
+When section 6.5.2 says "Using an implementation specific mechanism, transmit
+the contents of messageOrData as the presentation message data and messageType
+as the presentation message type to the destination browsing context", the
+controlling endpoint may send a presentation-connection-message with the
+following values:
+
+- connection-id: The ID from the presentation-start-response or
+presentation-connection-open-response messages.
+
+- message: messageOrData, or the presentation message data.  Note that the
+messageType is embedded in the encoded CBOR type and does not need an additional
+value in the message.
+
+
+When section 6.5.6 says "Send a termination request for the presentation to its
+receiving user agent using an implementation specific mechanism", the
+controlling endpoint may send a presentation-termination-request message with
+the following values:
+
+- presentaton-id: The ID of the presentation to terminate.
+
+- reason: The reason the presentation is being terminated.
+
+When a receiving endpoint receives a presentation-termination-request, it should
+send back a presentation-termination-response message to the requesting
+endpoint.  It may also notify other controlling endpoints about the termination
+by sending a presentation-termination-event message.  And it can send the same
+message if it terminates a presentation without a request from a controller to
+do so. When section section 6.5.7 says "send a termination confirmation for P
+using an implementation specific mechanism", this is the message it should send.
+This message contains the following values:
+
+- presentaton-id: The ID of the presentation that was terminated.
+
+- reason: The reason the presentation was terminated.
+
+<!-- TODO: Split up reason into reason and wether it was triggered by the user or not? -->
+
+
+When section 6.7.1 says "it MUST listen to and accept incoming connection
+requests from a controlling browsing context using an implementation specific
+mechanism", the user agent, the receiving endpoint, must receive the and process the
+presentation-connection-open-request message which contains the following
+values: 
+
+- presentaton-id: The ID of the presentation to connect to.
+
+When section 6.7.1 says "Establish the connection between the controlling and
+receiving browsing contexts using an implementation specific mechanism.", the
+user agent, the receiving endpoint, must send a
+presentation-connection-open-response message which contains the following
+values: 
+
+- result: a code indicating success or failure, and the reason for the failure
+
+- connection-id: An ID that both endpoints can use to send connection messages
+to each other.  It is chosen by the receiving endpoint for ease of
+implementation (if the receiver chooses the connection-id, it may keep the ID
+unique across connections, thus making message routing easier).
+
+
+A controlling endpoint may terminate a connection without terminating the
+presentation by sending a presentation-connection-close-request message with the
+following values:
+
+- connection-id: The ID of the connection to close.
+
+The receiving endpoint should, upon receipt of a
+presentation-connection-close-request, should send back a
+presentation-connection-close-response message with the following values:
+
+- result: If the close succeed or failed, and if it failed why it failed.
+
+The receiving endpoint can also close a connection without a request from the
+controlling endpoint to do so and without terminating a presentation.  If it
+does so, it should send a presentation-connection-close-event to the controlling
+endpoint with the following values:
+
+- connection-id: The ID of the connection that was closed
+
+- reason: The reason the connection was closed
+
+- error-message: A debug message suitable for a log or perhaps presented to the
+user with more explanation as to why it was closed.
+
+<!-- TODO: Why does the Presentation API spec not mention the use of the close
+message? -->
+
+Non-browser endpoints can also send and receive the messages that browser
+endpoints do.  If so, the non-browser endpoint must follow the same restrictions
+for the presentation-id as the browser does, as defined by
+[[PRESENTATION-API|Presentation API]] section 6.1 (at least 16 ASCII
+characters).
+
+<!-- TODO: Specify message ordering groups. -->
 
 Remote Playback API Protocol {#remote-playback}
 -----------------------------------------------
@@ -279,5 +460,145 @@ Threat model {#security-threat}
 Mitigations and defenses {#security-defenses}
 ---------------------------------------------
 
+Appending A: Messages
+=====================
+
+<pre>
+; type key 14
+presentation-url-availability-request = {
+  request
+  1: [* text] ; urls
+  2: microseconds ; watch-duration
+  3: int ; watch-id
+}
+
+; type key 15
+presentation-url-availability-response = {
+  response
+  1: [* url-availability] ; url-availabilities
+}
+
+; type key 103
+presentation-url-availability-event = {
+  1: int ; watch-id
+  2: [* url] ; urls
+  3: [* url-availability] ; url-availabilities
+}
 
 
+; idea: use HTTP response codes?
+url-availability = &(
+  available: 0
+  unavailable: 1
+  invalid: 10
+)
+
+
+
+
+; type key 104
+presentation-start-request = {
+  request
+  1: text ; presentation-id
+  2: text ; url
+  3: text ; headers 
+}
+
+; type key 105
+presentation-start-response = {
+  response
+  1: &result ; result
+  2: uint ; connection-id
+}
+
+; type key 106
+presentation-termination-request = {
+  request
+  1: text ; presentation-id
+  2: &(
+    controller-called-terminate: 10
+    user-terminated-via-controller: 11
+    unknown: 255
+  )
+ ; reason
+}
+
+; type key 107
+presentation-termination-response = {
+  response
+  1: result ; result
+}
+
+; type key 108
+presentation-termination-event = {
+  1: text ; presentation-id
+  2: &(
+    receiver-called-terminate: 1
+    user-terminated-via-receiver: 2
+    controller-called-terminate: 10
+    user-terminated-via-controller: 11
+    receiver-replaced-presentation: 20
+    receiver-idle-too-long: 30
+    receiver-attempted-to-navigate: 31
+    receiver-powering-down: 100
+    receiver-crashed: 101
+    unknown: 255
+  )
+}
+
+; type key 109
+presentation-connection-open-request = {
+  request
+  1: text ; presentation-id
+}
+
+; type key 110
+presentation-connection-open-response = {
+  response
+  1: &result ; result
+  2: uint; connection-id
+}
+
+; type key 111
+presentation-connection-close-request = {
+  request
+  1: uint ; connection-id
+}
+
+; type key 112
+presentation-connection-close-response = {
+  response
+  1: &result ; result
+}
+
+; type key 113
+presentation-connection-close-event = {
+  1: uint; connection-id
+  2: &(
+    close-method-called: 1
+    connection-object-discarded: 10
+    unrecoverable-error-while-sending-or-receiving-message: 100
+  ) ; reason
+  ? 3: text ; error-message
+}
+
+
+; type key 16
+presentation-connection-message = {
+  1: uint ; connection-id
+  2: bytes / text ; message
+}
+
+
+result = (
+  success: 1
+  invalid-url: 10
+  invalid-presentation-id: 11
+  timeout: 100
+  transient-error: 101
+  permanent-error: 102
+  terminating: 103
+  unknown-error: 199
+)
+
+</pre>
