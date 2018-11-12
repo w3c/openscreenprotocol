@@ -255,7 +255,7 @@ Endpoints must include DNS TXT records with the following keys and values:
   metadata.  The time value is respesented as zero or a positive integer.  The
   clock and timescale are chosen by the advertising endpoint, but are not
   important, except that the clock must be monotonic.  A larger value is an
-  indication to discovering clients that they should reconnect to the adverisiting
+  indication to discovering clients that they should reconnect to the advertising
   client to learn updated metadata.  
  
 If an endpoint wishes to advertise support for more than one version of the
