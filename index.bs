@@ -412,7 +412,7 @@ following values:
 - connection-id: The ID of the connection to close.
 
 The receiving endpoint should, upon receipt of a
-presentation-connection-close-request, should send back a
+presentation-connection-close-request, send back a
 presentation-connection-close-response message with the following values:
 
 - result: If the close succeed or failed, and if it failed why it failed.
