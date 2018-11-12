@@ -281,7 +281,7 @@ messages may contain the following information with the following meaning:
   displayed to a user by the requesting endpoint.  If the responding endpoint is
   not yet authenticated, the requesting endpoint should make UI affordance for
   indicating to the user that the display name is not yet authenticated.  If the
-  responding endpoint changes it display name, the requesting endpoing should make
+  responding endpoint changes its display name, the requesting endpoint should make
   UI affordance for indicating to the user that the display name has changed. 
 - model-name: The model name of the device (if it is a device), used mainly for
   debugging purpuses, but may be displayed to the user of the requesting endpoint.
