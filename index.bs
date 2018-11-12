@@ -264,11 +264,13 @@ mechanisms", this spec defines the behavior when the chosen mechanism is the
 Open Sceen Protocol.  For all references messages, see Appendix A for the full
 CDDL definitions.
 
-When section 6.4.2 says "This list of presentation displays ... is populated
-based on an implementation specific discovery mechanism", the user agent, or
-controlling endpoint, may use the the mDNS, QUIC, and endpoint-info-request
-messages defined previously in this spec to discover endpoints capable of
-receiving presentation API messages.
+When [section
+6.4.2](https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection)
+says "This list of presentation displays ... is populated based on an
+implementation specific discovery mechanism", the user agent, or controlling
+endpoint, may use the the mDNS, QUIC, and endpoint-info-request messages defined
+previously in this spec to discover endpoints capable of receiving presentation
+API messages.
 
 <!-- TODO: Add a capability that indicates support for the presentation API -->
 
@@ -309,18 +311,22 @@ for the URLs that have changed in availability state within the watch duration
 of the original availability request.
 
 
-When section 6.4.2 says "To further save power, ... implementation specific
-discovery of presentation displays can be resumed or suspended.", the user
-agent, or controlling endpoint, may disconnect the QUIC connection or reconnect
-or keep connections alive as needed to send availablity requests and receive
+When [section
+6.4.2](https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays)
+says "To further save power, ... implementation specific discovery of
+presentation displays can be resumed or suspended.", the user agent, or
+controlling endpoint, may disconnect the QUIC connection or reconnect or keep
+connections alive as needed to send availablity requests and receive
 availability responses and updates.
 
 
-When section 6.3.4 says "Using an implementation specific mechanism, tell U to
-create a receiving browsing context with D, presentationUrl, and I as
-parameters.", U (the user agent, or controlling endpoint) may send a
-presentation-start-request message to D (the selected presentation display, or
-receiving endpoint), with the following values:
+When [section
+6.3.4](https://www.w3.org/TR/presentation-api/#starting-a-presentation-connection)
+says "Using an implementation specific mechanism, tell U to create a receiving
+browsing context with D, presentationUrl, and I as parameters.", U (the user
+agent, or controlling endpoint) may send a presentation-start-request message to
+D (the selected presentation display, or receiving endpoint), with the following
+values:
 
 - presentation-id: I (the presentation identifier)
 
@@ -344,11 +350,12 @@ unique across connections, thus making message routing easier).
 
 <!-- TODO: Add optional HTTP response code to the response? -->
 
-When section 6.5.2 says "Using an implementation specific mechanism, transmit
-the contents of messageOrData as the presentation message data and messageType
-as the presentation message type to the destination browsing context", the
-controlling endpoint may send a presentation-connection-message with the
-following values:
+When [section
+6.5.2](https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection)
+says "Using an implementation specific mechanism, transmit the contents of
+messageOrData as the presentation message data and messageType as the
+presentation message type to the destination browsing context", the controlling
+endpoint may send a presentation-connection-message with the following values:
 
 - connection-id: The ID from the presentation-start-response or
 presentation-connection-open-response messages.
@@ -358,10 +365,11 @@ messageType is embedded in the encoded CBOR type and does not need an additional
 value in the message.
 
 
-When section 6.5.6 says "Send a termination request for the presentation to its
-receiving user agent using an implementation specific mechanism", the
-controlling endpoint may send a presentation-termination-request message with
-the following values:
+When [section
+6.5.6](https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context)
+says "Send a termination request for the presentation to its receiving user
+agent using an implementation specific mechanism", the controlling endpoint may
+send a presentation-termination-request message with the following values:
 
 - presentation-id: The ID of the presentation to terminate.
 
@@ -383,19 +391,22 @@ This message contains the following values:
 <!-- TODO: Split up reason into reason and whether it was triggered by the user or not? -->
 
 
-When section 6.7.1 says "it MUST listen to and accept incoming connection
-requests from a controlling browsing context using an implementation specific
-mechanism", the user agent, the receiving endpoint, must receive and process the
+When [section
+6.7.1](https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections)
+says "it MUST listen to and accept incoming connection requests from a
+controlling browsing context using an implementation specific mechanism", the
+user agent, the receiving endpoint, must receive and process the
 presentation-connection-open-request message which contains the following
 values: 
 
 - presentation-id: The ID of the presentation to connect to.
 
-When section 6.7.1 says "Establish the connection between the controlling and
-receiving browsing contexts using an implementation specific mechanism.", the
-user agent, the receiving endpoint, must send a
-presentation-connection-open-response message which contains the following
-values: 
+When [section
+6.7.1](https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections)
+says "Establish the connection between the controlling and receiving browsing
+contexts using an implementation specific mechanism.", the user agent, the
+receiving endpoint, must send a presentation-connection-open-response message
+which contains the following values: 
 
 - result: a code indicating success or failure, and the reason for the failure
 
