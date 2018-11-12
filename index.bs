@@ -281,7 +281,7 @@ presentation-url-availability-request message with the following values:
 - watch-duration: The period of time that the controlling endpoint is interested
 in receiving updates about the URLs, should the availability change.
 
-- watch-id: An indentifier the receiving endpoint may use when sending updates
+- watch-id: An identifier the receiving endpoint may use when sending updates
 about URL availability so that controlling endpoint knows which URLs the
 receiving endpoint is referring to.
 
