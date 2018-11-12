@@ -267,7 +267,7 @@ CDDL definitions.
 When section 6.4.2 says "This list of presentation displays ... is populated
 based on an implementation specific discovery mechanism", the user agent, or
 controlling endpoint, may use the the mDNS, QUIC, and endpoint-info-request
-message define previously in this spec to discover endpoints capable of
+messages defined previously in this spec to discover endpoints capable of
 receiving presentation API messages.
 
 <!-- TODO: Add a capability that indicates support for the presentation API -->
