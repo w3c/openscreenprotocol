@@ -376,7 +376,7 @@ do so. When section section 6.5.7 says "send a termination confirmation for P
 using an implementation specific mechanism", this is the message it should send.
 This message contains the following values:
 
-- presentaton-id: The ID of the presentation that was terminated.
+- presentation-id: The ID of the presentation that was terminated.
 
 - reason: The reason the presentation was terminated.
 
