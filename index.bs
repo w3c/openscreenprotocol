@@ -380,7 +380,7 @@ This message contains the following values:
 
 - reason: The reason the presentation was terminated.
 
-<!-- TODO: Split up reason into reason and wether it was triggered by the user or not? -->
+<!-- TODO: Split up reason into reason and whether it was triggered by the user or not? -->
 
 
 When section 6.7.1 says "it MUST listen to and accept incoming connection
