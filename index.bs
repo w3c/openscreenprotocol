@@ -271,7 +271,7 @@ learn further metdata about it, it initiates a
 [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16) connection to
 the IP and port of the mDNS entry.  Prior to authentication, some message may be
 exchanged (such as further metadata), but such info should be treated as
-unathenticated (such as indicating to a user that a display name of an
+unauthenticated (such as indicating to a user that a display name of an
 unathenticated endpoint is unathenticated).  
 
 To learn further metadata, the an endpoint may send a endpoint-info-request
