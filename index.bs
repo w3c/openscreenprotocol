@@ -260,7 +260,7 @@ This section defines the use of the Open Screen Protocol for the
 [[PRESENTATION-API|Presentation API]].  When sections are quoted here, they are
 from the [[PRESENTATION-API|Presentation API]].  When the
 [[PRESENTATION-API|Presentation API]] refers to "implementation specific
-mechanisms", this spec defines the behavior when the choosen mechanism is the
+mechanisms", this spec defines the behavior when the chosen mechanism is the
 Open Sceen Protocol.  For all references messages, see Appendix A for the full
 CDDL definitions.
 
