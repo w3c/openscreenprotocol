@@ -363,7 +363,7 @@ receiving user agent using an implementation specific mechanism", the
 controlling endpoint may send a presentation-termination-request message with
 the following values:
 
-- presentaton-id: The ID of the presentation to terminate.
+- presentation-id: The ID of the presentation to terminate.
 
 - reason: The reason the presentation is being terminated.
 
