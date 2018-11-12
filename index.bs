@@ -272,7 +272,7 @@ learn further metdata about it, it initiates a
 the IP and port of the mDNS entry.  Prior to authentication, some message may be
 exchanged (such as further metadata), but such info should be treated as
 unauthenticated (such as indicating to a user that a display name of an
-unathenticated endpoint is unathenticated).  
+unauthenticated endpoint is unauthenticated).  
 
 To learn further metadata, the an endpoint may send a endpoint-info-request
 message (see Appendix A) and receive back a endpoint-info-response message.  The
