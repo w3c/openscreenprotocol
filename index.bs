@@ -303,7 +303,7 @@ used to refer to the presentation URLs whose availability has changed.
 or invalid).  Each state must correspond to the URLs from the request referred
 to by the watch-id.
 
-Note that these message are not broadcast to all controlling endpoints.  They
+Note that these messages are not broadcasted to all controlling endpoints.  They
 are sent individually to controlling endpoints that have requested availability
 for the URLs that have changed in availability state within the watch duration
 of the original availability request.
