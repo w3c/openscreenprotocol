@@ -389,7 +389,7 @@ mechanism", the user agent, the receiving endpoint, must receive and process the
 presentation-connection-open-request message which contains the following
 values: 
 
-- presentaton-id: The ID of the presentation to connect to.
+- presentation-id: The ID of the presentation to connect to.
 
 When section 6.7.1 says "Establish the connection between the controlling and
 receiving browsing contexts using an implementation specific mechanism.", the
