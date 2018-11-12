@@ -276,7 +276,7 @@ unauthenticated endpoint is unauthenticated).
 
 To learn further metadata, an endpoint may send a endpoint-info-request
 message (see Appendix A) and receive back a endpoint-info-response message.  The
-messages may contain the following information with the following meaning. 
+messages may contain the following information with the following meaning:
 - display-name: The display name of the responding endpoint intended to be
   displayed to a user by the requesting endpoint.  If the responding endpoint is
   not yet authenticated, the requesting endpoint should make UI affordance for
