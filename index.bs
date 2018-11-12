@@ -385,7 +385,7 @@ This message contains the following values:
 
 When section 6.7.1 says "it MUST listen to and accept incoming connection
 requests from a controlling browsing context using an implementation specific
-mechanism", the user agent, the receiving endpoint, must receive the and process the
+mechanism", the user agent, the receiving endpoint, must receive and process the
 presentation-connection-open-request message which contains the following
 values: 
 
