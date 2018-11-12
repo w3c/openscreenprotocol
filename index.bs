@@ -252,7 +252,7 @@ Endpoints must include DNS TXT records with the following keys and values:
   "sha-512".  Endpoints must not support the following hash functions: "md2",
   "md5". 
 - key 'time" with value of the last time the endpoint updated its
-  metadata.  The time value is respesented as zero or a positive integer.  The
+  metadata.  The time value is represented as zero or a positive integer.  The
   clock and timescale are chosen by the advertising endpoint, but are not
   important, except that the clock must be monotonic.  A larger value is an
   indication to discovering clients that they should reconnect to the advertising
