@@ -339,10 +339,11 @@ For each message, the sender must write to the QUIC stream the following:
 
 3. The messge encoded as CBOR (whose length must match the prefixed length)
 
-Future message type keys may indicate the use of custom message formats that are
-not CBOR, or use of CBOR without the length prefix, so receiving endpoints must
-disregard messages with type keys that it does not recognize and must not assume
-that they are serialized using CBOR nor that they have a length prefix.
+If an endpoint receives a message for which it does not recognize a
+type key, it must close the QUIC connection with an application error
+code of 1 and should include the unknown type key in the reason phrase
+(see [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)
+sections 19.4).
 
 Variable-length integers are encoded in the same format as defined by [QUIC
 transport section
