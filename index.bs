@@ -242,9 +242,6 @@ service name "_openscreen._udp.local".
 
 Endpoints must include DNS TXT records with the following keys and values: 
 
-- key "v" with value of the version of this protocol the endpoint understands.  
-  The current version of this protocol is "1". 
-
 - key "fp" with value of the certificate fingerpint of the endpoint.  The format
   of the fingerprint is defined by [RFC 8122 section
   5](https://tools.ietf.org/html/rfc8122#section-5), excluding the
@@ -260,13 +257,18 @@ Endpoints must include DNS TXT records with the following keys and values:
   indication to discovering clients that they should reconnect to the
   advertising client to learn updated metadata.  
  
-If an endpoint wishes to advertise support for more than one version of the
-protocol, it may do so by advertising more than one DNS-SD entry, which may have
-the same DNS TXT fingerprint value.
+An endpoint that publishes this service name must implement the
+transport and metadata discovery mechanism with QUIC described below.
+If a future version of this protocol uses mDNS but breaks
+compatibility with that mechanism, it should change the service name
+to a new value indicating a new mechanism for metadata discovery
+mechanism.  If future versions of this protocol or extensions to this
+protocol are compatible with the metadata discovery mechanism, they
+can use it to indicate support for future versions and extensions.
 
 
 Transport and metadata discovery with QUIC {#transport}
-====================================
+=======================================================
 
 If a discovering endpoint wants to connect to an advertising endpoint, or to
 learn further metdata about it, it initiates a
