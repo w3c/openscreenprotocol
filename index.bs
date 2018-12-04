@@ -387,9 +387,17 @@ Mitigations and defenses {#security-defenses}
 
 Appending A: Messages
 =====================
-The following messages are defined with [CDDL](https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/). When integer keys are used, a comment is appended to the line to indicate the name of the field. Each root message (one that can be put into a QUIC stream without being inclosed by another message) has a comment indicating the message type key.
+The following messages are defined with
+[CDDL](https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/). When
+integer keys are used, a comment is appended to the line to indicate
+the name of the field. Each root message (one that can be put into a
+QUIC stream without being inclosed by another message) has a comment
+indicating the message type key.
 
-Smaller numbers should be reserved for message that will be sent more frequently or are very small or both and larger numbers should be reserved for messsages that are infrequently sent or large or both because smaller type keys encode on the wire smaller.
+Smaller numbers should be reserved for message that will be sent more
+frequently or are very small or both and larger numbers should be
+reserved for messsages that are infrequently sent or large or both
+because smaller type keys encode on the wire smaller.
 
 <pre>
 ; type key 10
