@@ -313,7 +313,7 @@ been received from the remote side for 35 seconds (allowing for a keep-alive
 frequency of 25 seconds and message delivery delay of 10 seconds).
 
 If a client endpoint wishes to send messages to a server endpoint, the client
-endpoint can connect to the server endpoint "on demand": it does not need to
+endpoint can connect to the server endpoint "on demand"; it does not need to
 keep the connection alive.
 
 The endpoint-info-response message and endpoint-status-response messages may be
