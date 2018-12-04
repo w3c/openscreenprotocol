@@ -409,7 +409,7 @@ endpoint-info = {
 }
 
 ; type key 12
-status-request = {
+endpoint-status-request = {
   request
   ? 1: status ; status
 }
