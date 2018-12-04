@@ -260,8 +260,8 @@ Presentation Protocol {#presentation-protocol}
 This section defines the use of the Open Screen Protocol for starting,
 stopping, and controlling presenetations as defined by
 [[PRESENTATION-API|Presentation API]].  A subsequent section will
-define how APIs in maps to the protocol messages defined in this
-section.
+define how APIs in [[PRESENTATION-API|Presentation API]] map to the
+protocol messages defined in this section.
 
 For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
