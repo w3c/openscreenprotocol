@@ -278,7 +278,7 @@ exchanged (such as further metadata), but such info should be treated as
 unauthenticated (such as indicating to a user that a display name of an
 unauthenticated endpoint is unauthenticated).  
 
-To learn further metadata, an endpoint may send a endpoint-info-request
+To learn further metadata, an endpoint may send an endpoint-info-request
 message (see Appendix A) and receive back a endpoint-info-response message.  The
 messages may contain the following information with the following meaning:
 
