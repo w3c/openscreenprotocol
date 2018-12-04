@@ -257,7 +257,7 @@ exchanging control messages, results, and events.
 Presentation Protocol {#presentation-protocol}
 ---------------------------------------------
 
-This section defines the use of the Open Screen Protocol for staring,
+This section defines the use of the Open Screen Protocol for starting,
 stopping, and controlling presenetations as defined by
 [[PRESENTATION-API|Presentation API]].  A subsequent section will
 define how APIs in maps to the protocol messages defined in this
