@@ -515,6 +515,10 @@ Mitigations and defenses {#security-defenses}
 Appending A: Messages
 =====================
 
+Lower type keys are used for messages we expect to be more frequent
+and higher type keys are used for less frequently used messages.  This
+is because on the wire lower values encode smaller.
+
 <pre>
 ; type key 14
 presentation-url-availability-request = {
