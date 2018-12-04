@@ -236,9 +236,9 @@ Discovery with mDNS {#discovery}
 ===============================
 
 Endpoints may discover one another using
-[mDNS](https://tools.ietf.org/html/rfc6762) and
-[DNS-SD](https://tools.ietf.org/html/rfc6763).  To do so, endpoints must use the
-service name "_openscreen._udp.local".
+[DNS-SD](https://tools.ietf.org/html/rfc6763) over
+[mDNS](https://tools.ietf.org/html/rfc6762).  To do so, endpoints must
+use the service name "_openscreen._udp.local".
 
 Advertising endpoints must include DNS TXT records with the following
 keys and values:
@@ -305,12 +305,11 @@ sending or receiving messages, the connection should be closed.  In order to
 keep a QUIC connection alive, an endpoint may send an endpoint-status-request
 message, and any endpoint that receives an endpoint-status-request message
 should send an endpoint-status-response message.  Such messages should be sent
-every 25 seconds.  If, however, other mechanisms or traffic (such as other
-requests and responses) are serving the purpose of keeping the connection alive,
-these messages should be delayed or not used at all.  A QUIC connection should
-not be closed because of idle timeout unless no such mechanisms or traffic has
-been received from the remote side for 35 seconds (allowing for a keep-alive
-frequency of 25 seconds and message delivery delay of 10 seconds).
+more frequently than the QUIC idle_timeout transport parameter (see section 18
+of [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)).  If,
+however, other mechanisms or traffic (such as other requests and responses) are
+serving the purpose of keeping the connection alive, these messages should be
+delayed or not used at all.
 
 If a client endpoint wishes to send messages to a server endpoint, the client
 endpoint can connect to the server endpoint "on demand"; it does not need to
