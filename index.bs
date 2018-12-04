@@ -415,7 +415,7 @@ endpoint-status-request = {
 }
 
 ; type key 13
-status-response = {
+endpoint-status-response = {
   response
   ? 1: status ; status
 }
