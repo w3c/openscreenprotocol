@@ -399,7 +399,7 @@ endpoint-info-request = {
 ; type key 11
 endpoint-info-response = {
   response
-  1: endpoint-info;
+  1: endpoint-info ; endpoint-info
 }
 
 endpoint-info = {
