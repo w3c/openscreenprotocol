@@ -316,10 +316,13 @@ If a client endpoint wishes to send messages to a server endpoint, the client
 endpoint can connect to the server endpoint "on demand"; it does not need to
 keep the connection alive.
 
-The endpoint-info-response message and endpoint-status-response messages may be
-extended to include additional information not defined in this spec.  If done
-ad hoc by applications and not in future specs, keys should be chosen to avoid
-collision, such as by choosing large integers or long strings.  
+The endpoint-info-response message and endpoint-status-response
+messages may be extended to include additional information not defined
+in this spec.  If done ad hoc by applications and not in future specs,
+keys should be chosen to avoid collision, such as by choosing large
+integers or long strings.  Endpoints must ignore keys in the
+endpoint-info-message that it does not understand to allow endpoints
+to easily extend this message.
 
 Messages delivery using CBOR and QUIC streams {#control}
 ========================================================
