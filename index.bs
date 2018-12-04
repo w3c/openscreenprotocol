@@ -240,24 +240,24 @@ Endpoints may discover one another using
 [DNS-SD](https://tools.ietf.org/html/rfc6763).  To do so, endpoints must use the
 service name "_openscreen._udp.local".
 
-Endpoints must include DNS TXT records with the following keys and values: 
+Advertising endpoints must include DNS TXT records with the following
+keys and values:
 
-- key "fp" with value of the certificate fingerpint of the endpoint.  The format
-  of the fingerprint is defined by [RFC 8122 section
+- key "fp" with value of the certificate fingerpint of the advertising endpoint.
+  The format of the fingerprint is defined by [RFC 8122 section
   5](https://tools.ietf.org/html/rfc8122#section-5), excluding the
   "fingerprint:" prefix and including the hash function, space, and hex-encoded
   fingerprint.  The fingerprint value also functions as an ID for the endpoint.
   All endpoints must support the following hash functions: "sha-256", "sha-512".
   Endpoints must not support the following hash functions: "md2", "md5". 
 
-- key "time" with value of the last time the endpoint updated its
-  metadata.  The time value is represented as zero or a positive integer.  The
-  clock and timescale are chosen by the advertising endpoint, but are not
-  important, except that the clock must be monotonic.  A larger value is an
-  indication to discovering clients that they should reconnect to the
-  advertising client to learn updated metadata.  
+- key "time" with arbitrary unsigned integer value.  To indicate that
+  metadata has changed, the advertising endpoint must update it to a
+  greater value.  This signals to the discovering endpoint that it
+  should connect to the advertising endpoint to discover updated
+  metadata.
  
-An endpoint that publishes this service name must implement the
+An endpoint that advertises this service name must implement the
 transport and metadata discovery mechanism with QUIC described below.
 If a future version of this protocol uses mDNS but breaks
 compatibility with that mechanism, it should change the service name
