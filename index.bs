@@ -273,7 +273,7 @@ Transport and metadata discovery with QUIC {#transport}
 If a discovering endpoint wants to connect to an advertising endpoint, or to
 learn further metdata about it, it initiates a
 [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16) connection to
-the IP and port of the mDNS entry.  Prior to authentication, some message may be
+the IP and port from the SRV record.  Prior to authentication, some message may be
 exchanged (such as further metadata), but such info should be treated as
 unauthenticated (such as indicating to a user that a display name of an
 unauthenticated endpoint is unauthenticated).  
