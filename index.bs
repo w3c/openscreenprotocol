@@ -306,10 +306,11 @@ keep a QUIC connection alive, an endpoint may send an endpoint-status-request
 message, and any endpoint that receives an endpoint-status-request message
 should send an endpoint-status-response message.  Such messages should be sent
 more frequently than the QUIC idle_timeout transport parameter (see section 18
-of [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)).  If,
-however, other mechanisms or traffic (such as other requests and responses) are
-serving the purpose of keeping the connection alive, these messages should be
-delayed or not used at all.
+of [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)) and QUIC
+PING frames should not be used.  An idle_timeout transport parameter of 25
+seconds is recommended.  If other mechanisms or traffic (such as other requests
+and responses) are serving the purpose of keeping the connection alive,
+endpoint-status-requests messages should be delayed or not used at all.
 
 If a client endpoint wishes to send messages to a server endpoint, the client
 endpoint can connect to the server endpoint "on demand"; it does not need to
