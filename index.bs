@@ -301,15 +301,16 @@ from an advertising endpoint (acting as a QUIC server) or an advertising
 endpoint (acting as a QUIC server) wishes to send message to a discovering
 endpoint (acting as a client endpoint), it may wish to keep the QUIC connection
 alive.  Once neither side needs to keep the connection alive for the purposes of
-sending or receiving messages, the connection should be closed.  In order to
-keep a QUIC connection alive, an endpoint may send an endpoint-status-request
-message, and any endpoint that receives an endpoint-status-request message
-should send an endpoint-status-response message.  Such messages should be sent
-more frequently than the QUIC idle_timeout transport parameter (see section 18
-of [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)) and QUIC
-PING frames should not be used.  An idle_timeout transport parameter of 25
-seconds is recommended.  If other mechanisms or traffic (such as other requests
-and responses) are serving the purpose of keeping the connection alive,
+sending or receiving messages, the connection should be closed with an error
+code of 1.  In order to keep a QUIC connection alive, an endpoint may send an
+endpoint-status-request message, and any endpoint that receives an
+endpoint-status-request message should send an endpoint-status-response message.
+Such messages should be sent more frequently than the QUIC idle_timeout
+transport parameter (see section 18 of
+[QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)) and QUIC PING
+frames should not be used.  An idle_timeout transport parameter of 25 seconds is
+recommended.  If other mechanisms or traffic (such as other requests and
+responses) are serving the purpose of keeping the connection alive,
 endpoint-status-requests messages should be delayed or not used at all.
 
 If a client endpoint wishes to send messages to a server endpoint, the client
@@ -344,7 +345,7 @@ For each message, the sender must write to the QUIC stream the following:
 
 If an endpoint receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
-code of 1 and should include the unknown type key in the reason phrase
+code of 2 and should include the unknown type key in the reason phrase
 (see [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)
 sections 19.4).
 
