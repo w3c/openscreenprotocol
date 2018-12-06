@@ -276,7 +276,7 @@ can use it to indicate support for future versions and extensions.
 Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
-If a discovering agent wants to connect to an advertising agent, or to
+If a listening agent wants to connect to an advertising agent, or to
 learn further metdata about it, it initiates a
 [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16) connection to
 the IP and port from the SRV record.  Prior to authentication, a message may be
@@ -302,17 +302,17 @@ messages may contain the following information with the following meaning:
 
 <!-- TODO: Add device type and/or capabilities -->
 
-If a discovering agent (acting as a QUIC client) wishes to receive messages
-from an advertising agent (acting as a QUIC server) or an advertising
-agent (acting as a QUIC server) wishes to send message to a discovering
-agent (acting as a client agent), it may wish to keep the QUIC connection
-alive.  Once neither side needs to keep the connection alive for the purposes of
-sending or receiving messages, the connection should be closed with an error
-code of 1.  In order to keep a QUIC connection alive, an agent may send an
-agent-status-request message, and any agent that receives an
-agent-status-request message should send an agent-status-response message.
-Such messages should be sent more frequently than the QUIC idle_timeout
-transport parameter (see section 18 of
+Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.
+
+If a listening agent wishes to receive messages from an advertising agent or an
+advertising agent wishes to send message to a listening agent, it may wish to
+keep the QUIC connection alive.  Once neither side needs to keep the connection
+alive for the purposes of sending or receiving messages, the connection should
+be closed with an error code of 1.  In order to keep a QUIC connection alive, an
+agent may send an agent-status-request message, and any agent that receives an
+agent-status-request message should send an agent-status-response message. Such
+messages should be sent more frequently than the QUIC idle_timeout transport
+parameter (see section 18 of
 [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
 recommended.  If other mechanisms or traffic (such as other requests and
