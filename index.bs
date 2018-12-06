@@ -268,7 +268,7 @@ transport and metadata discovery mechanism with QUIC described below.
 If a future version of this protocol uses mDNS but breaks
 compatibility with that mechanism, it should change the service name
 to a new value indicating a new mechanism for metadata discovery
-mechanism.  If future versions of this protocol or extensions to this
+.  If future versions of this protocol or extensions to this
 protocol are compatible with the metadata discovery mechanism, they
 can use it to indicate support for future versions and extensions.
 
@@ -336,9 +336,9 @@ Messages delivery using CBOR and QUIC streams {#control}
 
 Messages are serialized using [CBOR](https://tools.ietf.org/html/rfc7049).  To
 send a group of messages in order, that group of messages must be sent in one
-QUIC stream.  Different groups of messages (with no ordering dependency
+QUIC stream.  Independent groups of messages (with no ordering dependency
 across groups) should be sent in different QUIC streams.  In order to put
-multiple CBOR-serialiezd messages into the the same QUIC stream, the following
+multiple CBOR-serialized messages into the the same QUIC stream, the following
 is used.
 
 For each message, the sender must write to the QUIC stream the following: 
