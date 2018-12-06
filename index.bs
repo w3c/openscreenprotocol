@@ -291,7 +291,7 @@ messages may contain the following information with the following meaning:
 - display-name: The display name of the responding agent intended to be
   displayed to a user by the requesting agent.  If the responding agent is
   not yet authenticated, the requesting agent should make UI affordance for
-  indicating to the user that the display name is not yet authenticated.  If the
+  indicating to the user that the display name is not yet verified.  If the
   responding agent changes its display name, the requesting agent should
   make UI affordance for indicating to the user that the display name has
   changed. 
