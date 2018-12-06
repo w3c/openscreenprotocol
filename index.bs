@@ -564,8 +564,13 @@ presentation-start-request = {
   request
   1: text ; presentation-id
   2: text ; url
-  3: text ; headers 
+  3: [* http-header] ; headers 
 }
+
+http-header = [
+  key: text
+  value: text
+]
 
 ; type key 105
 presentation-start-response = {
