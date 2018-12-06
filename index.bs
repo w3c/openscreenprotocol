@@ -337,7 +337,7 @@ must respond with the appropriate result (such as invalid-url or timeout).  If
 it has succeeded, it must reply with a success result.  Additionally, the
 response must include the following:
 
-- connection-id: An ID that both endpoints can use to send connection messages
+- connection-id: An ID that both agents can use to send connection messages
 to each other.  It is chosen by the receiver for ease of implementation (if the
 message receiver chooses the connection-id, it may keep the ID unique across
 connections, thus making message demuxing/routing easier).
@@ -361,9 +361,9 @@ presentation-termination-request message with the following values:
 - reason: The reason the presentation is being terminated.
 
 
-When a receiving endpoint receives a presentation-termination-request, it should
+When a receiving agent receives a presentation-termination-request, it should
 send back a presentation-termination-response message to the requesting
-endpoint.  It may also notify other controllers about the termination by sending
+agent.  It may also notify other controllers about the termination by sending
 a presentation-termination-event message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:
@@ -390,7 +390,7 @@ following values:
 
 - result: a code indicating success or failure, and the reason for the failure
 
-- connection-id: An ID that both endpoints can use to send connection messages
+- connection-id: An ID that both agents can use to send connection messages
 to each other.  It is chosen by the receiver for ease of implementation (if the
 message receiver chooses the connection-id, it may keep the ID unique across
 connections, thus making message demuxing/routing easier).
@@ -432,8 +432,8 @@ Presentation API {#presentation-api}
 
 This section defines how [[PRESENTATION-API|Presentation API]] uses
 the messages defined in the previous sections.  
-Non-browser endpoints can also send and receive the same messages defined here.
-If so, a non-browser endpoint must follow the same restrictions for the
+Non-browser agents can also send and receive the same messages defined here.
+If so, a non-browser agent must follow the same restrictions for the
 presentation-id as the a does, as defined by [[PRESENTATION-API|Presentation
 API]] section 6.1 (at least 16 ASCII characters).  
 
@@ -441,7 +441,7 @@ When [[PRESENTATION-API|Presentation API]] [section
 6.4.2](https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection)
 says "This list of presentation displays ... is populated based on an
 implementation specific discovery mechanism", the [=controlling user
-agent=] may use the mDNS, QUIC, endpoint-info-request, and
+agent=] may use the mDNS, QUIC, agent-info-request, and
 presentation-url-availability-request messages defined previously in
 this spec to discover receivers.
 
