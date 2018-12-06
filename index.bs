@@ -304,7 +304,7 @@ If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send message to a listening agent, it may wish to
 keep the QUIC connection alive.  Once neither side needs to keep the connection
 alive for the purposes of sending or receiving messages, the connection should
-be closed with an error code of 1.  In order to keep a QUIC connection alive, an
+be closed with an error code of 5139.  In order to keep a QUIC connection alive, an
 agent may send an agent-status-request message, and any agent that receives an
 agent-status-request message should send an agent-status-response message. Such
 messages should be sent more frequently than the QUIC idle_timeout transport
@@ -348,7 +348,7 @@ For each message, the sender must write to the QUIC stream the following:
 
 If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
-code of 2 and should include the unknown type key in the reason phrase
+code of 404 and should include the unknown type key in the reason phrase
 (see [[!QUIC]] section 19.4).
 
 Variable-length integers are encoded in the same format as defined by [QUIC
