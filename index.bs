@@ -258,7 +258,7 @@ keys and values:
 
 - key "mv" with an unsigned integer value that indicates that
   metadata has changed.   The advertising agent must update it to a greater
-  value.  This signals to the discovering agent that it should connect to the
+  value.  This signals to the listening agent that it should connect to the
   advertising agent to discover updated metadata.
 
   <!-- TODO: Add examples of sample mDNS records. -->
