@@ -340,7 +340,7 @@ response must include the following:
 - connection-id: An ID that both agents can use to send connection messages
 to each other.  It is chosen by the receiver for ease of implementation (if the
 message receiver chooses the connection-id, it may keep the ID unique across
-connections, thus making message demuxing/routing easier).
+connections, thus making message demuxing/routing easier.
 
 <!-- TODO: Add optional HTTP response code to the response? -->
 
