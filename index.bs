@@ -267,7 +267,8 @@ For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
 
 <!-- TODO: Add a capability that indicates support for the
-presentation protocol -->
+presentation protocol.  
+See https://github.com/webscreens/openscreenprotocol/issues/123-->
 
 To learn which receivers are [=available presentation display=]s for a
 particular URL or set of URLs, the controller may send a
