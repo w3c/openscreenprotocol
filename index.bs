@@ -463,6 +463,9 @@ presentation-start-request message to D (the receiver), with I for the
 presentation identifier and presentationUrl for the selected
 presentation URL.
 
+<!-- TODO: Once the Presentation API has text about reconnecting via an
+implementation specific mechanism, quote that here and map it to a message -->
+
 When [[PRESENTATION-API|Presentation API]] [section
 6.5.2](https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection)
 says "Using an implementation specific mechanism, transmit the
