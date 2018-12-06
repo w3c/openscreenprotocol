@@ -338,7 +338,7 @@ it has succeeded, it must reply with a success result.  Additionally, the
 response must include the following:
 
 - connection-id: An ID that both agents can use to send connection messages
-to each other.  It is chosen by the receiver for ease of implementation (if the
+to each other.  It is chosen by the receiver for ease of implementation: if the
 message receiver chooses the connection-id, it may keep the ID unique across
 connections, thus making message demuxing/routing easier.
 
