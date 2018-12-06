@@ -416,6 +416,8 @@ frequently or are very small or both and larger numbers should be
 reserved for messsages that are infrequently sent or large or both
 because smaller type keys encode on the wire smaller.
 
+<!-- TODO: Make a bikeshed formatter CDDL -->
+
 <pre>
 ; type key 10
 agent-info-request = {
