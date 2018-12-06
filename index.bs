@@ -332,15 +332,15 @@ consist of at least 16 ASCII characters.
 
 When the receiver receives the presentation-start-request, it should send back a
 presentation-start-response message after either the presentation URL has been
-feteched and loaded or the receiver has failed to do so. If it has failed, it
+feteched and loaded, or the receiver has failed to do so. If it has failed, it
 must respond with the appropriate result (such as invalid-url or timeout).  If
 it has succeeded, it must reply with a success result.  Additionally, the
 response must include the following:
 
 - connection-id: An ID that both agents can use to send connection messages
-to each other.  It is chosen by the receiver for ease of implementation (if the
+to each other.  It is chosen by the receiver for ease of implementation: if the
 message receiver chooses the connection-id, it may keep the ID unique across
-connections, thus making message demuxing/routing easier).
+connections, thus making message demuxing/routing easier.
 
 <!-- TODO: Add optional HTTP response code to the response? -->
 
