@@ -241,6 +241,18 @@ Discovery with mDNS {#discovery}
 Agents may discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
 To do so, agents must use the service name "_openscreen._udp.local".
 
+Advertising Agents must use an instance name that is a prefix of the agent's
+display name. If the instance name is not the complete display name (if it has
+been truncated), it must be terminated by a null character.  It is prefix so
+that the name displayed to the user pre-verification can be verified later.  It
+is terminated by a null character in the case of truncation so that the
+listening agent knows it has been truncated.  This complexity is necessary to
+all for display names that exceed the size allowed in an instance name and for
+such (possibly  truncated) display names to be visible to the user sooner
+(before a QUIC connection is made).  Listening agents must treat instance names
+as unverified and must verify that the instance name is a prefix of the verified
+display name before showing the user a verified display name.
+
 Advertising agents must include DNS TXT records with the following
 keys and values:
 
