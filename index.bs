@@ -261,14 +261,13 @@ keys and values:
 
   <!-- TODO: Add examples of sample mDNS records. -->
 
-An agent that advertises this service name must implement the
-transport and metadata discovery mechanism with QUIC described below.
-If a future version of this protocol uses mDNS but breaks
-compatibility with that mechanism, it should change the service name
-to a new value indicating a new mechanism for metadata discovery.
-If future versions of this protocol or extensions to this
-protocol are compatible with the metadata discovery mechanism, they
-can use it to indicate support for future versions and extensions.
+
+Future extensions to this QUIC-based protocol can use the same metadata
+discovery process to indicate support for those extensions, through a
+capabilities mechanism to be determined. If a future version of the Open Screen
+Protocol uses mDNS but breaks compatibility with the metadata discovery process,
+it should change the DNS-SD service name to a new value, indicating a new
+mechanism for metadata discovery.
 
 
 Transport and metadata discovery with QUIC {#transport}
