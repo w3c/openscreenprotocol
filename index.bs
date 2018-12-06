@@ -274,32 +274,33 @@ To learn which receivers are [=available presentation display=]s for a
 particular URL or set of URLs, the controller may send a
 presentation-url-availability-request message with the following values:
 
-- urls: A list of presentation URLs
+-   urls: A list of presentation URLs
 
-- watch-duration: The period of time that the controller is interested in
-receiving updates about the URLs, should the availability change.
+-   watch-duration: The period of time that the controller is interested in
+    receiving updates about the URLs, should the availability change.
 
-- watch-id: An identifier the receiver may use when sending updates about URL
-availability so that controller knows which URLs the receiver is referring to.
+-   watch-id: An identifier the receiver may use when sending updates about URL
+    availability so that controller knows which URLs the receiver is referring
+    to.
 
 In response, the receiver should send one presentation-url-availability-response
 message with the following values:
 
-- url-availabilities: A list of URL availability states (available, unavailable,
-or invalid).  Each state must correspond to the matching URL from the request by
-list index.
+-   url-availabilities: A list of URL availability states (available,
+    unavailable, or invalid).  Each state must correspond to the matching URL
+    from the request by list index.
 
 
 The receivers should later (up to the current time plus request
 watch-duration) send presentation-url-availability-event messages if
 URL availabilities change.  Such events contain the following values:
 
-- watch-id: The watch-id given in the presentation-url-availability-response,
-used to refer to the presentation URLs whose availability has changed.
+-   watch-id: The watch-id given in the presentation-url-availability-response,
+    used to refer to the presentation URLs whose availability has changed.
 
-- url-availabilities: A list of URL availability states (available, unavailable,
-or invalid).  Each state must correspond to the URLs from the request referred
-to by the watch-id.
+-   url-availabilities: A list of URL availability states (available,
+    unavailable, or invalid).  Each state must correspond to the URLs from the
+    request referred to by the watch-id.
 
 Note that these messages are not broadcasted to all controllers. They are sent
 individually to controllers that have requested availability for the URLs that
@@ -316,14 +317,14 @@ To start a presentation, the controller may send a
 presentation-start-request message to the receiver with the following
 values:
 
-- presentation-id: the presentation identifier
+-   presentation-id: the presentation identifier
 
-- url: the selected presentation URL
+-   url: the selected presentation URL
 
-- headers: headers that the receiver should use to fetch the
-presentationUrl.  For example, section 6.6.1 of
-[[PRESENTATION-API|Presentation API]] says that the Accept-Language
-header should be provided.
+-   headers: headers that the receiver should use to fetch the
+    presentationUrl.  For example, section 6.6.1 of
+    [[PRESENTATION-API|Presentation API]] says that the Accept-Language
+    header should be provided.
 
 The presentation ID must follow the restrictions defined by
 [[PRESENTATION-API|Presentation API]] section 6.1, in that it must
@@ -337,28 +338,28 @@ must respond with the appropriate result (such as invalid-url or timeout).  If
 it has succeeded, it must reply with a success result.  Additionally, the
 response must include the following:
 
-- connection-id: An ID that both agents can use to send connection messages
-to each other.  It is chosen by the receiver for ease of implementation: if the
-message receiver chooses the connection-id, it may keep the ID unique across
-connections, thus making message demuxing/routing easier.
+-   connection-id: An ID that both agents can use to send connection messages
+    to each other.  It is chosen by the receiver for ease of implementation: if
+    the message receiver chooses the connection-id, it may keep the ID unique
+    across connections, thus making message demuxing/routing easier.
 
 <!-- TODO: Add optional HTTP response code to the response? -->
 
 To send a presentation message, the controller or receiver may send a
 presentation-connection-message with the following values:
 
-- connection-id: The ID from the presentation-start-response or
-presentation-connection-open-response messages.
+-   connection-id: The ID from the presentation-start-response or
+    presentation-connection-open-response messages.
 
-- message: the presentation message data.  
+-   message: the presentation message data.
 
 
 To terminate a presentation, the controller may send a
 presentation-termination-request message with the following values:
 
-- presentation-id: The ID of the presentation to terminate.
+-   presentation-id: The ID of the presentation to terminate.
 
-- reason: The reason the presentation is being terminated.
+-   reason: The reason the presentation is being terminated.
 
 
 When a receiving agent receives a presentation-termination-request, it should
@@ -368,9 +369,9 @@ a presentation-termination-event message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:
 
-- presentation-id: The ID of the presentation that was terminated.
+-   presentation-id: The ID of the presentation that was terminated.
 
-- reason: The reason the presentation was terminated.
+-   reason: The reason the presentation was terminated.
 
 <!-- TODO: Split up reason into reason and whether it was triggered by the user
 or not? -->
@@ -380,7 +381,7 @@ To accept incoming connections requests from controller, a receiver
 must receive and process the presentation-connection-open-request
 message which contains the following values: 
 
-- presentation-id: The ID of the presentation to connect to.
+-   presentation-id: The ID of the presentation to connect to.
 
 - url: The URL of the presentation to connect to. 
 
@@ -390,38 +391,38 @@ presentation-connection-open-request message, send back a
 presentation-connection-open-response message which contains the
 following values:
 
-- result: a code indicating success or failure, and the reason for the failure
+-   result: a code indicating success or failure, and the reason for the failure
 
-- connection-id: An ID that both agents can use to send connection messages
-to each other.  It is chosen by the receiver for ease of implementation (if the
-message receiver chooses the connection-id, it may keep the ID unique across
-connections, thus making message demuxing/routing easier).
+-   connection-id: An ID that both agents can use to send connection messages
+    to each other.  It is chosen by the receiver for ease of implementation (if
+    the message receiver chooses the connection-id, it may keep the ID unique
+    across connections, thus making message demuxing/routing easier).
 
 
 A controller may terminate a connection without terminating the presentation by
 sending a presentation-connection-close-request message with the following
 values:
 
-- connection-id: The ID of the connection to close.
+-   connection-id: The ID of the connection to close.
 
 
 The receiver should, upon receipt of a presentation-connection-close-request,
 send back a presentation-connection-close-response message with the following
 values:
 
-- result: If the close succeed or failed, and if it failed why it failed.
+-   result: If the close succeed or failed, and if it failed why it failed.
 
 The receiver may also close a connection without a request from the controller
 to do so and without terminating a presentation.  If it does so, it should send
 a presentation-connection-close-event to the controller with the following
 values:
 
-- connection-id: The ID of the connection that was closed
+-   connection-id: The ID of the connection that was closed
 
-- reason: The reason the connection was closed
+-   reason: The reason the connection was closed
 
-- error-message: A debug message suitable for a log or perhaps presented to the
-user with more explanation as to why it was closed.
+-   error-message: A debug message suitable for a log or perhaps presented to
+    the user with more explanation as to why it was closed.
 
 <!-- TODO: Why does the Presentation API spec not mention the use of the close
 message? -->
