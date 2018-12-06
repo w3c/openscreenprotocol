@@ -363,7 +363,7 @@ presentation-termination-request message with the following values:
 
 When a receiving agent receives a presentation-termination-request, it should
 send back a presentation-termination-response message to the requesting
-agent.  It may also notify other controllers about the termination by sending
+agent.  It should also notify other controllers about the termination by sending
 a presentation-termination-event message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:
