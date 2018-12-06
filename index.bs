@@ -281,8 +281,8 @@ learn further metdata about it, it initiates a
 [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16) connection to
 the IP and port from the SRV record.  Prior to authentication, some message may be
 exchanged (such as further metadata), but such info should be treated as
-unauthenticated (such as indicating to a user that a display name of an
-unauthenticated agent is unauthenticated).  
+unverified (such as indicating to a user that a display name of an
+unauthenticated agent is unverified).  
 
 To learn further metadata, an agent may send an agent-info-request
 message (see Appendix A) and receive back an agent-info-response message.  The
