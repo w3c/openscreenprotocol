@@ -238,10 +238,8 @@ Non-Functional Requirements {#requirements-non-functional}
 Discovery with mDNS {#discovery}
 ===============================
 
-Agents may discover one another using
-[DNS-SD](https://tools.ietf.org/html/rfc6763) over
-[mDNS](https://tools.ietf.org/html/rfc6762).  To do so, agents must
-use the service name "_openscreen._udp.local".
+Agents may discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
+To do so, agents must use the service name "_openscreen._udp.local".
 
 Advertising agents must include DNS TXT records with the following
 keys and values:
@@ -277,8 +275,7 @@ Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
 If a discovering agent wants to connect to an advertising agent, or to
-learn further metdata about it, it initiates a
-[QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16) connection to
+learn further metadata about it, it initiates a [[!QUIC]] connection to
 the IP and port from the SRV record.  Prior to authentication, a message may be
 exchanged (such as further metadata), but such info should be treated as
 unverified (such as indicating to a user that a display name of an
@@ -312,8 +309,7 @@ code of 1.  In order to keep a QUIC connection alive, an agent may send an
 agent-status-request message, and any agent that receives an
 agent-status-request message should send an agent-status-response message.
 Such messages should be sent more frequently than the QUIC idle_timeout
-transport parameter (see section 18 of
-[QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)) and QUIC PING
+transport parameter (see section 18 of [[!QUIC]]) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
 recommended.  If other mechanisms or traffic (such as other requests and
 responses) are serving the purpose of keeping the connection alive,
@@ -334,7 +330,7 @@ to easily extend this message.
 Messages delivery using CBOR and QUIC streams {#control}
 ========================================================
 
-Messages are serialized using [CBOR](https://tools.ietf.org/html/rfc7049).  To
+Messages are serialized using [[!RFC7049|CBOR]].  To
 send a group of messages in order, that group of messages must be sent in one
 QUIC stream.  Independent groups of messages (with no ordering dependency
 across groups) should be sent in different QUIC streams.  In order to put
@@ -353,8 +349,7 @@ For each message, the sender must write to the QUIC stream the following:
 If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
 code of 2 and should include the unknown type key in the reason phrase
-(see [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)
-sections 19.4).
+(see [[!QUIC]] section 19.4).
 
 Variable-length integers are encoded in the same format as defined by [QUIC
 transport section
@@ -398,8 +393,7 @@ Mitigations and defenses {#security-defenses}
 
 Appending A: Messages
 =====================
-The following messages are defined with
-[CDDL](https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/). When
+The following messages are defined with [[CDDL]]. When
 integer keys are used, a comment is appended to the line to indicate
 the name of the field. Each root message (one that can be put into a
 QUIC stream without being inclosed by another message) has a comment
