@@ -253,11 +253,10 @@ keys and values:
 
   <!-- TODO: include cross references to the specs for these hash functions. -->
 
-- key "time" with arbitrary unsigned integer value.  To indicate that
-  metadata has changed, the advertising endpoint must update it to a
-  greater value.  This signals to the discovering endpoint that it
-  should connect to the advertising endpoint to discover updated
-  metadata.
+- key "mv" with an unsigned integer value that indicates that
+  metadata has changed.   The advertising endpoint must update it to a greater
+  value.  This signals to the discovering endpoint that it should connect to the
+  advertising endpoint to discover updated metadata.
 
   <!-- TODO: Add examples of sample mDNS records. -->
  
