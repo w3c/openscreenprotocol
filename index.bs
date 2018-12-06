@@ -265,7 +265,7 @@ transport and metadata discovery mechanism with QUIC described below.
 If a future version of this protocol uses mDNS but breaks
 compatibility with that mechanism, it should change the service name
 to a new value indicating a new mechanism for metadata discovery
-mechanism.  If future versions of this protocol or extensions to this
+.  If future versions of this protocol or extensions to this
 protocol are compatible with the metadata discovery mechanism, they
 can use it to indicate support for future versions and extensions.
 
