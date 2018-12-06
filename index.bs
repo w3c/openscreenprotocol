@@ -333,7 +333,7 @@ Messages delivery using CBOR and QUIC streams {#control}
 
 Messages are serialized using [CBOR](https://tools.ietf.org/html/rfc7049).  To
 send a group of messages in order, that group of messages must be sent in one
-QUIC stream.  Different groups of messages (with no ordering dependency
+QUIC stream.  Independent groups of messages (with no ordering dependency
 across groups) should be sent in different QUIC streams.  In order to put
 multiple CBOR-serialiezd messages into the the same QUIC stream, the following
 is used.
