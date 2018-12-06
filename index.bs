@@ -246,20 +246,20 @@ use the service name "_openscreen._udp.local".
 Advertising agents must include DNS TXT records with the following
 keys and values:
 
-- key "fp" with value of the certificate fingerpint of the advertising agent.
-  The format of the fingerprint is defined by [RFC 8122 section
-  5](https://tools.ietf.org/html/rfc8122#section-5), excluding the
-  "fingerprint:" prefix and including the hash function, space, and hex-encoded
-  fingerprint.  The fingerprint value also functions as an ID for the agent.
-  All agents must support the following hash functions: "sha-256", "sha-512".
-  Agents must not support the following hash functions: "md2", "md5". 
+-   key "fp" with value of the certificate fingerpint of the advertising agent.
+    The format of the fingerprint is defined by [RFC 8122 section
+    5](https://tools.ietf.org/html/rfc8122#section-5), excluding the
+    "fingerprint:" prefix and including the hash function, space, and hex-encoded
+    fingerprint.  The fingerprint value also functions as an ID for the agent.
+    All agents must support the following hash functions: "sha-256", "sha-512".
+    Agents must not support the following hash functions: "md2", "md5".
 
   <!-- TODO: include cross references to the specs for these hash functions. -->
 
-- key "mv" with an unsigned integer value that indicates that
-  metadata has changed.   The advertising agent must update it to a greater
-  value.  This signals to the listening agent that it should connect to the
-  advertising agent to discover updated metadata.
+-   key "mv" with an unsigned integer value that indicates that
+    metadata has changed.   The advertising agent must update it to a greater
+    value.  This signals to the listening agent that it should connect to the
+    advertising agent to discover updated metadata.
 
   <!-- TODO: Add examples of sample mDNS records. -->
  
@@ -288,17 +288,17 @@ To learn further metadata, an agent may send an agent-info-request
 message (see Appendix A) and receive back an agent-info-response message.  The
 messages may contain the following information with the following meaning:
 
-- display-name: (required) The display name of the responding agent intended to be
-  displayed to a user by the requesting agent.  If the responding agent is
-  not yet authenticated, the requesting agent should make UI affordance for
-  indicating to the user that the display name is not yet verified.  If the
-  responding agent changes its display name, the requesting agent should
-  make UI affordance for indicating to the user that the display name has
-  changed. 
+-   display-name: (required) The display name of the responding agent intended
+    to be displayed to a user by the requesting agent.  If the responding agent
+    is not yet authenticated, the requesting agent should make UI affordance for
+    indicating to the user that the display name is not yet verified.  If the
+    responding agent changes its display name, the requesting agent should
+    make UI affordance for indicating to the user that the display name has
+    changed.
 
-- model-name: (optional) If the agent is a hardward device, the model name of
-  the device.  This is used mainly for debugging purposes, but may be displayed
-  to the user of the requesting agent.
+-   model-name: (optional) If the agent is a hardward device, the model name of
+    the device.  This is used mainly for debugging purposes, but may be
+    displayed to the user of the requesting agent.
 
 <!-- TODO: Add device type and/or capabilities -->
 
@@ -341,13 +341,14 @@ across groups) should be sent in different QUIC streams.  In order to put
 multiple CBOR-serialized messages into the the same QUIC stream, the following
 is used.
 
-For each message, the sender must write to the QUIC stream the following: 
-1. A type key representing the type of the message, encoded as a variable-length
-   integer (see Appendix A for type keys) 
+For each message, the sender must write to the QUIC stream the following:
 
-2. The message length encoded as a variable-length integer 
+1.  A type key representing the type of the message, encoded as a variable-length
+    integer (see Appendix A for type keys)
 
-3. The messge encoded as CBOR (whose length must match the value in step 2)
+2.  The message length encoded as a variable-length integer
+
+3.  The messge encoded as CBOR (whose length must match the value in step 2)
 
 If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
