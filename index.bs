@@ -274,7 +274,7 @@ To learn which receivers are [=available presentation display=]s for a
 particular URL or set of URLs, the controller may send a
 presentation-url-availability-request message with the following values:
 
--   urls: A list of presentation URLs
+-   urls: A list of presentation URLs.  Must not be empty.
 
 -   watch-duration: The period of time that the controller is interested in
     receiving updates about the URLs, should the availability change.
