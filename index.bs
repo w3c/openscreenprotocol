@@ -64,7 +64,7 @@ The Open Screen Protocol connects browsers to devices capable of rendering Web
 content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, or "smart" speakers.
 
-The protocol is suite of subsidiary network protocols that enable two user
+The protocol is a suite of subsidiary network protocols that enable two user
 agents to implement the [[PRESENTATION-API|Presentation API]] and
 [[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable fashion.  This means
 that a user can expect these APIs work as intended when connecting two devices
@@ -260,13 +260,13 @@ keys and values:
     advertising agent to discover updated metadata.
 
   <!-- TODO: Add examples of sample mDNS records. -->
- 
+
 An agent that advertises this service name must implement the
 transport and metadata discovery mechanism with QUIC described below.
 If a future version of this protocol uses mDNS but breaks
 compatibility with that mechanism, it should change the service name
-to a new value indicating a new mechanism for metadata discovery
-.  If future versions of this protocol or extensions to this
+to a new value indicating a new mechanism for metadata discovery.
+If future versions of this protocol or extensions to this
 protocol are compatible with the metadata discovery mechanism, they
 can use it to indicate support for future versions and extensions.
 
