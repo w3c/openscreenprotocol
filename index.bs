@@ -288,7 +288,7 @@ To learn further metadata, an agent may send an agent-info-request
 message (see Appendix A) and receive back an agent-info-response message.  The
 messages may contain the following information with the following meaning:
 
-- display-name: The display name of the responding agent intended to be
+- display-name: (required) The display name of the responding agent intended to be
   displayed to a user by the requesting agent.  If the responding agent is
   not yet authenticated, the requesting agent should make UI affordance for
   indicating to the user that the display name is not yet verified.  If the
@@ -296,9 +296,9 @@ messages may contain the following information with the following meaning:
   make UI affordance for indicating to the user that the display name has
   changed. 
 
-- model-name: The model name of the device (if it is a device), used mainly for
-  debugging purposes, but may be displayed to the user of the requesting
-  agent.
+- model-name: (optional) If the agent is a hardward device, the model name of
+  the device.  This is used mainly for debugging purposes, but may be displayed
+  to the user of the requesting agent.
 
 <!-- TODO: Add device type and/or capabilities -->
 
