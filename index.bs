@@ -382,6 +382,8 @@ message which contains the following values:
 
 - presentation-id: The ID of the presentation to connect to.
 
+- url: The URL of the presentation to connect to. 
+
 
 The receiver should, upon receipt of a
 presentation-connection-open-request message, send back a
@@ -607,6 +609,7 @@ presentation-termination-event = {
 presentation-connection-open-request = {
   request
   1: text ; presentation-id
+  2: text ; url
 }
 
 ; type key 110
