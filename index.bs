@@ -315,9 +315,11 @@ messages should be sent more frequently than the QUIC idle_timeout transport
 parameter (see section 18 of
 [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
-recommended.  If other mechanisms or traffic (such as other requests and
-responses) are serving the purpose of keeping the connection alive,
-agent-status-requests messages should be delayed or not used at all.
+recommended.  The agent should behave as though a timer less than the
+idle_timeout were reset every time a message is sent on a QUIC stream.  If the
+timer expires, a agent-status-request message should be sent.
+
+
 
 If a client agent wishes to send messages to a server agent, the client
 agent can connect to the server agent "on demand"; it does not need to
