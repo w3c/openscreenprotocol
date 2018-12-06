@@ -114,6 +114,9 @@ is called the [=remote playback device=].
 For additional terms and idioms specific to the [[PRESENTATION-API|Presentation API]] or
 Remote Playback API, please consult the respective specifications.
 
+We also use the term "agent" to mean any implementation of this protocol,
+browser, device, or otherwise, acting as a controller or a receiver.
+
 Requirements {#requirements}
 ============================
 
@@ -235,32 +238,32 @@ Non-Functional Requirements {#requirements-non-functional}
 Discovery with mDNS {#discovery}
 ===============================
 
-Endpoints may discover one another using
+Agents may discover one another using
 [DNS-SD](https://tools.ietf.org/html/rfc6763) over
-[mDNS](https://tools.ietf.org/html/rfc6762).  To do so, endpoints must
+[mDNS](https://tools.ietf.org/html/rfc6762).  To do so, agents must
 use the service name "_openscreen._udp.local".
 
-Advertising endpoints must include DNS TXT records with the following
+Advertising agents must include DNS TXT records with the following
 keys and values:
 
-- key "fp" with value of the certificate fingerpint of the advertising endpoint.
+- key "fp" with value of the certificate fingerpint of the advertising agent.
   The format of the fingerprint is defined by [RFC 8122 section
   5](https://tools.ietf.org/html/rfc8122#section-5), excluding the
   "fingerprint:" prefix and including the hash function, space, and hex-encoded
-  fingerprint.  The fingerprint value also functions as an ID for the endpoint.
-  All endpoints must support the following hash functions: "sha-256", "sha-512".
-  Endpoints must not support the following hash functions: "md2", "md5". 
+  fingerprint.  The fingerprint value also functions as an ID for the agent.
+  All agents must support the following hash functions: "sha-256", "sha-512".
+  Agents must not support the following hash functions: "md2", "md5". 
 
   <!-- TODO: include cross references to the specs for these hash functions. -->
 
 - key "mv" with an unsigned integer value that indicates that
-  metadata has changed.   The advertising endpoint must update it to a greater
-  value.  This signals to the discovering endpoint that it should connect to the
-  advertising endpoint to discover updated metadata.
+  metadata has changed.   The advertising agent must update it to a greater
+  value.  This signals to the discovering agent that it should connect to the
+  advertising agent to discover updated metadata.
 
   <!-- TODO: Add examples of sample mDNS records. -->
  
-An endpoint that advertises this service name must implement the
+An agent that advertises this service name must implement the
 transport and metadata discovery mechanism with QUIC described below.
 If a future version of this protocol uses mDNS but breaks
 compatibility with that mechanism, it should change the service name
@@ -273,59 +276,59 @@ can use it to indicate support for future versions and extensions.
 Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
-If a discovering endpoint wants to connect to an advertising endpoint, or to
+If a discovering agent wants to connect to an advertising agent, or to
 learn further metdata about it, it initiates a
 [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16) connection to
 the IP and port from the SRV record.  Prior to authentication, some message may be
 exchanged (such as further metadata), but such info should be treated as
 unauthenticated (such as indicating to a user that a display name of an
-unauthenticated endpoint is unauthenticated).  
+unauthenticated agent is unauthenticated).  
 
-To learn further metadata, an endpoint may send an endpoint-info-request
-message (see Appendix A) and receive back an endpoint-info-response message.  The
+To learn further metadata, an agent may send an agent-info-request
+message (see Appendix A) and receive back an agent-info-response message.  The
 messages may contain the following information with the following meaning:
 
-- display-name: The display name of the responding endpoint intended to be
-  displayed to a user by the requesting endpoint.  If the responding endpoint is
-  not yet authenticated, the requesting endpoint should make UI affordance for
+- display-name: The display name of the responding agent intended to be
+  displayed to a user by the requesting agent.  If the responding agent is
+  not yet authenticated, the requesting agent should make UI affordance for
   indicating to the user that the display name is not yet authenticated.  If the
-  responding endpoint changes its display name, the requesting endpoint should
+  responding agent changes its display name, the requesting agent should
   make UI affordance for indicating to the user that the display name has
   changed. 
 
 - model-name: The model name of the device (if it is a device), used mainly for
   debugging purposes, but may be displayed to the user of the requesting
-  endpoint.
+  agent.
 
 <!-- TODO: Add device type and/or capabilities -->
 
-If a discovering endpoint (acting as a QUIC client) wishes to receive messages
-from an advertising endpoint (acting as a QUIC server) or an advertising
-endpoint (acting as a QUIC server) wishes to send message to a discovering
-endpoint (acting as a client endpoint), it may wish to keep the QUIC connection
+If a discovering agent (acting as a QUIC client) wishes to receive messages
+from an advertising agent (acting as a QUIC server) or an advertising
+agent (acting as a QUIC server) wishes to send message to a discovering
+agent (acting as a client agent), it may wish to keep the QUIC connection
 alive.  Once neither side needs to keep the connection alive for the purposes of
 sending or receiving messages, the connection should be closed with an error
-code of 1.  In order to keep a QUIC connection alive, an endpoint may send an
-endpoint-status-request message, and any endpoint that receives an
-endpoint-status-request message should send an endpoint-status-response message.
+code of 1.  In order to keep a QUIC connection alive, an agent may send an
+agent-status-request message, and any agent that receives an
+agent-status-request message should send an agent-status-response message.
 Such messages should be sent more frequently than the QUIC idle_timeout
 transport parameter (see section 18 of
 [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
 recommended.  If other mechanisms or traffic (such as other requests and
 responses) are serving the purpose of keeping the connection alive,
-endpoint-status-requests messages should be delayed or not used at all.
+agent-status-requests messages should be delayed or not used at all.
 
-If a client endpoint wishes to send messages to a server endpoint, the client
-endpoint can connect to the server endpoint "on demand"; it does not need to
+If a client agent wishes to send messages to a server agent, the client
+agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.
 
-The endpoint-info-response message and endpoint-status-response
+The agent-info-response message and agent-status-response
 messages may be extended to include additional information not defined
 in this spec.  If done ad hoc by applications and not in future specs,
 keys should be chosen to avoid collision, such as by choosing large
-integers or long strings.  Endpoints must ignore keys in the
-endpoint-info-message that it does not understand to allow endpoints
+integers or long strings.  Agents must ignore keys in the
+agent-info-message that it does not understand to allow agents
 to easily extend this message.
 
 Messages delivery using CBOR and QUIC streams {#control}
@@ -346,7 +349,7 @@ For each message, the sender must write to the QUIC stream the following:
 
 3. The messge encoded as CBOR (whose length must match the prefixed length)
 
-If an endpoint receives a message for which it does not recognize a
+If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
 code of 2 and should include the unknown type key in the reason phrase
 (see [QUIC](https://tools.ietf.org/html/draft-ietf-quic-transport-16)
@@ -408,30 +411,30 @@ because smaller type keys encode on the wire smaller.
 
 <pre>
 ; type key 10
-endpoint-info-request = {
+agent-info-request = {
   request
 }
 
 ; type key 11
-endpoint-info-response = {
+agent-info-response = {
   response
-  1: endpoint-info ; endpoint-info
+  1: agent-info ; agent-info
 }
 
-endpoint-info = {
+agent-info = {
   0: text ; friendly-name
   1: text ; model-name
   ; ...
 }
 
 ; type key 12
-endpoint-status-request = {
+agent-status-request = {
   request
   ? 1: status ; status
 }
 
 ; type key 13
-endpoint-status-response = {
+agent-status-response = {
   response
   ? 1: status ; status
 }
