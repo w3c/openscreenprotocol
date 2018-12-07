@@ -64,7 +64,7 @@ The Open Screen Protocol connects browsers to devices capable of rendering Web
 content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, or "smart" speakers.
 
-The protocol is suite of subsidiary network protocols that enable two user
+The protocol is a suite of subsidiary network protocols that enable two user
 agents to implement the [[PRESENTATION-API|Presentation API]] and
 [[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable fashion.  This means
 that a user can expect these APIs work as intended when connecting two devices
@@ -113,6 +113,9 @@ is called the [=remote playback device=].
 
 For additional terms and idioms specific to the [[PRESENTATION-API|Presentation API]] or
 Remote Playback API, please consult the respective specifications.
+
+We also use the term "agent" to mean any implementation of this protocol,
+browser, device, or otherwise, acting as a controller or a receiver.
 
 Requirements {#requirements}
 ============================
@@ -232,15 +235,142 @@ Non-Functional Requirements {#requirements-non-functional}
     APIs.
  
 
-Receiver Discovery {#discovery}
+Discovery with mDNS {#discovery}
 ===============================
 
-Issue(100): Incorporate material from the [mDNS](mdns.md) document.
+Agents may discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
+To do so, agents must use the service name "_openscreen._udp.local".
 
-Transport Establishment {#transport}
-====================================
+Advertising Agents must use an instance name that is a prefix of the agent's
+display name. If the instance name is not the complete display name (if it has
+been truncated), it must be terminated by a null character.  It is prefix so
+that the name displayed to the user pre-verification can be verified later.  It
+is terminated by a null character in the case of truncation so that the
+listening agent knows it has been truncated.  This complexity is necessary to
+all for display names that exceed the size allowed in an instance name and for
+such (possibly  truncated) display names to be visible to the user sooner
+(before a QUIC connection is made).  Listening agents must treat instance names
+as unverified and must verify that the instance name is a prefix of the verified
+display name before showing the user a verified display name.
 
-Issue(101): Incorporate material from the \[QUIC](quic.md) document.
+Advertising agents must include DNS TXT records with the following
+keys and values:
+
+-   key "fp" with value of the certificate fingerpint of the advertising agent.
+    The format of the fingerprint is defined by [RFC 8122 section
+    5](https://tools.ietf.org/html/rfc8122#section-5), excluding the
+    "fingerprint:" prefix and including the hash function, space, and hex-encoded
+    fingerprint.  The fingerprint value also functions as an ID for the agent.
+    All agents must support the following hash functions: "sha-256", "sha-512".
+    Agents must not support the following hash functions: "md2", "md5".
+
+  <!-- TODO: include cross references to the specs for these hash functions. -->
+
+-   key "mv" with an unsigned integer value that indicates that
+    metadata has changed.   The advertising agent must update it to a greater
+    value.  This signals to the listening agent that it should connect to the
+    advertising agent to discover updated metadata.
+
+  <!-- TODO: Add examples of sample mDNS records. -->
+
+
+Future extensions to this QUIC-based protocol can use the same metadata
+discovery process to indicate support for those extensions, through a
+capabilities mechanism to be determined. If a future version of the Open Screen
+Protocol uses mDNS but breaks compatibility with the metadata discovery process,
+it should change the DNS-SD service name to a new value, indicating a new
+mechanism for metadata discovery.
+
+
+Transport and metadata discovery with QUIC {#transport}
+=======================================================
+
+If a listening agent wants to connect to an advertising agent, or to
+learn further metadata about it, it initiates a [[!QUIC]] connection to
+the IP and port from the SRV record.  Prior to authentication, a message may be
+exchanged (such as further metadata), but such info should be treated as
+unverified (such as indicating to a user that a display name of an
+unauthenticated agent is unverified).  
+
+To learn further metadata, an agent may send an agent-info-request
+message (see Appendix A) and receive back an agent-info-response message.  The
+messages may contain the following information with the following meaning:
+
+-   display-name: (required) The display name of the responding agent intended
+    to be displayed to a user by the requesting agent.  If the responding agent
+    is not yet authenticated, the requesting agent should make UI affordance for
+    indicating to the user that the display name is not yet verified.  If the
+    responding agent changes its display name, the requesting agent should
+    make UI affordance for indicating to the user that the display name has
+    changed.
+
+-   model-name: (optional) If the agent is a hardware device, the model name of
+    the device.  This is used mainly for debugging purposes, but may be
+    displayed to the user of the requesting agent.
+
+<!-- TODO: Add device type and/or capabilities -->
+
+Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.
+
+If a listening agent wishes to receive messages from an advertising agent or an
+advertising agent wishes to send messages to a listening agent, it may wish to
+keep the QUIC connection alive.  Once neither side needs to keep the connection
+alive for the purposes of sending or receiving messages, the connection should
+be closed with an error code of 5139.  In order to keep a QUIC connection alive, an
+agent may send an agent-status-request message, and any agent that receives an
+agent-status-request message should send an agent-status-response message. Such
+messages should be sent more frequently than the QUIC idle_timeout transport
+parameter (see section 18 of [[!QUIC]]) and QUIC PING
+frames should not be used.  An idle_timeout transport parameter of 25 seconds is
+recommended.  The agent should behave as though a timer less than the
+idle_timeout were reset every time a message is sent on a QUIC stream.  If the
+timer expires, a agent-status-request message should be sent.
+
+
+If a client agent wishes to send messages to a server agent, the client
+agent can connect to the server agent "on demand"; it does not need to
+keep the connection alive.
+
+The agent-info-response message and agent-status-response
+messages may be extended to include additional information not defined
+in this spec.  If done ad hoc by applications and not in future specs,
+keys should be chosen to avoid collision, such as by choosing large
+integers or long strings.  Agents must ignore keys in the
+agent-info-message that it does not understand to allow agents
+to easily extend this message.
+
+Messages delivery using CBOR and QUIC streams {#control}
+========================================================
+
+Messages are serialized using [[!RFC7049|CBOR]].  To
+send a group of messages in order, that group of messages must be sent in one
+QUIC stream.  Independent groups of messages (with no ordering dependency
+across groups) should be sent in different QUIC streams.  In order to put
+multiple CBOR-serialized messages into the the same QUIC stream, the following
+is used.
+
+For each message, the sender must write to the QUIC stream the following:
+
+1.  A type key representing the type of the message, encoded as a variable-length
+    integer (see Appendix A for type keys)
+
+2.  The message length encoded as a variable-length integer
+
+3.  The messge encoded as CBOR (whose length must match the value in step 2)
+
+If an agent receives a message for which it does not recognize a
+type key, it must close the QUIC connection with an application error
+code of 404 and should include the unknown type key in the reason phrase
+(see [[!QUIC]] section 19.4).
+
+Variable-length integers are encoded in the same format as defined by [QUIC
+transport section
+16](https://tools.ietf.org/html/draft-ietf-quic-transport-16#section-16).
+
+Many messages are requests and responses, so a common format is defined for
+those.  A request and a response includes a request ID which is an unsigned
+integer chosen by the requester.  Responses must include the request ID of the
+request they are associated with.  
 
 Authentication {#authentication}
 ================================
@@ -521,12 +651,62 @@ Mitigations and defenses {#security-defenses}
 
 Appending A: Messages
 =====================
+The following messages are defined with [[CDDL]]. When
+integer keys are used, a comment is appended to the line to indicate
+the name of the field. Each root message (one that can be put into a
+QUIC stream without being inclosed by another message) has a comment
+indicating the message type key.
 
-Lower type keys are used for messages we expect to be more frequent
-and higher type keys are used for less frequently used messages.  This
-is because on the wire lower values encode smaller.
+Smaller numbers should be reserved for message that will be sent more
+frequently or are very small or both and larger numbers should be
+reserved for messsages that are infrequently sent or large or both
+because smaller type keys encode on the wire smaller.
+
+<!-- TODO: Make a bikeshed formatter CDDL -->
 
 <pre>
+; type key 10
+agent-info-request = {
+  request
+}
+
+; type key 11
+agent-info-response = {
+  response
+  1: agent-info ; agent-info
+}
+
+agent-info = {
+  0: text ; friendly-name
+  1: text ; model-name
+  ; ...
+}
+
+; type key 12
+agent-status-request = {
+  request
+  ? 1: status ; status
+}
+
+; type key 13
+agent-status-response = {
+  response
+  ? 1: status ; status
+}
+
+status = {
+}
+
+request = (
+ 0: request-id ; request-id
+)
+
+response = (
+ 0: request-id ; request-id
+)
+
+request-id = uint
+
 ; type key 14
 presentation-url-availability-request = {
   request
@@ -555,9 +735,6 @@ url-availability = &(
   unavailable: 1
   invalid: 10
 )
-
-
-
 
 ; type key 104
 presentation-start-request = {
@@ -657,7 +834,6 @@ presentation-connection-message = {
   1: uint ; connection-id
   2: bytes / text ; message
 }
-
 
 result = (
   success: 1
