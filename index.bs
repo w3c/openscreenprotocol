@@ -304,7 +304,7 @@ messages may contain the following information with the following meaning:
     make UI affordance for indicating to the user that the display name has
     changed.
 
--   model-name: (optional) If the agent is a hardward device, the model name of
+-   model-name: (optional) If the agent is a hardware device, the model name of
     the device.  This is used mainly for debugging purposes, but may be
     displayed to the user of the requesting agent.
 
@@ -313,7 +313,7 @@ messages may contain the following information with the following meaning:
 Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.
 
 If a listening agent wishes to receive messages from an advertising agent or an
-advertising agent wishes to send message to a listening agent, it may wish to
+advertising agent wishes to send messages to a listening agent, it may wish to
 keep the QUIC connection alive.  Once neither side needs to keep the connection
 alive for the purposes of sending or receiving messages, the connection should
 be closed with an error code of 5139.  In order to keep a QUIC connection alive, an
