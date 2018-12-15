@@ -376,7 +376,81 @@ request they are associated with.
 Authentication {#authentication}
 ================================
 
-Issue(102): Incorporate material from the \[J-PAKE](j-pake.md) document.
+In order for one agent (the challenger) to authenticate another (the responder),
+the challenger may send an authentication-request message and expect an
+authentication-response message to best sent back from the responder.  To
+mutually authenticate, this mechanism is used twice, once by each side acting as
+the challenger.  This mechanism assumes the agents share a low-entry secret,
+such as a number or a short password that could be entered by a user on a
+keyboard or TV remote control.
+
+For all messages and objects defined in this section, see Appendix A for the full
+CDDL definitions.
+
+The challenger sends an authentication-request message with the following values:
+
+-   mechanism: The authentication mechanism being used.  This standard only
+    defines the mechanism hkdf-of-scrypt-of-psk but this field gives a place for
+    other mechanisms to be specified.
+
+-   salt: 32 random bytes (which need not be kept secret). 
+
+-   cost: log base 2 of the cost parameter (N) for scrypt defined in [RFC
+    7914 section 2](https://tools.ietf.org/html/rfc7914#section-2).  It must be
+    greater than or equal to 14 (to avoid being too weak) and less than or equal
+    to 128 (the limit defined by scrypt).  A value of 15 is recommended (an
+    scrypt N of 2^15 or 32768).
+
+The responder replies with an authentication-response message with the following values:
+
+-   result:  If the responder was able to calculate proof of possession of the
+    shared secret, and if it failed, why it failed.
+
+-   proof: The result of running
+    [HKDF](https://tools.ietf.org/html/rfc5869) on the result of running
+    [scrypt](https://tools.ietf.org/html/rfc7914) on the shared secret.  For
+    scrypt, the cost parameter (N) used is the 2 to the power of the cost from
+    the authentication-request message, the block size (r) is 8, the
+    parallelization parameter (p) is 1, and the key length derived is 32.  For
+    HKDF, both the extract and expand steps are used, the hash function used is
+    sha-256, the salt used is the salt from the authentication-request message,
+    the application-specific info is a serialized certificate-fingerprint-pair
+    object (defined below), and the length of the output key matrial (L) is 32.
+
+Note: the values of 32 above (for salt length, scrypt output key length, and
+HKDF output key material length) are based on the output size of sha-256.  If a
+different hash mechanism is used in the future, these values should be updated as
+well.
+
+The certificate-fingerprint-pair object used as application-specific info above
+is serialized as CBOR (without the type or length prefix of messages in a QUIC
+stream) and contains the following values:
+
+-   challenger-fingerprint: The certificate fingerprint of the
+    challenger, used in the QUIC crypto handshake during connection
+    establishment, as defined by [RFC 8122 section
+    5](https://tools.ietf.org/html/rfc8122#section-5).  It is the output using
+    sha-256 as the hash wihtout any hexadecimal encoding or prefixing.
+
+-   responder-fingerprint: The certificate fingerprint of the
+    responder, obtained from the QUIC crypto handshake during connection
+    establishment, as defined by [RFC 8122 section
+    5](https://tools.ietf.org/html/rfc8122#section-5).  It is the output using
+    sha-256 as the hash wihtout any hexadecimal encoding or prefixing. 
+
+To verify that the responder's proof is correct, the challenger makes the same
+calculation of the proof and compares the result. If the results are the same,
+the challenger considers the responder authenticated, and considers it
+unauthenticated otherwise.  In either case, the challenger sends the responder an
+authentication-result message with the following values:
+
+-   result:  If the challenger was able to authenticate the responder or not,
+    and if not, why not.
+
+The challenger must limit the time the responder has to send a response to 60
+seconds (to avoid the possibility of brute-force attacks.)
+
+
 
 Control Protocols {#control-protocols}
 ============================
@@ -510,8 +584,7 @@ message which contains the following values:
 
 -   presentation-id: The ID of the presentation to connect to.
 
-- url: The URL of the presentation to connect to.
-
+-   url: The URL of the presentation to connect to. 
 
 The receiver should, upon receipt of a
 presentation-connection-open-request message, send back a
@@ -966,6 +1039,53 @@ response = (
 )
 
 request-id = uint
+
+; type key 1001 
+authentication-request = {
+  request
+  1: authentication-mechanism ; mechanism
+  2: bytes ; salt
+  3: uint ; cost
+}
+
+; type key 1002 
+authentication-response = {
+  response
+  1: authentication-response-result ; result
+  2: bytes ; proof
+}
+
+certificate-fingerprint-pair = [
+  challenger-fingerprint: bytes
+  responder-fingerprint: bytes
+]
+
+; type key 1003
+authentication-result = {
+  1: authentication-result-result ; result
+}
+
+
+authentication-mechanism = &(
+  hkdf-of-scrypt-of-psk: 1
+)
+
+authentication-response-result = &(
+  ok: 0
+  unknown-error: 1
+  mechanism-unknown: 2
+  salt-too-small: 3
+  cost-too-low: 4
+  cost-too-high: 5
+  secret-unknown: 6
+  calculation-took-too-long: 7
+)
+
+authentication-result-result = &(
+  authenticated: 0
+  unknown-error: 1
+  proof-invalid: 2
+)
 
 ; type key 14
 presentation-url-availability-request = {
