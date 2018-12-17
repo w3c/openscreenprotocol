@@ -126,7 +126,8 @@ The content of the `MESSAGE_BODY` is not constrained by the generic message
 structure, and must be interpreted according to the `MESSAGE_TYPE`.
 
 **TODO:** Investigate variable length integers for `MESSAGE_LENGTH`,
-`SEQUENCE_ID` to save bytes for short messages.  See [Issue #45](issues/45).
+`SEQUENCE_ID` to save bytes for short messages.  See
+[Issue #45](https://github.com/webscreens/openscreenprotocol/issues/45).
 
 ### Protocol ID
 
@@ -311,7 +312,8 @@ presentation.  An alternative mechanism would allow the controlling user agent
 to retrieve URL patterns from a receiver that match the URLs supported by that
 receiver.
 
-**TODO**: Add messages for this based on conclusion to [Issue #21](issues/21).
+**TODO**: Add messages for this based on conclusion to
+[Issue #21](https://github.com/webscreens/openscreenprotocol/issues/21).
 
 Note that the URLs sent by the Presentation Availability Request may contain
 custom (non-https) schemes.  Please review [Schemes and Open Screen
@@ -771,8 +773,9 @@ Byte Offset
 - `FRIENDLY_NAME_CONTENT` is a valid UTF-8 encoded string with the friendly name
   of the presentation display.  It is exactly `FRIENDLY_NAME_LENGTH` bytes in
   length.
-  
-**TODO:** [Representation of BCP-47 language tags](issues/47)
+
+**TODO:**
+[Representation of BCP-47 language tags](https://github.com/webscreens/openscreenprotocol/issues/47)
 
 ### Presentation Info
 
@@ -832,8 +835,8 @@ controller knows not to attempt reconnection with just the origin.
 
 ## Remote Playback API Control Protocol
 
-**TODO:** Fill in when Remote Playback requirements are known. See [Issue
-#3](issues/3).
+**TODO:** Fill in when Remote Playback requirements are known. See
+[Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3).
 
 ## Design Discussion
 

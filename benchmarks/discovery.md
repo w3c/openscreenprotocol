@@ -22,7 +22,7 @@ network discovery protocols proposed for Open Screen:
   * Time to find all devices
   * Time to discover that a device has been connected
   * Time to discover that a device has been disconnected
-  
+
 # Test Environment
 
 ## Hardware and Operating System
@@ -149,7 +149,8 @@ to revisit this by designing power benchmarks that can be run on mobile phones a
 mobile OSes (Android, iOS).  As a first approximation we can allow discovery to run
 to a steady state and look at the resulting battery level.
 
-[Issue #72: Investigate power consumption measurement](issues/72)
+[Issue #72](https://github.com/webscreens/openscreenprotocol/issues/72):
+Investigate power consumption measurement
 
 ### SSDP
 
