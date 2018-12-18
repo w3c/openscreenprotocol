@@ -28,7 +28,7 @@ var request = new PresentationRequest(urls);
 This example provides three URLs with different schemes: `hbbtv`, `https` and
 `cast`. The controlling UA that implements the OSP can use these schemes to
 filter presentation screens during discovery (regardless of which discovery
-protocol is used or how filtering is implemented). 
+protocol is used or how filtering is implemented).
 
 In order for a user to launch a presentation with a custom URL scheme, they must
 have a presentation screen available that responds postively to screen
@@ -65,7 +65,8 @@ the OSP with similar interface to Presentation API). There is no need to
 update/extend the controlling UA to support new schemes, but it is up to the
 vendor of controlling UA to white/blacklist specific URL schemes.
 
-*TODO:* [Issue #93: Custom schemes and interop](https://github.com/webscreens/openscreenprotocol/issues/93)
+*TODO:*
+[Issue #93: Custom schemes and interop](https://github.com/webscreens/openscreenprotocol/issues/93)
 
 ## Scheme based filtering
 
@@ -93,5 +94,6 @@ the same way. A receiver that advertises itself (e.g. `Receiver Device 1`
 depicted in the figure above) as a HbbTV terminal should use the scheme `hbbtv`
 during discovery.
 
-*TODO:* [Issue #94: Semantics of hbbtv: URLs](https://github.com/webscreens/openscreenprotocol/issues/94)
+*TODO:*
+[Issue #94: Semantics of hbbtv: URLs](https://github.com/webscreens/openscreenprotocol/issues/94)
 

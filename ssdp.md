@@ -300,7 +300,8 @@ efficiency and privacy.
 
 # Remote Playback API functionality
 
-[Issue #3](../../issues/3): Add requirements for Remote Playback API.
+[Issue #3](https://github.com/webscreens/openscreenprotocol/issues/3): Add
+requirements for Remote Playback API.
 
 # Reliability
 
@@ -310,7 +311,8 @@ presentation display must re-broadcast advertisements periodically prior to
 expiration of the duration specified in the `CACHE-CONTROL` header (whose
 minimum value is 1800s).
 
-[Issue #68](../../issues/68): Get reliability data.
+[Issue #68](https://github.com/webscreens/openscreenprotocol/issues/68): Get
+reliability data.
 
 # Latency of device discovery / device removal
 
@@ -326,7 +328,8 @@ responses from presentation displays should be delayed a random duration between
 Chrome sets an `MX` value of 2 seconds for its implementation of SSDP for DIAL
 ([code reference](https://cs.chromium.org/chromium/src/chrome/browser/media/router/discovery/dial/dial_service.cc?rcl=43fcb5eb66460fb63755f3a9383e4a6131afcc82&l=103)).
 
-[Issue #69](../../issues/69): Collect data on latency of discovery.
+[Issue #69](https://github.com/webscreens/openscreenprotocol/issues/69): Collect
+data on latency of discovery.
 
 # Network efficiency
 
@@ -358,7 +361,8 @@ If the controlling user agent needs to get only a snapshot of available
 displays, then it only needs to send a search message to the multicast address
 and listen for search response messages for 2-10 seconds.
 
-[Issue #26](../../issues/26): Get network and power efficiency data.
+[Issue #26](https://github.com/webscreens/openscreenprotocol/issues/26): Get
+network and power efficiency data.
 
 # Ease of implementation / deployment
 

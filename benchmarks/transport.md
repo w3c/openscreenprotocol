@@ -25,7 +25,7 @@ network trasnport protocols proposed for Open Screen:
   * Time to initiate a new connection
   * Time to transmit a control message (from first byte sent to last byte received)
   * Time to transmit an application message (from first byte sent to last byte received)
-  
+
 # Test Environment
 
 ## Hardware and Operating System
@@ -70,7 +70,8 @@ same command line flags as the QUIC driver will need to be written.  The driver
 will include the WebRTC library and a client and server for the bootstrap
 channel.
 
-[Issue #73](../issues/73): Define boostrap mechanism for RTCDataChannel.
+[Issue #73](https://github.com/webscreens/openscreenprotocol/issues/73): Define
+boostrap mechanism for RTCDataChannel.
 
 WebRTC exposes byte level statistics for individual data channels through its
 [API](https://w3c.github.io/webrtc-stats/#dcstats-dict*), although not
@@ -134,7 +135,7 @@ baseline data.
 
 ## Mobile Device Benchmarking
 
-See [Issue #72](../issues/72).
+See [Issue #72](https://github.com/webscreens/openscreenprotocol/issues/72).
 
 ## Multi-receiver cases
 
