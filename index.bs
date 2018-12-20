@@ -724,8 +724,7 @@ presentation-url-availability-response = {
 ; type key 103
 presentation-url-availability-event = {
   1: int ; watch-id
-  2: [1* url] ; urls
-  3: [1* url-availability] ; url-availabilities
+  2: [1* url-availability] ; url-availabilities
 }
 
 
