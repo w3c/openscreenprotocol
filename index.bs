@@ -393,7 +393,9 @@ The challenger sends an authentication-request message with the following values
     defines the mechanism hkdf-of-scrypt-of-psk but this field gives a place for
     other mechanisms to be specified.
 
--   salt: 32 random bytes (which need not be kept secret). 
+-   salt: 32 random bytes.  This salt is used in HKDF, so see
+    https://tools.ietf.org/html/rfc5869#section-3.1 for more details on how this
+    value should be generated.
 
 -   cost: log base 2 of the cost parameter (N) for scrypt defined in [RFC
     7914 section 2](https://tools.ietf.org/html/rfc7914#section-2).  It must be
