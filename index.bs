@@ -408,25 +408,43 @@ The responder replies with an authentication-response message with the following
 -   result:  If the responder was able to calculate proof of possession of the
     shared secret, and if it failed, why it failed.
 
--   proof: The result of running
-    [HKDF](https://tools.ietf.org/html/rfc5869) on the result of running
-    [scrypt](https://tools.ietf.org/html/rfc7914) on the shared secret.  For
-    scrypt, the cost parameter (N) used is the 2 to the power of the cost from
-    the authentication-request message, the block size (r) is 8, the
-    parallelization parameter (p) is 1, and the key length derived is 32.  For
-    HKDF, both the extract and expand steps are used, the hash function used is
-    sha-256, the salt used is the salt from the authentication-request message,
-    the application-specific info is a serialized certificate-fingerprint-pair
-    object (defined below), and the length of the output key matrial (L) is 32.
+-   proof: The result of running the authentication mechanism.  The steps for
+    hkdf-of-scrypt-of-psk are described below.
 
-Note: the values of 32 above (for salt length, scrypt output key length, and
-HKDF output key material length) are based on the output size of sha-256.  If a
-different hash mechanism is used in the future, these values should be updated as
-well.
+The challenger verifies the proof and sends the responder an
+authentication-result message with the following values:
 
-The certificate-fingerprint-pair object used as application-specific info above
-is serialized as CBOR (without the type or length prefix of messages in a QUIC
-stream) and contains the following values:
+-   result:  If the challenger was able to authenticate the responder or not,
+    and if not, why not.
+
+The challenger must limit the time the responder has to send a response to 60
+seconds (to avoid the possibility of brute-force attacks.)
+
+
+For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
+
+1. Let secret be the pre-shared secret.
+
+2. Let N be 2 to the power of of the cost from the authentication-request
+   message.
+
+3. Let r be 8.
+
+4. Let p be 1.
+
+5. Let keyLength be 32.
+
+6. Let scryptResult be the result of running
+   [scrypt](https://tools.ietf.org/html/rfc7914) on secret with cost parameter N,
+   block size r, parallelization parameter p, and derived key length of
+   keyLength.
+
+7. Let hashFunction be sha-256.
+
+8. Let salt be the salt from the authentication-request message.
+
+9. Let info be a CBOR-serialized certificate-fingerprint-pair object (CDDL
+   defined in Appendix A) with the following values:
 
 -   challenger-fingerprint: The certificate fingerprint of the
     challenger, used in the QUIC crypto handshake during connection
@@ -440,18 +458,19 @@ stream) and contains the following values:
     5](https://tools.ietf.org/html/rfc8122#section-5).  It is the output using
     sha-256 as the hash wihtout any hexadecimal encoding or prefixing. 
 
+9. Let proof be the result of running
+   [HKDF](https://tools.ietf.org/html/rfc5869) on scryptResult with 
+   both the extract and expand steps, hash function hashFunction,
+   application-specific info, and output key length keyLength.
+
 To verify that the responder's proof is correct, the challenger makes the same
 calculation of the proof and compares the result. If the results are the same,
 the challenger considers the responder authenticated, and considers it
-unauthenticated otherwise.  In either case, the challenger sends the responder an
-authentication-result message with the following values:
+unauthenticated otherwise.  
 
--   result:  If the challenger was able to authenticate the responder or not,
-    and if not, why not.
-
-The challenger must limit the time the responder has to send a response to 60
-seconds (to avoid the possibility of brute-force attacks.)
-
+Note: the values of 32 above (for salt length, keyLength) are based on the
+output size of sha-256.  If a different hash mechanism is used in the future,
+these values should be updated as well.
 
 
 Control Protocols {#control-protocols}
