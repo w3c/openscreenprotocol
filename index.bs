@@ -445,17 +445,15 @@ For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
 9. Let info be a CBOR-serialized certificate-fingerprint-pair object (CDDL
    defined in Appendix A) with the following values:
 
--   challenger-fingerprint: The certificate fingerprint of the
-    challenger, used in the QUIC crypto handshake during connection
-    establishment, as defined by [RFC 8122 section
-    5](https://tools.ietf.org/html/rfc8122#section-5).  It is the output using
-    sha-256 as the hash wihtout any hexadecimal encoding or prefixing.
+-   challenger-fingerprint: The result of running sha-256 on the
+    Distinguished Encoding Rules (DER) form (see
+    https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
+    the challenger in the QUIC crypto handshake during connection establishment.
 
--   responder-fingerprint: The certificate fingerprint of the
-    responder, obtained from the QUIC crypto handshake during connection
-    establishment, as defined by [RFC 8122 section
-    5](https://tools.ietf.org/html/rfc8122#section-5).  It is the output using
-    sha-256 as the hash wihtout any hexadecimal encoding or prefixing. 
+-   responder-fingerprint: The result of running sha-256 on the
+    Distinguished Encoding Rules (DER) form (see
+    https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
+    the responder in the QUIC crypto handshake during connection establishment.
 
 9. Let proof be the result of running
    [HKDF](https://tools.ietf.org/html/rfc5869) on scryptResult with 
