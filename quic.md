@@ -39,7 +39,8 @@ allow individual messages to be extracted, similar to how
 [HTTP/2 resources](https://tools.ietf.org/html/draft-ietf-quic-http-00)
 are mapped to Streams.
 
-[Issue #62](../../issues/62): If WebSockets are possible on QUIC, investigate how it is done.
+[Issue #62](https://github.com/webscreens/openscreenprotocol/issues/62): If
+WebSockets are possible on QUIC, investigate how it is done.
 
 With this outline, once connection was established, the requirements could be
 met as follows:
@@ -94,21 +95,24 @@ TBD once remote playback API requirements are set.
 
 # Reliability
 
-[Issue #63](../../issues/63): Get reliability data.
+[Issue #63](https://github.com/webscreens/openscreenprotocol/issues/63): Get
+reliability data.
 
 # Latency to establish a new connection
 
 QUIC is designed to minimize the number of round trips needed to establish or
 re-establish connections.
 
-[Issue #66](../../issues/66): Get connection latency data.
+[Issue #66](https://github.com/webscreens/openscreenprotocol/issues/66): Get
+connection latency data.
 
 # Latency to transmit messages
 
 QUIC allows for out of order packet delivery, which may improve the latency to
 deliver presentation connection messages on a congested or lossy network.
 
-[Issue #66](../../issues/66): Get message transmission latency data.
+[Issue #66](https://github.com/webscreens/openscreenprotocol/issues/66): Get
+message transmission latency data.
 
 # Ease of implementation / deployment
 
@@ -125,8 +129,8 @@ By relying on UDP, the IP addresses of both endpoints are visible to network
 observers.  The plaintext portions of the authentication handshake are also
 visible to observers.
 
-Once authentication is established, the current [QUIC
-crypto](https://docs.google.com/document/d/1g5nIXAIkN_Y-7XJW5K45IblHd_L2f5LTaDUDwvZ5L6g/edit)
+Once authentication is established, the current
+[QUIC crypto](https://docs.google.com/document/d/1g5nIXAIkN_Y-7XJW5K45IblHd_L2f5LTaDUDwvZ5L6g/edit)
 implementation encrypts full datagrams including all QUIC stream framing
 information.
 
@@ -136,11 +140,13 @@ QUIC depends only on UDP, which is supported for both IPv4 and IPv6.
 
 # Hardware requirements
 
-[Issue #64](../../issues/64): Obtain data on hardware requirements
+[Issue #64](https://github.com/webscreens/openscreenprotocol/issues/64): Obtain
+data on hardware requirements
 
 # Network and power efficiency
 
-[Issue #65](../../issues/65): Obtain data on network and power efficiency
+[Issue #65](https://github.com/webscreens/openscreenprotocol/issues/65): Obtain
+data on network and power efficiency
 
 # Standardization status
 

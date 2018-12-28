@@ -1,0 +1,26 @@
+{
+    "CDDL": {
+        "authors": [
+            "H. Birkholz",
+            "C. Vigano",
+            "C. Bormann"
+        ],
+        "href": "https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/",
+        "title": "Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures",
+        "status": "Internet Draft",
+        "publisher": "IETF"
+    },
+    "QUIC": {
+        "authors": [
+            "J. Iyengar",
+            "M. Thomson"
+        ],
+        "date": "23 October 2018",
+        "href": "https://tools.ietf.org/html/draft-ietf-quic-transport-16",
+        "title": "Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures",
+        "status": "Internet Draft",
+        "publisher": "IETF"
+    }
+}
+
+
