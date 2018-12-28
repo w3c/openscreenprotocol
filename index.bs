@@ -377,9 +377,9 @@ Authentication {#authentication}
 
 In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
-authentication-response message to best sent back from the responder.  To
+authentication-response message to be sent back from the responder.  To
 mutually authenticate, this mechanism is used twice, once by each side acting as
-the challenger.  This mechanism assumes the agents share a low-entry secret,
+the challenger.  This mechanism assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 keyboard or TV remote control.
 
