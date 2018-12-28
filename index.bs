@@ -187,53 +187,53 @@ Non-Functional Requirements {#requirements-non-functional}
 2.  It should be possible to implement an Open Screen controlling user agent on a
     low-end smartphone. See the [Device Specifications](device_specs.md) document
     for expected controlling user agent hardware specifications.
- 
+
 3.  The discovery and connection protocols should minimize power consumption,
     especially on the controlling user agent which is likely to be battery
     powered.
- 
+
 4.  The protocol should minimize the amount of information provided to a passive
     network observer about the identity of the user, activity on the controlling
     user agent and activity on the receiver.
- 
+
 5.  The protocol should prevent passive network eavesdroppers from learning
     presentation URLs, presentation IDs, or the content of presentation messages
     passed between controllers and presentations.
- 
+
 6.  The protocol should prevent active network attackers from impersonating a
     display and observing or altering data intended for the controller or
     presentation.
- 
+
 7.  The controlling user agent should be able to discover quickly when a
     presentation display becomes available or unavailable (i.e., when it connects
     or disconnects from the network).
- 
+
 8.  The controlling user agent should present sensible information to the user
     when a protocol operation fails.  For example, if a controlling user agent is
     unable to start a presentation, it should be possible to report in the
     controlling user agent interface if it was a network error, authentication
     error, or the presentation content failed to load.
- 
+
 9.  The controlling user agent should be able to remember authenticated
     presentation displays.  This means it is not required for the user to
     intervene and re-authenticate each time the controlling user agent connects
     to a pre-authenticated display.
- 
+
 10.  Message latency between the controller and a presentation should be minimized
     to permit interactive use.  For example, it should be comfortable to type in
     a form in the controller and have the text appear in the presentation in real
     time.  Real-time latency for gaming or mouse use is ideal, but not a
     requirement.
- 
+
 11. The controlling user agent initiating a presentation should communicate its
     preferred locale to the receiver, so it can render the presentation content
     in that locale.
- 
+
 12. It should be possible to extend the control protocol (above the discovery and
     transport levels) with optional features not defined explicitly by the
     specification, to facilitate experimentation and enhancement of the base
     APIs.
- 
+
 
 Discovery with mDNS {#discovery}
 ===============================
@@ -290,7 +290,7 @@ learn further metadata about it, it initiates a [[!QUIC]] connection to
 the IP and port from the SRV record.  Prior to authentication, a message may be
 exchanged (such as further metadata), but such info should be treated as
 unverified (such as indicating to a user that a display name of an
-unauthenticated agent is unverified).  
+unauthenticated agent is unverified).
 
 To learn further metadata, an agent may send an agent-info-request
 message (see Appendix A) and receive back an agent-info-response message.  The
@@ -370,7 +370,7 @@ transport section
 Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
-request they are associated with.  
+request they are associated with.
 
 Authentication {#authentication}
 ================================
@@ -471,8 +471,8 @@ For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
 
 <!-- TODO: Add a capability that indicates support for the
-presentation protocol.  
-See https://github.com/webscreens/openscreenprotocol/issues/123-->
+presentation protocol.
+See https://github.com/webscreens/openscreenprotocol/issues/123 -->
 
 To learn which receivers are [=available presentation display=]s for a
 particular URL or set of URLs, the controller may send a
@@ -583,7 +583,7 @@ or not? -->
 
 To accept incoming connections requests from controller, a receiver
 must receive and process the presentation-connection-open-request
-message which contains the following values: 
+message which contains the following values:
 
 -   presentation-id: The ID of the presentation to connect to.
 
@@ -638,11 +638,11 @@ Presentation API {#presentation-api}
 ---------------------------------------------
 
 This section defines how [[PRESENTATION-API|Presentation API]] uses
-the messages defined in the previous sections.  
+the messages defined in the previous sections.
 Non-browser agents can also send and receive the same messages defined here.
 If so, a non-browser agent must follow the same restrictions for the
 presentation-id as the a does, as defined by [[PRESENTATION-API|Presentation
-API]] section 6.1 (at least 16 ASCII characters).  
+API]] section 6.1 (at least 16 ASCII characters).
 
 When [[PRESENTATION-API|Presentation API]] [section
 6.4.2](https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection)
@@ -845,8 +845,7 @@ presentation-url-availability-response = {
 ; type key 103
 presentation-url-availability-event = {
   1: int ; watch-id
-  2: [1* url] ; urls
-  3: [1* url-availability] ; url-availabilities
+  2: [1* url-availability] ; url-availabilities
 }
 
 
@@ -862,7 +861,7 @@ presentation-start-request = {
   request
   1: text ; presentation-id
   2: text ; url
-  3: [* http-header] ; headers 
+  3: [* http-header] ; headers
 }
 
 http-header = [
