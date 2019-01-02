@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="77585e07f782e3b3875243939fc66e52e76efd96" name="document-revision">
+  <meta content="7adee3de2bc5b1c075e26027519f5f2cea02ee54" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1403,7 +1403,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-09-20">20 September 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-01-02">2 January 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1418,7 +1418,7 @@ pre .property::before, pre .property::after {
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2018 the Contributors to the Open Screen Protocol Specification, published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
+   <p class="copyright" data-fill-with="copyright"> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2019 the Contributors to the Open Screen Protocol Specification, published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
 A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available. </p>
    <hr title="Separator for header">
   </div>
@@ -1430,27 +1430,28 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
-    <li><a href="#status"><span class="secno">1</span> <span class="content">Status of this Document</span></a>
     <li>
-     <a href="#introduction"><span class="secno">2</span> <span class="content">Introduction</span></a>
+     <a href="#introduction"><span class="secno">1</span> <span class="content">Introduction</span></a>
      <ol class="toc">
-      <li><a href="#terminology"><span class="secno">2.1</span> <span class="content">Terminology</span></a>
+      <li><a href="#terminology"><span class="secno">1.1</span> <span class="content">Terminology</span></a>
      </ol>
     <li>
-     <a href="#requirements"><span class="secno">3</span> <span class="content">Requirements</span></a>
+     <a href="#requirements"><span class="secno">2</span> <span class="content">Requirements</span></a>
      <ol class="toc">
-      <li><a href="#requirements-presentation-api"><span class="secno">3.1</span> <span class="content">Presentation API Requirements</span></a>
-      <li><a href="#requirements-remote-playback"><span class="secno">3.2</span> <span class="content">Remote Playback API Requirements</span></a>
-      <li><a href="#requirements-non-functional"><span class="secno">3.3</span> <span class="content">Non-Functional Requirements</span></a>
+      <li><a href="#requirements-presentation-api"><span class="secno">2.1</span> <span class="content">Presentation API Requirements</span></a>
+      <li><a href="#requirements-remote-playback"><span class="secno">2.2</span> <span class="content">Remote Playback API Requirements</span></a>
+      <li><a href="#requirements-non-functional"><span class="secno">2.3</span> <span class="content">Non-Functional Requirements</span></a>
      </ol>
-    <li><a href="#discovery"><span class="secno">4</span> <span class="content">Receiver Discovery</span></a>
-    <li><a href="#transport"><span class="secno">5</span> <span class="content">Transport Establishment</span></a>
+    <li><a href="#discovery"><span class="secno">3</span> <span class="content">Discovery with mDNS</span></a>
+    <li><a href="#transport"><span class="secno">4</span> <span class="content">Transport and metadata discovery with QUIC</span></a>
+    <li><a href="#control"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
     <li><a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
     <li>
-     <a href="#control"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
+     <a href="#control①"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
      <ol class="toc">
-      <li><a href="#presentation-api"><span class="secno">7.1</span> <span class="content">Presentation API Protocol</span></a>
-      <li><a href="#remote-playback"><span class="secno">7.2</span> <span class="content">Remote Playback API Protocol</span></a>
+      <li><a href="#presentation-protocol"><span class="secno">7.1</span> <span class="content">Presentation Protocol</span></a>
+      <li><a href="#presentation-api"><span class="secno">7.2</span> <span class="content">Presentation API</span></a>
+      <li><a href="#remote-playback"><span class="secno">7.3</span> <span class="content">Remote Playback API Protocol</span></a>
      </ol>
     <li>
      <a href="#security"><span class="secno">8</span> <span class="content">Security and Privacy</span></a>
@@ -1459,6 +1460,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li><a href="#security-threat"><span class="secno">8.2</span> <span class="content">Threat model</span></a>
       <li><a href="#security-defenses"><span class="secno">8.3</span> <span class="content">Mitigations and defenses</span></a>
      </ol>
+    <li><a href="#appending-a-messages"><span class="secno">9</span> <span class="content">Appending A: Messages</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -1469,12 +1471,13 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+      <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
     <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ol>
   </nav>
   <main>
-   <h2 class="heading settled" data-level="1" id="status"><span class="secno">1. </span><span class="content">Status of this Document</span><a class="self-link" href="#status"></a></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
    <p>This specification was published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community
 Group</a>. It is not a W3C Standard nor
 is it on the W3C Standards Track. It should not be viewed as a stable
@@ -1485,11 +1488,11 @@ of this document will be published as a Community Group Report.</p>
 opt-out and other conditions apply.</p>
    <p>Learn more about <a href="http://www.w3.org/community/">W3C Community and Business
 Groups</a>.</p>
-   <h2 class="heading settled" data-level="2" id="introduction"><span class="secno">2. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
+   <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
    <p>The Open Screen Protocol connects browsers to devices capable of rendering Web
 content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, or "smart" speakers.</p>
-   <p>The protocol is suite of subsidiary network protocols that enable two user
+   <p>The protocol is a suite of subsidiary network protocols that enable two user
 agents to implement the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> in an interoperable fashion.  This means
 that a user can expect these APIs work as intended when connecting two devices
 from independent implementations of the Open Screen Protocol.</p>
@@ -1502,7 +1505,7 @@ from the browser to the target display.</p>
    <p>The Open Screen Protocol is intended to be extensible, so that additional
 capabilities can be added over time.  This may include new implementations of
 existing APIs, or new APIs.</p>
-   <h3 class="heading settled" data-level="2.1" id="terminology"><span class="secno">2.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
+   <h3 class="heading settled" data-level="1.1" id="terminology"><span class="secno">1.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
    <p>We borrow terminology from the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> for terms used in this document.  These
 terms are summarized here.</p>
    <p>We call the browser that is used to discover and initiate presentation of Web
@@ -1522,8 +1525,10 @@ rendering the content of a <a data-link-type="dfn" href="https://www.w3.org/TR/h
 is called the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device" id="ref-for-dfn-remote-playback-device">remote playback device</a>.</p>
    <p>For additional terms and idioms specific to the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> or
 Remote Playback API, please consult the respective specifications.</p>
-   <h2 class="heading settled" data-level="3" id="requirements"><span class="secno">3. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
-   <h3 class="heading settled" data-level="3.1" id="requirements-presentation-api"><span class="secno">3.1. </span><span class="content">Presentation API Requirements</span><a class="self-link" href="#requirements-presentation-api"></a></h3>
+   <p>We also use the term "agent" to mean any implementation of this protocol,
+browser, device, or otherwise, acting as a controller or a receiver.</p>
+   <h2 class="heading settled" data-level="2" id="requirements"><span class="secno">2. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
+   <h3 class="heading settled" data-level="2.1" id="requirements-presentation-api"><span class="secno">2.1. </span><span class="content">Presentation API Requirements</span><a class="self-link" href="#requirements-presentation-api"></a></h3>
    <ol>
     <li data-md>
      <p>A controlling user agent must be able to discover the presence of a
@@ -1568,9 +1573,9 @@ ID</a>.</p>
      <p>The receiver must be able to signal all connected controlling user agents
 when a presentation is terminated.</p>
    </ol>
-   <h3 class="heading settled" data-level="3.2" id="requirements-remote-playback"><span class="secno">3.2. </span><span class="content">Remote Playback API Requirements</span><a class="self-link" href="#requirements-remote-playback"></a></h3>
+   <h3 class="heading settled" data-level="2.2" id="requirements-remote-playback"><span class="secno">2.2. </span><span class="content">Remote Playback API Requirements</span><a class="self-link" href="#requirements-remote-playback"></a></h3>
    <p class="issue" id="issue-a1f35a95"><a class="self-link" href="#issue-a1f35a95"></a> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a></p>
-   <h3 class="heading settled" data-level="3.3" id="requirements-non-functional"><span class="secno">3.3. </span><span class="content">Non-Functional Requirements</span><a class="self-link" href="#requirements-non-functional"></a></h3>
+   <h3 class="heading settled" data-level="2.3" id="requirements-non-functional"><span class="secno">2.3. </span><span class="content">Non-Functional Requirements</span><a class="self-link" href="#requirements-non-functional"></a></h3>
    <ol>
     <li data-md>
      <p>It should be possible to implement an Open Screen presentation display using
@@ -1629,18 +1634,326 @@ transport levels) with optional features not defined explicitly by the
 specification, to facilitate experimentation and enhancement of the base
 APIs.</p>
    </ol>
-   <h2 class="heading settled" data-level="4" id="discovery"><span class="secno">4. </span><span class="content">Receiver Discovery</span><a class="self-link" href="#discovery"></a></h2>
-   <p class="issue" id="issue-b7e254cb"><a class="self-link" href="#issue-b7e254cb"></a> Incorporate material from the <a href="mdns.md">mDNS</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/100">&lt;https://github.com/webscreens/openscreenprotocol/issues/100></a></p>
-   <h2 class="heading settled" data-level="5" id="transport"><span class="secno">5. </span><span class="content">Transport Establishment</span><a class="self-link" href="#transport"></a></h2>
-   <p class="issue" id="issue-e6fb7d40"><a class="self-link" href="#issue-e6fb7d40"></a> Incorporate material from the <a href="quic.md">QUIC</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/101">&lt;https://github.com/webscreens/openscreenprotocol/issues/101></a></p>
+   <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Discovery with mDNS</span><a class="self-link" href="#discovery"></a></h2>
+   <p>Agents may discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.
+To do so, agents must use the service name "_openscreen._udp.local".</p>
+   <p>Advertising Agents must use an instance name that is a prefix of the agent’s
+display name. If the instance name is not the complete display name (if it has
+been truncated), it must be terminated by a null character.  It is prefix so
+that the name displayed to the user pre-verification can be verified later.  It
+is terminated by a null character in the case of truncation so that the
+listening agent knows it has been truncated.  This complexity is necessary to
+all for display names that exceed the size allowed in an instance name and for
+such (possibly  truncated) display names to be visible to the user sooner
+(before a QUIC connection is made).  Listening agents must treat instance names
+as unverified and must verify that the instance name is a prefix of the verified
+display name before showing the user a verified display name.</p>
+   <p>Advertising agents must include DNS TXT records with the following
+keys and values:</p>
+   <ul>
+    <li data-md>
+     <p>key "fp" with value of the certificate fingerpint of the advertising agent.
+The format of the fingerprint is defined by <a href="https://tools.ietf.org/html/rfc8122#section-5">RFC 8122 section
+5</a>, excluding the
+"fingerprint:" prefix and including the hash function, space, and hex-encoded
+fingerprint.  The fingerprint value also functions as an ID for the agent.
+All agents must support the following hash functions: "sha-256", "sha-512".
+Agents must not support the following hash functions: "md2", "md5".</p>
+    <li data-md>
+     <p>key "mv" with an unsigned integer value that indicates that
+metadata has changed.   The advertising agent must update it to a greater
+value.  This signals to the listening agent that it should connect to the
+advertising agent to discover updated metadata.</p>
+   </ul>
+   <p>Future extensions to this QUIC-based protocol can use the same metadata
+discovery process to indicate support for those extensions, through a
+capabilities mechanism to be determined. If a future version of the Open Screen
+Protocol uses mDNS but breaks compatibility with the metadata discovery process,
+it should change the DNS-SD service name to a new value, indicating a new
+mechanism for metadata discovery.</p>
+   <h2 class="heading settled" data-level="4" id="transport"><span class="secno">4. </span><span class="content">Transport and metadata discovery with QUIC</span><a class="self-link" href="#transport"></a></h2>
+   <p>If a listening agent wants to connect to an advertising agent, or to
+learn further metadata about it, it initiates a <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a> connection to
+the IP and port from the SRV record.  Prior to authentication, a message may be
+exchanged (such as further metadata), but such info should be treated as
+unverified (such as indicating to a user that a display name of an
+unauthenticated agent is unverified).</p>
+   <p>To learn further metadata, an agent may send an agent-info-request
+message (see Appendix A) and receive back an agent-info-response message.  The
+messages may contain the following information with the following meaning:</p>
+   <ul>
+    <li data-md>
+     <p>display-name: (required) The display name of the responding agent intended
+to be displayed to a user by the requesting agent.  If the responding agent
+is not yet authenticated, the requesting agent should make UI affordance for
+indicating to the user that the display name is not yet verified.  If the
+responding agent changes its display name, the requesting agent should
+make UI affordance for indicating to the user that the display name has
+changed.</p>
+    <li data-md>
+     <p>model-name: (optional) If the agent is a hardware device, the model name of
+the device.  This is used mainly for debugging purposes, but may be
+displayed to the user of the requesting agent.</p>
+   </ul>
+   <p>Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.</p>
+   <p>If a listening agent wishes to receive messages from an advertising agent or an
+advertising agent wishes to send messages to a listening agent, it may wish to
+keep the QUIC connection alive.  Once neither side needs to keep the connection
+alive for the purposes of sending or receiving messages, the connection should
+be closed with an error code of 5139.  In order to keep a QUIC connection alive, an
+agent may send an agent-status-request message, and any agent that receives an
+agent-status-request message should send an agent-status-response message. Such
+messages should be sent more frequently than the QUIC idle_timeout transport
+parameter (see section 18 of <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a>) and QUIC PING
+frames should not be used.  An idle_timeout transport parameter of 25 seconds is
+recommended.  The agent should behave as though a timer less than the
+idle_timeout were reset every time a message is sent on a QUIC stream.  If the
+timer expires, a agent-status-request message should be sent.</p>
+   <p>If a client agent wishes to send messages to a server agent, the client
+agent can connect to the server agent "on demand"; it does not need to
+keep the connection alive.</p>
+   <p>The agent-info-response message and agent-status-response
+messages may be extended to include additional information not defined
+in this spec.  If done ad hoc by applications and not in future specs,
+keys should be chosen to avoid collision, such as by choosing large
+integers or long strings.  Agents must ignore keys in the
+agent-info-message that it does not understand to allow agents
+to easily extend this message.</p>
+   <h2 class="heading settled" data-level="5" id="control"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#control"></a></h2>
+   <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To
+send a group of messages in order, that group of messages must be sent in one
+QUIC stream.  Independent groups of messages (with no ordering dependency
+across groups) should be sent in different QUIC streams.  In order to put
+multiple CBOR-serialized messages into the the same QUIC stream, the following
+is used.</p>
+   <p>For each message, the sender must write to the QUIC stream the following:</p>
+   <ol>
+    <li data-md>
+     <p>A type key representing the type of the message, encoded as a variable-length
+integer (see Appendix A for type keys)</p>
+    <li data-md>
+     <p>The message length encoded as a variable-length integer</p>
+    <li data-md>
+     <p>The messge encoded as CBOR (whose length must match the value in step 2)</p>
+   </ol>
+   <p>If an agent receives a message for which it does not recognize a
+type key, it must close the QUIC connection with an application error
+code of 404 and should include the unknown type key in the reason phrase
+(see <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a> section 19.4).</p>
+   <p>Variable-length integers are encoded in the same format as defined by <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16#section-16">QUIC
+transport section
+16</a>.</p>
+   <p>Many messages are requests and responses, so a common format is defined for
+those.  A request and a response includes a request ID which is an unsigned
+integer chosen by the requester.  Responses must include the request ID of the
+request they are associated with.</p>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p class="issue" id="issue-7d8c18ff"><a class="self-link" href="#issue-7d8c18ff"></a> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a></p>
-   <h2 class="heading settled" data-level="7" id="control"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control"></a></h2>
+   <h2 class="heading settled" data-level="7" id="control①"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control①"></a></h2>
    <p class="issue" id="issue-35428ee4"><a class="self-link" href="#issue-35428ee4"></a> Describe CBOR based mechanism for
 exchanging control messages, results, and events. <a href="https://github.com/webscreens/openscreenprotocol/issues/77">&lt;https://github.com/webscreens/openscreenprotocol/issues/77></a></p>
-   <h3 class="heading settled" data-level="7.1" id="presentation-api"><span class="secno">7.1. </span><span class="content">Presentation API Protocol</span><a class="self-link" href="#presentation-api"></a></h3>
-   <p class="issue" id="issue-7e667595"><a class="self-link" href="#issue-7e667595"></a> Incorporate material from the <a href="protocol.md">Protocol</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/55">&lt;https://github.com/webscreens/openscreenprotocol/issues/55></a></p>
-   <h3 class="heading settled" data-level="7.2" id="remote-playback"><span class="secno">7.2. </span><span class="content">Remote Playback API Protocol</span><a class="self-link" href="#remote-playback"></a></h3>
+   <h3 class="heading settled" data-level="7.1" id="presentation-protocol"><span class="secno">7.1. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h3>
+   <p>This section defines the use of the Open Screen Protocol for starting,
+stopping, and controlling presenetations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>.  A subsequent section will
+define how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
+protocol messages defined in this section.</p>
+   <p>For all messages defined in this section, see Appendix A for the full
+CDDL definitions.</p>
+   <p>To learn which receivers are <a data-link-type="dfn">available presentation display</a>s for a
+particular URL or set of URLs, the controller may send a
+presentation-url-availability-request message with the following values:</p>
+   <ul>
+    <li data-md>
+     <p>urls: A list of presentation URLs.  Must not be empty.</p>
+    <li data-md>
+     <p>watch-duration: The period of time that the controller is interested in
+receiving updates about the URLs, should the availability change.</p>
+    <li data-md>
+     <p>watch-id: An identifier the receiver may use when sending updates about URL
+availability so that controller knows which URLs the receiver is referring
+to.</p>
+   </ul>
+   <p>In response, the receiver should send one presentation-url-availability-response
+message with the following values:</p>
+   <ul>
+    <li data-md>
+     <p>url-availabilities: A list of URL availability states (available,
+unavailable, or invalid).  Each state must correspond to the matching URL
+from the request by list index.</p>
+   </ul>
+   <p>The receivers should later (up to the current time plus request
+watch-duration) send presentation-url-availability-event messages if
+URL availabilities change.  Such events contain the following values:</p>
+   <ul>
+    <li data-md>
+     <p>watch-id: The watch-id given in the presentation-url-availability-response,
+used to refer to the presentation URLs whose availability has changed.</p>
+    <li data-md>
+     <p>url-availabilities: A list of URL availability states (available,
+unavailable, or invalid).  Each state must correspond to the URLs from the
+request referred to by the watch-id.</p>
+   </ul>
+   <p>Note that these messages are not broadcasted to all controllers. They are sent
+individually to controllers that have requested availability for the URLs that
+have changed in availability state within the watch duration of the original
+availability request.</p>
+   <p>To save power, the controller may disconnect the QUIC connection and
+later reconnect to send availablity requests and receive availability
+responses and updates.</p>
+   <p>To start a presentation, the controller may send a
+presentation-start-request message to the receiver with the following
+values:</p>
+   <ul>
+    <li data-md>
+     <p>presentation-id: the presentation identifier</p>
+    <li data-md>
+     <p>url: the selected presentation URL</p>
+    <li data-md>
+     <p>headers: headers that the receiver should use to fetch the
+presentationUrl.  For example, section 6.6.1 of <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> says that the Accept-Language
+header should be provided.</p>
+   </ul>
+   <p>The presentation ID must follow the restrictions defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> section 6.1, in that it must
+consist of at least 16 ASCII characters.</p>
+   <p>When the receiver receives the presentation-start-request, it should send back a
+presentation-start-response message after either the presentation URL has been
+feteched and loaded, or the receiver has failed to do so. If it has failed, it
+must respond with the appropriate result (such as invalid-url or timeout).  If
+it has succeeded, it must reply with a success result.  Additionally, the
+response must include the following:</p>
+   <ul>
+    <li data-md>
+     <p>connection-id: An ID that both agents can use to send connection messages
+to each other.  It is chosen by the receiver for ease of implementation: if
+the message receiver chooses the connection-id, it may keep the ID unique
+across connections, thus making message demuxing/routing easier.</p>
+   </ul>
+   <p>To send a presentation message, the controller or receiver may send a
+presentation-connection-message with the following values:</p>
+   <ul>
+    <li data-md>
+     <p>connection-id: The ID from the presentation-start-response or
+presentation-connection-open-response messages.</p>
+    <li data-md>
+     <p>message: the presentation message data.</p>
+   </ul>
+   <p>To terminate a presentation, the controller may send a
+presentation-termination-request message with the following values:</p>
+   <ul>
+    <li data-md>
+     <p>presentation-id: The ID of the presentation to terminate.</p>
+    <li data-md>
+     <p>reason: The reason the presentation is being terminated.</p>
+   </ul>
+   <p>When a receiving agent receives a presentation-termination-request, it should
+send back a presentation-termination-response message to the requesting
+agent.  It should also notify other controllers about the termination by sending
+a presentation-termination-event message.  And it can send the same message if
+it terminates a presentation without a request from a controller to do so. This
+message contains the following values:</p>
+   <ul>
+    <li data-md>
+     <p>presentation-id: The ID of the presentation that was terminated.</p>
+    <li data-md>
+     <p>reason: The reason the presentation was terminated.</p>
+   </ul>
+   <p>To accept incoming connections requests from controller, a receiver
+must receive and process the presentation-connection-open-request
+message which contains the following values:</p>
+   <ul>
+    <li data-md>
+     <p>presentation-id: The ID of the presentation to connect to.</p>
+    <li data-md>
+     <p>url: The URL of the presentation to connect to.</p>
+   </ul>
+   <p>The receiver should, upon receipt of a
+presentation-connection-open-request message, send back a
+presentation-connection-open-response message which contains the
+following values:</p>
+   <ul>
+    <li data-md>
+     <p>result: a code indicating success or failure, and the reason for the failure</p>
+    <li data-md>
+     <p>connection-id: An ID that both agents can use to send connection messages
+to each other.  It is chosen by the receiver for ease of implementation (if
+the message receiver chooses the connection-id, it may keep the ID unique
+across connections, thus making message demuxing/routing easier).</p>
+   </ul>
+   <p>A controller may terminate a connection without terminating the presentation by
+sending a presentation-connection-close-request message with the following
+values:</p>
+   <ul>
+    <li data-md>
+     <p>connection-id: The ID of the connection to close.</p>
+   </ul>
+   <p>The receiver should, upon receipt of a presentation-connection-close-request,
+send back a presentation-connection-close-response message with the following
+values:</p>
+   <ul>
+    <li data-md>
+     <p>result: If the close succeed or failed, and if it failed why it failed.</p>
+   </ul>
+   <p>The receiver may also close a connection without a request from the controller
+to do so and without terminating a presentation.  If it does so, it should send
+a presentation-connection-close-event to the controller with the following
+values:</p>
+   <ul>
+    <li data-md>
+     <p>connection-id: The ID of the connection that was closed</p>
+    <li data-md>
+     <p>reason: The reason the connection was closed</p>
+    <li data-md>
+     <p>error-message: A debug message suitable for a log or perhaps presented to
+the user with more explanation as to why it was closed.</p>
+   </ul>
+   <h3 class="heading settled" data-level="7.2" id="presentation-api"><span class="secno">7.2. </span><span class="content">Presentation API</span><a class="self-link" href="#presentation-api"></a></h3>
+   <p>This section defines how <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses
+the messages defined in the previous sections.
+Non-browser agents can also send and receive the same messages defined here.
+If so, a non-browser agent must follow the same restrictions for the
+presentation-id as the a does, as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation
+API</a> section 6.1 (at least 16 ASCII characters).</p>
+   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection">section
+6.4.2</a> says "This list of presentation displays ... is populated based on an
+implementation specific discovery mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent③">controlling user
+agent</a> may use the mDNS, QUIC, agent-info-request, and
+presentation-url-availability-request messages defined previously in
+this spec to discover receivers.</p>
+   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
+6.4.2</a> says "To further save power, ... implementation specific discovery of
+presentation displays can be resumed or suspended.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent④">controlling
+user agent</a> may use the power saving mechanism defined in the
+previous section.</p>
+   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#starting-a-presentation-connection">section
+6.3.4</a> says "Using an implementation specific mechanism, tell U to create a
+receiving browsing context with D, presentationUrl, and I as
+parameters.", U (the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑤">controlling user agent</a>) may send a
+presentation-start-request message to D (the receiver), with I for the
+presentation identifier and presentationUrl for the selected
+presentation URL.</p>
+   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection">section
+6.5.2</a> says "Using an implementation specific mechanism, transmit the
+contents of messageOrData as the presentation message data and
+messageType as the presentation message type to the destination
+browsing context", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑥">controlling user agent</a> may send a
+presentation-connection-message with messageOrData for the
+presentation message data.  Note that the messageType is embedded in
+the encoded CBOR type and does not need an additional value in the
+message.</p>
+   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
+6.5.6</a> says "Send a termination request for the presentation to its receiving user
+agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
+agent</a> may send a presentation-termination-request message.</p>
+   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
+6.7.1</a> says "it MUST listen to and accept incoming connection requests from a
+controlling browsing context using an implementation specific
+mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> must receive and process the
+presentation-connection-open-request.</p>
+   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
+6.7.1</a> says "Establish the connection between the controlling and receiving browsing
+contexts using an implementation specific mechanism.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving user
+agent</a>, must send a presentation-connection-open-response message.</p>
+   <h3 class="heading settled" data-level="7.3" id="remote-playback"><span class="secno">7.3. </span><span class="content">Remote Playback API Protocol</span><a class="self-link" href="#remote-playback"></a></h3>
    <p class="issue" id="issue-eaed3698"><a class="self-link" href="#issue-eaed3698"></a> Propose control protocol for Remote
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a></p>
    <h2 class="heading settled" data-level="8" id="security"><span class="secno">8. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security"></a></h2>
@@ -1648,6 +1961,197 @@ Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/1
    <h3 class="heading settled" data-level="8.1" id="security-data"><span class="secno">8.1. </span><span class="content">Data to be secured</span><a class="self-link" href="#security-data"></a></h3>
    <h3 class="heading settled" data-level="8.2" id="security-threat"><span class="secno">8.2. </span><span class="content">Threat model</span><a class="self-link" href="#security-threat"></a></h3>
    <h3 class="heading settled" data-level="8.3" id="security-defenses"><span class="secno">8.3. </span><span class="content">Mitigations and defenses</span><a class="self-link" href="#security-defenses"></a></h3>
+   <h2 class="heading settled" data-level="9" id="appending-a-messages"><span class="secno">9. </span><span class="content">Appending A: Messages</span><a class="self-link" href="#appending-a-messages"></a></h2>
+    The following messages are defined with <a data-link-type="biblio" href="#biblio-cddl">[CDDL]</a>. When
+integer keys are used, a comment is appended to the line to indicate
+the name of the field. Each root message (one that can be put into a
+QUIC stream without being inclosed by another message) has a comment
+indicating the message type key. 
+   <p>Smaller numbers should be reserved for message that will be sent more
+frequently or are very small or both and larger numbers should be
+reserved for messsages that are infrequently sent or large or both
+because smaller type keys encode on the wire smaller.</p>
+<pre>; type key 10
+agent-info-request = {
+  request
+}
+
+; type key 11
+agent-info-response = {
+  response
+  1: agent-info ; agent-info
+}
+
+agent-info = {
+  0: text ; friendly-name
+  1: text ; model-name
+  ; ...
+}
+
+; type key 12
+agent-status-request = {
+  request
+  ? 1: status ; status
+}
+
+; type key 13
+agent-status-response = {
+  response
+  ? 1: status ; status
+}
+
+status = {
+}
+
+request = (
+ 0: request-id ; request-id
+)
+
+response = (
+ 0: request-id ; request-id
+)
+
+request-id = uint
+
+; type key 14
+presentation-url-availability-request = {
+  request
+  1: [1* text] ; urls
+  2: microseconds ; watch-duration
+  3: int ; watch-id
+}
+
+; type key 15
+presentation-url-availability-response = {
+  response
+  1: [1* url-availability] ; url-availabilities
+}
+
+; type key 103
+presentation-url-availability-event = {
+  1: int ; watch-id
+  2: [1* url-availability] ; url-availabilities
+}
+
+
+; idea: use HTTP response codes?
+url-availability = &amp;(
+  available: 0
+  unavailable: 1
+  invalid: 10
+)
+
+; type key 104
+presentation-start-request = {
+  request
+  1: text ; presentation-id
+  2: text ; url
+  3: [* http-header] ; headers
+}
+
+http-header = [
+  key: text
+  value: text
+]
+
+; type key 105
+presentation-start-response = {
+  response
+  1: &amp;result ; result
+  2: uint ; connection-id
+}
+
+; type key 106
+presentation-termination-request = {
+  request
+  1: text ; presentation-id
+  2: &amp;(
+    controller-called-terminate: 10
+    user-terminated-via-controller: 11
+    unknown: 255
+  )
+ ; reason
+}
+
+; type key 107
+presentation-termination-response = {
+  response
+  1: result ; result
+}
+
+; type key 108
+presentation-termination-event = {
+  1: text ; presentation-id
+  2: &amp;(
+    receiver-called-terminate: 1
+    user-terminated-via-receiver: 2
+    controller-called-terminate: 10
+    user-terminated-via-controller: 11
+    receiver-replaced-presentation: 20
+    receiver-idle-too-long: 30
+    receiver-attempted-to-navigate: 31
+    receiver-powering-down: 100
+    receiver-crashed: 101
+    unknown: 255
+  )
+}
+
+; type key 109
+presentation-connection-open-request = {
+  request
+  1: text ; presentation-id
+  2: text ; url
+}
+
+; type key 110
+presentation-connection-open-response = {
+  response
+  1: &amp;result ; result
+  2: uint; connection-id
+}
+
+; type key 111
+presentation-connection-close-request = {
+  request
+  1: uint ; connection-id
+}
+
+; type key 112
+presentation-connection-close-response = {
+  response
+  1: &amp;result ; result
+}
+
+; type key 113
+presentation-connection-close-event = {
+  1: uint; connection-id
+  2: &amp;(
+    close-method-called: 1
+    connection-object-discarded: 10
+    unrecoverable-error-while-sending-or-receiving-message: 100
+  ) ; reason
+  ? 3: text ; error-message
+}
+
+
+; type key 16
+presentation-connection-message = {
+  1: uint ; connection-id
+  2: bytes / text ; message
+}
+
+result = (
+  success: 1
+  invalid-url: 10
+  invalid-presentation-id: 11
+  timeout: 100
+  transient-error: 101
+  permanent-error: 102
+  terminating: 103
+  unknown-error: 199
+)
+
+</pre>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
@@ -1799,75 +2303,77 @@ Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/1
   <aside class="dfn-panel" data-for="term-for-media-element">
    <a href="https://www.w3.org/TR/html51/single-page.html#media-element">https://www.w3.org/TR/html51/single-page.html#media-element</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-media-element">2.1. Terminology</a>
+    <li><a href="#ref-for-media-element">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-presentationconnection">
    <a href="https://w3c.github.io/presentation-api/#presentationconnection">https://w3c.github.io/presentation-api/#presentationconnection</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-presentationconnection">3.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
+    <li><a href="#ref-for-presentationconnection">2.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-controlling-browsing-context">
    <a href="https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context">https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-controlling-browsing-context">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-controlling-browsing-context">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-controlling-user-agent">
    <a href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent">https://w3c.github.io/presentation-api/#dfn-controlling-user-agent</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-controlling-user-agent">2.1. Terminology</a> <a href="#ref-for-dfn-controlling-user-agent①">(2)</a>
-    <li><a href="#ref-for-dfn-controlling-user-agent②">3.1. Presentation API Requirements</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent">1.1. Terminology</a> <a href="#ref-for-dfn-controlling-user-agent①">(2)</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent②">2.1. Presentation API Requirements</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent③">7.2. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent④">(2)</a> <a href="#ref-for-dfn-controlling-user-agent⑤">(3)</a> <a href="#ref-for-dfn-controlling-user-agent⑥">(4)</a> <a href="#ref-for-dfn-controlling-user-agent⑦">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-display">
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-display">https://w3c.github.io/presentation-api/#dfn-presentation-display</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-presentation-display">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-presentation-display">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-display-availability">
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-display-availability">https://w3c.github.io/presentation-api/#dfn-presentation-display-availability</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-presentation-display-availability">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-presentation-display-availability">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-id">
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-id">https://w3c.github.io/presentation-api/#dfn-presentation-id</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-presentation-id">3.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
+    <li><a href="#ref-for-dfn-presentation-id">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url">https://w3c.github.io/presentation-api/#dfn-presentation-request-url</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-presentation-request-url">2.1. Terminology</a> <a href="#ref-for-dfn-presentation-request-url①">(2)</a>
-    <li><a href="#ref-for-dfn-presentation-request-url②">3.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-request-url③">(2)</a> <a href="#ref-for-dfn-presentation-request-url④">(3)</a> <a href="#ref-for-dfn-presentation-request-url⑤">(4)</a>
+    <li><a href="#ref-for-dfn-presentation-request-url">1.1. Terminology</a> <a href="#ref-for-dfn-presentation-request-url①">(2)</a>
+    <li><a href="#ref-for-dfn-presentation-request-url②">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-request-url③">(2)</a> <a href="#ref-for-dfn-presentation-request-url④">(3)</a> <a href="#ref-for-dfn-presentation-request-url⑤">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiver">
    <a href="https://w3c.github.io/presentation-api/#dfn-receiver">https://w3c.github.io/presentation-api/#dfn-receiver</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-receiver">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-receiver">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiving-browsing-context">
    <a href="https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context">https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-receiving-browsing-context">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-receiving-browsing-context">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiving-user-agent">
    <a href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent">https://w3c.github.io/presentation-api/#dfn-receiving-user-agent</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-receiving-user-agent">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-receiving-user-agent">1.1. Terminology</a>
+    <li><a href="#ref-for-dfn-receiving-user-agent①">7.2. Presentation API</a> <a href="#ref-for-dfn-receiving-user-agent②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-device">
    <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device">https://w3c.github.io/remote-playback/#dfn-remote-playback-device</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-remote-playback-device">2.1. Terminology</a>
+    <li><a href="#ref-for-dfn-remote-playback-device">1.1. Terminology</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1904,20 +2410,30 @@ Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/1
    <dd>Steve Faulkner; et al. <a href="https://www.w3.org/TR/html51/">HTML 5.1 2nd Edition</a>. 3 October 2017. REC. URL: <a href="https://www.w3.org/TR/html51/">https://www.w3.org/TR/html51/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
    <dd>Mark Foltz; Dominik Röttsches. <a href="https://www.w3.org/TR/presentation-api/">Presentation API</a>. 1 June 2017. CR. URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
+   <dt id="biblio-quic">[QUIC]
+   <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
    <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/">Remote Playback API</a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-rfc7049">[RFC7049]
+   <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
+  </dl>
+  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <dl>
+   <dt id="biblio-cddl">[CDDL]
+   <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. Internet Draft. URL: <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/</a>
+   <dt id="biblio-rfc6762">[RFC6762]
+   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
+   <dt id="biblio-rfc6763">[RFC6763]
+   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a><a href="#issue-a1f35a95"> ↵ </a></div>
-   <div class="issue"> Incorporate material from the <a href="mdns.md">mDNS</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/100">&lt;https://github.com/webscreens/openscreenprotocol/issues/100></a><a href="#issue-b7e254cb"> ↵ </a></div>
-   <div class="issue"> Incorporate material from the <a href="quic.md">QUIC</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/101">&lt;https://github.com/webscreens/openscreenprotocol/issues/101></a><a href="#issue-e6fb7d40"> ↵ </a></div>
    <div class="issue"> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a><a href="#issue-7d8c18ff"> ↵ </a></div>
    <div class="issue"> Describe CBOR based mechanism for
 exchanging control messages, results, and events. <a href="https://github.com/webscreens/openscreenprotocol/issues/77">&lt;https://github.com/webscreens/openscreenprotocol/issues/77></a><a href="#issue-35428ee4"> ↵ </a></div>
-   <div class="issue"> Incorporate material from the <a href="protocol.md">Protocol</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/55">&lt;https://github.com/webscreens/openscreenprotocol/issues/55></a><a href="#issue-7e667595"> ↵ </a></div>
    <div class="issue"> Propose control protocol for Remote
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a><a href="#issue-eaed3698"> ↵ </a></div>
    <div class="issue"> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a><a href="#issue-ab35c2a2"> ↵ </a></div>
