@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="7adee3de2bc5b1c075e26027519f5f2cea02ee54" name="document-revision">
+  <meta content="cdf448ea5141ffcfc8470148015d35b2ffd67a2b" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1447,7 +1447,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#control"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
     <li><a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
     <li>
-     <a href="#control①"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
+     <a href="#control-protocols"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
      <ol class="toc">
       <li><a href="#presentation-protocol"><span class="secno">7.1</span> <span class="content">Presentation Protocol</span></a>
       <li><a href="#presentation-api"><span class="secno">7.2</span> <span class="content">Presentation API</span></a>
@@ -1460,7 +1460,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li><a href="#security-threat"><span class="secno">8.2</span> <span class="content">Threat model</span></a>
       <li><a href="#security-defenses"><span class="secno">8.3</span> <span class="content">Mitigations and defenses</span></a>
      </ol>
-    <li><a href="#appending-a-messages"><span class="secno">9</span> <span class="content">Appending A: Messages</span></a>
+    <li><a href="#appendix-a"><span class="secno"></span> <span class="content">Appendix A: Messages</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -1652,7 +1652,7 @@ display name before showing the user a verified display name.</p>
 keys and values:</p>
    <ul>
     <li data-md>
-     <p>key "fp" with value of the certificate fingerpint of the advertising agent.
+     <p>key "fp" with value of the certificate fingerprint of the advertising agent.
 The format of the fingerprint is defined by <a href="https://tools.ietf.org/html/rfc8122#section-5">RFC 8122 section
 5</a>, excluding the
 "fingerprint:" prefix and including the hash function, space, and hex-encoded
@@ -1679,7 +1679,7 @@ exchanged (such as further metadata), but such info should be treated as
 unverified (such as indicating to a user that a display name of an
 unauthenticated agent is unverified).</p>
    <p>To learn further metadata, an agent may send an agent-info-request
-message (see Appendix A) and receive back an agent-info-response message.  The
+message (see <a href="#appendix-a">Appendix A: Messages</a>) and receive back an agent-info-response message.  The
 messages may contain the following information with the following meaning:</p>
    <ul>
     <li data-md>
@@ -1714,7 +1714,7 @@ agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.</p>
    <p>The agent-info-response message and agent-status-response
 messages may be extended to include additional information not defined
-in this spec.  If done ad hoc by applications and not in future specs,
+in this spec.  If done ad-hoc by applications and not in future specs,
 keys should be chosen to avoid collision, such as by choosing large
 integers or long strings.  Agents must ignore keys in the
 agent-info-message that it does not understand to allow agents
@@ -1730,11 +1730,11 @@ is used.</p>
    <ol>
     <li data-md>
      <p>A type key representing the type of the message, encoded as a variable-length
-integer (see Appendix A for type keys)</p>
+integer (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
     <li data-md>
      <p>The message length encoded as a variable-length integer</p>
     <li data-md>
-     <p>The messge encoded as CBOR (whose length must match the value in step 2)</p>
+     <p>The message encoded as CBOR (whose length must match the value in step 2)</p>
    </ol>
    <p>If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
@@ -1749,17 +1749,15 @@ integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.</p>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p class="issue" id="issue-7d8c18ff"><a class="self-link" href="#issue-7d8c18ff"></a> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a></p>
-   <h2 class="heading settled" data-level="7" id="control①"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control①"></a></h2>
-   <p class="issue" id="issue-35428ee4"><a class="self-link" href="#issue-35428ee4"></a> Describe CBOR based mechanism for
-exchanging control messages, results, and events. <a href="https://github.com/webscreens/openscreenprotocol/issues/77">&lt;https://github.com/webscreens/openscreenprotocol/issues/77></a></p>
+   <h2 class="heading settled" data-level="7" id="control-protocols"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control-protocols"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="presentation-protocol"><span class="secno">7.1. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h3>
    <p>This section defines the use of the Open Screen Protocol for starting,
-stopping, and controlling presenetations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>.  A subsequent section will
+stopping, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>.  A subsequent section will
 define how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
 protocol messages defined in this section.</p>
-   <p>For all messages defined in this section, see Appendix A for the full
+   <p>For all messages defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for the full
 CDDL definitions.</p>
-   <p>To learn which receivers are <a data-link-type="dfn">available presentation display</a>s for a
+   <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation displays</a> for a
 particular URL or set of URLs, the controller may send a
 presentation-url-availability-request message with the following values:</p>
    <ul>
@@ -1817,7 +1815,7 @@ header should be provided.</p>
 consist of at least 16 ASCII characters.</p>
    <p>When the receiver receives the presentation-start-request, it should send back a
 presentation-start-response message after either the presentation URL has been
-feteched and loaded, or the receiver has failed to do so. If it has failed, it
+fetched and loaded, or the receiver has failed to do so. If it has failed, it
 must respond with the appropriate result (such as invalid-url or timeout).  If
 it has succeeded, it must reply with a success result.  Additionally, the
 response must include the following:</p>
@@ -1961,15 +1959,15 @@ Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/1
    <h3 class="heading settled" data-level="8.1" id="security-data"><span class="secno">8.1. </span><span class="content">Data to be secured</span><a class="self-link" href="#security-data"></a></h3>
    <h3 class="heading settled" data-level="8.2" id="security-threat"><span class="secno">8.2. </span><span class="content">Threat model</span><a class="self-link" href="#security-threat"></a></h3>
    <h3 class="heading settled" data-level="8.3" id="security-defenses"><span class="secno">8.3. </span><span class="content">Mitigations and defenses</span><a class="self-link" href="#security-defenses"></a></h3>
-   <h2 class="heading settled" data-level="9" id="appending-a-messages"><span class="secno">9. </span><span class="content">Appending A: Messages</span><a class="self-link" href="#appending-a-messages"></a></h2>
-    The following messages are defined with <a data-link-type="biblio" href="#biblio-cddl">[CDDL]</a>. When
+   <h2 class="heading settled" id="appendix-a"><span class="content">Appendix A: Messages</span><a class="self-link" href="#appendix-a"></a></h2>
+   <p>The following messages are defined with <a data-link-type="biblio" href="#biblio-cddl">[CDDL]</a>. When
 integer keys are used, a comment is appended to the line to indicate
 the name of the field. Each root message (one that can be put into a
-QUIC stream without being inclosed by another message) has a comment
-indicating the message type key. 
+QUIC stream without being enclosed by another message) has a comment
+indicating the message type key.</p>
    <p>Smaller numbers should be reserved for message that will be sent more
 frequently or are very small or both and larger numbers should be
-reserved for messsages that are infrequently sent or large or both
+reserved for messages that are infrequently sent or large or both
 because smaller type keys encode on the wire smaller.</p>
 <pre>; type key 10
 agent-info-request = {
@@ -2312,6 +2310,12 @@ result = (
     <li><a href="#ref-for-presentationconnection">2.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-available-presentation-display">
+   <a href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display">https://w3c.github.io/presentation-api/#dfn-available-presentation-display</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-available-presentation-display">7.1. Presentation Protocol</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-controlling-browsing-context">
    <a href="https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context">https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context</a><b>Referenced in:</b>
    <ul>
@@ -2387,6 +2391,7 @@ result = (
     <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-presentationconnection" style="color:initial">PresentationConnection</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-available-presentation-display" style="color:initial">available presentation display</span>
      <li><span class="dfn-paneled" id="term-for-dfn-controlling-browsing-context" style="color:initial">controlling browsing context</span>
      <li><span class="dfn-paneled" id="term-for-dfn-controlling-user-agent" style="color:initial">controlling user agent</span>
      <li><span class="dfn-paneled" id="term-for-dfn-presentation-display" style="color:initial">presentation display</span>
@@ -2432,8 +2437,6 @@ result = (
   <div style="counter-reset:issue">
    <div class="issue"> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a><a href="#issue-a1f35a95"> ↵ </a></div>
    <div class="issue"> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a><a href="#issue-7d8c18ff"> ↵ </a></div>
-   <div class="issue"> Describe CBOR based mechanism for
-exchanging control messages, results, and events. <a href="https://github.com/webscreens/openscreenprotocol/issues/77">&lt;https://github.com/webscreens/openscreenprotocol/issues/77></a><a href="#issue-35428ee4"> ↵ </a></div>
    <div class="issue"> Propose control protocol for Remote
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a><a href="#issue-eaed3698"> ↵ </a></div>
    <div class="issue"> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a><a href="#issue-ab35c2a2"> ↵ </a></div>
