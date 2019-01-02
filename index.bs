@@ -642,13 +642,13 @@ The Open Screen Protocol should, at a minimum, conform to the security and
 privacy guidelines recommended by the [[PRESENTATION-API][Presentation API]] and
 the [[REMOTE-PLAYBACK][Remote Playback API]].
 
-In addition, the Open Screen Protocol itself has additional security and privacy
+In addition, the Open Screen Protocol itself adds additional security and privacy
 considerations.
 
-Presentation API Security and Privacy
--------------------------------------
+Presentation API
+----------------
 
-The [[PRESENTATION-API#security-and-privacy-considerations][Presentation API
+[[PRESENTATION-API#security-and-privacy-considerations][Presentation API
 Security and Privacy Considerations]] place these requirements on the Open
 Screen Protocol:
 
@@ -661,12 +661,15 @@ Screen Protocol:
     confidential, per the guidelines for messaging between presentation
     connections.
 
-Remote Playback API Security and Privacy
-----------------------------------------
+Remote Playback API
+-------------------
 
 The [[REMOTE-PLAYBACK#security-and-privacy-considerations][Remote Playback API
 Security and Privacy Considerations]] also state that messaging between local
 and remote playback devices should also be authenticated and confidential.
+
+Open Screen Protocol
+--------------------
 
 Threat Models {#security-threat}
 --------------------------------
