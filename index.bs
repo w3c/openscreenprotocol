@@ -632,18 +632,159 @@ Issue(12): Propose control protocol for Remote
 Playback API.
 
 
-Security and Privacy {#security}
-================================
+Security and Privacy {#security-privacy}
+====================
 
-The Open Screen Protocol should, at a minimum, conform to the security and
-privacy guidelines recommended by the [[PRESENTATION-API][Presentation API]] and
-the [[REMOTE-PLAYBACK][Remote Playback API]].
+The Open Screen Protocol allows two networked user agents to discover each other
+and exchange user and application data.  As such, its security and privacy
+considerations should be closely examined.  We first evaluate the protocol
+itself using the W3C [[SECURITY-PRIVACY-QUESTIONNAIRE]].  We then examine
+whether the security and privacy guidelines recommended by the
+[[PRESENTATION-API]] and the [[REMOTE-PLAYBACK] are met.
 
-In addition, the Open Screen Protocol itself adds additional security and privacy
-considerations.
+Threat Models {#threat-models}
+--------------------------------
 
-Presentation API
-----------------
+### Passive Network Attackers ### {#passive-network-attackers}
+
+The Open Screen Protocol should assume that all parties that are connected to
+the same LAN as the user agents, either through a wired connection or through
+WiFi, are able to observe all data flowing between Open Screen controllers and
+receivers.
+
+These parties will be able collect any data exposed through unencrypted
+messages, such as mDNS records and the QUIC handshake.
+
+These parties may attempt to learn cryptographic parameters by observing data
+flows on the QUIC connection, or by observing cryptographic timing.
+
+### Active Network Attackers ### {#active-network-attackers}
+
+In addition, all parties with access to the LAN will be able to manipulate data
+exchanged between controllers and receivers.  They will be able to inject
+traffic into both parties and attempt to inititate new QUIC connections.  These abilities
+can be used to attempt the following:
+
+*   Impersonate a new receiver or one already trusted by the user, in an attempt
+    to convince the user to authenticate to it.
+*   Connect to a receiver and query its capabilities.
+*   Connect to and control a presentation or remote playback, or extract data
+    from the application state of the presentation or remote playback.
+    
+One particular attack of concern is misconfigured or compromised routers that
+expose local network devices to the Internet.  This vector of attack has been
+used by remote parties to take control of printers and smart TVs by connecting
+to local network services that should normally be inaccessible from the
+Internet.
+
+### Denial of Service ### {#denial-of-service}
+
+Parties with access to the LAN may attempt to deny access to receivers by
+controllers, or vice versa.  For example, an active attacker my attempt to start
+a large number of QUIC connections on a receiver in an attempt to block
+legitimate connections or exhaust available resources on the presentation
+display.  They may also multicast spurious DNS-SD records in an attempt to
+exhaust the cache capacity for mDNS listeners.
+
+### Same-Origin Policy Violations ### {#same-origin-policy-violations}
+
+The Presentation API allows cross-origin communication between controlling pages
+and presentations with the consent of each origin (through their use of the
+API).  This is similar to cross-origin communication via {{Worker/postMessage}}.  The
+Open Screen Protocol does not convey origin information between controllers and
+receivers.
+
+The [=presentation ID=] carries some protection against unrestricted
+cross-origin access, but authentication of the parties connected by a
+{{PresentationConnection}} can be done at the application level.
+
+### Third Party Tracking ### {#third-party-tracking}
+
+The Open Screen Protocol does not give third party origins additional access to
+presentations or remote playback state.
+
+Open Screen Protocol Considerations {#security-privacy-questions}
+-----------------------------------
+
+### Personally Identifiable Information & High-Value Data ### {#personally-identifiable-information}
+
+The following data exchanged by the protocol can be personally identifiable and
+thus is high value data:
+
+1. Presentation URLs and availability results
+1. Presentation IDs
+1. Presentation connection IDs
+1. Presentation connection messages
+1. Remote playback URLs
+1. Remote playback commands and status messages
+
+Presentation display friendly names, model names, and capabilities, while not
+considered personally identifiable, is important to protect to preserve the
+integrity of the discovery process.
+
+The following data cannot be reasonably secured and should be considered public
+and untrusted data:
+
+1. IP addresses and ports used by the Open Screen Protocol.
+1. Data advertised through mDNS, including the certificate fingerprint and the 
+    metadata version.
+   
+### Cross Origin State Considerations ### {#cross-origin-state}
+
+Access to origin state across browsing sessions is possible through the
+Presentation API by reconnecting to a presentation that was started by a
+previous session. This sceanrio is addressed in
+[[PRESENTATION-API#cross-origin-access]].
+
+Presentation display availability and remote playback availability are states
+that may be available cross-origin depending on the user's network context.
+Exposure of this data to the Web is also discussed in
+[[PRESENTATION-API#personally-identifiable-information]] and
+[[REMOTE-PLAYBACK#personally-identifiable-information]].
+
+### Origin Access to Other Devices ### {#origin-access-devices}
+
+By design, the Open Screen Protocol allows access to presentation displays from
+the Web.  By implementing the protocol, these devices are knowingly making
+themselves available to the Web and should be designed accordingly.
+
+Below, we discuss mitigation steps to prevent malicious use of presentation
+displays.
+
+### Incognito Mode ### {#incognito-mode}
+
+The Open Screen Protocol does not distinguish between the user agent's normal
+browsing and incognito modes, and should operate identically regardless of which
+mode is using it.
+
+### Persistent State ### {#persistent-state}
+
+An implementation of the Open Screen Protocol is likely to persist the identity
+of controllers and receivers that have successfully completed
+[[#authentication]].  This may include the public key fingerprints, metadata
+versions, and metadata for those parties.
+
+However, this data is not normally exposed to the Web, only through the native
+UI of the user agent during the display selection or display authentication
+process.  It can be an implementation choice whether the user agent clears or
+retains this data when the user clears browsing data.
+
+TODO: File an issue to discuss
+
+### Other Considerations ### {#other-considerations}
+
+The Open Screen Protocol does not grant to the Web additional access to the
+following:
+
+* New script loading mechanisms
+* Access to the user's location
+* Access to device sensors
+* Access to the user's local computing environment
+* Control over the user agent's native UI
+* Security characteristics of the user agent
+
+Presentation API Considerations {#presentation-api-considerations}
+-------------------------------
 
 [[PRESENTATION-API#security-and-privacy-considerations][Presentation API
 Security and Privacy Considerations]] place these requirements on the Open
@@ -658,63 +799,109 @@ Screen Protocol:
     confidential, per the guidelines for messaging between presentation
     connections.
 
-Remote Playback API
--------------------
+The Open Screen Protocol addresses these considerations by:
+
+1. Requiring mutual authentication and a TLS-secured QUIC connection before
+     presentation URLs, IDs, or messages are exchanged.
+1. Adding explicit messages and connection IDs for individual
+     {{PresentationConnection|PresentationConnections}} so that controllers and
+     receivers can track the number of active connections.
+
+Remote Playback API Considerations {#remote-playback-considerations}
+----------------------------------
 
 The [[REMOTE-PLAYBACK#security-and-privacy-considerations][Remote Playback API
 Security and Privacy Considerations]] also state that messaging between local
 and remote playback devices should also be authenticated and confidential.
 
-Open Screen Protocol
---------------------
+This consideration is handled by requiring mutual authentication and a
+TLS-secured QUIC connection before any remote playback related messages are
+exchanged.
 
-Threat Models {#security-threat}
---------------------------------
-
-## Passive Attacks
-
-The Open Screen Protocol should assume that all parties that are able
-access the LAN, either through a wired connection or through WiFi, are able to
-observe all data flowing between Open Screen controllers and receivers.
-
-These parties will be able collect any data exposed through unencrypted
-messages, such as mDNS records and the QUIC handshake.
-
-## Active Attacks
-
-In addition, all parties with access to the LAN will be able to manipulate data
-exchanged between controllers and receivers and inititate QUIC connections.
-This can be used to attempt attacks such as:
-
-*   Impersonating a new receiver or one already known to the user, in an attempt
-    to convince the user to authenticate it as a trusted receiver.
-*   Connecting to a receiver and querying its capabilities, or attempting to
-    xconnect to a running presentation or remote playback.
-
-## Denial of Service
-
-
-Data to be secured {#security-data}
------------------------------------
-
-There are two kinds of data 
-
-1. Presentation URLs
-1. Presentation IDs
-1. Presentation connection messages
-1. Remote playback URLs
-1. Remote playback commands and status messages
-
-The following data cannot be reasonably secured and should be considered public
-and untrusted data:
-
-1. IP addresses and ports used by the Open Screen Protocol.
-1. Friendly names or other data advertised through mDNS.
-1. 
-
-Mitigation Strategies {#security-mitigation}
+Mitigation Strategies {#security-mitigations}
 --------------------------------------------
 
+### Local passive network attackers ### {#local-passive-mitigations}
+
+Local passive attackers may attempt to harvest data about user activities and
+device capabilties using the Open Screen Protocol.  The main strategy to address
+this is data minimization, by only exposing opaque public key fingerprints
+before user-mediated authentication takes place.
+
+Passive attackers may also attempt timing attacks to learn cryptographic the
+cryptographic parameters of the TLS 1.3 QUIC connection.
+
+TODO: Investigate mitigations for this.
+
+### Local active network attackers ### {#local-active-mitigations}
+
+Local active attackers may attempt to impersonate a presentation display the
+user would normally trust.  The [[#authentication]] step of the Open Screen
+Protocol prevents a man-in-the-middle from impersonating a controller or
+receiver, without knowledge of a shared secret.  However, it is possible for an
+attacker to impersonate an existing, trusted display or a newly discovered
+display that is not yet authenticated by convincing the user to authenticate it.
+
+This can be addressed through a combination of techniques.  The first is flagging:
+
+* Flag advertised displays whose friendly name, public key fingerprint, or
+    IP:port collide with an already trusted display.
+* Flag already-trusted displays whose metadata has changed.
+* Flag controllers or receivers that fail the authentication challenge a certain
+    number of times.
+  
+Flagging means that the user is notified, or in some cases they are required to
+re-authenticate to the presentation display to verify its identity.
+  
+The second is through management of the shared secret during mutual
+authentication:
+
+* Rotate the shared secret to prevent brute force attacks.
+* Use an increasing backoff to repond to authentication challenges, also to
+    prevent brute force attacks.
+* Use a cryptographically sound source of entropy to generate the shared secret.
+* Require the end user to manually type the shared secret - shown only the
+    display - to prevent the user from blindly clicking through this step.
+
+The active attacker may also attempt to disrupt data exchanged over the QUIC
+connection by injecting or modifying traffic.  These attacks should be mitigated
+by a correct implementation of TLS 1.3.
+
+TODO: Protect against TLS replay, esp. if we enable early data.
+
+### Remote active network attackers ### {#remote-active-mitigations}
+
+Unfortunately, we cannot rely on network devices to fully protect Open Screen
+controllers and receivers from traffic from the broader Internet.  Open Screen
+Protocol implementations that are only intended to work on the LAN should filter
+packets from non-local IP addresses.  Implementations can also use the ARP cache
+to detect attempts to spoof local network IP addresses.
+
+TODO: Fill in more details here.
+
+### Denial of service ### {#denial-of-service-mitigations}
+
+It will be difficult to completely prevent denial service of attacks that
+originate on the user's local area network.  Open Screen Protocol
+implementations can refuse new connections, rate limit the rate of messages from
+existing connections, or limit the number of mDNS records cached in an attempt
+to allow existing activities to continue in spite of such an attack.
+
+### Malicious input ### {#malicious-input-mitigations}
+
+Open Screen Protocol implementations should be robust against malicious input
+that attempts to compromise the target device by exploiting parsing
+vulnerabilities.
+
+CBOR is intended to be less vulnerable to such attacks relative to alternatives
+like JSON and XML.  Still, implementations should be thoroughly tested using
+approaches like [fuzz testing](https://en.wikipedia.org/wiki/Fuzzing).
+
+Where possible, Open Screen Protocol implementations (including the content
+rendering components) should use defense-in-depth techniques like
+[sandboxing](https://en.wikipedia.org/wiki/Sandbox_(computer_security)).
+to prevent vulnerabilities from gaining access to user data or leading to
+persistent exploits.
 
 Appendix A: Messages {#appendix-a}
 ====================
