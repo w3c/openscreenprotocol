@@ -23,6 +23,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <!-- TODO: Can autolinks to HTML51 be automatically generated? -->
 <pre class="anchors">
 urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
+    text: available presentation display
     text: controller
     text: controlling user agent
     text: controlling browsing context
@@ -253,7 +254,7 @@ Advertising agents must include DNS TXT records with the following
 keys and values:
 
 : fp
-:: The certificate fingerpint of the advertising agent.
+:: The certificate fingerprint of the advertising agent.
     The format of the fingerprint is defined by [RFC 8122 section
     5](https://tools.ietf.org/html/rfc8122#section-5), excluding the
     "fingerprint:" prefix and including the hash function, space, and hex-encoded
@@ -291,7 +292,7 @@ unverified (such as indicating to a user that a display name of an
 unauthenticated agent is unverified).
 
 To learn further metadata, an agent may send an agent-info-request
-message (see Appendix A) and receive back an agent-info-response message.  The
+message (see [[#appendix-a]]) and receive back an agent-info-response message.  The
 messages may contain the following information with the following meaning:
 
 : display-name (required)
@@ -333,7 +334,7 @@ keep the connection alive.
 
 The agent-info-response message and agent-status-response
 messages may be extended to include additional information not defined
-in this spec.  If done ad hoc by applications and not in future specs,
+in this spec.  If done ad-hoc by applications and not in future specs,
 keys should be chosen to avoid collision, such as by choosing large
 integers or long strings.  Agents must ignore keys in the
 agent-info-message that it does not understand to allow agents
@@ -352,11 +353,11 @@ is used.
 For each message, the sender must write to the QUIC stream the following:
 
 1.  A type key representing the type of the message, encoded as a variable-length
-    integer (see Appendix A for type keys)
+    integer (see [[#appendix-a]] for type keys)
 
 2.  The message length encoded as a variable-length integer
 
-3.  The messge encoded as CBOR (whose length must match the value in step 2)
+3.  The message encoded as CBOR (whose length must match the value in step 2)
 
 If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
@@ -376,30 +377,26 @@ Authentication {#authentication}
 
 Issue(102): Incorporate material from the \[J-PAKE](j-pake.md) document.
 
-Control Protocols {#control}
+Control Protocols {#control-protocols}
 ============================
-
-Issue(77): Describe CBOR based mechanism for
-exchanging control messages, results, and events.
-
 
 Presentation Protocol {#presentation-protocol}
 ---------------------------------------------
 
-This section defines the use of the Open Screen Protocol for starting, terminating,
-and controlling presenetations as defined by [[PRESENTATION-API|Presentation
-API]].  [[#presentation-api]] defines how APIs in
-[[PRESENTATION-API|Presentation API]] map to the protocol messages defined in
-this section.
+This section defines the use of the Open Screen Protocol for starting,
+terminating, and controlling presentations as defined by
+[[PRESENTATION-API|Presentation API]]. [[#presentation-api]]
+defines how APIs in [[PRESENTATION-API|Presentation API]] map to the
+protocol messages defined in this section.
 
-For all messages defined in this section, see Appendix A for the full
+For all messages defined in this section, see [[#appendix-a]] for the full
 CDDL definitions.
 
 <!-- TODO: Add a capability that indicates support for the
 presentation protocol.
 See https://github.com/webscreens/openscreenprotocol/issues/123 -->
 
-To learn which receivers are [=available presentation display=]s for a
+To learn which receivers are [=available presentation displays=] for a
 particular URL or set of URLs, the controller may send a
 presentation-url-availability-request message with the following values:
 
@@ -473,7 +470,7 @@ it must consist of at least 16 ASCII characters.
 
 When the receiver receives the presentation-start-request, it should send back a
 presentation-start-response message after either the presentation URL has been
-feteched and loaded, or the receiver has failed to do so. If it has failed, it
+fetched and loaded, or the receiver has failed to do so. If it has failed, it
 must respond with the appropriate result (such as invalid-url or timeout).  If
 it has succeeded, it must reply with a success result.  Additionally, the
 response must include the following:
@@ -1134,17 +1131,18 @@ Threat model {#security-threat}
 Mitigations and defenses {#security-defenses}
 ---------------------------------------------
 
-Appending A: Messages
-=====================
+Appendix A: Messages {#appendix-a}
+====================
+
 The following messages are defined with [[CDDL]]. When
 integer keys are used, a comment is appended to the line to indicate
 the name of the field. Each root message (one that can be put into a
-QUIC stream without being inclosed by another message) has a comment
+QUIC stream without being enclosed by another message) has a comment
 indicating the message type key.
 
 Smaller numbers should be reserved for message that will be sent more
 frequently or are very small or both and larger numbers should be
-reserved for messsages that are infrequently sent or large or both
+reserved for messages that are infrequently sent or large or both
 because smaller type keys encode on the wire smaller.
 
 <!-- TODO: Make a bikeshed formatter CDDL -->

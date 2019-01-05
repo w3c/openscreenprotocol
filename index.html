@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 670c46b501fc025ae87a3398a195af35379ab37d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="54a69a54f65bb231cb26dbd2859897308c6f3969" name="document-revision">
+  <meta content="85bd1c9b3e674e0d243c34d4908df5195cc44d7e" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1447,7 +1447,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#messages"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
     <li><a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
     <li>
-     <a href="#control"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
+     <a href="#control-protocols"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
      <ol class="toc">
       <li><a href="#presentation-protocol"><span class="secno">7.1</span> <span class="content">Presentation Protocol</span></a>
       <li><a href="#presentation-api"><span class="secno">7.2</span> <span class="content">Presentation API</span></a>
@@ -1462,7 +1462,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li><a href="#security-threat"><span class="secno">8.2</span> <span class="content">Threat model</span></a>
       <li><a href="#security-defenses"><span class="secno">8.3</span> <span class="content">Mitigations and defenses</span></a>
      </ol>
-    <li><a href="#appending-a-messages"><span class="secno">9</span> <span class="content">Appending A: Messages</span></a>
+    <li><a href="#appendix-a"><span class="secno"></span> <span class="content">Appendix A: Messages</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -1649,7 +1649,7 @@ keys and values:</p>
    <dl>
     <dt data-md>fp
     <dd data-md>
-     <p>The certificate fingerpint of the advertising agent.
+     <p>The certificate fingerprint of the advertising agent.
 The format of the fingerprint is defined by <a href="https://tools.ietf.org/html/rfc8122#section-5">RFC 8122 section
 5</a>, excluding the
 "fingerprint:" prefix and including the hash function, space, and hex-encoded
@@ -1677,7 +1677,7 @@ exchanged (such as further metadata), but such info should be treated as
 unverified (such as indicating to a user that a display name of an
 unauthenticated agent is unverified).</p>
    <p>To learn further metadata, an agent may send an agent-info-request
-message (see Appendix A) and receive back an agent-info-response message.  The
+message (see <a href="#appendix-a">Appendix A: Messages</a>) and receive back an agent-info-response message.  The
 messages may contain the following information with the following meaning:</p>
    <dl>
     <dt data-md>display-name (required)
@@ -1714,7 +1714,7 @@ agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.</p>
    <p>The agent-info-response message and agent-status-response
 messages may be extended to include additional information not defined
-in this spec.  If done ad hoc by applications and not in future specs,
+in this spec.  If done ad-hoc by applications and not in future specs,
 keys should be chosen to avoid collision, such as by choosing large
 integers or long strings.  Agents must ignore keys in the
 agent-info-message that it does not understand to allow agents
@@ -1730,11 +1730,11 @@ is used.</p>
    <ol>
     <li data-md>
      <p>A type key representing the type of the message, encoded as a variable-length
-integer (see Appendix A for type keys)</p>
+integer (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
     <li data-md>
      <p>The message length encoded as a variable-length integer</p>
     <li data-md>
-     <p>The messge encoded as CBOR (whose length must match the value in step 2)</p>
+     <p>The message encoded as CBOR (whose length must match the value in step 2)</p>
    </ol>
    <p>If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
@@ -1747,17 +1747,14 @@ integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.</p>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p class="issue" id="issue-7d8c18ff"><a class="self-link" href="#issue-7d8c18ff"></a> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a></p>
-   <h2 class="heading settled" data-level="7" id="control"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control"></a></h2>
-   <p class="issue" id="issue-35428ee4"><a class="self-link" href="#issue-35428ee4"></a> Describe CBOR based mechanism for
-exchanging control messages, results, and events. <a href="https://github.com/webscreens/openscreenprotocol/issues/77">&lt;https://github.com/webscreens/openscreenprotocol/issues/77></a></p>
+   <h2 class="heading settled" data-level="7" id="control-protocols"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control-protocols"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="presentation-protocol"><span class="secno">7.1. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h3>
-   <p>This section defines the use of the Open Screen Protocol for starting, terminating,
-and controlling presenetations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation
-API</a>. <a href="#presentation-api">§7.2 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the protocol messages defined in
-this section.</p>
-   <p>For all messages defined in this section, see Appendix A for the full
+   <p>This section defines the use of the Open Screen Protocol for starting,
+terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§7.2 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
+protocol messages defined in this section.</p>
+   <p>For all messages defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for the full
 CDDL definitions.</p>
-   <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation display</a>s for a
+   <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation displays</a> for a
 particular URL or set of URLs, the controller may send a
 presentation-url-availability-request message with the following values:</p>
    <dl>
@@ -1825,7 +1822,7 @@ provided.</p>
 it must consist of at least 16 ASCII characters.</p>
    <p>When the receiver receives the presentation-start-request, it should send back a
 presentation-start-response message after either the presentation URL has been
-feteched and loaded, or the receiver has failed to do so. If it has failed, it
+fetched and loaded, or the receiver has failed to do so. If it has failed, it
 must respond with the appropriate result (such as invalid-url or timeout).  If
 it has succeeded, it must reply with a success result.  Additionally, the
 response must include the following:</p>
@@ -2195,13 +2192,13 @@ will behave as though it were never set.</p>
 supported, the receiver will behave as though it were never set.</p>
     <dt data-md>changed-text-tracks
     <dd data-md>
-     <p>Change tracks by ID.  All other text tracks are left
+     <p>Change text tracks by ID.  All other text tracks are left
 unchanged.  Set the mode, add cues, and remove cues by id.  See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a> for more details.  Note that future specifications or extensions to this
-spec are expected to add values to the added text-track-cues (such as text
-size, alighment, position, etc).  Adding and removing cues is optional for
-the receiver to support and if not supported, the receiver will behave as
-though no cues were added or removed (both adding and removing are indicated
-via the support for "added-cues").</p>
+specifications are expected to add values to the added text-track-cue
+values (such as text size, alighment, position, etc).  Adding and removing
+cues is optional for the receiver to support and if not supported, the
+receiver will behave as though no cues were added or removed (both adding
+and removing are indicated via the support for "added-cues").</p>
    </dl>
    <p>The states sent by the receiver include the following individual state values,
 each of which is optional.  This allows the receiver to update the controller
@@ -2211,21 +2208,21 @@ changed.</p>
    <dl>
     <dt data-md>supports
     <dd data-md>
-     <p>The controls the receiver supports.  May be different for different <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑤">media
-resource</a>s and should not changes unless the current-source changes.  If
+     <p>The controls the receiver supports.  These may differ for different <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑤">media
+resource</a>s and should not changes unless the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑥">media resource</a> changes.  If
 not present in the intial state in the remote-playback-start-response
 message, support for nothing is assumed.</p>
     <dt data-md>source
     <dd data-md>
-     <p>The current <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑥">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">HtmlMediaElement.currentSrc</a>.
+     <p>The current <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑦">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">HtmlMediaElement.currentSrc</a>.
 Must be present in the intial state in the remote-playback-start-response
 message.</p>
-    <dt data-md>loading-state
+    <dt data-md>loading
     <dd data-md>
-     <p>The state of network activity for loading the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑦">media resource</a>.  See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">HtmlMediaElement.networkState</a>.
+     <p>The state of network activity for loading the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑧">media resource</a>.  See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">HtmlMediaElement.networkState</a>.
 If not present in the intial state in the remote-playback-start-response
 message, it is assumed to be empty.</p>
-    <dt data-md>loaded-state
+    <dt data-md>loaded
     <dd data-md>
      <p>The state of the loaded media (whether enough is loaded to play).  See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate">HtmlMediaElement.readyState</a>.
 If not present in the intial state in the remote-playback-start-response
@@ -2278,7 +2275,9 @@ If not present in the intial state in the remote-playback-start-response
 message, it is assumed to be false.</p>
     <dt data-md>stalled
     <dd data-md>
-     <p>Media is not playing because not enough media is loaded.  See <a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">HtmlMediaElement.stalled</a>.</p>
+     <p>If true, media is not playing because not enough media is loaded, and false otherwise.  See <a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">HtmlMediaElement.stalled</a>.
+If not present in the intial state in the remote-playback-start-response
+message, it is assumed to be false.</p>
     <dt data-md>ended
     <dd data-md>
      <p>Whether media has reached the end or not.  See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">HtmlMediaElement.ended</a>.
@@ -2289,7 +2288,7 @@ message, it is assumed to be false.</p>
      <p>The current volume of playback on a scale of 0.0 to 1.0.  See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a>.</p>
     <dt data-md>muted
     <dd data-md>
-     <p>True if and audio is muted (overriding the volume value) and false otherwise.
+     <p>True if audio is muted (overriding the volume value) and false otherwise.
 See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">HtmlMediaElement.muted</a>.</p>
     <dt data-md>resolution
     <dd data-md>
@@ -2306,40 +2305,36 @@ See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">
 The controller can also add cues to and remove cues from text tracks.</p>
    </dl>
    <p>All times, time ranges, and durations (such as positon, duration, and
-seekable-time-ranges) used above use a common media-time type (see Appendix A)
-which includes a value and a scale.  This allows time values which work on
-different time scales to be expressed without loss of precisions (such as by
-converting to microseconds).  The scale value is expressed in terms of hertz,
-such as 90000 for 90000hz, a common time scale for video.</p>
+seekable-time-ranges) used above use a common media-time value (see Appendix A)
+which includes a time scale.  This allows time values which work on different
+time scales to be expressed without loss of precision.  The scale is represented
+in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
    <h3 class="heading settled" data-level="7.5" id="remote-playback-api"><span class="secno">7.5. </span><span class="content">Remote Playback API</span><a class="self-link" href="#remote-playback-api"></a></h3>
    <p>This section defines how the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> uses the
-messages defined in <a href="#remote-playback-protocol">§7.3 Remote Playback Protocol</a>.
-Non-browser agents can also send and receive the same messages defined here.</p>
+messages defined in <a href="#remote-playback-protocol">§7.3 Remote Playback Protocol</a>.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
 6.2.1.2</a> says "This list contains remote playback devices and is populated
 based on an implementation specific discovery mechanism" and <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
 6.2.1.4</a> says "Retrieve available remote playback devices (using an
-implementation specific mechanism)", the controlling user agent may use the
+implementation specific mechanism)", the user agent may use the
 mDNS, QUIC, agent-info-request, and remote-playback-availability messages
-defined previously in this spec to discover remove playback devices.  The
+defined previously in this spec to discover <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices②">remote playback devices</a>.  The
 remote-playback-availiability urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability sources set</a>.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 6.2.4</a> says "Request connection of remote to device. The implementation of this
 step is specific to the user agent." and  "Synchronize the current media element
-state with the remote playback state" (first time), the controlling user agent
-may send the remote-playback-start-request message to start remote playback with
-an initial playback state.  The remote-playback-start-request urls must contain
-the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote playback source</a>.  The current <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback
-API</a> only allows a single source, but the protocol allows for several and
-future versions of <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> may allow for
-several.</p>
+state with the remote playback state", the user agent may send the
+remote-playback-start-request message to start remote playback.  The
+remote-playback-start-request urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote playback source</a>.
+The current <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> only allows a single source,
+but the protocol allows for several and future versions of <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> may allow for several.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 6.2.4</a> says "The mechanism that is used to connect the user agent with the
 remote playback device and play the remote playback source is an implementation
 choice of the user agent. The connection will likely have to provide a two-way
 messaging abstraction capable of carrying media commands to the remote playback
 device and receiving media playback state in order to keep the media element
-state and remote playback state in sync", the controlling user agent may send
+state and remote playback state in sync", the user agent may send
 remote-playback-modify-request messages to change the remote playback state
 based on changes to the local media element and receive
 remote-playback-modify-response and remote-playback-state-event messages to
@@ -2353,15 +2348,15 @@ user agent may send the remote-playback-termination-request message.</p>
    <h3 class="heading settled" data-level="8.1" id="security-data"><span class="secno">8.1. </span><span class="content">Data to be secured</span><a class="self-link" href="#security-data"></a></h3>
    <h3 class="heading settled" data-level="8.2" id="security-threat"><span class="secno">8.2. </span><span class="content">Threat model</span><a class="self-link" href="#security-threat"></a></h3>
    <h3 class="heading settled" data-level="8.3" id="security-defenses"><span class="secno">8.3. </span><span class="content">Mitigations and defenses</span><a class="self-link" href="#security-defenses"></a></h3>
-   <h2 class="heading settled" data-level="9" id="appending-a-messages"><span class="secno">9. </span><span class="content">Appending A: Messages</span><a class="self-link" href="#appending-a-messages"></a></h2>
-    The following messages are defined with <a data-link-type="biblio" href="#biblio-cddl">[CDDL]</a>. When
+   <h2 class="heading settled" id="appendix-a"><span class="content">Appendix A: Messages</span><a class="self-link" href="#appendix-a"></a></h2>
+   <p>The following messages are defined with <a data-link-type="biblio" href="#biblio-cddl">[CDDL]</a>. When
 integer keys are used, a comment is appended to the line to indicate
 the name of the field. Each root message (one that can be put into a
-QUIC stream without being inclosed by another message) has a comment
-indicating the message type key. 
+QUIC stream without being enclosed by another message) has a comment
+indicating the message type key.</p>
    <p>Smaller numbers should be reserved for message that will be sent more
 frequently or are very small or both and larger numbers should be
-reserved for messsages that are infrequently sent or large or both
+reserved for messages that are infrequently sent or large or both
 because smaller type keys encode on the wire smaller.</p>
 <pre>; type key 10
 agent-info-request = {
@@ -2656,14 +2651,14 @@ remote-playback-state = {
     idle: 1
     loading: 2
     no-source: 3
-  ) ; loading-state
+  ) ; loading
   ? 4: &amp;(
     nothing: 0
     metdata: 1
     current: 2
     future: 3
     enough: 4
-  ) ; loaded-state
+  ) ; loaded
   ? 5: media-error : error
 
   ? 6: media-time / unknown; epoch
@@ -2763,8 +2758,6 @@ track-track-state = {
   track-state
   6 : mode ; text-track-mode
 }
-
-
 
 </pre>
   </main>
@@ -2996,7 +2989,7 @@ track-track-state = {
    <a href="https://w3c.github.io/remote-playback/#dfn-media-resources">https://w3c.github.io/remote-playback/#dfn-media-resources</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-media-resources">7.3. Remote Playback Protocol</a> <a href="#ref-for-dfn-media-resources①">(2)</a> <a href="#ref-for-dfn-media-resources②">(3)</a> <a href="#ref-for-dfn-media-resources③">(4)</a>
-    <li><a href="#ref-for-dfn-media-resources④">7.4. Remote Playback State and Controls</a> <a href="#ref-for-dfn-media-resources⑤">(2)</a> <a href="#ref-for-dfn-media-resources⑥">(3)</a> <a href="#ref-for-dfn-media-resources⑦">(4)</a>
+    <li><a href="#ref-for-dfn-media-resources④">7.4. Remote Playback State and Controls</a> <a href="#ref-for-dfn-media-resources⑤">(2)</a> <a href="#ref-for-dfn-media-resources⑥">(3)</a> <a href="#ref-for-dfn-media-resources⑦">(4)</a> <a href="#ref-for-dfn-media-resources⑧">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-devices">
@@ -3004,6 +2997,7 @@ track-track-state = {
    <ul>
     <li><a href="#ref-for-dfn-remote-playback-devices">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-remote-playback-devices①">7.3. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dfn-remote-playback-devices②">7.5. Remote Playback API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-source">
@@ -3065,8 +3059,6 @@ track-track-state = {
   <div style="counter-reset:issue">
    <div class="issue"> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a><a href="#issue-a1f35a95"> ↵ </a></div>
    <div class="issue"> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a><a href="#issue-7d8c18ff"> ↵ </a></div>
-   <div class="issue"> Describe CBOR based mechanism for
-exchanging control messages, results, and events. <a href="https://github.com/webscreens/openscreenprotocol/issues/77">&lt;https://github.com/webscreens/openscreenprotocol/issues/77></a><a href="#issue-35428ee4"> ↵ </a></div>
    <div class="issue"> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a><a href="#issue-ab35c2a2"> ↵ </a></div>
   </div>
 <script>/* script-dfn-panel */
