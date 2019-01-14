@@ -426,7 +426,7 @@ For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
 1. Let secret be the pre-shared secret.
 
 2. Let N be 2 to the power of of the cost from the authentication-request
-   message.
+     message.
 
 3. Let r be 8.
 
@@ -435,16 +435,16 @@ For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
 5. Let keyLength be 32.
 
 6. Let scryptResult be the result of running
-   [scrypt](https://tools.ietf.org/html/rfc7914) on secret with cost parameter N,
-   block size r, parallelization parameter p, and derived key length of
-   keyLength.
+     [scrypt](https://tools.ietf.org/html/rfc7914) on secret with cost parameter N,
+     block size r, parallelization parameter p, and derived key length of
+     keyLength.
 
 7. Let hashFunction be sha-256.
 
 8. Let salt be the salt from the authentication-request message.
 
 9. Let info be a CBOR-serialized certificate-fingerprint-pair object (CDDL
-   defined in Appendix A) with the following values:
+     defined in Appendix A) with the following values:
 
 -   challenger-fingerprint: The result of running sha-256 on the
     Distinguished Encoding Rules (DER) form (see
@@ -457,9 +457,9 @@ For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
     the responder in the QUIC crypto handshake during connection establishment.
 
 9. Let proof be the result of running
-   [HKDF](https://tools.ietf.org/html/rfc5869) on scryptResult with 
-   both the extract and expand steps, hash function hashFunction,
-   application-specific info, and output key length keyLength.
+     [\HKDF](https://tools.ietf.org/html/rfc5869) on scryptResult with 
+     both the extract and expand steps, hash function hashFunction,
+     application-specific info, and output key length keyLength.
 
 To verify that the responder's proof is correct, the challenger makes the same
 calculation of the proof and compares the result. If the results are the same,
