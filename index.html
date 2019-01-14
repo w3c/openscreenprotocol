@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="cdf448ea5141ffcfc8470148015d35b2ffd67a2b" name="document-revision">
+  <meta content="46293b6c6367bb91201b5df913d784680d4d2f95" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1403,7 +1403,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-01-02">2 January 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-01-14">14 January 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1748,7 +1748,100 @@ those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.</p>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
-   <p class="issue" id="issue-7d8c18ff"><a class="self-link" href="#issue-7d8c18ff"></a> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a></p>
+   <p>In order for one agent (the challenger) to authenticate another (the responder),
+the challenger may send an authentication-request message and expect an
+authentication-response message to be sent back from the responder.  To
+mutually authenticate, this mechanism is used twice, once by each side acting as
+the challenger.  This mechanism assumes the agents share a low-entropy secret,
+such as a number or a short password that could be entered by a user on a
+keyboard or TV remote control.</p>
+   <p>For all messages and objects defined in this section, see Appendix A for the full
+CDDL definitions.</p>
+   <p>The challenger sends an authentication-request message with the following values:</p>
+   <ul>
+    <li data-md>
+     <p>mechanism: The authentication mechanism being used.  This standard only
+defines the mechanism hkdf-of-scrypt-of-psk but this field gives a place for
+other mechanisms to be specified.</p>
+    <li data-md>
+     <p>salt: 32 random bytes.  This salt is used in HKDF, so see
+https://tools.ietf.org/html/rfc5869#section-3.1 for more details on how this
+value should be generated.</p>
+    <li data-md>
+     <p>cost: log base 2 of the cost parameter (N) for scrypt defined in <a href="https://tools.ietf.org/html/rfc7914#section-2">RFC
+7914 section 2</a>.  It must be
+greater than or equal to 14 (to avoid being too weak) and less than or equal
+to 128 (the limit defined by scrypt).  A value of 15 is recommended (an
+scrypt N of 2^15 or 32768).</p>
+   </ul>
+   <p>The responder replies with an authentication-response message with the following values:</p>
+   <ul>
+    <li data-md>
+     <p>result:  If the responder was able to calculate proof of possession of the
+shared secret, and if it failed, why it failed.</p>
+    <li data-md>
+     <p>proof: The result of running the authentication mechanism.  The steps for
+hkdf-of-scrypt-of-psk are described below.</p>
+   </ul>
+   <p>The challenger verifies the proof and sends the responder an
+authentication-result message with the following values:</p>
+   <ul>
+    <li data-md>
+     <p>result:  If the challenger was able to authenticate the responder or not,
+and if not, why not.</p>
+   </ul>
+   <p>The challenger must limit the time the responder has to send a response to 60
+seconds (to avoid the possibility of brute-force attacks.)</p>
+   <p>For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:</p>
+   <ol>
+    <li data-md>
+     <p>Let secret be the pre-shared secret.</p>
+    <li data-md>
+     <p>Let N be 2 to the power of of the cost from the authentication-request
+ message.</p>
+    <li data-md>
+     <p>Let r be 8.</p>
+    <li data-md>
+     <p>Let p be 1.</p>
+    <li data-md>
+     <p>Let keyLength be 32.</p>
+    <li data-md>
+     <p>Let scryptResult be the result of running <a href="https://tools.ietf.org/html/rfc7914">scrypt</a> on secret with cost parameter N,
+ block size r, parallelization parameter p, and derived key length of
+ keyLength.</p>
+    <li data-md>
+     <p>Let hashFunction be sha-256.</p>
+    <li data-md>
+     <p>Let salt be the salt from the authentication-request message.</p>
+    <li data-md>
+     <p>Let info be a CBOR-serialized certificate-fingerprint-pair object (CDDL
+ defined in Appendix A) with the following values:</p>
+   </ol>
+   <ul>
+    <li data-md>
+     <p>challenger-fingerprint: The result of running sha-256 on the
+Distinguished Encoding Rules (DER) form (see
+https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
+the challenger in the QUIC crypto handshake during connection establishment.</p>
+    <li data-md>
+     <p>responder-fingerprint: The result of running sha-256 on the
+Distinguished Encoding Rules (DER) form (see
+https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
+the responder in the QUIC crypto handshake during connection establishment.</p>
+   </ul>
+   <ol start="9">
+    <li data-md>
+     <p>Let proof be the result of running <a href="https://tools.ietf.org/html/rfc5869">\HKDF</a> on scryptResult with 
+ both the extract and expand steps, hash function hashFunction,
+ application-specific info, and output key length keyLength.</p>
+   </ol>
+   <p>To verify that the responder’s proof is correct, the challenger makes the same
+calculation of the proof and compares the result. If the results are the same,
+the challenger considers the responder authenticated, and considers it
+unauthenticated otherwise.</p>
+   <p class="note" role="note"><span>Note:</span> the values of 32 above (for salt length, keyLength) are based on the
+output size of sha-256.  If a different hash mechanism is used in the future,
+these values should be updated as well.</p>
    <h2 class="heading settled" data-level="7" id="control-protocols"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control-protocols"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="presentation-protocol"><span class="secno">7.1. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h3>
    <p>This section defines the use of the Open Screen Protocol for starting,
@@ -2010,6 +2103,53 @@ response = (
 )
 
 request-id = uint
+
+; type key 1001 
+authentication-request = {
+  request
+  1: authentication-mechanism ; mechanism
+  2: bytes ; salt
+  3: uint ; cost
+}
+
+; type key 1002 
+authentication-response = {
+  response
+  1: authentication-response-result ; result
+  2: bytes ; proof
+}
+
+certificate-fingerprint-pair = [
+  challenger-fingerprint: bytes
+  responder-fingerprint: bytes
+]
+
+; type key 1003
+authentication-result = {
+  1: authentication-result-result ; result
+}
+
+
+authentication-mechanism = &amp;(
+  hkdf-of-scrypt-of-psk: 1
+)
+
+authentication-response-result = &amp;(
+  ok: 0
+  unknown-error: 1
+  mechanism-unknown: 2
+  salt-too-small: 3
+  cost-too-low: 4
+  cost-too-high: 5
+  secret-unknown: 6
+  calculation-took-too-long: 7
+)
+
+authentication-result-result = &amp;(
+  authenticated: 0
+  unknown-error: 1
+  proof-invalid: 2
+)
 
 ; type key 14
 presentation-url-availability-request = {
@@ -2436,7 +2576,6 @@ result = (
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a><a href="#issue-a1f35a95"> ↵ </a></div>
-   <div class="issue"> Incorporate material from the <a href="j-pake.md">J-PAKE</a> document. <a href="https://github.com/webscreens/openscreenprotocol/issues/102">&lt;https://github.com/webscreens/openscreenprotocol/issues/102></a><a href="#issue-7d8c18ff"> ↵ </a></div>
    <div class="issue"> Propose control protocol for Remote
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a><a href="#issue-eaed3698"> ↵ </a></div>
    <div class="issue"> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a><a href="#issue-ab35c2a2"> ↵ </a></div>
