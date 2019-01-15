@@ -886,7 +886,7 @@ Issue(131): [Security] Mitigations for remote network attackers
 
 ### Denial of service ### {#denial-of-service-mitigations}
 
-It will be difficult to completely prevent denial service of attacks that
+It will be difficult to completely prevent denial of service attacks that
 originate on the user's local area network.  Open Screen Protocol
 implementations can refuse new connections, rate limit the rate of messages from
 existing connections, or limit the number of mDNS records cached in an attempt
