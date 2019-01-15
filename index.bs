@@ -865,7 +865,7 @@ authentication:
 * Use an increasing backoff to respond to authentication challenges, also to
     prevent brute force attacks.
 * Use a cryptographically sound source of entropy to generate the shared secret.
-* Require the end user to manually type the shared secret - shown only the
+* Require the end user to manually type the shared secret - shown only on the
     display - to prevent the user from blindly clicking through this step.
 
 The active attacker may also attempt to disrupt data exchanged over the QUIC
