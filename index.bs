@@ -718,7 +718,7 @@ and/or high value data:
 1. Remote playback commands and status messages
 
 Presentation display friendly names, model names, and capabilities, while not
-considered personally identifiable, is important to protect to preserve the
+considered personally identifiable, are important to protect to preserve the
 integrity of the discovery and authentication process.
 
 The following data cannot be reasonably secured and should be considered public
