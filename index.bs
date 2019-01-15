@@ -702,7 +702,7 @@ The [=presentation ID=] carries some protection against unrestricted
 cross-origin access; but, rigorous authentication of the parties connected by a
 {{PresentationConnection}} must be done at the application level.
 
-Open Screen Protocol Considerations {#security-privacy-questions}
+Open Screen Protocol Security and Privacy Considerations {#security-privacy-questions}
 -----------------------------------
 
 ### Personally Identifiable Information & High-Value Data ### {#personally-identifiable-information}
