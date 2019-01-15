@@ -862,7 +862,7 @@ The second is through management of the shared secret during mutual
 authentication:
 
 * Rotate the shared secret to prevent brute force attacks.
-* Use an increasing backoff to repond to authentication challenges, also to
+* Use an increasing backoff to respond to authentication challenges, also to
     prevent brute force attacks.
 * Use a cryptographically sound source of entropy to generate the shared secret.
 * Require the end user to manually type the shared secret - shown only the
