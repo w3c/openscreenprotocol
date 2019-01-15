@@ -681,7 +681,7 @@ services that would normally be inaccessible from the Internet.
 
 ### Denial of Service ### {#denial-of-service}
 
-Parties with connected to the LAN may attempt to deny access to Open Screen
+Parties connected to the LAN may attempt to deny access to Open Screen
 Protocol controllers and receivers.  For example, an attacker my attempt to open
 a large number of QUIC connections to a receiver in an attempt to block
 legitimate connections or exhaust the receiver's system resources.  They may
