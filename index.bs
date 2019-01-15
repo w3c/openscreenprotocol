@@ -797,7 +797,7 @@ requirements on the Open Screen Protocol:
 1.  Presentation URLs and presentation IDs should remain private among the
     parties that are allowed to connect to a presentation, per the
     cross-origin access guidelines.
-1.  Controllers and recievers should be notified when multiple connections have
+1.  Controllers and receivers should be notified when multiple connections have
     been made to a presentation, per the user interface guidelines.
 1.  Messaging between presentations and controllers should be authenticated and
     confidential, per the guidelines for messaging between presentation
