@@ -1214,6 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
+  <meta content="71babf14faaf631374051c949c544c55d100162c" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1402,6 +1403,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-01-15">15 January 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1463,7 +1465,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
         <li><a href="#same-origin-policy-violations"><span class="secno">8.1.4</span> <span class="content">Same-Origin Policy Violations</span></a>
        </ol>
       <li>
-       <a href="#security-privacy-questions"><span class="secno">8.2</span> <span class="content">Open Screen Protocol Considerations</span></a>
+       <a href="#security-privacy-questions"><span class="secno">8.2</span> <span class="content">Open Screen Protocol Security and Privacy Considerations</span></a>
        <ol class="toc">
         <li><a href="#personally-identifiable-information"><span class="secno">8.2.1</span> <span class="content">Personally Identifiable Information &amp; High-Value Data</span></a>
         <li><a href="#cross-origin-state"><span class="secno">8.2.2</span> <span class="content">Cross Origin State Considerations</span></a>
@@ -2125,7 +2127,7 @@ API does not convey source origin information with each message.  Therefore, the
 Open Screen Protocol does not convey origin information between its agents.</p>
    <p>The <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id③">presentation ID</a> carries some protection against unrestricted
 cross-origin access; but, rigorous authentication of the parties connected by a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection②">PresentationConnection</a></code> must be done at the application level.</p>
-   <h3 class="heading settled" data-level="8.2" id="security-privacy-questions"><span class="secno">8.2. </span><span class="content">Open Screen Protocol Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
+   <h3 class="heading settled" data-level="8.2" id="security-privacy-questions"><span class="secno">8.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
    <h4 class="heading settled" data-level="8.2.1" id="personally-identifiable-information"><span class="secno">8.2.1. </span><span class="content">Personally Identifiable Information &amp; High-Value Data</span><a class="self-link" href="#personally-identifiable-information"></a></h4>
    <p>The following data exchanged by the protocol can be personally identifiable
 and/or high value data:</p>
@@ -2215,7 +2217,7 @@ requirements on the Open Screen Protocol:</p>
 parties that are allowed to connect to a presentation, per the
 cross-origin access guidelines.</p>
     <li data-md>
-     <p>Controllers and recievers should be notified when multiple connections have
+     <p>Controllers and receivers should be notified when multiple connections have
 been made to a presentation, per the user interface guidelines.</p>
     <li data-md>
      <p>Messaging between presentations and controllers should be authenticated and
@@ -2272,12 +2274,12 @@ authentication:</p>
     <li data-md>
      <p>Rotate the shared secret to prevent brute force attacks.</p>
     <li data-md>
-     <p>Use an increasing backoff to repond to authentication challenges, also to
+     <p>Use an increasing backoff to respond to authentication challenges, also to
 prevent brute force attacks.</p>
     <li data-md>
      <p>Use a cryptographically sound source of entropy to generate the shared secret.</p>
     <li data-md>
-     <p>Require the end user to manually type the shared secret - shown only the
+     <p>Require the end user to manually type the shared secret - shown only on the
 display - to prevent the user from blindly clicking through this step.</p>
    </ul>
    <p>The active attacker may also attempt to disrupt data exchanged over the QUIC
