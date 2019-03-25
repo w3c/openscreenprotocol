@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
+  <meta content="Bikeshed version 9c6ae748322940994300e90a77c34437364b40a6" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="46293b6c6367bb91201b5df913d784680d4d2f95" name="document-revision">
+  <meta content="3e0675f2a5988fafb4a697958a7314c695dfdb42" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1403,7 +1403,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-01-14">14 January 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-03-25">25 March 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1454,11 +1454,37 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li><a href="#remote-playback"><span class="secno">7.3</span> <span class="content">Remote Playback API Protocol</span></a>
      </ol>
     <li>
-     <a href="#security"><span class="secno">8</span> <span class="content">Security and Privacy</span></a>
+     <a href="#security-privacy"><span class="secno">8</span> <span class="content">Security and Privacy</span></a>
      <ol class="toc">
-      <li><a href="#security-data"><span class="secno">8.1</span> <span class="content">Data to be secured</span></a>
-      <li><a href="#security-threat"><span class="secno">8.2</span> <span class="content">Threat model</span></a>
-      <li><a href="#security-defenses"><span class="secno">8.3</span> <span class="content">Mitigations and defenses</span></a>
+      <li>
+       <a href="#threat-models"><span class="secno">8.1</span> <span class="content">Threat Models</span></a>
+       <ol class="toc">
+        <li><a href="#passive-network-attackers"><span class="secno">8.1.1</span> <span class="content">Passive Network Attackers</span></a>
+        <li><a href="#active-network-attackers"><span class="secno">8.1.2</span> <span class="content">Active Network Attackers</span></a>
+        <li><a href="#denial-of-service"><span class="secno">8.1.3</span> <span class="content">Denial of Service</span></a>
+        <li><a href="#same-origin-policy-violations"><span class="secno">8.1.4</span> <span class="content">Same-Origin Policy Violations</span></a>
+       </ol>
+      <li>
+       <a href="#security-privacy-questions"><span class="secno">8.2</span> <span class="content">Open Screen Protocol Security and Privacy Considerations</span></a>
+       <ol class="toc">
+        <li><a href="#personally-identifiable-information"><span class="secno">8.2.1</span> <span class="content">Personally Identifiable Information &amp; High-Value Data</span></a>
+        <li><a href="#cross-origin-state"><span class="secno">8.2.2</span> <span class="content">Cross Origin State Considerations</span></a>
+        <li><a href="#origin-access-devices"><span class="secno">8.2.3</span> <span class="content">Origin Access to Other Devices</span></a>
+        <li><a href="#incognito-mode"><span class="secno">8.2.4</span> <span class="content">Incognito Mode</span></a>
+        <li><a href="#persistent-state"><span class="secno">8.2.5</span> <span class="content">Persistent State</span></a>
+        <li><a href="#other-considerations"><span class="secno">8.2.6</span> <span class="content">Other Considerations</span></a>
+       </ol>
+      <li><a href="#presentation-api-considerations"><span class="secno">8.3</span> <span class="content">Presentation API Considerations</span></a>
+      <li><a href="#remote-playback-considerations"><span class="secno">8.4</span> <span class="content">Remote Playback API Considerations</span></a>
+      <li>
+       <a href="#security-mitigations"><span class="secno">8.5</span> <span class="content">Mitigation Strategies</span></a>
+       <ol class="toc">
+        <li><a href="#local-passive-mitigations"><span class="secno">8.5.1</span> <span class="content">Local passive network attackers</span></a>
+        <li><a href="#local-active-mitigations"><span class="secno">8.5.2</span> <span class="content">Local active network attackers</span></a>
+        <li><a href="#remote-active-mitigations"><span class="secno">8.5.3</span> <span class="content">Remote active network attackers</span></a>
+        <li><a href="#denial-of-service-mitigations"><span class="secno">8.5.4</span> <span class="content">Denial of service</span></a>
+        <li><a href="#malicious-input-mitigations"><span class="secno">8.5.5</span> <span class="content">Malicious input</span></a>
+       </ol>
      </ol>
     <li><a href="#appendix-a"><span class="secno"></span> <span class="content">Appendix A: Messages</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
@@ -2047,11 +2073,250 @@ agent</a>, must send a presentation-connection-open-response message.</p>
    <h3 class="heading settled" data-level="7.3" id="remote-playback"><span class="secno">7.3. </span><span class="content">Remote Playback API Protocol</span><a class="self-link" href="#remote-playback"></a></h3>
    <p class="issue" id="issue-eaed3698"><a class="self-link" href="#issue-eaed3698"></a> Propose control protocol for Remote
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a></p>
-   <h2 class="heading settled" data-level="8" id="security"><span class="secno">8. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security"></a></h2>
-   <p class="issue" id="issue-ab35c2a2"><a class="self-link" href="#issue-ab35c2a2"></a> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a></p>
-   <h3 class="heading settled" data-level="8.1" id="security-data"><span class="secno">8.1. </span><span class="content">Data to be secured</span><a class="self-link" href="#security-data"></a></h3>
-   <h3 class="heading settled" data-level="8.2" id="security-threat"><span class="secno">8.2. </span><span class="content">Threat model</span><a class="self-link" href="#security-threat"></a></h3>
-   <h3 class="heading settled" data-level="8.3" id="security-defenses"><span class="secno">8.3. </span><span class="content">Mitigations and defenses</span><a class="self-link" href="#security-defenses"></a></h3>
+   <h2 class="heading settled" data-level="8" id="security-privacy"><span class="secno">8. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
+   <p>The Open Screen Protocol allows two networked agents to discover each other
+and exchange user and application data.  As such, its security and privacy
+considerations should be closely examined.  We first evaluate the protocol
+itself using the W3C <a data-link-type="biblio" href="#biblio-security-privacy-questionnaire">Security and Privacy
+Questionnaire</a>.  We then examine whether the security and privacy guidelines
+recommended by the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> are met.  Finally we discuss recommended
+mitigations that agents can use to meet these security and privacy
+requirements.</p>
+   <h3 class="heading settled" data-level="8.1" id="threat-models"><span class="secno">8.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
+   <h4 class="heading settled" data-level="8.1.1" id="passive-network-attackers"><span class="secno">8.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
+   <p>The Open Screen Protocol should assume that all parties that are connected to
+the same LAN, either through a wired connection or through WiFi, are able to
+observe all data flowing between Open Screen Protocol agents.</p>
+   <p>These parties will be able collect any data exposed through unencrypted
+messages, such as mDNS records and the QUIC handshakes.</p>
+   <p>These parties may attempt to learn cryptographic parameters by observing data
+flows on the QUIC connection, or by observing cryptographic timing.</p>
+   <h4 class="heading settled" data-level="8.1.2" id="active-network-attackers"><span class="secno">8.1.2. </span><span class="content">Active Network Attackers</span><a class="self-link" href="#active-network-attackers"></a></h4>
+   <p>Active attackers, such as compromised routers, will be able to manipulate data
+exchanged between agents.  They can inject traffic into existing QUIC
+connections and attempt to inititate new QUIC connections.  These abilities can
+be used to attempt the following:</p>
+   <ul>
+    <li data-md>
+     <p>Impersonate an agent or one already trusted by the user, in an attempt
+to convince the user to authenticate to it.</p>
+    <li data-md>
+     <p>Connect to an agent and query its capabilities.</p>
+    <li data-md>
+     <p>Connect to and control a presentation or remote playback, or extract data
+from the application state of the presentation or remote playback.</p>
+   </ul>
+   <p>One particular attack of concern is misconfigured or compromised routers that
+expose local network devices (such as Open Screen Protocol agents) to the
+Internet.  This vector of attack has been used by malicious parties to take
+control of printers and smart TVs by connecting to local network services that
+would normally be inaccessible from the Internet.</p>
+   <h4 class="heading settled" data-level="8.1.3" id="denial-of-service"><span class="secno">8.1.3. </span><span class="content">Denial of Service</span><a class="self-link" href="#denial-of-service"></a></h4>
+   <p>Parties with connected to the LAN may attempt to deny access to Open Screen
+Protocol agents.  For example, an attacker my attempt to open
+a large number of QUIC connections to an agent in an attempt to block
+legitimate connections or exhaust the agent’s system resources.  They may
+also multicast spurious DNS-SD records in an attempt to exhaust the cache
+capacity for mDNS listeners, or to get listeners to open a large number of bogus
+QUIC connections.</p>
+   <h4 class="heading settled" data-level="8.1.4" id="same-origin-policy-violations"><span class="secno">8.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
+   <p>The Presentation API allows cross-origin communication between controlling pages
+and presentations with the consent of each origin (through their use of the
+API).  This is similar to cross-origin communication via <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options" id="ref-for-dom-window-postmessage-options">postMessage()</a></code> with a target origin of <code>*</code>.  However, the Presentation
+API does not convey source origin information with each message.  Therefore, the
+Open Screen Protocol does not convey origin information between its agents.</p>
+   <p>The <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id③">presentation ID</a> carries some protection against unrestricted
+cross-origin access; but, rigorous authentication of the parties connected by a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection②">PresentationConnection</a></code> must be done at the application level.</p>
+   <h3 class="heading settled" data-level="8.2" id="security-privacy-questions"><span class="secno">8.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
+   <h4 class="heading settled" data-level="8.2.1" id="personally-identifiable-information"><span class="secno">8.2.1. </span><span class="content">Personally Identifiable Information &amp; High-Value Data</span><a class="self-link" href="#personally-identifiable-information"></a></h4>
+   <p>The following data exchanged by the protocol can be personally identifiable
+and/or high value data:</p>
+   <ol>
+    <li data-md>
+     <p>Presentation URLs and availability results</p>
+    <li data-md>
+     <p>Presentation IDs</p>
+    <li data-md>
+     <p>Presentation connection IDs</p>
+    <li data-md>
+     <p>Presentation connection messages</p>
+    <li data-md>
+     <p>Remote playback URLs</p>
+    <li data-md>
+     <p>Remote playback commands and status messages</p>
+   </ol>
+   <p>Presentation IDs are considered high value data because they can be used in
+conjunction with a Presentation URL to connect to a running presentation.</p>
+   <p>Presentation display friendly names, model names, and capabilities, while not
+considered personally identifiable, are important to protect to prevent an
+attacker from changing them or substituting other values during the discovery
+and authentication process.</p>
+   <p>The following data cannot be reasonably made confidential and should be
+considered public and untrusted data:</p>
+   <ol>
+    <li data-md>
+     <p>IP addresses and ports used by the Open Screen Protocol.</p>
+    <li data-md>
+     <p>Data advertised through mDNS, including the display name prefix, the
+certificate fingerprint, and the metadata version.</p>
+   </ol>
+   <h4 class="heading settled" data-level="8.2.2" id="cross-origin-state"><span class="secno">8.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
+   <p>Access to origin state across browsing sessions is possible through the
+Presentation API by reconnecting to a presentation that was started by a
+previous session. This scenario is addressed in <a href="https://www.w3.org/TR/presentation-api/#cross-origin-access">Presentation API §cross-origin-access</a>.</p>
+   <p>Presentation display availability and remote playback device availability are
+states that are available cross-origin depending on the user’s network
+context.  Exposure of this data to the Web is also discussed in <a href="https://www.w3.org/TR/presentation-api/#personally-identifiable-information">Presentation API §personally-identifiable-information</a> and <a href="https://www.w3.org/TR/remote-playback/#personally-identifiable-information">Remote Playback API §personally-identifiable-information</a>.</p>
+   <h4 class="heading settled" data-level="8.2.3" id="origin-access-devices"><span class="secno">8.2.3. </span><span class="content">Origin Access to Other Devices</span><a class="self-link" href="#origin-access-devices"></a></h4>
+   <p>By design, the Open Screen Protocol allows access to presentation displays and
+remote playback devices from the Web.  By implementing the protocol, these
+devices are knowingly making themselves available to the Web and should be
+designed accordingly.</p>
+   <p>Below, we discuss mitigation steps to prevent malicious use of these devices.</p>
+   <h4 class="heading settled" data-level="8.2.4" id="incognito-mode"><span class="secno">8.2.4. </span><span class="content">Incognito Mode</span><a class="self-link" href="#incognito-mode"></a></h4>
+   <p>The Open Screen Protocol does not distinguish between the user agent’s normal
+browsing and incognito modes, and agents that follow the specification
+behave identically regardless of which mode is in use.</p>
+   <p>It’s recommended that user agents use separate authentication contexts and QUIC
+connections for normal and incognito profiles from the same user agent instance.
+This prevents Open Screen agents from correlating activity among profiles
+belonging to the same user (both normal and incognito).</p>
+   <h4 class="heading settled" data-level="8.2.5" id="persistent-state"><span class="secno">8.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
+   <p>An agent is likely to persist the identity of agents that have successfully
+completed <a href="#authentication">§6 Authentication</a>.  This may include the public key fingerprints,
+metadata versions, and metadata for those parties.</p>
+   <p>However, this data is not normally exposed to the Web, only through the native
+UI of the user agent during the display selection or display authentication
+process.  It can be an implementation choice whether the user agent clears or
+retains this data when the user clears browsing data.</p>
+   <p class="issue" id="issue-7d9298b1"><a class="self-link" href="#issue-7d9298b1"></a> [Privacy] Fate of metadata / authentication history when clearing
+browsing data <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a></p>
+   <h4 class="heading settled" data-level="8.2.6" id="other-considerations"><span class="secno">8.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
+   <p>The Open Screen Protocol does not grant to the Web additional access to the
+following:</p>
+   <ul>
+    <li data-md>
+     <p>New script loading mechanisms</p>
+    <li data-md>
+     <p>Access to the user’s location</p>
+    <li data-md>
+     <p>Access to device sensors</p>
+    <li data-md>
+     <p>Access to the user’s local computing environment</p>
+    <li data-md>
+     <p>Control over the user agent’s native UI</p>
+    <li data-md>
+     <p>Security characteristics of the user agent</p>
+   </ul>
+   <h3 class="heading settled" data-level="8.3" id="presentation-api-considerations"><span class="secno">8.3. </span><span class="content">Presentation API Considerations</span><a class="self-link" href="#presentation-api-considerations"></a></h3>
+   <p><a href="https://www.w3.org/TR/presentation-api/#security-and-privacy-considerations">Presentation API §security-and-privacy-considerations</a> place these
+requirements on the Open Screen Protocol:</p>
+   <ol>
+    <li data-md>
+     <p>Presentation URLs and presentation IDs should remain private among the
+parties that are allowed to connect to a presentation, per the
+cross-origin access guidelines.</p>
+    <li data-md>
+     <p>Controllers and receivers should be notified when connections representing
+multiple user agent profiles have been made to a presentation, per the user
+interface guidelines.</p>
+    <li data-md>
+     <p>Messaging between controllers and receivers should be authenticated and
+confidential, per the guidelines for messaging between presentation
+connections.</p>
+   </ol>
+   <p>The Open Screen Protocol addresses these considerations by:</p>
+   <ol>
+    <li data-md>
+     <p>Requiring mutual authentication and a TLS-secured QUIC connection before
+ presentation URLs, IDs, or messages are exchanged.</p>
+    <li data-md>
+     <p>Adding explicit messages and connection IDs for individual <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection③">PresentationConnections</a></code> so that agents can track
+ the number of active connections.</p>
+   </ol>
+   <h3 class="heading settled" data-level="8.4" id="remote-playback-considerations"><span class="secno">8.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
+   <p>The <a href="https://www.w3.org/TR/remote-playback/#security-and-privacy-considerations">Remote Playback API §security-and-privacy-considerations</a> also state that
+messaging between local and remote playback devices should also be authenticated
+and confidential.</p>
+   <p>This consideration is handled by requiring mutual authentication and a
+TLS-secured QUIC connection before any remote playback related messages are
+exchanged.</p>
+   <h3 class="heading settled" data-level="8.5" id="security-mitigations"><span class="secno">8.5. </span><span class="content">Mitigation Strategies</span><a class="self-link" href="#security-mitigations"></a></h3>
+   <h4 class="heading settled" data-level="8.5.1" id="local-passive-mitigations"><span class="secno">8.5.1. </span><span class="content">Local passive network attackers</span><a class="self-link" href="#local-passive-mitigations"></a></h4>
+   <p>Local passive attackers may attempt to harvest data about user activities and
+device capabilties using the Open Screen Protocol.  The main strategy to address
+this is data minimization, by only exposing opaque public key fingerprints
+before user-mediated authentication takes place.</p>
+   <p>Passive attackers may also attempt timing attacks to learn the
+cryptographic parameters of the TLS 1.3 QUIC connection.</p>
+   <p class="issue" id="issue-5107ff88"><a class="self-link" href="#issue-5107ff88"></a> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
+   <h4 class="heading settled" data-level="8.5.2" id="local-active-mitigations"><span class="secno">8.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
+   <p>Local active attackers may attempt to impersonate a presentation display the
+user would normally trust.  The <a href="#authentication">§6 Authentication</a> step of the Open Screen
+Protocol prevents a man-in-the-middle from impersonating an agent, without
+knowledge of a shared secret.  However, it is possible for an attacker to
+impersonate an existing, trusted display or a newly discovered display that is
+not yet authenticated and try to convince the user to authenticate it.</p>
+   <p>This can be addressed through a combination of techniques.  The first is
+detecting and flagging attempts at impersonation; a few of the situations that
+should be flagged include:</p>
+   <ul>
+    <li data-md>
+     <p>Untrusted agents whose public key fingerprint collides with that from an
+already-trusted agent that is concurrently being advertised.</p>
+    <li data-md>
+     <p>Untrusted agents whose friendly name differs from the one previously
+advertised under a given public key fingerprint.</p>
+    <li data-md>
+     <p>Untrusted agents that fail the authentication challenge a certain number of times.</p>
+    <li data-md>
+     <p>Untrusted agents that advertise a friendly name that is similar to that from an
+already-trusted agent.</p>
+    <li data-md>
+     <p>Already-trusted agents whose metadata provided through the <code>agent-info</code> message has changed.</p>
+   </ul>
+   <p>Flagging means that the user is notified of the attempt at impersonation.  In
+the last case, the user should be required to re-authenticate to the
+already-trusted agent to verify its identity.</p>
+   <p>The second is through management of the low-entropy secret during mutual
+authentication:</p>
+   <ul>
+    <li data-md>
+     <p>Rotate the low-entropy secret to prevent brute force attacks.</p>
+    <li data-md>
+     <p>Use an increasing backoff to respond to authentication challenges, also to
+prevent brute force attacks.</p>
+    <li data-md>
+     <p>Use a cryptographically sound source of entropy to generate the shared secret.</p>
+    <li data-md>
+     <p>Require the end user to manually type the shared secret - shown only on the
+display - to prevent the user from blindly clicking through this step.</p>
+   </ul>
+   <p>The active attacker may also attempt to disrupt data exchanged over the QUIC
+connection by injecting or modifying traffic.  These attacks should be mitigated
+by a correct implementation of TLS 1.3.</p>
+   <p class="issue" id="issue-5107ff88①"><a class="self-link" href="#issue-5107ff88①"></a> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
+   <h4 class="heading settled" data-level="8.5.3" id="remote-active-mitigations"><span class="secno">8.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
+   <p>Unfortunately, we cannot rely on network devices to fully protect Open Screen
+Protocol agents, because a misconfigured firewall or NAT could expose a
+LAN-connected agent to the broader Internet.  Open Screen Protocol agents
+should be secure against attack from any Inernet host.</p>
+   <p class="issue" id="issue-1353180f"><a class="self-link" href="#issue-1353180f"></a> [Security] Mitigations for remote network attackers <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a></p>
+   <h4 class="heading settled" data-level="8.5.4" id="denial-of-service-mitigations"><span class="secno">8.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
+   <p>It will be difficult to completely prevent denial service of attacks that
+originate on the user’s local area network.  Open Screen Protocol agents can
+refuse new connections, close connections that receive too many messages, or
+limit the number of mDNS records cached from a specific responder in an attempt
+to allow existing activities to continue in spite of such an attack.</p>
+   <h4 class="heading settled" data-level="8.5.5" id="malicious-input-mitigations"><span class="secno">8.5.5. </span><span class="content">Malicious input</span><a class="self-link" href="#malicious-input-mitigations"></a></h4>
+   <p>Open Screen Protocol agents should be robust against malicious input that
+attempts to compromise the target device by exploiting parsing vulnerabilities.</p>
+   <p>CBOR is intended to be less vulnerable to such attacks relative to alternatives
+like JSON and XML.  Still, agents should be thoroughly tested using approaches
+like <a href="https://en.wikipedia.org/wiki/Fuzzing">fuzz testing</a>.</p>
+   <p>Where possible, Open Screen Protocol agents (including the content rendering
+components) should use defense-in-depth techniques like <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a> to prevent vulnerabilities from gaining access to user data or leading to
+persistent exploits.</p>
    <h2 class="heading settled" id="appendix-a"><span class="content">Appendix A: Messages</span><a class="self-link" href="#appendix-a"></a></h2>
    <p>The following messages are defined with <a data-link-type="biblio" href="#biblio-cddl">[CDDL]</a>. When
 integer keys are used, a comment is appended to the line to indicate
@@ -2438,6 +2703,12 @@ result = (
 })();
 </script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <aside class="dfn-panel" data-for="term-for-dom-window-postmessage-options">
+   <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-window-postmessage-options">8.1.4. Same-Origin Policy Violations</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-media-element">
    <a href="https://www.w3.org/TR/html51/single-page.html#media-element">https://www.w3.org/TR/html51/single-page.html#media-element</a><b>Referenced in:</b>
    <ul>
@@ -2448,6 +2719,8 @@ result = (
    <a href="https://w3c.github.io/presentation-api/#presentationconnection">https://w3c.github.io/presentation-api/#presentationconnection</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentationconnection">2.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
+    <li><a href="#ref-for-presentationconnection②">8.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-presentationconnection③">8.3. Presentation API Considerations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-available-presentation-display">
@@ -2486,6 +2759,7 @@ result = (
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-id">https://w3c.github.io/presentation-api/#dfn-presentation-id</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-presentation-id">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
+    <li><a href="#ref-for-dfn-presentation-id③">8.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
@@ -2523,6 +2797,11 @@ result = (
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
+    <a data-link-type="biblio">[HTML]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-dom-window-postmessage-options" style="color:initial">postMessage(message, options)</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[html51]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-media-element" style="color:initial">media element</span>
@@ -2551,6 +2830,8 @@ result = (
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-html">[HTML]
+   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-html51">[HTML51]
    <dd>Steve Faulkner; et al. <a href="https://www.w3.org/TR/html51/">HTML 5.1 2nd Edition</a>. 3 October 2017. REC. URL: <a href="https://www.w3.org/TR/html51/">https://www.w3.org/TR/html51/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
@@ -2572,13 +2853,19 @@ result = (
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
+   <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
+   <dd>Mike West. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 10 December 2015. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a><a href="#issue-a1f35a95"> ↵ </a></div>
    <div class="issue"> Propose control protocol for Remote
 Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a><a href="#issue-eaed3698"> ↵ </a></div>
-   <div class="issue"> Describe security architecture. <a href="https://github.com/webscreens/openscreenprotocol/issues/13">&lt;https://github.com/webscreens/openscreenprotocol/issues/13></a><a href="#issue-ab35c2a2"> ↵ </a></div>
+   <div class="issue"> [Privacy] Fate of metadata / authentication history when clearing
+browsing data <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-7d9298b1"> ↵ </a></div>
+   <div class="issue"> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-5107ff88"> ↵ </a></div>
+   <div class="issue"> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-5107ff88①"> ↵ </a></div>
+   <div class="issue"> [Security] Mitigations for remote network attackers <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a><a href="#issue-1353180f"> ↵ </a></div>
   </div>
 <script>/* script-dfn-panel */
 
