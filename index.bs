@@ -942,22 +942,28 @@ knowledge of a shared secret.  However, it is possible for an attacker to
 impersonate an existing, trusted display or a newly discovered display that is
 not yet authenticated and try to convince the user to authenticate it.
 
-This can be addressed through a combination of techniques.  The first is flagging:
+This can be addressed through a combination of techniques.  The first is
+detecting and flagging attempts at impersonation; a few of the situations that
+should be flagged include:
 
-* Flag an advertised display whose public key fingerprint collides with that
-    from an already-trusted display that is concurrently being advertised.
-* Flag an advertised display whose friendly name differs from the one previously
-    advertised under a public key fingerprint.
-* Flag already-trusted displays whose metadata has changed.
-* Flag agents that fail the authentication challenge a certain number of times.
+* Untrusted agents whose public key fingerprint collides with that from an
+    already-trusted agent that is concurrently being advertised.
+* Untrusted agents whose friendly name differs from the one previously
+    advertised under a given public key fingerprint.
+* Untrusted agents that fail the authentication challenge a certain number of times.
+* Untrusted agents that advertise a friendly name that is similar to that from an
+    already-trusted agent.
+* Already-trusted agents whose metadata provided through the `agent-info`
+    message has changed.
   
-Flagging means that the user is notified, or in some cases they are required to
-re-authenticate to the presentation display to verify its identity.
+Flagging means that the user is notified of the attempt at impersonation.  In
+the last case, the user should be required to re-authenticate to the
+already-trusted agent to verify its identity.
   
-The second is through management of the shared secret during mutual
+The second is through management of the low-entropy secret during mutual
 authentication:
 
-* Rotate the shared secret to prevent brute force attacks.
+* Rotate the low-entropy secret to prevent brute force attacks.
 * Use an increasing backoff to respond to authentication challenges, also to
     prevent brute force attacks.
 * Use a cryptographically sound source of entropy to generate the shared secret.
@@ -973,10 +979,9 @@ Issue(130): [Security] Review attack and mitigation considerations for TLS 1.3
 ### Remote active network attackers ### {#remote-active-mitigations}
 
 Unfortunately, we cannot rely on network devices to fully protect Open Screen
-Protocol agents from traffic from the broader Internet.  Open Screen Protocol
-agents that are only intended to work on the LAN should filter packets
-from non-local IP addresses.  Agents can also use the ARP cache to
-detect attempts to spoof local network IP addresses.
+Protocol agents, because a misconfigured firewall or NAT could expose a
+LAN-connected agent to the broader Internet.  Open Screen Protocol agents
+should be secure against attack from any Inernet host.
 
 Issue(131): [Security] Mitigations for remote network attackers
 
@@ -984,10 +989,9 @@ Issue(131): [Security] Mitigations for remote network attackers
 
 It will be difficult to completely prevent denial service of attacks that
 originate on the user's local area network.  Open Screen Protocol agents can
-refuse new connections, rate limit the rate of messages from existing
-connections, or limit the number of mDNS records cached from a specific
-responder in an attempt to allow existing activities to continue in spite of
-such an attack.
+refuse new connections, close connections that receive too many messages, or
+limit the number of mDNS records cached from a specific responder in an attempt
+to allow existing activities to continue in spite of such an attack.
 
 ### Malicious input ### {#malicious-input-mitigations}
 

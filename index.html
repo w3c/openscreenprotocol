@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 0da7328bb90ef81993146377e4e0fed236969c4c" name="generator">
+  <meta content="Bikeshed version 9c6ae748322940994300e90a77c34437364b40a6" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="12c20f3f4457b2abd8af472eb171ca579198e1d0" name="document-revision">
+  <meta content="3e0675f2a5988fafb4a697958a7314c695dfdb42" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1403,11 +1403,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-<<<<<<< HEAD
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-03-05">5 March 2019</time></span></h2>
-=======
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-03-22">22 March 2019</time></span></h2>
->>>>>>> Address more comments
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-03-25">25 March 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2261,26 +2257,32 @@ Protocol prevents a man-in-the-middle from impersonating an agent, without
 knowledge of a shared secret.  However, it is possible for an attacker to
 impersonate an existing, trusted display or a newly discovered display that is
 not yet authenticated and try to convince the user to authenticate it.</p>
-   <p>This can be addressed through a combination of techniques.  The first is flagging:</p>
+   <p>This can be addressed through a combination of techniques.  The first is
+detecting and flagging attempts at impersonation; a few of the situations that
+should be flagged include:</p>
    <ul>
     <li data-md>
-     <p>Flag an advertised display whose public key fingerprint collides with that
-from an already-trusted display that is concurrently being advertised.</p>
+     <p>Untrusted agents whose public key fingerprint collides with that from an
+already-trusted agent that is concurrently being advertised.</p>
     <li data-md>
-     <p>Flag an advertised display whose friendly name differs from the one previously
-advertised under a public key fingerprint.</p>
+     <p>Untrusted agents whose friendly name differs from the one previously
+advertised under a given public key fingerprint.</p>
     <li data-md>
-     <p>Flag already-trusted displays whose metadata has changed.</p>
+     <p>Untrusted agents that fail the authentication challenge a certain number of times.</p>
     <li data-md>
-     <p>Flag agents that fail the authentication challenge a certain number of times.</p>
+     <p>Untrusted agents that advertise a friendly name that is similar to that from an
+already-trusted agent.</p>
+    <li data-md>
+     <p>Already-trusted agents whose metadata provided through the <code>agent-info</code> message has changed.</p>
    </ul>
-   <p>Flagging means that the user is notified, or in some cases they are required to
-re-authenticate to the presentation display to verify its identity.</p>
-   <p>The second is through management of the shared secret during mutual
+   <p>Flagging means that the user is notified of the attempt at impersonation.  In
+the last case, the user should be required to re-authenticate to the
+already-trusted agent to verify its identity.</p>
+   <p>The second is through management of the low-entropy secret during mutual
 authentication:</p>
    <ul>
     <li data-md>
-     <p>Rotate the shared secret to prevent brute force attacks.</p>
+     <p>Rotate the low-entropy secret to prevent brute force attacks.</p>
     <li data-md>
      <p>Use an increasing backoff to respond to authentication challenges, also to
 prevent brute force attacks.</p>
@@ -2296,18 +2298,16 @@ by a correct implementation of TLS 1.3.</p>
    <p class="issue" id="issue-5107ff88①"><a class="self-link" href="#issue-5107ff88①"></a> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
    <h4 class="heading settled" data-level="8.5.3" id="remote-active-mitigations"><span class="secno">8.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
    <p>Unfortunately, we cannot rely on network devices to fully protect Open Screen
-Protocol agents from traffic from the broader Internet.  Open Screen Protocol
-agents that are only intended to work on the LAN should filter packets
-from non-local IP addresses.  Agents can also use the ARP cache to
-detect attempts to spoof local network IP addresses.</p>
+Protocol agents, because a misconfigured firewall or NAT could expose a
+LAN-connected agent to the broader Internet.  Open Screen Protocol agents
+should be secure against attack from any Inernet host.</p>
    <p class="issue" id="issue-1353180f"><a class="self-link" href="#issue-1353180f"></a> [Security] Mitigations for remote network attackers <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a></p>
    <h4 class="heading settled" data-level="8.5.4" id="denial-of-service-mitigations"><span class="secno">8.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
    <p>It will be difficult to completely prevent denial service of attacks that
 originate on the user’s local area network.  Open Screen Protocol agents can
-refuse new connections, rate limit the rate of messages from existing
-connections, or limit the number of mDNS records cached from a specific
-responder in an attempt to allow existing activities to continue in spite of
-such an attack.</p>
+refuse new connections, close connections that receive too many messages, or
+limit the number of mDNS records cached from a specific responder in an attempt
+to allow existing activities to continue in spite of such an attack.</p>
    <h4 class="heading settled" data-level="8.5.5" id="malicious-input-mitigations"><span class="secno">8.5.5. </span><span class="content">Malicious input</span><a class="self-link" href="#malicious-input-mitigations"></a></h4>
    <p>Open Screen Protocol agents should be robust against malicious input that
 attempts to compromise the target device by exploiting parsing vulnerabilities.</p>
