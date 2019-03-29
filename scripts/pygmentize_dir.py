@@ -4,10 +4,10 @@ import os
 from glob import glob
 
 from pygments.formatters.html import HtmlFormatter
-from pygments.lexers import load_lexer_from_file
 from pygments import highlight
 
-LEXER_FILENAME = "cddl_lexer.py"
+from cddl_lexer import CustomLexer as CddlLexer
+
 OUTPUT_EXTENSION = ".html"
 
 def pygmentize_file(lexer, formatter, filename):
@@ -33,6 +33,6 @@ if __name__ == "__main__":
   formatter = HtmlFormatter()
 
   directory, _ = os.path.split(os.path.abspath(__file__))
-  lexer = load_lexer_from_file(os.path.join(directory, LEXER_FILENAME))
+  lexer = CddlLexer()
 
   pygmentize_dir(lexer, formatter)
