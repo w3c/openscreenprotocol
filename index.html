@@ -1444,14 +1444,16 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      </ol>
     <li><a href="#discovery"><span class="secno">3</span> <span class="content">Discovery with mDNS</span></a>
     <li><a href="#transport"><span class="secno">4</span> <span class="content">Transport and metadata discovery with QUIC</span></a>
-    <li><a href="#control"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
+    <li><a href="#messages"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
     <li><a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
     <li>
      <a href="#control-protocols"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
      <ol class="toc">
       <li><a href="#presentation-protocol"><span class="secno">7.1</span> <span class="content">Presentation Protocol</span></a>
       <li><a href="#presentation-api"><span class="secno">7.2</span> <span class="content">Presentation API</span></a>
-      <li><a href="#remote-playback"><span class="secno">7.3</span> <span class="content">Remote Playback API Protocol</span></a>
+      <li><a href="#remote-playback-protocol"><span class="secno">7.3</span> <span class="content">Remote Playback Protocol</span></a>
+      <li><a href="#remote-playback-state-and-controls"><span class="secno">7.4</span> <span class="content">Remote Playback State and Controls</span></a>
+      <li><a href="#remote-playback-api"><span class="secno">7.5</span> <span class="content">Remote Playback API</span></a>
      </ol>
     <li>
      <a href="#security-privacy"><span class="secno">8</span> <span class="content">Security and Privacy</span></a>
@@ -1532,27 +1534,21 @@ from the browser to the target display.</p>
 capabilities can be added over time.  This may include new implementations of
 existing APIs, or new APIs.</p>
    <h3 class="heading settled" data-level="1.1" id="terminology"><span class="secno">1.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
-   <p>We borrow terminology from the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> for terms used in this document.  These
-terms are summarized here.</p>
-   <p>We call the browser that is used to discover and initiate presentation of Web
-content on another device the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent">controlling user agent</a>.  We call the
-user agent on the device rendering the Web content the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent">receiving user agent</a>, or <em>receiver</em> for short.  We use
-the term <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display" id="ref-for-dfn-presentation-display">presentation display</a> to refer to the entire platform and
-responsible for implementing the <em>receiver</em>, including browser, OS, networking,
-audio and graphics.</p>
-   <p>For the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>, presentation of Web content is
-initiated at the request of a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context" id="ref-for-dfn-controlling-browsing-context">controlling browsing context</a> (or <em>controller</em>), which creates a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context" id="ref-for-dfn-receiving-browsing-context">receiving browsing context</a> (or <em>presentation</em>) to load a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a> and exchange messages
-with the resulting document.</p>
-   <p>Before this can happen, the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agent</a> must determine which <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver">receivers</a>, if any, are compatible with the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a>.  This
-happens by determining the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display-availability" id="ref-for-dfn-presentation-display-availability">presentation display availability</a> for the
-presentation request URL.</p>
-   <p>For the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>, the device responsible for
-rendering the content of a <a data-link-type="dfn" href="https://www.w3.org/TR/html51/single-page.html#media-element" id="ref-for-media-element">media element</a> when remote playback is connected
-is called the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device" id="ref-for-dfn-remote-playback-device">remote playback device</a>.</p>
-   <p>For additional terms and idioms specific to the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> or
-Remote Playback API, please consult the respective specifications.</p>
-   <p>We also use the term "agent" to mean any implementation of this protocol,
-browser, device, or otherwise, acting as a controller or a receiver.</p>
+   <p>We use the term "agent" to mean any implementation of this protocol
+(browser, device, or otherwise), acting as a controller or a receiver.</p>
+   <p>We borrow terminology from the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. We call
+the agent that is used to discover and initiate presentation of Web content on
+another device the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controller" id="ref-for-dfn-controller">controller</a> (or <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent">controlling user agent</a> when it is a
+browser).  We call the agent on the device rendering the Web content the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver">receiver</a> or <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display" id="ref-for-dfn-presentation-display">presentation display</a> (or <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent">receiving user agent</a> when it is
+a browser). <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display-availability" id="ref-for-dfn-presentation-display-availability">presentation display availability</a> refers to whether or not a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver①">receiver</a> is compatible with a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a></p>
+   <p>We borrow terminology from the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>.  The
+agent responsible for rendering media of a remote playback is called the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices">remote playback device</a>. In this document, we also refer to it as the <em>receiver</em> because it is shorter and keeps terminology consistent between
+presentations and remote playbacks. Similarly, we use the term "controller"
+(referred to as the "user agent" in the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>)
+to refer to the agent that starts, terminates, and controls the remote playback.</p>
+   <p>For additional terms and idioms specific to the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation
+API</a> or <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>, please consult the respective
+specifications.</p>
    <h2 class="heading settled" data-level="2" id="requirements"><span class="secno">2. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
    <h3 class="heading settled" data-level="2.1" id="requirements-presentation-api"><span class="secno">2.1. </span><span class="content">Presentation API Requirements</span><a class="self-link" href="#requirements-presentation-api"></a></h3>
    <ol>
@@ -1566,19 +1562,19 @@ the display, a friendly name for the display, and an IP port number for
 establishing a network transport to the display.</p>
     <li data-md>
      <p>A controlling user agent must be able to determine if the receiver is
-reasonably capable of rendering a specific <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request URL</a>.</p>
+reasonably capable of rendering a specific <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a>.</p>
     <li data-md>
-     <p>A controlling user agent must be able to start a new presentation on a receiver given a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url③">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id">presentation ID</a>.</p>
+     <p>A controlling user agent must be able to start a new presentation on a receiver given a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id">presentation ID</a>.</p>
     <li data-md>
      <p>A controlling user agent must be able to create a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection">PresentationConnection</a></code> to an existing presentation on the
-receiver, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url④">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id①">presentation ID</a>.</p>
+receiver, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url③">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id①">presentation ID</a>.</p>
     <li data-md>
      <p>It must be possible to to close a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection①">PresentationConnection</a></code> between a
 controller and a presentation, and signal both parties with the
 reason why the connection was closed.</p>
     <li data-md>
      <p>Multiple controllers must be able to connect to a single presentation
-simultaneously, possibly from from one or more <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agents</a>.</p>
+simultaneously, possibly from from one or more <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agents</a>.</p>
     <li data-md>
      <p>Messages sent by the controller must be delivered to the presentation (or
 vice versa) in a reliable and in-order fashion.</p>
@@ -1593,7 +1589,7 @@ closed with reason <code>error</code>.</p>
 messages (represented as <code>Blob</code> objects in HTML5, or <code>ArrayBuffer</code> or <code>ArrayBufferView</code> types in ECMAScript).</p>
     <li data-md>
      <p>The controlling user agent must be able to signal to the receiver to
-terminate a presentation, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url⑤">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id②">presentation
+terminate a presentation, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url④">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id②">presentation
 ID</a>.</p>
     <li data-md>
      <p>The receiver must be able to signal all connected controlling user agents
@@ -1676,21 +1672,23 @@ as unverified and must verify that the instance name is a prefix of the verified
 display name before showing the user a verified display name.</p>
    <p>Advertising agents must include DNS TXT records with the following
 keys and values:</p>
-   <ul>
-    <li data-md>
-     <p>key "fp" with value of the certificate fingerprint of the advertising agent.
+   <dl>
+    <dt data-md>fp
+    <dd data-md>
+     <p>The certificate fingerprint of the advertising agent.
 The format of the fingerprint is defined by <a href="https://tools.ietf.org/html/rfc8122#section-5">RFC 8122 section
 5</a>, excluding the
 "fingerprint:" prefix and including the hash function, space, and hex-encoded
 fingerprint.  The fingerprint value also functions as an ID for the agent.
 All agents must support the following hash functions: "sha-256", "sha-512".
 Agents must not support the following hash functions: "md2", "md5".</p>
-    <li data-md>
-     <p>key "mv" with an unsigned integer value that indicates that
+    <dt data-md>mv
+    <dd data-md>
+     <p>An unsigned integer value that indicates that
 metadata has changed.   The advertising agent must update it to a greater
 value.  This signals to the listening agent that it should connect to the
 advertising agent to discover updated metadata.</p>
-   </ul>
+   </dl>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
 capabilities mechanism to be determined. If a future version of the Open Screen
@@ -1707,20 +1705,22 @@ unauthenticated agent is unverified).</p>
    <p>To learn further metadata, an agent may send an agent-info-request
 message (see <a href="#appendix-a">Appendix A: Messages</a>) and receive back an agent-info-response message.  The
 messages may contain the following information with the following meaning:</p>
-   <ul>
-    <li data-md>
-     <p>display-name: (required) The display name of the responding agent intended
+   <dl>
+    <dt data-md>display-name (required)
+    <dd data-md>
+     <p>The display name of the responding agent intended
 to be displayed to a user by the requesting agent.  If the responding agent
 is not yet authenticated, the requesting agent should make UI affordance for
 indicating to the user that the display name is not yet verified.  If the
 responding agent changes its display name, the requesting agent should
 make UI affordance for indicating to the user that the display name has
 changed.</p>
-    <li data-md>
-     <p>model-name: (optional) If the agent is a hardware device, the model name of
+    <dt data-md>model-name (optional)
+    <dd data-md>
+     <p>If the agent is a hardware device, the model name of
 the device.  This is used mainly for debugging purposes, but may be
 displayed to the user of the requesting agent.</p>
-   </ul>
+   </dl>
    <p>Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
@@ -1745,7 +1745,7 @@ keys should be chosen to avoid collision, such as by choosing large
 integers or long strings.  Agents must ignore keys in the
 agent-info-message that it does not understand to allow agents
 to easily extend this message.</p>
-   <h2 class="heading settled" data-level="5" id="control"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#control"></a></h2>
+   <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
    <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To
 send a group of messages in order, that group of messages must be sent in one
 QUIC stream.  Independent groups of messages (with no ordering dependency
@@ -1765,10 +1765,8 @@ integer (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
    <p>If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
 code of 404 and should include the unknown type key in the reason phrase
-(see <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a> section 19.4).</p>
-   <p>Variable-length integers are encoded in the same format as defined by <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16#section-16">QUIC
-transport section
-16</a>.</p>
+(see <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16#section-19.4">QUIC transport section 19.4</a>).</p>
+   <p>Variable-length integers are encoded in the same format as defined by <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16#section-16"> QUIC transport section 16</a>.</p>
    <p>Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
@@ -1871,45 +1869,50 @@ these values should be updated as well.</p>
    <h2 class="heading settled" data-level="7" id="control-protocols"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control-protocols"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="presentation-protocol"><span class="secno">7.1. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h3>
    <p>This section defines the use of the Open Screen Protocol for starting,
-stopping, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>.  A subsequent section will
-define how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
+terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§7.2 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
 protocol messages defined in this section.</p>
    <p>For all messages defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for the full
 CDDL definitions.</p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation displays</a> for a
 particular URL or set of URLs, the controller may send a
 presentation-url-availability-request message with the following values:</p>
-   <ul>
-    <li data-md>
-     <p>urls: A list of presentation URLs.  Must not be empty.</p>
-    <li data-md>
-     <p>watch-duration: The period of time that the controller is interested in
-receiving updates about the URLs, should the availability change.</p>
-    <li data-md>
-     <p>watch-id: An identifier the receiver may use when sending updates about URL
-availability so that controller knows which URLs the receiver is referring
+   <dl>
+    <dt data-md>urls
+    <dd data-md>
+     <p>A list of presentation URLs.  Must not be empty.</p>
+    <dt data-md>watch-duration
+    <dd data-md>
+     <p>The period of time that the controller is interested in receiving updates
+about the URLs, should the availability change.</p>
+    <dt data-md>watch-id
+    <dd data-md>
+     <p>An identifier the receiver may use when sending updates about URL
+availability so that the controller knows which URLs the receiver is referring
 to.</p>
-   </ul>
+   </dl>
    <p>In response, the receiver should send one presentation-url-availability-response
 message with the following values:</p>
-   <ul>
-    <li data-md>
-     <p>url-availabilities: A list of URL availability states (available,
+   <dl>
+    <dt data-md>url-availabilities
+    <dd data-md>
+     <p>A list of URL availability states (available,
 unavailable, or invalid).  Each state must correspond to the matching URL
 from the request by list index.</p>
-   </ul>
+   </dl>
    <p>The receivers should later (up to the current time plus request
 watch-duration) send presentation-url-availability-event messages if
 URL availabilities change.  Such events contain the following values:</p>
-   <ul>
-    <li data-md>
-     <p>watch-id: The watch-id given in the presentation-url-availability-response,
+   <dl>
+    <dt data-md>watch-id
+    <dd data-md>
+     <p>The watch-id given in the presentation-url-availability-response,
 used to refer to the presentation URLs whose availability has changed.</p>
-    <li data-md>
-     <p>url-availabilities: A list of URL availability states (available,
+    <dt data-md>url-availabilities
+    <dd data-md>
+     <p>A list of URL availability states (available,
 unavailable, or invalid).  Each state must correspond to the URLs from the
 request referred to by the watch-id.</p>
-   </ul>
+   </dl>
    <p>Note that these messages are not broadcasted to all controllers. They are sent
 individually to controllers that have requested availability for the URLs that
 have changed in availability state within the watch duration of the original
@@ -1920,148 +1923,158 @@ responses and updates.</p>
    <p>To start a presentation, the controller may send a
 presentation-start-request message to the receiver with the following
 values:</p>
-   <ul>
-    <li data-md>
-     <p>presentation-id: the presentation identifier</p>
-    <li data-md>
-     <p>url: the selected presentation URL</p>
-    <li data-md>
-     <p>headers: headers that the receiver should use to fetch the
-presentationUrl.  For example, section 6.6.1 of <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> says that the Accept-Language
-header should be provided.</p>
-   </ul>
-   <p>The presentation ID must follow the restrictions defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> section 6.1, in that it must
-consist of at least 16 ASCII characters.</p>
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>the presentation identifier</p>
+    <dt data-md>url
+    <dd data-md>
+     <p>the selected presentation URL</p>
+    <dt data-md>headers
+    <dd data-md>
+     <p>headers that the receiver should use to fetch the
+presentationUrl.  For example, <a href="https://www.w3.org/TR/presentation-api/#establishing-a-presentation-connection">section 6.6.1</a> of
+the Presentation API says that the Accept-Language header should be
+provided.</p>
+   </dl>
+   <p>The presentation ID must follow the restrictions defined by <a href="https://www.w3.org/TR/presentation-api/#common-idioms">section 6.1</a> of the Presentation API, in that
+it must consist of at least 16 ASCII characters.</p>
    <p>When the receiver receives the presentation-start-request, it should send back a
 presentation-start-response message after either the presentation URL has been
 fetched and loaded, or the receiver has failed to do so. If it has failed, it
 must respond with the appropriate result (such as invalid-url or timeout).  If
 it has succeeded, it must reply with a success result.  Additionally, the
 response must include the following:</p>
-   <ul>
-    <li data-md>
-     <p>connection-id: An ID that both agents can use to send connection messages
+   <dl>
+    <dt data-md>connection-id
+    <dd data-md>
+     <p>An ID that both agents can use to send connection messages
 to each other.  It is chosen by the receiver for ease of implementation: if
 the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier.</p>
-   </ul>
+   </dl>
    <p>To send a presentation message, the controller or receiver may send a
 presentation-connection-message with the following values:</p>
-   <ul>
-    <li data-md>
-     <p>connection-id: The ID from the presentation-start-response or
+   <dl>
+    <dt data-md>connection-id
+    <dd data-md>
+     <p>The ID from the presentation-start-response or
 presentation-connection-open-response messages.</p>
-    <li data-md>
-     <p>message: the presentation message data.</p>
-   </ul>
+    <dt data-md>message
+    <dd data-md>
+     <p>the presentation message data.</p>
+   </dl>
    <p>To terminate a presentation, the controller may send a
 presentation-termination-request message with the following values:</p>
-   <ul>
-    <li data-md>
-     <p>presentation-id: The ID of the presentation to terminate.</p>
-    <li data-md>
-     <p>reason: The reason the presentation is being terminated.</p>
-   </ul>
-   <p>When a receiving agent receives a presentation-termination-request, it should
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>The ID of the presentation to terminate.</p>
+    <dt data-md>reason
+    <dd data-md>
+     <p>The reason the presentation is being terminated.</p>
+   </dl>
+   <p>When a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver②">receiver</a> receives a presentation-termination-request, it should
 send back a presentation-termination-response message to the requesting
-agent.  It should also notify other controllers about the termination by sending
+controller.  It should also notify other controllers about the termination by sending
 a presentation-termination-event message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:</p>
-   <ul>
-    <li data-md>
-     <p>presentation-id: The ID of the presentation that was terminated.</p>
-    <li data-md>
-     <p>reason: The reason the presentation was terminated.</p>
-   </ul>
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>The ID of the presentation that was terminated.</p>
+    <dt data-md>reason
+    <dd data-md>
+     <p>The reason the presentation was terminated.</p>
+   </dl>
    <p>To accept incoming connections requests from controller, a receiver
 must receive and process the presentation-connection-open-request
 message which contains the following values:</p>
-   <ul>
-    <li data-md>
-     <p>presentation-id: The ID of the presentation to connect to.</p>
-    <li data-md>
-     <p>url: The URL of the presentation to connect to.</p>
-   </ul>
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>The ID of the presentation to connect to.</p>
+    <dt data-md>url
+    <dd data-md>
+     <p>The URL of the presentation to connect to.</p>
+   </dl>
    <p>The receiver should, upon receipt of a
 presentation-connection-open-request message, send back a
 presentation-connection-open-response message which contains the
 following values:</p>
-   <ul>
-    <li data-md>
-     <p>result: a code indicating success or failure, and the reason for the failure</p>
-    <li data-md>
-     <p>connection-id: An ID that both agents can use to send connection messages
+   <dl>
+    <dt data-md>result
+    <dd data-md>
+     <p>a code indicating success or failure, and the reason for the failure</p>
+    <dt data-md>connection-id
+    <dd data-md>
+     <p>An ID that both agents can use to send connection messages
 to each other.  It is chosen by the receiver for ease of implementation (if
 the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier).</p>
-   </ul>
+   </dl>
    <p>A controller may terminate a connection without terminating the presentation by
 sending a presentation-connection-close-request message with the following
 values:</p>
-   <ul>
-    <li data-md>
-     <p>connection-id: The ID of the connection to close.</p>
-   </ul>
+   <dl>
+    <dt data-md>connection-id
+    <dd data-md>
+     <p>The ID of the connection to close.</p>
+   </dl>
    <p>The receiver should, upon receipt of a presentation-connection-close-request,
 send back a presentation-connection-close-response message with the following
 values:</p>
-   <ul>
-    <li data-md>
-     <p>result: If the close succeed or failed, and if it failed why it failed.</p>
-   </ul>
+   <dl>
+    <dt data-md>result
+    <dd data-md>
+     <p>If the close succeed or failed, and if it failed why it failed.</p>
+   </dl>
    <p>The receiver may also close a connection without a request from the controller
 to do so and without terminating a presentation.  If it does so, it should send
 a presentation-connection-close-event to the controller with the following
 values:</p>
-   <ul>
-    <li data-md>
-     <p>connection-id: The ID of the connection that was closed</p>
-    <li data-md>
-     <p>reason: The reason the connection was closed</p>
-    <li data-md>
-     <p>error-message: A debug message suitable for a log or perhaps presented to
+   <dl>
+    <dt data-md>connection-id
+    <dd data-md>
+     <p>The ID of the connection that was closed</p>
+    <dt data-md>reason
+    <dd data-md>
+     <p>The reason the connection was closed</p>
+    <dt data-md>error-message
+    <dd data-md>
+     <p>A debug message suitable for a log or perhaps presented to
 the user with more explanation as to why it was closed.</p>
-   </ul>
+   </dl>
    <h3 class="heading settled" data-level="7.2" id="presentation-api"><span class="secno">7.2. </span><span class="content">Presentation API</span><a class="self-link" href="#presentation-api"></a></h3>
-   <p>This section defines how <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses
-the messages defined in the previous sections.
-Non-browser agents can also send and receive the same messages defined here.
-If so, a non-browser agent must follow the same restrictions for the
-presentation-id as the a does, as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation
-API</a> section 6.1 (at least 16 ASCII characters).</p>
-   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection">section
+   <p>This section defines how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§7.1 Presentation Protocol</a>.</p>
+   <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "This list of presentation displays ... is populated based on an
-implementation specific discovery mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent③">controlling user
-agent</a> may use the mDNS, QUIC, agent-info-request, and
-presentation-url-availability-request messages defined previously in
-this spec to discover receivers.</p>
-   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
+implementation specific discovery mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agent</a> may
+use the mDNS, QUIC, agent-info-request, and
+presentation-url-availability-request messages defined previously in this spec
+to discover receivers.</p>
+   <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "To further save power, ... implementation specific discovery of
-presentation displays can be resumed or suspended.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent④">controlling
-user agent</a> may use the power saving mechanism defined in the
-previous section.</p>
-   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#starting-a-presentation-connection">section
-6.3.4</a> says "Using an implementation specific mechanism, tell U to create a
-receiving browsing context with D, presentationUrl, and I as
-parameters.", U (the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑤">controlling user agent</a>) may send a
-presentation-start-request message to D (the receiver), with I for the
-presentation identifier and presentationUrl for the selected
-presentation URL.</p>
-   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection">section
-6.5.2</a> says "Using an implementation specific mechanism, transmit the
-contents of messageOrData as the presentation message data and
-messageType as the presentation message type to the destination
-browsing context", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑥">controlling user agent</a> may send a
-presentation-connection-message with messageOrData for the
-presentation message data.  Note that the messageType is embedded in
-the encoded CBOR type and does not need an additional value in the
+presentation displays can be resumed or suspended.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent③">controlling user
+agent</a> may use the power saving mechanism defined in the previous section.</p>
+   <p>When <a href="https://www.w3.org/TR/presentation-api/#starting-a-presentation-connection">section 6.3.4</a> says
+"Using an implementation specific mechanism, tell U to create a receiving
+browsing context with D, presentationUrl, and I as parameters.", U (the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent④">controlling user agent</a>) may send a presentation-start-request message to D
+(the receiver), with I for the presentation identifier and presentationUrl for
+the selected presentation URL.</p>
+   <p>When <a href="https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection">section
+6.5.2</a> says "Using an implementation specific mechanism, transmit the contents
+of messageOrData as the presentation message data and messageType as the
+presentation message type to the destination browsing context", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑤">controlling user agent</a> may send a presentation-connection-message with
+messageOrData for the presentation message data.  Note that the messageType is
+embedded in the encoded CBOR type and does not need an additional value in the
 message.</p>
-   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
-6.5.6</a> says "Send a termination request for the presentation to its receiving user
-agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
+   <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
+6.5.6</a> says "Send a termination request for the presentation to its receiving
+user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑥">controlling user
 agent</a> may send a presentation-termination-request message.</p>
-   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
+   <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "it MUST listen to and accept incoming connection requests from a
 controlling browsing context using an implementation specific
 mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> must receive and process the
@@ -2472,8 +2485,7 @@ presentation-termination-request = {
     controller-called-terminate: 10
     user-terminated-via-controller: 11
     unknown: 255
-  )
- ; reason
+  ) ; reason
 }
 
 ; type key 107
@@ -2496,7 +2508,7 @@ presentation-termination-event = {
     receiver-powering-down: 100
     receiver-crashed: 101
     unknown: 255
-  )
+  ) ; reason
 }
 
 ; type key 109
@@ -2553,6 +2565,228 @@ result = (
   terminating: 103
   unknown-error: 199
 )
+
+; type key 17
+remote-playback-availability-request = {
+  request
+  1: [* text] ; urls
+  2: microseconds ; watch-duration
+  3: int ; watch-id
+}
+
+; type key 18
+remote-playback-availability-response = {
+  response
+  url-availabilities: [* url-availability]
+}
+
+; type key 114
+remote-playback-availability-event = {
+  1: int ; watch-id
+  2: [* url-availability] ; url-availabilities
+}
+
+; type key 115
+remote-playback-start-request = {
+  request
+  1: remote-playback-id ; remote-playback-id
+  2: [* text] ; urls
+  ? 3: [* text] ; text-track-urls
+  ? 4: [* http-header] ; headers
+  ? 5: remote-playback-controls ; controls
+}
+
+; type key 116
+remote-playback-start-response = {
+  response
+  1: &amp;result ; result
+  ? 2: remote-playback-state ; state
+}
+
+; type key 117
+remote-playback-termination-request = {
+  request
+  1: remote-playback-id ; remote-playback-id
+  2: &amp;(
+    user-terminated-via-controller: 11
+    unknown: 255
+  ) ; reason
+}
+
+; type key 118
+remote-playback-termination-response = {
+  response
+  1: &amp;result ; result
+}
+
+; type key 119
+remote-playback-termination-event = {
+ 1: remote-playback-id ; remote-playback-id
+ 2: &amp;(
+    receiver-called-terminate: 1
+    user-terminated-via-receiver: 2
+    receiver-idle-too-long: 30
+    receiver-powering-down: 100
+    receiver-crashed: 101
+    unknown: 255
+  ) ; reason
+}
+
+; type key 19
+remote-playback-modify-request = {
+  request
+  1: remote-playback-id ; remote-playback-id
+  2: remote-playback-controls ; controls
+)
+
+; type key 20
+remote-playback-modify-response = {
+  response
+  1: &amp;result ; result
+  ? 2: remote-playback-state ; state
+}
+
+; type key 21
+remote-playback-state-event = {
+  1: remote-playback-id ; remote-playback-id
+  2: remote-playback-state ; state
+}
+
+remote-playback-id = uint 
+
+remote-playback-controls = {
+  ? 1: url ; source
+  ? 2: &amp;(none, metadata, auto) ; preload
+  ? 3: bool ; loop
+  ? 4: bool ; paused
+  ? 5: bool ; muted
+  ? 6: float ; volume 
+  ? 7: media-time ; seek
+  ? 8: media-time ; fast-seek
+  ? 9: float ; playback-rate 
+  ? 10: url ; poster
+  ? 11: [* text] ; enabled-audio-track-ids
+  ? 12: text ; selected-video-track-id
+  ? 13: [* added-text-track] ; added-text-tracks
+  ? 14: [* changed-text-track] ; changed-text-tracks
+}
+
+remote-playback-state = {
+  ? 1: (rate: bool, preload: bool, poster: bool, added-text-track: bool, added-cues: bool) ; supports
+
+  ? 2: url ; source
+  ? 3: &amp;(
+    empty: 0
+    idle: 1
+    loading: 2
+    no-source: 3
+  ) ; loading
+  ? 4: &amp;(
+    nothing: 0
+    metdata: 1
+    current: 2
+    future: 3
+    enough: 4
+  ) ; loaded
+  ? 5: media-error : error
+
+  ? 6: media-time / unknown; epoch
+  ? 7: media-time / unknown / forever ; duration
+  ? 8: [* media-time-range] ; buffered-time-ranges
+  ? 9: [* media-time-range] ; seekable-time-ranges
+  ? 10: [* media-time-range] ; played-time-ranges
+
+  ? 11: media-time ; position
+  ? 12: float : playbackRate
+  ? 13: bool ; paused
+  ? 14: bool ; seeking
+  ? 15: bool ; stalled
+  ? 16: bool ; ended
+
+  ? 17: float ; volume
+  ? 18: bool ; muted
+
+  ? 19: video-resolution / unknown ; resolution
+
+  ? 20: [* audio-track-state] audio-tracks
+  ? 21: [* video-track-state] video-tracks
+  ? 22: [* text-track-state] text-tracks
+}
+
+added-text-track = {
+  1: &amp;(
+    subtitles
+    captions
+    descriptions
+    chapters
+    metadata
+  ) ; kind
+  ? 2: text ; label
+  ? 3: text ; language
+}
+
+changed-text-track = {
+  1: text ; id
+  2: mode ; mode
+  ? 3: [* text-track-cue] ; added-cues
+  ? 4: [* text] ; removed-cue-ids
+}
+
+text-track-mode = &amp;(
+  disabled
+  showing
+  hidden
+)
+
+text-track-cue = {
+  1: text ; id
+  2: media-time-range ; range
+  3: text ; text
+}
+
+media-time-range = [
+  start: media-time, 
+  end: media-time
+]
+
+media-time = [
+  value: uint
+  scale: uint
+]
+
+unknown = 0 
+forever = 1
+
+media-error = [
+  code: &amp;(
+    user-aborted: 1
+    network-error: 2
+    decode-error: 3
+    source-not-supported: 4
+  )
+  message: text
+]
+
+track-state = (
+  1: text ; id
+  2: text ; label
+  3: text ; language
+)
+
+audio-track-state = {
+  track-state
+  4: bool ; enabled
+}
+
+video-track-state = {
+  track-state
+  5 : bool ; selected
+}
+
+track-track-state = {
+  track-state
+  6 : mode ; text-track-mode
+}
 
 </pre>
   </main>
@@ -2729,18 +2963,18 @@ result = (
     <li><a href="#ref-for-dfn-available-presentation-display">7.1. Presentation Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-controlling-browsing-context">
-   <a href="https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context">https://w3c.github.io/presentation-api/#dfn-controlling-browsing-context</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dfn-controller">
+   <a href="https://w3c.github.io/presentation-api/#dfn-controller">https://w3c.github.io/presentation-api/#dfn-controller</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-controlling-browsing-context">1.1. Terminology</a>
+    <li><a href="#ref-for-dfn-controller">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-controlling-user-agent">
    <a href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent">https://w3c.github.io/presentation-api/#dfn-controlling-user-agent</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-controlling-user-agent">1.1. Terminology</a> <a href="#ref-for-dfn-controlling-user-agent①">(2)</a>
-    <li><a href="#ref-for-dfn-controlling-user-agent②">2.1. Presentation API Requirements</a>
-    <li><a href="#ref-for-dfn-controlling-user-agent③">7.2. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent④">(2)</a> <a href="#ref-for-dfn-controlling-user-agent⑤">(3)</a> <a href="#ref-for-dfn-controlling-user-agent⑥">(4)</a> <a href="#ref-for-dfn-controlling-user-agent⑦">(5)</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent">1.1. Terminology</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent①">2.1. Presentation API Requirements</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent②">7.2. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent③">(2)</a> <a href="#ref-for-dfn-controlling-user-agent④">(3)</a> <a href="#ref-for-dfn-controlling-user-agent⑤">(4)</a> <a href="#ref-for-dfn-controlling-user-agent⑥">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-display">
@@ -2765,20 +2999,15 @@ result = (
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url">https://w3c.github.io/presentation-api/#dfn-presentation-request-url</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-presentation-request-url">1.1. Terminology</a> <a href="#ref-for-dfn-presentation-request-url①">(2)</a>
-    <li><a href="#ref-for-dfn-presentation-request-url②">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-request-url③">(2)</a> <a href="#ref-for-dfn-presentation-request-url④">(3)</a> <a href="#ref-for-dfn-presentation-request-url⑤">(4)</a>
+    <li><a href="#ref-for-dfn-presentation-request-url">1.1. Terminology</a>
+    <li><a href="#ref-for-dfn-presentation-request-url①">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-request-url②">(2)</a> <a href="#ref-for-dfn-presentation-request-url③">(3)</a> <a href="#ref-for-dfn-presentation-request-url④">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiver">
    <a href="https://w3c.github.io/presentation-api/#dfn-receiver">https://w3c.github.io/presentation-api/#dfn-receiver</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-receiver">1.1. Terminology</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-receiving-browsing-context">
-   <a href="https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context">https://w3c.github.io/presentation-api/#dfn-receiving-browsing-context</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dfn-receiving-browsing-context">1.1. Terminology</a>
+    <li><a href="#ref-for-dfn-receiver">1.1. Terminology</a> <a href="#ref-for-dfn-receiver①">(2)</a>
+    <li><a href="#ref-for-dfn-receiver②">7.1. Presentation Protocol</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiving-user-agent">
@@ -2788,10 +3017,37 @@ result = (
     <li><a href="#ref-for-dfn-receiving-user-agent①">7.2. Presentation API</a> <a href="#ref-for-dfn-receiving-user-agent②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-device">
-   <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-device">https://w3c.github.io/remote-playback/#dfn-remote-playback-device</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dfn-availability-sources-set">
+   <a href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set">https://w3c.github.io/remote-playback/#dfn-availability-sources-set</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-remote-playback-device">1.1. Terminology</a>
+    <li><a href="#ref-for-dfn-availability-sources-set">7.5. Remote Playback API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-compatible-remote-playback-device">
+   <a href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device">https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-compatible-remote-playback-device">7.3. Remote Playback Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-media-resources">
+   <a href="https://w3c.github.io/remote-playback/#dfn-media-resources">https://w3c.github.io/remote-playback/#dfn-media-resources</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-media-resources">7.3. Remote Playback Protocol</a> <a href="#ref-for-dfn-media-resources①">(2)</a> <a href="#ref-for-dfn-media-resources②">(3)</a> <a href="#ref-for-dfn-media-resources③">(4)</a>
+    <li><a href="#ref-for-dfn-media-resources④">7.4. Remote Playback State and Controls</a> <a href="#ref-for-dfn-media-resources⑤">(2)</a> <a href="#ref-for-dfn-media-resources⑥">(3)</a> <a href="#ref-for-dfn-media-resources⑦">(4)</a> <a href="#ref-for-dfn-media-resources⑧">(5)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-devices">
+   <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices">https://w3c.github.io/remote-playback/#dfn-remote-playback-devices</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-remote-playback-devices">1.1. Terminology</a>
+    <li><a href="#ref-for-dfn-remote-playback-devices①">7.3. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dfn-remote-playback-devices②">7.5. Remote Playback API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-source">
+   <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source">https://w3c.github.io/remote-playback/#dfn-remote-playback-source</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-remote-playback-source">7.5. Remote Playback API</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -2811,20 +3067,23 @@ result = (
     <ul>
      <li><span class="dfn-paneled" id="term-for-presentationconnection" style="color:initial">PresentationConnection</span>
      <li><span class="dfn-paneled" id="term-for-dfn-available-presentation-display" style="color:initial">available presentation display</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-controlling-browsing-context" style="color:initial">controlling browsing context</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-controller" style="color:initial">controller</span>
      <li><span class="dfn-paneled" id="term-for-dfn-controlling-user-agent" style="color:initial">controlling user agent</span>
      <li><span class="dfn-paneled" id="term-for-dfn-presentation-display" style="color:initial">presentation display</span>
      <li><span class="dfn-paneled" id="term-for-dfn-presentation-display-availability" style="color:initial">presentation display availability</span>
      <li><span class="dfn-paneled" id="term-for-dfn-presentation-id" style="color:initial">presentation id</span>
      <li><span class="dfn-paneled" id="term-for-dfn-presentation-request-url" style="color:initial">presentation request url</span>
      <li><span class="dfn-paneled" id="term-for-dfn-receiver" style="color:initial">receiver</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-receiving-browsing-context" style="color:initial">receiving browsing context</span>
      <li><span class="dfn-paneled" id="term-for-dfn-receiving-user-agent" style="color:initial">receiving user agent</span>
     </ul>
    <li>
     <a data-link-type="biblio">[REMOTE-PLAYBACK]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-device" style="color:initial">remote playback device</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-availability-sources-set" style="color:initial">availability sources set</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-compatible-remote-playback-device" style="color:initial">compatible remote playback device</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-media-resources" style="color:initial">media resources</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-devices" style="color:initial">remote playback devices</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-source" style="color:initial">remote playback source</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2836,19 +3095,17 @@ result = (
    <dd>Steve Faulkner; et al. <a href="https://www.w3.org/TR/html51/">HTML 5.1 2nd Edition</a>. 3 October 2017. REC. URL: <a href="https://www.w3.org/TR/html51/">https://www.w3.org/TR/html51/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
    <dd>Mark Foltz; Dominik Röttsches. <a href="https://www.w3.org/TR/presentation-api/">Presentation API</a>. 1 June 2017. CR. URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
-   <dt id="biblio-quic">[QUIC]
-   <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
    <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/">Remote Playback API</a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
-   <dt id="biblio-rfc7049">[RFC7049]
-   <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-cddl">[CDDL]
    <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. Internet Draft. URL: <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/</a>
+   <dt id="biblio-quic">[QUIC]
+   <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
    <dt id="biblio-rfc6762">[RFC6762]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
