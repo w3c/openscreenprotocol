@@ -99,7 +99,10 @@ another device the [=controller=] (or [=controlling user agent=] when it is a
 browser).  We call the agent on the device rendering the Web content the
 [=receiver=] or [=presentation display=] (or [=receiving user agent=] when it is
 a browser). [=presentation display availability=] refers to whether or not a
-[=receiver=] is compatible with a [=presentation request URL=]
+[=receiver=] is compatible with a [=presentation request URL=].  However, in the
+[[PRESENTATION-API|Presentation API]], a "controller" refers to as a specific
+browsing context within the browser, whereas here the "controller" refers to the
+browser itself, although it may be acting on behalf of a browsing context.
 
 We borrow terminology from the [[REMOTE-PLAYBACK|Remote Playback API]].  The
 agent responsible for rendering media of a remote playback is called the
@@ -405,34 +408,33 @@ presentation-url-availability-request message with the following values:
 
 : watch-duration
 :: The period of time that the controller is interested in receiving updates
-    about the URLs, should the availability change.
+    about their URLs, should the availability change.
 
 : watch-id
-:: An identifier the receiver may use when sending updates about URL
+:: An identifier the receiver must use when sending updates about URL
     availability so that the controller knows which URLs the receiver is referring
-    to.
+    to.  The controller must choose a value that is unique across all
+    presentation URL availability watches to the same receiver.
 
 
 In response, the receiver should send one presentation-url-availability-response
 message with the following values:
 
 : url-availabilities
-:: A list of URL availability states (available,
-    unavailable, or invalid).  Each state must correspond to the matching URL
+:: A list of URL availability states.  Each state must correspond to the matching URL
     from the request by list index.
 
 
-The receivers should later (up to the current time plus request
-watch-duration) send presentation-url-availability-event messages if
-URL availabilities change.  Such events contain the following values:
+While the watch is valid (the watch-duration has not expired), the receivers
+should send remote-playback-availability-event messages when URL availabilities change.
+Such events contain the following values:
 
 : watch-id
 :: The watch-id given in the presentation-url-availability-response,
     used to refer to the presentation URLs whose availability has changed.
 
 : url-availabilities
-:: A list of URL availability states (available,
-    unavailable, or invalid).  Each state must correspond to the URLs from the
+:: A list of URL availability states.  Each state must correspond to the URLs from the
     request referred to by the watch-id.
 
 Note that these messages are not broadcasted to all controllers. They are sent
@@ -440,10 +442,13 @@ individually to controllers that have requested availability for the URLs that
 have changed in availability state within the watch duration of the original
 availability request.
 
-
 To save power, the controller may disconnect the QUIC connection and
-later reconnect to send availablity requests and receive availability
-responses and updates.
+later reconnect to send availability requests and receive availability
+responses and updates.  The QUIC connection ID may or may not be the same
+when reconnecting.  Note that the lifetime of a watch-id is not limited
+to one QUIC connection.  The receiver must continue sending updates for watches
+even if the QUIC connection changes, and thus controller need not send
+new URL availability requests if the QUIC connection changes.
 
 
 To start a presentation, the controller may send a
@@ -451,10 +456,10 @@ presentation-start-request message to the receiver with the following
 values:
 
 : presentation-id
-:: the presentation identifier
+:: The presentation identifier
 
 : url
-:: the selected presentation URL
+:: The selected presentation URL
 
 : headers 
 :: headers that the receiver should use to fetch the
@@ -491,7 +496,7 @@ presentation-connection-message with the following values:
     presentation-connection-open-response messages.
 
 : message
-:: the presentation message data.
+:: The presentation message data.
 
 
 To terminate a presentation, the controller may send a
@@ -666,6 +671,7 @@ following values:
 : urls
 :: A list of [=media resources=].  Must not be empty.
 
+<!-- TODO: Should we allow different headers for different URLs? -->
 : headers 
 :: headers that the receiver should use to fetch the
     urls.  For example,
@@ -675,19 +681,19 @@ following values:
 
 : watch-duration
 :: The period of time that the controller is interested in receiving updates
-    about the URLs, should the availability change.
+    about their URLs, should the availability change.
 
 : watch-id
-:: An identifier the receiver may use when sending updates about URL
+:: An identifier the receiver must use when sending updates about URL
     availability so that the controller knows which URLs the receiver is referring
-    to.
+    to. The controller must choose a value that is unique across all
+    remote playback availability watches to the same receiver.
 
 In response, the receiver should send a remote-playback-availability-response
 message with the following values:
   
 : url-availabilities
-:: A list of URL availability states (available,
-    unavailable, or invalid).  Each state must correspond to the matching URL
+:: A list of URL availability states.  Each state must correspond to the matching URL
     from the request by list index.
 
 
@@ -696,12 +702,11 @@ watch-duration) send remote-playback-availability-event  messages if
 URL availabilities change.  Such events contain the following values:
 
 : watch-id
-:: The watch-id given in the presentation-url-availability-response,
-    used to refer to the presentation URLs whose availability has changed.
+:: The watch-id given in the remote-playback-url-availability-response,
+    used to refer to the remote playback URLs whose availability has changed.
 
 : url-availabilities
-:: A list of URL availability states (available,
-    unavailable, or invalid).  Each state must correspond to the URLs from the
+:: A list of URL availability states.  Each state must correspond to the URLs from the
     request referred to by the watch-id.
 
 Note that these messages are not broadcasted to all controllers. They are sent
@@ -711,7 +716,11 @@ availability request.
 
 To save power, the controller may disconnect the QUIC connection and
 later reconnect to send availablity requests and receive availability
-responses and updates.
+responses and updates. The QUIC connection ID may or may not be the same
+when reconnecting.  Note that the lifetime of a watch-id is not limited
+to one QUIC connection.  The receiver must continue sending updates for watches
+even if the QUIC connection changes, and thus controller need not send
+new URL availability requests if the QUIC connection changes.
 
 
 To start remote playback, the controller may send a
@@ -721,8 +730,8 @@ values:
 : remote-playback-id 
 :: An identifier that uniquely identifies the remote playback from the
     controller to the receiver.  It does not need to be unique across all remote
-    playbacks from all controllers to that receive nor unique across all remote
-    playbacks from that  controller to all receivers.
+    playbacks from that controllers to all receivers nor unique across all remote
+    playbacks from all controllers to that receivers.
 
 : urls
 :: The [=media resources=] that the controller has selected for playback on the
@@ -751,7 +760,6 @@ invalid-url).  Additionally, the response must include the following:
 : state
 :: The initial state of the remote playback, as defined in
     [[#remote-playback-state-and-controls]].
-
 
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -792,8 +800,8 @@ remote-playback-termination-request message with the following values:
 : reason
 :: The reason the remote playback is being terminated.
 
-When a receiver receives a presentation-termination-request, it should
-send back a presentation-termination-response message to the controller.
+When a receiver receives a remote-playback-termination-request, it should
+send back a remote-playback-termination-response message to the controller.
 
 If a receiver terminates a remote playback without a request from the controller
 to do so, it must send a remote-playback-termination-event message to the
@@ -812,8 +820,6 @@ longer controlling the remote playback and does not necessarily stop media from
 rendering on the receiver.  Whether or not the receiver stops rendering media depends
 upon the implmentation of the receiver.
 
-
-
 Remote Playback State and Controls {#remote-playback-state-and-controls}
 ------------------------------------------------------------------------
 
@@ -823,7 +829,7 @@ state of the remote playback, the controller may send controls to modify the sta
 may send updates about state changes (for example, via the
 remote-playback-state-event message).
 
-The controls sent by the controller include the follwing individual control
+The controls sent by the controller include the following individual control
 values, each of which is optional.  This allows the controller to change one
 control value or many control values at once without having to specify all
 control values every time.  A non-present control value indicates no change.  A
@@ -854,7 +860,7 @@ intentionally mirror settable attributes and methods of the
     assumed to be false.
 
 : paused 
-:: If true, pause; if false, resume.  See
+:: If true, pause; if false, resume. See
     [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause).
     and
     [HtmlMediaElement.play()](https://html.spec.whatwg.org/multipage/media.html#dom-media-play)
@@ -862,19 +868,19 @@ intentionally mirror settable attributes and methods of the
     receiver to decide.
 
 : muted
-:: If true, mute; if false, unmute.  See
+:: If true, mute; if false, unmute. See
     [HtmlMediaElement.muted](https://html.spec.whatwg.org/multipage/media.html#dom-media-muted)
     for more details.  If not set in the initial controls, it is left to the
     receiver to decide.
 
 : volume
-:: Set the audio volume in the range from 0.0 to 1.0 inclusive.  See
+:: Set the audio volume in the range from 0.0 to 1.0 inclusive. See
     [HtmlMediaElement.volume](https://html.spec.whatwg.org/multipage/media.html#dom-media-volume)
     for more details.  If not set in the initial controls, it is left to the
     receiver to decide.
 
 : seek
-:: Seek to a precise time.  See
+:: Seek to a precise time. See
     [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime)
     for more details. 
 
@@ -884,14 +890,14 @@ intentionally mirror settable attributes and methods of the
     for more details.
 
 : playback-rate
-:: Set the rate a which the media plays.  See
+:: Set the rate a which the media plays. See
     [HtmlMediaElement.playbackRate](https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate)
     for more details.  If not set in the initial controls, it is left to the
     receiver to decide.  This is optional for the receiver to support and if not
     supported, the receiver will behave as though it were never set.
 
 : poster
-:: Set the URL of an image to show when video data is not available.  See
+:: Set the URL of an image to show when video data is not available. See
     [HtmlMediaElement.poster](https://html.spec.whatwg.org/multipage/media.html#dom-media-poster)
     for more details. If not set in the initial controls, no poster is used and
     the receiver can choose what to render when video data is unavailable.  This
@@ -904,7 +910,7 @@ intentionally mirror settable attributes and methods of the
     for more details.
 
 : select-video-track-id
-:: Select the given video track by ID and unselect all other video tracks.  See
+:: Select the given video track by ID and unselect all other video tracks. See
     [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
     for more details.
 
@@ -916,121 +922,123 @@ intentionally mirror settable attributes and methods of the
     
 : changed-text-tracks 
 :: Change text tracks by ID.  All other text tracks are left
-    unchanged.  Set the mode, add cues, and remove cues by id.  See
+    unchanged.  Set the mode, add cues, and remove cues by id. See
     [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks)
     for more details.  Note that future specifications or extensions to this
-    specifications are expected to add values to the added text-track-cue
-    values (such as text size, alighment, position, etc).  Adding and removing
+    specifications are expected to add new properties to the text-track-cue
+    (such as text size, alignment, position, etc).  Adding and removing
     cues is optional for the receiver to support and if not supported, the
     receiver will behave as though no cues were added or removed (both adding
-    and removing are indicated via the support for "added-cues").
+    and removing are indicated via the support for "added-cues").  As specified in
+    [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks),
+    if a cue ID is invalid (removing an un-added ID or adding an ID twice, for example),
+    the receiver may reject the text track change.
 
+<!-- TODO: Add a table for whether it's required and what the default is -->
 
 
 The states sent by the receiver include the following individual state values,
 each of which is optional.  This allows the receiver to update the controller
-about one state value or many state values at once without having to specify all
+about more than one state value at once without having to specify all
 state values every time.  A non-present state value indicates the state has not
 changed.
 
 : supports
 :: The controls the receiver supports.  These may differ for different [=media
-    resource=]s and should not changes unless the [=media resource=] changes.  If
-    not present in the intial state in the remote-playback-start-response
-    message, support for nothing is assumed.
+    resource=]s and should not changes unless the [=media resource=] changes.
+    The default is empty (support for nothing)
+    for the initial state in the remote-playback-start-response message.
 
 : source
 :: The current [=media resource=] URL. See
     [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc).
-    Must be present in the intial state in the remote-playback-start-response
-    message.
+    Must be present in the initial state in the remote-playback-start-response message.
 
 : loading
-:: The state of network activity for loading the [=media resource=].  See
+:: The state of network activity for loading the [=media resource=]. See
     [HtmlMediaElement.networkState](https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be empty.
+    The default is empty (NETWORK_EMPTY)
+    for the initial state in the remote-playback-start-response message.
 
 : loaded
-:: The state of the loaded media (whether enough is loaded to play).  See
+:: The state of the loaded media (whether enough is loaded to play). See
     [HtmlMediaElement.readyState](https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be nothing.
+    The default is nothing (HAVE_NOTHING)
+    for the initial state in the remote-playback-start-response message.
 
 : error
 :: A major error occurred which prevents the remote playback from continuing. See
     [HtmlMediaElement.error](https://html.spec.whatwg.org/multipage/media.html#dom-media-error) and 
     [HtmlMediaElement media error codes](https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed there is no such major error.
+    The default is no error
+    for the initial state in the remote-playback-start-response message.
 
 : epoch
-:: The "zero time" of the media timeline.  See
+:: The "zero time" of the media timeline. See
     [HtmlMediaElement's timeline offset](https://html.spec.whatwg.org/multipage/media.html#timeline-offset) and 
     [HtmlMediaElement.getStartDate()](https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be unknown.
+    The default is an unknown epoch
+    for the initial state in the remote-playback-start-response message.
 
 : duration
-:: The duration of the media timeline.  See
+:: The duration of the media timeline. See
     [HtmlMediaElement.duration](https://html.spec.whatwg.org/multipage/media.html#dom-media-duration).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be unknown.  For unbounded streams, it may be "forever".
+    The default is an unknown duration
+    for the initial state in the remote-playback-start-response message.
 
 : buffered-time-ranges
-:: The time ranges for which media has been buffered.  See
+:: The time ranges for which media has been buffered. See
     [HtmlMediaElement.buffered](https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered).
 
 : played-time-ranges
-:: The time ranges for which media has been played.   See
+:: The time ranges reached by the playback position during normal playback. See
     [HtmlMediaElement.played](https://html.spec.whatwg.org/multipage/media.html#dom-media-played).
 
 : seekable-time-ranges
-:: The time ranges for which media is seekable (ranges the controller or the
-    user on the receiver may seek to).   See
+:: The time ranges for which media is seekable by the controller or the receiver. See
     [HtmlMediaElement.seekable](https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable).
 
 : position
-:: The playback position.  See
+:: The playback position. See
     [HtmlMediaElement's official playback
     position](https://html.spec.whatwg.org/multipage/media.html#official-playback-position)
     and
     [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be 0.
+    The default is 0
+    for the initial state in the remote-playback-start-response message.
 
 : playbackRate
-:: The current rate of playback on a scale where 1.0 is "normal speed".  See
+:: The current rate of playback on a scale where 1.0 is "normal speed". See
     [HtmlMediaElement.playbackRate](https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be 1.0.
+    The default is 1.0
+    for the initial state in the remote-playback-start-response message.
 
 : paused
-:: Whether media is paused or not.  See
+:: Whether media is paused or not. See
     [HtmlMediaElement.paused](https://html.spec.whatwg.org/multipage/media.html#dom-media-paused).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be false.
+    The default is false
+    for the initial state in the remote-playback-start-response message.
 
 : seeking
-:: Whether the receiver is seeking or not.  See
+:: Whether the receiver is seeking or not. See
     [HtmlMediaElement.seeking](https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be false.
+    The default is false
+    for the initial state in the remote-playback-start-response message.
 
 : stalled
-:: If true, media is not playing because not enough media is loaded, and false otherwise.  See
+:: If true, media is not playing because not enough media is loaded, and false otherwise. See
     [HtmlMediaElement.stalled](https://html.spec.whatwg.org/multipage/media.html#event-media-stalled).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be false.
+    The default is false
+    for the initial state in the remote-playback-start-response message.
 
 : ended
-:: Whether media has reached the end or not.  See
+:: Whether media has reached the end or not. See
     [HtmlMediaElement.ended](https://html.spec.whatwg.org/multipage/media.html#dom-media-ended).
-    If not present in the intial state in the remote-playback-start-response
-    message, it is assumed to be false.
+    The default is false
+    for the initial state in the remote-playback-start-response message.
 
 : volume
-:: The current volume of playback on a scale of 0.0 to 1.0.  See
+:: The current volume of playback on a scale of 0.0 to 1.0. See
     [HtmlMediaElement.volume](https://html.spec.whatwg.org/multipage/media.html#dom-media-volume).
 
 : muted
@@ -1039,27 +1047,25 @@ changed.
     [HtmlMediaElement.muted](https://html.spec.whatwg.org/multipage/media.html#dom-media-muted).
 
 : resolution
-:: The "intrinsic width" and "intrinsic width" of the video.  See
+:: The "intrinsic width" and "intrinsic width" of the video. See
     [HtmlMediaElement.videoWidth](https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth)
     and
     [HtmlMediaElement.videoHeight](https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight).
 
 : audio-tracks
-:: The audio tracks available, which can individually enabled or disabled.  See
+:: The available audio tracks, which can individually enabled or disabled. See
     [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
 
 : video-tracks
-:: The video tracks available, one of which can be selected.  See
+:: The available video tracks.  Only one may be selected. See
     [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
 
 : text-tracks
-:: The text tracks available, which can be individually shown, hidden, or disabled.  See
-    [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks).
+:: The available text tracks, which can be individually shown, hidden, or disabled. See
+    [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks).
     The controller can also add cues to and remove cues from text tracks.
 
-
-
-All times, time ranges, and durations (such as positon, duration, and
+All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common media-time value (see Appendix A)
 which includes a time scale.  This allows time values which work on different
 time scales to be expressed without loss of precision.  The scale is represented
@@ -1433,7 +1439,7 @@ remote-playback-controls = {
 }
 
 remote-playback-state = {
-  ? 1: (rate: bool, preload: bool, poster: bool, added-text-track: bool, added-cues: bool) ; supports
+  ? 1: &(rate: bool, preload: bool, poster: bool, added-text-track: bool, added-cues: bool) ; supports
 
   ? 2: url ; source
   ? 3: &(
@@ -1444,7 +1450,7 @@ remote-playback-state = {
   ) ; loading
   ? 4: &(
     nothing: 0
-    metdata: 1
+    metadata: 1
     current: 2
     future: 3
     enough: 4
@@ -1524,6 +1530,7 @@ media-error = [
     network-error: 2
     decode-error: 3
     source-not-supported: 4
+    unknown-error: 5
   )
   message: text
 ]
@@ -1544,7 +1551,7 @@ video-track-state = {
   5 : bool ; selected
 }
 
-track-track-state = {
+text-track-state = {
   track-state
   6 : mode ; text-track-mode
 }
