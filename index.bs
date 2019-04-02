@@ -1215,34 +1215,161 @@ implementation of this step is specific to the user agent.", the controlling
 user agent may send the remote-playback-termination-request message.
 
 
-Media Streaming Protocol {#media-streaming-protocol}
-====================================================
+Streaming Protocol {#streaming-protocol}
+========================================
 
 The section defines the use of the Open Screen Protocol for streaming
 media from one agent to another. We refer to the agent sending media
 as the *sender* and the agent receiving the media as the *receiver*.
 
-Capabilities {#media-streaming-capabilities}
+Capabilities {#streaming-capabilities}
 --------------------------------------------
 
 <!--
-  TODO: Describe how the sender asks for the receiver;s capabilities.
-  Audio: codec and codec parameters 
-  Video: codec and codec parameters; max resolution, max fps, max pixels per second.
+  TODO:
+
+  Put in something like this:
+
+streaming-capabilities-request {
+  request
+}
+
+streaming-capabilities-response {
+  response
+  capabilities: streaming-capabilities
+}
+
+streaming-capabilities = {
+  receive-audio: [* receive-audio-capability]
+  receive-video: [* receive-video-capability]
+  receive-data: [* receive-data-capability]
+}
+
+
+receive-audio-capability = {
+  codec-name: text
+  codec-parameters: [* codec-parameter]
+}
+
+receive-video-capability = {
+  codec-name: text
+  codec-parameters: [* codec-parameter]
+  ? max-resolution: video-resolution
+  ? max-frames-per-second: float
+  ? max-pixels-per-second: float
+}
+
+receive-data-capability = {
+  format: text ; we define "text-cue" for text cues
+  format-parameters: codec-parameters
+}
+
+codec-parameter = {
+  key: text
+  value: bytes
+}
+
 -->
 
-Requests {#media-streaming-requests}
+Sessions {#streaming-sessions}
 ------------------------------------
 
-<!-- 
-  TODO: Describe how sender and receiver arrive at a common understanding of encodings.
-  Audio encoding must include codec, codec parameters, time scale, and default duration
-  Video encoding must include codec, codec parametesr, time scale, and default rotation
-  Data encoding must include data type and time scale.
+<!--
+  TODO: Put in something like this
+
+streaming-session-start-request = {
+  request
+  streaming-session-id: uint
+  stream-offers: [* media-stream-offer]
+  stats-interval: microseconds ; please send receiver stats this often
+}
+
+streaming-session-start-response = {
+  response
+  stream-requests: [* media-stream-request]
+  stats-interval: microseconds ; please send sender stats this often
+}
+
+streaming-session-modify-request = {
+  request
+  streaming-session-id: uint
+  stream-requests: [* media-stream-request]
+}
+
+streaming-session-modify-response = {
+  response
+}
+
+streaming-session-stop-request = {
+  request
+  streaming-session-id: uint
+}
+
+streaming-session-stop-response = {
+  response
+}
+
+streaming-session-stop-event= {
+  streaming-session-id: uint
+}
+
+media-stream-offer = {
+  media-stream-id: uint
+  ? friendly-name: text
+  ? audio: [* audio-encoding-offer]
+  ? video: [* video-encoding-offer]
+  ? data: [* data-encoding-offer]
+}
+
+media-stream-request = {
+  media-stream-id: uint
+  ? audio: [* audio-encoding-request]
+  ? video: video-encoding-request
+  ? data: [* data-encoding-request]
+}
+
+audio-encoding-offer = {
+  encoding-id: uint
+  codec-name: text
+  codec-parameters: [* codec-parameter]
+  time-scale: uint ; AKA sample rate or clock rate
+  default-duration: uint ; AKA ptime
+}
+
+video-encoding-offer = {
+  encoding-id: uint
+  codec-name: text
+  codec-parameters: [* codec-parameter]
+  time-scale: uint ; AKA clock rate; probably 90khz
+  ? default-duration: uint ; AKA ptime
+  ? default-rotation: video-rotation
+}
+
+data-encoding-offer = {
+  encoding-id: uint
+  format: text ; "text-cue" defined to mean text cues
+  format-parameters: [* codec-parameter] ; format-specific
+  time-scale: uint ; AKA clock rate; probably 1mhz
+}
+
+audio-stream-request = {
+  encoding-id: uint
+}
+
+video-stream-request = {
+  encoding-id: uint
+  ? target-resolution: video-resolution ; displayed resolution; try to be slightly above; default is unknown
+  ? max-framerate: float
+}
+
+data-stream-request = {
+  encoding-id: uint
+}
+
 -->
 
 
-Audio Frames {#media-streaming-audio-frames}
+Audio {#streaming-audio}
 ------------------------------
 
 Senders may send audio to receivers by sending audio-frame messages (see
@@ -1292,7 +1419,7 @@ out of order.
 : payload
 :: The data.  The type of data is inferred from the properties of the encoding.
 
-Video Frames {#media-streaming-video-frames}
+Video {#streaming-video}
 --------------------------------------------
 
 Senders may send video to receivers by sending video-frame messages (see
@@ -1352,7 +1479,7 @@ ending at the last dependent frame.
     inferred from the properties of the encoding.
 
 
-Data Frames {#media-streaming-data-frames}
+Data {#media-streaming-data}
 ------------------------------------
 
 Senders may send timed data to receivers by sending data-frame messages (see
@@ -1398,7 +1525,7 @@ a timescale of 1000000 (microseconds).
 :: The encoded audio samples.  The codec and codec parameters are inferred from
     the properties of the encoding.
 
-Feedback {#media-streaming-feedback}
+Feedback {#streaming-feedback}
 ------------------------------------
 
 The receiver can send feedback to the sender, such as key frame requests.
@@ -1422,14 +1549,46 @@ QUIC streams.
 :: If set, the sender may generate a video frame dependent on the last decoded
     frame.  If not set, the sender must generate an indepdendent (key) frame.
 
-Stats {#media-streaming-stats}
+Stats {#streaming-stats}
 ------------------------------
 
-<!-- TODO: Allow one end to request one from the other end, but with an interval to send stats.
-     Sent audio stats: cumulative sent, encode delay
-     Sent video stats: cumulative sent frames, cumulative dropped frames, encode delay
-     Received audio stats: received cumulative time, lost cumulative time, decode delay
-     Received video stats: received cumulative frames, lost cumulative frames, decode delay
+<!-- 
+
+ TODO: Something like this:
+
+streaming-session-sender-stats-event = {
+  timestamp: microseconds
+  ? audio: [* {
+    encoding-id: uint
+    ? sent: microseconds
+    ? encode-delay: microseconds
+    ; ...
+  }]
+  ? video: [* {
+    encoding-id: uint
+    ? encode-delay: microseconds
+    ? sent-frames: uint
+    ? dropped-frames: uint
+  }]
+}
+
+streaming-session-receiver-stats-event = {
+  timestamp: microseconds
+  ? audio: [* {
+    encoding-id: uint
+    ? received: microseconds
+    ? lost: microseconds
+    ? buffer-delay: microseconds
+    ? decode-delay: microseconds
+  }]
+  ? video: [* {
+    encoding-id: uint
+    ? received: microseconds
+    ? lost: microseconds
+    ? buffer-delay: microseconds
+    ? decode-delay: microseconds
+  }]
+}
 
 -->
 
