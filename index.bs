@@ -1230,7 +1230,7 @@ Requests {#media-streaming-requests}
 ------------------------------------
 
 
-Audio {#media-streaming-audio}
+Audio Frames {#media-streaming-audio-frames}
 ------------------------------
 
 Senders may send audio to receivers by sending audio-frame messages (see
@@ -1280,8 +1280,8 @@ out of order.
 : payload
 :: The data.  The type of data is inferred from the properties of the encoding.
 
-Video {#media-streaming-video
-------------------------------
+Video Frames {#media-streaming-video-frames}
+--------------------------------------------
 
 Senders may send video to receivers by sending video-frame messages (see
 [[#appendix-a]]) with the following keys and values.  A video frame message
@@ -1303,15 +1303,15 @@ ending at the last dependent frame.
     encoding through the encoding id helps to avoid sending duplicate
     information in every frame.
 
-: frame-id
-:: Identifies the frame and acts like a sequence number scoped to the encoding.
-    Within an encoding, larger frame-ids mean later start times.
-    Within an encoding, gaps in frame-ids mean that frames are missing.
+: sequence-number
+:: Identifies the frame and its order in the encoding.
+    Within an encoding, larger sequence numbers mean later start times.
+    Within an encoding, gaps in sequence numbers mean frames are missing.
 
 : depends-on
-:: If present, the frame-ids of the frames this frame depends on.
-    If a frame-id is negative, it is treated as a relative frame-id 
-    and the frame-id is calculated by adding this frames frame-id to the value.
+:: If present, the sequence numbers of the frames this frame depends on.
+    If a sequence numbers is negative, it is treated as a relative sequence numbers 
+    and the sequence numbers is calculated by adding it to the sequence number of this frame.
     If empty, this is an independent frame (a key frame).
     If not present, the default value is [-1].
 
@@ -1340,7 +1340,7 @@ ending at the last dependent frame.
     inferred from the properties of the encoding.
 
 
-Text and Data {#media-streaming-data}
+Data Frames {#media-streaming-data-frames}
 ------------------------------------
 
 Senders may send timed data to receivers by sending data-frame messages (see
@@ -1361,10 +1361,10 @@ Text track data uses a payload type of text and a default duration of unknown.
     time scale.  Referencing properties of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
-: frame-id
-:: Identifies the frame and acts like a sequence number scoped to the encoding.
-    Within an encoding, larger frame-ids mean later start times.
-    Within an encoding, gaps in frame-ids mean that frames are missing.
+: sequence-number
+:: Identifies the frame and its order in the encoding.
+    Within an encoding, larger sequence numbers mean later start times.
+    Within an encoding, gaps in sequence numbers mean frames are missing.
 
 : start-time
 :: Identifies the beginning of the time range of the data frame.  The time
@@ -1388,6 +1388,26 @@ Text track data uses a payload type of text and a default duration of unknown.
 Feedback {#media-streaming-feedback}
 ------------------------------------
 
+The receiver can send feedback to the sender, such as key frame requests.
+
+A video key frame is requested by sending a video-request message with
+the following keys and values.
+
+To allow for video frames to be sent out of order, they may be sent in separate
+QUIC streams.
+
+: encoding-id
+:: The encoding for which the sender should send a new key frame.
+
+: sequence-number
+:: Gives the order in the encoding.
+    Within an encoding, larger sequence numbers invalidate previous ones.
+    A sender may ignore smaller sequence numbers after a larger one has been processed.
+    This it to prevent out-of-order requests from generating more key frames than necessary. 
+
+: highest-decoded-frame-sequence-number: uint
+:: If set, the sender may generate a video frame dependent on the last decoded
+    frame.  If not set, the sender must generate an indepdendent (key) frame.
 
 Stats {#media-streaming-stats}
 ------------------------------
@@ -2159,7 +2179,7 @@ audio-frame = [
 ; type key 23
 video-frame = {
   0: uint ; encoding-id
-  1: uint ; frame-id
+  1: uint ; sequence-number
   ? 2: [* int] ; depends-on
   3: uint ; start-time
   ? 4: uint ; duration 
@@ -2171,11 +2191,18 @@ video-frame = {
 ; type key 24
 data-frame = {
   0: uint; encoding-id
-  ? 1: uint ; frame-id 
+  ? 1: uint ; sequence-number
   ? 2: uint ; start-time
   ? 3: uint ; duration
   4: any; payload
   ? 5: media-time ; sync-time
+}
+
+; type key 120
+video-frame-request = {
+ 1: uint; encoding-id
+ 2: uint; sequence-number: 
+ ? 3: uint; highest-decoded-frame-sequence-number
 }
 
 
