@@ -1225,9 +1225,21 @@ as the *sender* and the agent receiving the media as the *receiver*.
 Capabilities {#media-streaming-capabilities}
 --------------------------------------------
 
+<!--
+  TODO: Describe how the sender asks for the receiver;s capabilities.
+  Audio: codec and codec parameters 
+  Video: codec and codec parameters; max resolution, max fps, max pixels per second.
+-->
 
 Requests {#media-streaming-requests}
 ------------------------------------
+
+<!-- 
+  TODO: Describe how sender and receiver arrive at a common understanding of encodings.
+  Audio encoding must include codec, codec parameters, time scale, and default duration
+  Video encoding must include codec, codec parametesr, time scale, and default rotation
+  Data encoding must include data type and time scale.
+-->
 
 
 Audio Frames {#media-streaming-audio-frames}
@@ -1353,7 +1365,8 @@ To allow for data frames to be sent out of order, they may be sent in separate
 QUIC streams, but more than one data frame may be sent in one QUIC stream if
 that makes sense for a specific type of data.
 
-Text track data uses a payload type of text and a default duration of unknown.
+Text track data uses a payload type of text, a default duration of unknown, and
+a timescale of 1000000 (microseconds).
 
 : encoding-id
 :: Identifies the media encoding to which this data frame belongs.  This can be
@@ -1412,8 +1425,13 @@ QUIC streams.
 Stats {#media-streaming-stats}
 ------------------------------
 
+<!-- TODO: Allow one end to request one from the other end, but with an interval to send stats.
+     Sent audio stats: cumulative sent, encode delay
+     Sent video stats: cumulative sent frames, cumulative dropped frames, encode delay
+     Received audio stats: received cumulative time, lost cumulative time, decode delay
+     Received video stats: received cumulative frames, lost cumulative frames, decode delay
 
-
+-->
 
 Security and Privacy {#security-privacy}
 ====================
