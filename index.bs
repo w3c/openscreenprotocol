@@ -1215,6 +1215,79 @@ implementation of this step is specific to the user agent.", the controlling
 user agent may send the remote-playback-termination-request message.
 
 
+Media Streaming Protocol {#media-streaming-protocol}
+====================================================
+
+The section defines the use of the Open Screen Protocol for streaming
+media from one agent to another. We refer to the agent sending media
+as the *sender* and the agent receiving the media as the *receiver*.
+
+Capabilities {#media-streaming-capabilities}
+--------------------------------------------
+
+
+Requests {#media-streaming-requests}
+------------------------------------
+
+
+Audio {#media-streaming-audio}
+------------------------------
+
+Senders may send audio to receivers by sending audio-frame messages
+(see [[#appendix-a]]) with the following keys and values.  An audio
+frame represents a set of encoded audio samples for a range of time.
+A set of audio frames that share a codec, codec parameters and a
+timeline form an audio encoding.  A set of audio encodings that share
+a timeline form an audio stream.
+
+Unlike most Open Screen Protocol messages, this one uses an
+array-based grouping rather than a struct-based grouping.  For
+required fields, this allows for a more efficient use of bytes on the
+wire, which is important for streaming audio because the payload is
+typically so small and every byte of overhead is relatively large.  In
+order to accomodate optional values in the array-based grouping, one
+optional field in the array is used to hold all optional values in a
+struct-based grouping.  This will hopefully provide a good balance of
+efficiency and flexibility.
+
+To further increase efficiency, each audio-frame message must be sent
+in a separate QUIC stream without the length prefix.  It must only use
+the type key prefix and then the encoded CBOR message immediately
+after.  Separate QUIC streams also allow audio frames to be received
+out of order.
+
+: encoding-id
+:: Identifies the media encoding to which this audio frame belongs.
+
+: start-time
+::
+
+: duration
+::
+
+: system-time
+::
+
+: payload
+::
+
+Video {#media-streaming-audio}
+------------------------------
+
+Text and Data {#media-streaming-data}
+------------------------------------
+
+
+Feedback {#media-streaming-feedback}
+------------------------------------
+
+
+Stats {#media-streaming-stats}
+------------------------------
+
+
+
+
 Security and Privacy {#security-privacy}
 ====================
 
@@ -1964,5 +2037,16 @@ text-track-state = {
   track-state
   6 : mode ; text-track-mode
 }
+
+; type key 22
+audio-frame = [
+  encoding-id: uint
+  start-time: uint
+  payload: bytes
+  ? optional: {
+    ? 0: uint ; duration
+    ? 1: media-time ; system-time
+  }
+]
 
 </pre>
