@@ -1233,12 +1233,11 @@ Requests {#media-streaming-requests}
 Audio {#media-streaming-audio}
 ------------------------------
 
-Senders may send audio to receivers by sending audio-frame messages
-(see [[#appendix-a]]) with the following keys and values.  An audio
-frame represents a set of encoded audio samples for a range of time.
-A set of audio frames that share a codec, codec parameters and a
-timeline form an audio encoding.  A set of audio encodings that share
-a timeline form an audio stream.
+Senders may send audio to receivers by sending audio-frame messages (see
+[[#appendix-a]]) with the following keys and values.  An audio frame message
+contains a set of encoded audio samples for a range of time. A series of
+encoded audio frames that share a codec, codec parameters and a timeline form an
+audio encoding.
 
 Unlike most Open Screen Protocol messages, this one uses an
 array-based grouping rather than a struct-based grouping.  For
@@ -1257,26 +1256,134 @@ after.  Separate QUIC streams also allow audio frames to be received
 out of order.
 
 : encoding-id
-:: Identifies the media encoding to which this audio frame belongs.
+:: Identifies the media encoding to which this audio frame belongs.  This can be
+    used to reference properties of the encoding such as the codec, codec
+    properties, time scale (aka clock rate or sample rate), and default
+    duration.  Referencing properties of the encoding through the encoding id
+    helps to avoid sending duplicate information in every frame.
 
 : start-time
-::
+:: Identifies the beginning of the time range of the audio frame.  The time
+    scale is inferred from the properties of the encoding.  The end time can be
+    inferred from the start time and duration.
 
 : duration
-::
+:: If present, the duration of the audio frame.  The time
+    scale is inferred from the properties of the encoding.  Likewise, if not
+    present, the duration is inferred from the properties of the encoding.
 
-: system-time
-::
+: sync-time
+:: If present, a time used to synchronize the start time of this audio frame (and
+    thus, this encoding) with that of other media encodings on different
+    timelines.
 
 : payload
-::
+:: The data.  The type of data is inferred from the properties of the encoding.
 
-Video {#media-streaming-audio}
+Video {#media-streaming-video
 ------------------------------
+
+Senders may send video to receivers by sending video-frame messages (see
+[[#appendix-a]]) with the following keys and values.  A video frame message
+contains an encoded video frame (an encoded image) at a specific point in time
+or over a specfic time range (if the duration is known).  A series of encoded
+video frames that share a codec, codec parameters and a timeline form a video
+encoding.
+
+To allow for video frames to be sent out of order, they may be sent in
+separate QUIC streams.  If the encoding is a long chain of encoded video frames
+dependent on the previous one back until an independent frame, it may make sense
+to send them in a single QUIC stream starting at the indepdendent frame and
+ending at the last dependent frame.
+
+: encoding-id
+:: Identifies the media encoding to which this video frame belongs.  This can be
+    used to reference properties of the encoding such as the codec, codec
+    properties, time scale, and default rotation.  Referencing properties of the
+    encoding through the encoding id helps to avoid sending duplicate
+    information in every frame.
+
+: frame-id
+:: Identifies the frame and acts like a sequence number scoped to the encoding.
+    Within an encoding, larger frame-ids mean later start times.
+    Within an encoding, gaps in frame-ids mean that frames are missing.
+
+: depends-on
+:: If present, the frame-ids of the frames this frame depends on.
+    If a frame-id is negative, it is treated as a relative frame-id 
+    and the frame-id is calculated by adding this frames frame-id to the value.
+    If empty, this is an independent frame (a key frame).
+    If not present, the default value is [-1].
+
+: start-time
+:: Identifies the beginning of the time range of the video frame.  The time
+    scale is inferred from the properties of the encoding.  The end time can be
+    inferred from the start time and duration.
+
+: duration
+:: If present, the duration of the video frame.  The time
+    scale is inferred from the properties of the encoding.  If not
+    present, that means duration is unknown.
+
+: sync-time
+:: If present, a time used to synchronize the start time of this frame (and
+    thus, this encoding) with that of other media encodings on different
+    timelines.
+
+: rotation
+:: If present, indicates how the frame should be rotated after decoding but
+    before rendering.  Rotation is clockwise in increments of 90 degrees.
+    The default is 0 (no rotation).
+
+: payload
+:: The encoded video frame (encoded image).  The codec and codec parameters are
+    inferred from the properties of the encoding.
+
 
 Text and Data {#media-streaming-data}
 ------------------------------------
 
+Senders may send timed data to receivers by sending data-frame messages (see
+[[#appendix-a]]) with the following keys and values.  A data frame message
+contains an arbitrary payload that can be synchronized with and video, such as
+text track data.  A series of data frames that share a data type and timeline
+form a data encoding.
+
+To allow for data frames to be sent out of order, they may be sent in separate
+QUIC streams, but more than one data frame may be sent in one QUIC stream if
+that makes sense for a specific type of data.
+
+Text track data uses a payload type of text and a default duration of unknown.
+
+: encoding-id
+:: Identifies the media encoding to which this data frame belongs.  This can be
+    used to reference properties of the encoding such as the type of data and
+    time scale.  Referencing properties of the encoding through the encoding id
+    helps to avoid sending duplicate information in every frame.
+
+: frame-id
+:: Identifies the frame and acts like a sequence number scoped to the encoding.
+    Within an encoding, larger frame-ids mean later start times.
+    Within an encoding, gaps in frame-ids mean that frames are missing.
+
+: start-time
+:: Identifies the beginning of the time range of the data frame.  The time
+    scale is inferred from the properties of the encoding.  The end time can be
+    inferred from the start time and duration.
+
+: duration
+:: If present, the duration of the data frame.  The time
+    scale is inferred from the properties of the encoding.  Likewise, if not
+    present, the duration is inferred from the properties of the encoding.
+
+: sync-time
+:: If present, a time used to synchronize the start time of this audio frame (and
+    thus, this encoding) with that of other media encodings on different
+    timelines.
+
+: payload
+:: The encoded audio samples.  The codec and codec parameters are inferred from
+    the properties of the encoding.
 
 Feedback {#media-streaming-feedback}
 ------------------------------------
@@ -2045,8 +2152,31 @@ audio-frame = [
   payload: bytes
   ? optional: {
     ? 0: uint ; duration
-    ? 1: media-time ; system-time
+    ? 1: media-time ; sync-time
   }
 ]
+
+; type key 23
+video-frame = {
+  0: uint ; encoding-id
+  1: uint ; frame-id
+  ? 2: [* int] ; depends-on
+  3: uint ; start-time
+  ? 4: uint ; duration 
+  5: bytes ; payload
+  ? 6: uint ; rotation
+  ? 7: media-time ; sync-time
+}
+
+; type key 24
+data-frame = {
+  0: uint; encoding-id
+  ? 1: uint ; frame-id 
+  ? 2: uint ; start-time
+  ? 3: uint ; duration
+  4: any; payload
+  ? 5: media-time ; sync-time
+}
+
 
 </pre>
