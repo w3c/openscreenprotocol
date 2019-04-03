@@ -25,7 +25,8 @@ streaming-capabilities-update = {
 agent-info = {
   0: text ; display-name
   1: text ; model-name
-  ? 2: bool ; audio-only
+  ? 2: bool ; supports-audio
+  ? 3: bool ; supports-video
 }
 
 resolution = {
@@ -34,39 +35,29 @@ resolution = {
   2: [1* float64] ; refresh-rates
 }
 
-codec = (
-  H-264: 0
-  MPEG-4: 1
-  MP3: 2
-  VP8: 3
-  AAC-LC: 4
-  AC3: 5
-  eAC3: 6
-  FLAC: 7
-  PCM: 8
-  Vorbis: 9
-)
-
 bit-rate-limits = {
  0: uint ; min-bit-rate
  1: uint ; max-bit-rate
- 2: uint ; max-latency
+}
+
+codec = {
+  0: string ; codec-name
+  1: uint ; max-pixels-per-second
 }
 
 streaming-capabilities = {
-  0: uint ; max-pixel-fill-rate
-  1: [1* codec] ; supported-codecs
+  0: [1* codec] ; codecs
 
-  ? 2: resolution ; min-resolution
-  ? 3: resolution ; max-resolution
+  ? 1: resolution ; min-resolution
+  ? 2: resolution ; max-resolution
 
-  ? 4: uint ; max-audio-channels
-  ? 5: bit-rate-limits ; audio-bit-rate-limits
-  ? 6: bit-rate-limits ; video-bit-rate-limits
+  ? 3: uint ; max-audio-channels
+  ? 4: uint ; min-video-bit-rate
+  ? 5: uint ; min-video-bit-rate
 
-  ? 7: float64 ; aspect-ratio
-  ? 8: [1* string] ; color-profiles
-  ? 9: bool ; supports-scaling
+  ? 6: float64 ; aspect-ratio
+  ? 7: [1* string] ; color-profiles
+  ? 8: bool ; supports-scaling
 }
 
 ; type key 12
