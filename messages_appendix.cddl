@@ -9,55 +9,11 @@ agent-info-response = {
   1: agent-info ; agent-info
 }
 
-streaming-capabilities-request = {
-  request
-}
-
-streaming-capabilities-response = {
-  response
-  1: streaming-capabilities ; streaming-capabilities
-}
-
-streaming-capabilities-update = {
-  1: streaming-capabilities ; streaming-capabilities
-}
-
 agent-info = {
   0: text ; display-name
   1: text ; model-name
   ? 2: bool ; supports-audio
   ? 3: bool ; supports-video
-}
-
-resolution = {
-  0: uint ; horizontal-resolution
-  1: uint ; vertical-resolution
-  2: [1* float64] ; refresh-rates
-}
-
-bit-rate-limits = {
- 0: uint ; min-bit-rate
- 1: uint ; max-bit-rate
-}
-
-codec = {
-  0: string ; codec-name
-  1: uint ; max-pixels-per-second
-}
-
-streaming-capabilities = {
-  0: [1* codec] ; codecs
-
-  ? 1: resolution ; min-resolution
-  ? 2: resolution ; max-resolution
-
-  ? 3: uint ; max-audio-channels
-  ? 4: uint ; min-video-bit-rate
-  ? 5: uint ; min-video-bit-rate
-
-  ? 6: float64 ; aspect-ratio
-  ? 7: [1* string] ; color-profiles
-  ? 8: bool ; supports-scaling
 }
 
 ; type key 12

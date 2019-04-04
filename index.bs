@@ -331,50 +331,6 @@ The messages may contain the following properties:
 :: The requestee has to indicate that it supports video streaming. If false
     or not included, it is assumed video streaming is not supported.
 
-If the advertiser is already authenticated, the listener has the ability to
-request additional information by sending an streaming-capabilities-request
-message, and receive back a streaming-capabilities-response message with the
-following properties:
-
-: codecs (required)
-:: The advertiser must indicate to the listener what codecs it understands for
-    remote playback. Note that the codec includes both (1) the codec name, and
-    (2) the max pixels per second supported for that codec.
-
-: min-resolution (optional)
-:: The advertiser may indicate what it considers its minimum resolution to be, for
-    setting a minimum boundary on content quality.
-
-: max-resolution (optional)
-:: The advertiser may indicate the maximum resolution and frame rate. Note that
-    this may not be the ideal, depending on the max-pixel-fill-rate.
-
-: max-audio-channels (optional)
-:: The advertiser may indicate the maximum number of audio channels in abilities
-    standard audio setup, e.g. 2 for stereo, 5 or 7 for a surround setup.
-
-: min-video-bit-rate (optional)
-:: The advertiser may indicate the practical min and max bit rate limits.
-    Physical hardware requirements, such as maximum decoder throughput or
-    maximum video buffer size inform these values.
-
-: max-video-bit-rate (optional)
-:: See min-video-bit-rate above.
-
-: aspect-ratio (optional)
-:: The advertiser may indicate what its ideal aspect ratio is, e.g. a 16:10
-    display could return this value as 1.6 to indicate its preferred content
-    scaling.
-
-: color-profiles (optional)
-:: The advertiser may indicate what color profiles are understood, such as
-    sRGB v4. The listener may use these values to determine how to encode
-    video.
-
-: supports-scaling (optional)
-:: If omitted, this value is assumed to be false. Setting to "True" indicates
-    that the advertiser can scale content that is of an unsupported resolution or
-    non-ideal aspect ratio. If false, the listener must do the scaling.
 
 Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.
 
