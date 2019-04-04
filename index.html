@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="f528af3f2ca9c397ebae3f5d5b355fd72a5a044a" name="document-revision">
+  <meta content="b6bbe38abfddce18ee408aca68ee1029e9e3e20b" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1277,7 +1277,6 @@ Possible extra rowspan handling
 .highlight .vg { color: #008080 } /* Name.Variable.Global */
 .highlight .vi { color: #008080 } /* Name.Variable.Instance */
 .highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
-
 </style>
 <style>/* style-md-lists */
 
@@ -3145,27 +3144,22 @@ because smaller type keys encode on the wire smaller.</p>
     <span class="nx">future</span><span class="p">:</span> <span class="mi">3</span>
     <span class="nx">enough</span><span class="p">:</span> <span class="mi">4</span>
   <span class="p">)</span> <span class="c1">; loaded</span>
-  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-error </span><span class="p">:</span> <span class="nx">error</span></p>
-
-<p><span class="nx">  </span><span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="nx">media-time </span><span class="o">/</span> <span class="nx">unknown</span><span class="c1">; epoch</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-error </span><span class="p">:</span> <span class="nx">error</span>
+<span class="nx">  </span><span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="nx">media-time </span><span class="o">/</span> <span class="nx">unknown</span><span class="c1">; epoch</span>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="o">/</span> <span class="nx">unknown </span><span class="o">/</span> <span class="nx">forever </span><span class="c1">; duration</span>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-time-range</span><span class="p">]</span> <span class="c1">; buffered-time-ranges</span>
   <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-time-range</span><span class="p">]</span> <span class="c1">; seekable-time-ranges</span>
-  <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-time-range</span><span class="p">]</span> <span class="c1">; played-time-ranges</span></p>
-
-<p><span class="p">?</span> <span class="mi">11</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; position</span>
+  <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-time-range</span><span class="p">]</span> <span class="c1">; played-time-ranges</span>
+  <span class="p">?</span> <span class="mi">11</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; position</span>
   <span class="p">?</span> <span class="mi">12</span><span class="p">:</span> <span class="nx">float </span><span class="p">:</span> <span class="nx">playbackRate</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">13</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; paused</span>
   <span class="p">?</span> <span class="mi">14</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; seeking</span>
   <span class="p">?</span> <span class="mi">15</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; stalled</span>
-  <span class="p">?</span> <span class="mi">16</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; ended</span></p>
-
-<p><span class="p">?</span> <span class="mi">17</span><span class="p">:</span> <span class="nx">float </span><span class="c1">; volume</span>
-  <span class="p">?</span> <span class="mi">18</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; muted</span></p>
-
-<p><span class="p">?</span> <span class="mi">19</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="o">/</span> <span class="nx">unknown </span><span class="c1">; resolution</span></p>
-
-<p><span class="p">?</span> <span class="mi">20</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">audio-track-state</span><span class="p">]</span> <span class="nx">audio-tracks</span>
+  <span class="p">?</span> <span class="mi">16</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; ended</span>
+  <span class="p">?</span> <span class="mi">17</span><span class="p">:</span> <span class="nx">float </span><span class="c1">; volume</span>
+  <span class="p">?</span> <span class="mi">18</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; muted</span>
+  <span class="p">?</span> <span class="mi">19</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="o">/</span> <span class="nx">unknown </span><span class="c1">; resolution</span>
+  <span class="p">?</span> <span class="mi">20</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">audio-track-state</span><span class="p">]</span> <span class="nx">audio-tracks</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">21</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-track-state</span><span class="p">]</span> <span class="nx">video-tracks</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">22</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text-track-state</span><span class="p">]</span> <span class="nx">text-tracks</span>
 <span class="p">}</span></p>
