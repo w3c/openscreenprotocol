@@ -351,25 +351,20 @@ remote-playback-state = {
     enough: 4
   ) ; loaded
   ? 5: media-error : error
-
   ? 6: media-time / unknown; epoch
   ? 7: media-time / unknown / forever ; duration
   ? 8: [* media-time-range] ; buffered-time-ranges
   ? 9: [* media-time-range] ; seekable-time-ranges
   ? 10: [* media-time-range] ; played-time-ranges
-
   ? 11: media-time ; position
   ? 12: float : playbackRate
   ? 13: bool ; paused
   ? 14: bool ; seeking
   ? 15: bool ; stalled
   ? 16: bool ; ended
-
   ? 17: float ; volume
   ? 18: bool ; muted
-
   ? 19: video-resolution / unknown ; resolution
-
   ? 20: [* audio-track-state] audio-tracks
   ? 21: [* video-track-state] video-tracks
   ? 22: [* text-track-state] text-tracks
