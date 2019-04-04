@@ -23,10 +23,9 @@ Markup Shorthands: markdown yes, dfn yes, idl yes
   published by the <a href="https://www.w3.org/community/webscreens/">
   Second Screen Community Group</a> under the
   <a href="https://www.w3.org/community/about/agreements/cla/">
-  W3C Community Contributor License Agreement (CLA)</a>.
-A human-readable
-<a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a>
-is available.
+  W3C Community Contributor License Agreement (CLA)</a>.  A human-readable
+  <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a>
+  is available.
 </p>
 
 <!-- TODO: Add short names to Presentation API spec,
