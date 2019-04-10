@@ -297,38 +297,35 @@ mechanism for metadata discovery.
 Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
-If a listening agent ("listener") wants to connect to an advertising agent
-("advertiser"), or to learn further metadata about it, it initiates a [[QUIC]]
-connection to the IP and port from the SRV record.  Prior to authentication,
-a message may be exchanged (such as further metadata), but such info should be
-treated as unverified (such as indicating to a user that a display name of an
-unauthenticated agent is unverified). Note that both listeners and advertisers
-may request information about each other (performing as a "requester" to
-query a "requestee").
+If an agent wants to connect to or learn further metadata about another agent,
+it initiates a [[QUIC]] connection to the IP and port from the SRV record.
+Prior to authentication, a message may be exchanged (such as further metadata),
+but such info should be treated as unverified (such as indicating to a user that
+a display name of an unauthenticated agent is unverified).
 
-To learn further metadata, devices may send an agent-info-request
+To learn further metadata, an agent may send an agent-info-request
 message (see [[#appendix-a]]) and receive back an agent-info-response message.
-Note that both the listener and advertiser may send this request to learn about
-the capabilities of the other device.
+Any agent may send this request to learn about the capabilities of
+another device.
 
-The messages may contain the following properties:
+The agent-info-response messages contain the following properties:
 
 : display-name (required)
-:: The display name of the requestee, intended to be displayed to a user by the
+:: The display name of the agent, intended to be displayed to a user by the
      requester. The requester should indicate through the UI if the device
      is not authenticated or if the display name changes.
 
 : model-name (optional)
-:: If the requestee is a hardware device, the model name of
+:: If the agent is a hardware device, the model name of
     the device.  This is used mainly for debugging purposes, but may be
     displayed to the user of the requesting agent.
 
 : supports-audio (optional)
-:: The requestee has to indicate that it supports audio streaming. If false
+:: The agent has to indicate that it supports audio streaming. If false
     or not included, it is assumed audio streaming is not supported.
 
 : supports-video (optional)
-:: The requestee has to indicate that it supports video streaming. If false
+:: The agent has to indicate that it supports video streaming. If false
     or not included, it is assumed video streaming is not supported.
 
 

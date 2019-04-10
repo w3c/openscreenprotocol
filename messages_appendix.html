@@ -9,64 +9,11 @@
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span>
 
-<span class="nx">streaming-capabilities-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="p">}</span>
-
-<span class="nx">streaming-capabilities-response </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
-<span class="p">}</span>
-
-<span class="nx">streaming-capabilities-update </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
-<span class="p">}</span>
-
 <span class="nx">agent-info </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; audio-only</span>
-<span class="p">}</span>
-
-<span class="nx">resolution </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; horizontal-resolution</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; vertical-resolution</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="kt">float64</span><span class="p">]</span> <span class="c1">; refresh-rates</span>
-<span class="p">}</span>
-
-<span class="nx">codec </span><span class="p">=</span> <span class="p">(</span>
-  <span class="nx">H-264</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="nx">MPEG-4</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">MP3</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="nx">VP8</span><span class="p">:</span> <span class="mi">3</span>
-  <span class="nx">AAC-LC</span><span class="p">:</span> <span class="mi">4</span>
-  <span class="nx">AC3</span><span class="p">:</span> <span class="mi">5</span>
-  <span class="nx">eAC3</span><span class="p">:</span> <span class="mi">6</span>
-  <span class="nx">FLAC</span><span class="p">:</span> <span class="mi">7</span>
-  <span class="nx">PCM</span><span class="p">:</span> <span class="mi">8</span>
-  <span class="nx">Vorbis</span><span class="p">:</span> <span class="mi">9</span>
-<span class="p">)</span>
-
-<span class="nx">bit-rate-limits </span><span class="p">=</span> <span class="p">{</span>
- <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
- <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-bit-rate</span>
- <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-latency</span>
-<span class="p">}</span>
-
-<span class="nx">streaming-capabilities </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-pixel-fill-rate</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">codec</span><span class="p">]</span> <span class="c1">; supported-codecs</span>
-
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">resolution </span><span class="c1">; min-resolution</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">resolution </span><span class="c1">; max-resolution</span>
-
-  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-audio-channels</span>
-  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">bit-rate-limits </span><span class="c1">; audio-bit-rate-limits</span>
-  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="nx">bit-rate-limits </span><span class="c1">; video-bit-rate-limits</span>
-
-  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="kt">float64</span> <span class="c1">; aspect-ratio</span>
-  <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">string</span><span class="p">]</span> <span class="c1">; color-profiles</span>
-  <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-audio</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-video</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 12</span>

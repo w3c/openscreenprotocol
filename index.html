@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 1cff2db4ee2c3bba7a4077d3007528ec73b0485d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="e048cf0cc3ccf1c426aff654035d623802a31b53" name="document-revision">
+  <meta content="1a5904fd8a04c5fe1ea7ff607726a94a4931c453" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1765,85 +1765,35 @@ Protocol uses mDNS but breaks compatibility with the metadata discovery process,
 it should change the DNS-SD service name to a new value, indicating a new
 mechanism for metadata discovery.</p>
    <h2 class="heading settled" data-level="4" id="transport"><span class="secno">4. </span><span class="content">Transport and metadata discovery with QUIC</span><a class="self-link" href="#transport"></a></h2>
-   <p>If a listening agent ("listener") wants to connect to an advertising agent
-("advertiser"), or to learn further metadata about it, it initiates a <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a> connection to the IP and port from the SRV record.  Prior to authentication,
-a message may be exchanged (such as further metadata), but such info should be
-treated as unverified (such as indicating to a user that a display name of an
-unauthenticated agent is unverified).</p>
-   <p>To learn further metadata, the listener may send an agent-info-request
+   <p>If an agent wants to connect to or learn further metadata about another agent,
+it initiates a <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a> connection to the IP and port from the SRV record.
+Prior to authentication, a message may be exchanged (such as further metadata),
+but such info should be treated as unverified (such as indicating to a user that
+a display name of an unauthenticated agent is unverified).</p>
+   <p>To learn further metadata, an agent may send an agent-info-request
 message (see <a href="#appendix-a">Appendix A: Messages</a>) and receive back an agent-info-response message.
-The messages may contain the following properties:</p>
+Any agent may send this request to learn about the capabilities of
+another device.</p>
+   <p>The agent-info-response messages contain the following properties:</p>
    <dl>
     <dt data-md>display-name (required)
     <dd data-md>
-     <p>The display name of the advertiser, intended to be displayed to a user by the
- listener. The listener should indicate through the UI if the advertiser
+     <p>The display name of the agent, intended to be displayed to a user by the
+ requester. The requester should indicate through the UI if the device
  is not authenticated or if the display name changes.</p>
     <dt data-md>model-name (optional)
     <dd data-md>
-     <p>If the advertiser is a hardware device, the model name of
+     <p>If the agent is a hardware device, the model name of
 the device.  This is used mainly for debugging purposes, but may be
 displayed to the user of the requesting agent.</p>
-    <dt data-md>audio-only (optional)
+    <dt data-md>supports-audio (optional)
     <dd data-md>
-     <p>Generally speaking, advertisers are assumed to support streaming both
-audio and video. If a advertiser wishes to indicate that they only support audio
-stream, they can pass this property as true. In that case, the listener
-should indicate through the UI that the advertiser is audio only.</p>
-   </dl>
-   <p>If the advertiser is already authenticated, the listener has the ability to
-request additional information by sending an streaming-capabilities-request
-message, and receive back a streaming-capabilities-response message with the
-following properties:</p>
-   <dl>
-    <dt data-md>max-pixel-fill-rate (required)
+     <p>The agent has to indicate that it supports audio streaming. If false
+or not included, it is assumed audio streaming is not supported.</p>
+    <dt data-md>supports-video (optional)
     <dd data-md>
-     <p>The advertiser shall reply with the supported pixel fill rate in megapixels per
-second. Requesting agents can use this information to make better-educated
-decisions about what resolution and frame rates to stream content at.</p>
-    <dt data-md>supported-codecs (required)
-    <dd data-md>
-     <p>The advertiser must indicate to the listener what codecs it understands for
-remote playback.</p>
-    <dt data-md>min-resolution (optional)
-    <dd data-md>
-     <p>The advertiser may indicate what it considers its minimum resolution to be, for
-setting a minimum boundary on content quality.</p>
-    <dt data-md>max-resolution (optional)
-    <dd data-md>
-     <p>The advertiser may indicate the maximum resolution and frame rate. Note that
-this may not be the ideal, depending on the max-pixel-fill-rate.</p>
-    <dt data-md>max-audio-channels (optional)
-    <dd data-md>
-     <p>The advertiser may indicate the maximum number of audio channels in abilities
-standard audio setup, e.g. 2 for stereo, 5 or 7 for a surround setup.</p>
-    <dt data-md>audio-bit-rate-limits (optional)
-    <dd data-md>
-     <p>The advertiser may indicate the practical audio bit rate limits, including the
-minimum and maximum bit rates, and the maximum latency. Physical hardware
-requirements, such as maximum decoder throughput or maximum audio buffer
-size inform these values.</p>
-    <dt data-md>video-bit-rate-limits (optional)
-    <dd data-md>
-     <p>The advertiser may indicate the practical audio bit rate limits, including the
-minimum and maximum bit rates, and the maximum latency. Physical hardware
-requirements, such as maximum decoder throughput or maximum video buffer
-size inform these values.</p>
-    <dt data-md>aspect-ratio (optional)
-    <dd data-md>
-     <p>The advertiser may indicate what its ideal aspect ratio is, e.g. a 16:10
-display could return this value as 1.6 to indicate its preferred content
-scaling.</p>
-    <dt data-md>color-profiles (optional)
-    <dd data-md>
-     <p>The advertiser may indicate what color profiles are understood, such as
-sRGB v4. The listener may use these values to determine how to encode
-video.</p>
-    <dt data-md>supports-scaling (optional)
-    <dd data-md>
-     <p>If omitted, this value is assumed to be false. Setting to "True" indicates
-that the advertiser can scale content that is of an unsupported resolution or
-non-ideal aspect ratio. If false, the listener must do the scaling.</p>
+     <p>The agent has to indicate that it supports video streaming. If false
+or not included, it is assumed video streaming is not supported.</p>
    </dl>
    <p>Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
@@ -2859,64 +2809,11 @@ because smaller type keys encode on the wire smaller.</p>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span></p>
 
-<p><span class="nx">streaming-capabilities-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">streaming-capabilities-response </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">streaming-capabilities-update </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
-<span class="p">}</span></p>
-
 <p><span class="nx">agent-info </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; audio-only</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">resolution </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; horizontal-resolution</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; vertical-resolution</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="kt">float64</span><span class="p">]</span> <span class="c1">; refresh-rates</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">codec </span><span class="p">=</span> <span class="p">(</span>
-  <span class="nx">H-264</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="nx">MPEG-4</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">MP3</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="nx">VP8</span><span class="p">:</span> <span class="mi">3</span>
-  <span class="nx">AAC-LC</span><span class="p">:</span> <span class="mi">4</span>
-  <span class="nx">AC3</span><span class="p">:</span> <span class="mi">5</span>
-  <span class="nx">eAC3</span><span class="p">:</span> <span class="mi">6</span>
-  <span class="nx">FLAC</span><span class="p">:</span> <span class="mi">7</span>
-  <span class="nx">PCM</span><span class="p">:</span> <span class="mi">8</span>
-  <span class="nx">Vorbis</span><span class="p">:</span> <span class="mi">9</span>
-<span class="p">)</span></p>
-
-<p><span class="nx">bit-rate-limits </span><span class="p">=</span> <span class="p">{</span>
- <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
- <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-bit-rate</span>
- <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-latency</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">streaming-capabilities </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-pixel-fill-rate</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">codec</span><span class="p">]</span> <span class="c1">; supported-codecs</span></p>
-
-<p><span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">resolution </span><span class="c1">; min-resolution</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">resolution </span><span class="c1">; max-resolution</span></p>
-
-<p><span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-audio-channels</span>
-  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">bit-rate-limits </span><span class="c1">; audio-bit-rate-limits</span>
-  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="nx">bit-rate-limits </span><span class="c1">; video-bit-rate-limits</span></p>
-
-<p><span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="kt">float64</span> <span class="c1">; aspect-ratio</span>
-  <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">string</span><span class="p">]</span> <span class="c1">; color-profiles</span>
-  <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-audio</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-video</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 12</span>
