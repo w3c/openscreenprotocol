@@ -27,10 +27,7 @@ agent-status-response = {
   ? 1: status ; status
 }
 
-status = &(
-  success: 1
-  failure: 2
-)
+status = {}
 
 request = (
  0: request-id ; request-id
