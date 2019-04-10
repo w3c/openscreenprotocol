@@ -1236,7 +1236,8 @@ following properties:
 :: A list of video capabilities. For an explanation of fields, see below.
 
 : receive-data (required)
-:: A list of codecs that can be used to handle arbitrary data.
+:: A list of arbitrary data formats (represented as codecs) the device supports
+    for receiving data.
 
 The codec type is used as the basis for audio, video, and data capabilities.
 Codes are composed of the following properties:
@@ -1288,10 +1289,15 @@ following additional fields:
     sRGB v4. The listener may use these values to determine how to encode
     video.
 
+: native-resolutions (optional)
+:: An optional field indicating what resolutions the device supports and
+    considers to be "native." If provided, the supports-scaling bool should
+    be passed if the device is capable of scaling resolutions not in this list.
+
 : supports-scaling (optional)
 :: If omitted, this value is assumed to be false. Setting to "True" indicates
-    that the device can scale content that is of an unsupported resolution or
-    non-ideal aspect ratio.
+    that the device can scale content provided in a resolution not listed
+    in the native-resolutions list (if provided) or of a different aspect ratio.
 
 Sessions {#streaming-sessions}
 ------------------------------------
@@ -2448,7 +2454,8 @@ receive-video-capability = {
   ? 4: float64 ; min-bit-rate
   ? 5: float64 ; aspect-ratio
   ? 6: [* string] ; color-profiles
-  ? 7: bool ; supports-scaling
+  ? 7: [* resolution] ; native-resolutions
+  ? 8: bool ; supports-scaling
 }
 
 receive-data-capability = {
