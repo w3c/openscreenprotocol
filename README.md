@@ -23,12 +23,12 @@ aspects of the Open Screen Protocol.  The following proposals have been
 submitted:
 
 - Discovery
-  - [SSDP](ssdp.md)
-  - [mDNS / DNS-SD](mdns.md)
+  - [SSDP](archive/ssdp.md)
+  - [mDNS / DNS-SD](archive/mdns.md)
 - Transport
-  - [QUIC](quic.md)
-  - [WebRTC Data Channel](datachannel.md)
-- [Control Protocol](control_protocol.md)
+  - [QUIC](archive/quic.md)
+  - [WebRTC Data Channel](archive/datachannel.md)
+- [Control Protocol](archive/control_protocol.md)
 - Authentication
   ([Issue #13](https://github.com/webscreens/openscreenprotocol/issues/13))
 

@@ -4,8 +4,8 @@ The goal of this benchmark design is to create a controlled environment in which
 we can gather data on performance, efficiency, and reliability of the two
 network trasnport protocols proposed for Open Screen:
 
-* [QUIC](../quic.md)
-* [RTC DataChannel](../datachannel.md)
+* [QUIC](../archive/quic.md)
+* [RTC DataChannel](../archive/datachannel.md)
 
 # Observables
 
