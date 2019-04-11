@@ -27,8 +27,7 @@ agent-status-response = {
   ? 1: status ; status
 }
 
-status = {
-}
+status = {}
 
 request = (
  0: request-id ; request-id
@@ -39,6 +38,8 @@ response = (
 )
 
 request-id = uint
+
+microseconds = uint
 
 ; type key 1001
 authentication-request = {
@@ -64,7 +65,6 @@ certificate-fingerprint-pair = [
 authentication-result = {
   1: authentication-result-result ; result
 }
-
 
 authentication-mechanism = &(
   hkdf-of-scrypt-of-psk: 1
@@ -92,7 +92,7 @@ presentation-url-availability-request = {
   request
   1: [1* text] ; urls
   2: microseconds ; watch-duration
-  3: int ; watch-id
+  3: uint ; watch-id
 }
 
 ; type key 15
@@ -103,10 +103,9 @@ presentation-url-availability-response = {
 
 ; type key 103
 presentation-url-availability-event = {
-  1: int ; watch-id
+  1: uint ; watch-id
   2: [1* url-availability] ; url-availabilities
 }
-
 
 ; idea: use HTTP response codes?
 url-availability = &(
@@ -149,7 +148,7 @@ presentation-termination-request = {
 ; type key 107
 presentation-termination-response = {
   response
-  1: result ; result
+  1: &result ; result
 }
 
 ; type key 108
@@ -205,7 +204,6 @@ presentation-connection-close-event = {
   ) ; reason
   ? 3: text ; error-message
 }
-
 
 ; type key 16
 presentation-connection-message = {
