@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 1cff2db4ee2c3bba7a4077d3007528ec73b0485d" name="generator">
+  <meta content="Bikeshed version 4d208866a95a1121fceca549a36bfb09c5bf1705" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="daa73d6f51b1be1bc9c228f21c499b686e6d52ba" name="document-revision">
+  <meta content="db31d4c1b58aea5d5f9e3a3e22426759a6a745da" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1403,7 +1403,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-04-10">10 April 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-04-13">13 April 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2493,27 +2493,28 @@ following properties:
    <dl>
     <dt data-md>receive-audio (required)
     <dd data-md>
-     <p>A list of audio capabilities. For an explanation of fields, see below.</p>
+     <p>A list of capabilities for receiving audio. For an explanation of fields, see below.</p>
     <dt data-md>receive-video (required)
     <dd data-md>
-     <p>A list of video capabilities. For an explanation of fields, see below.</p>
+     <p>A list of capabilities for receiving video. For an explanation of fields, see below.</p>
     <dt data-md>receive-data (required)
     <dd data-md>
-     <p>A list of arbitrary data formats (represented as codecs) the device supports
+     <p>A list of arbitrary data formats the device supports
 for receiving data.</p>
    </dl>
-   <p>The codec type is used as the basis for audio, video, and data capabilities.
-Codes are composed of the following properties:</p>
+   <p>The format type is used as the basis for audio, video, and data capabilities.
+Formats are composed of the following properties:</p>
    <dl>
-    <dt data-md>codec-name (required)
+    <dt data-md>name (required)
     <dd data-md>
-     <p>The name of the codec.</p>
+     <p>The name of the format. Expected values include "vp8", "h264", "opus."</p>
     <dt data-md>parameters (required)
     <dd data-md>
-     <p>A list of (key, value) parameters that can be used to transmit arbitrary
-information about a codec.</p>
+     <p>A list of (key, value) parameters that can be used to pass fields that are
+properties of a specific format, and not shared by other formats of that type
+(audio, video, etc.).</p>
    </dl>
-   <p>Audio capabilities are composed of the above codec type, with the following
+   <p>Audio capabilities are composed of the above format type, with the following
 additional fields:</p>
    <dl>
     <dt data-md>max-audio-channels (optional)
@@ -2527,18 +2528,22 @@ right channels.</p>
      <p>An optional field indicating the minimum audio bit rate that
 the device can handle.</p>
    </dl>
-   <p>Video capabilities are similarly composed of the above codec type, with the
+   <p>Video capabilities are similarly composed of the above format type, with the
 following additional fields:</p>
    <dl>
     <dt data-md>max-resolution (optional)
     <dd data-md>
-     <p>An optional field composed of a resolution, which includes (1) an unsigned
+     <p>An optional field composed of a video-resolution, which includes (1) an unsigned
 integer indicating horizontal resolution, and (2) an unsigned integer
 indicating vertical resolution. The device can pass this field to indicate
 the maximum resolution it supports.</p>
     <dt data-md>max-frames-per-second (optional)
     <dd data-md>
      <p>An optional field indicating the maximum frames-per-second the device is
+capable of processing.</p>
+    <dt data-md>max-pixels-per-second (optional)
+    <dd data-md>
+     <p>An optional field indicating the maximum pixels-per-second the device is
 capable of processing.</p>
     <dt data-md>min-video-bit-rate (optional)
     <dd data-md>
@@ -2553,17 +2558,17 @@ scaling.</p>
     <dd data-md>
      <p>An optional field indicating what color profiles are understood, such as
 sRGB v4. The listener may use these values to determine how to encode
-video.</p>
+video. The default value is none.</p>
     <dt data-md>native-resolutions (optional)
     <dd data-md>
-     <p>An optional field indicating what resolutions the device supports and
-considers to be "native." If provided, the supports-scaling bool should
-be passed if the device is capable of scaling resolutions not in this list.</p>
+     <p>An optional field indicating what video-resolutions the device supports and
+considers to be "native," meaning that scaling is not required.
+The default value is none.</p>
     <dt data-md>supports-scaling (optional)
     <dd data-md>
-     <p>If omitted, this value is assumed to be false. Setting to "True" indicates
-that the device can scale content provided in a resolution not listed
-in the native-resolutions list (if provided) or of a different aspect ratio.</p>
+     <p>A optional boolean field indicating whether the device can scale content
+provided in a video-resolution not listed in the native-resolutions list
+(if provided) or of a different aspect ratio. The default value is true.</p>
    </dl>
    <h3 class="heading settled" data-level="8.2" id="streaming-sessions"><span class="secno">8.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
    <h3 class="heading settled" data-level="8.3" id="streaming-audio"><span class="secno">8.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
@@ -3490,41 +3495,41 @@ streaming-capabilities = {
   2: [* receive-data-capability] ; receive-data
 }
 
-codec = {
-  0: string ; codec-name
-  1: [* codec-parameter] ; parameters
+format = {
+  0: string ; name
+  1: [* format-parameter] ; parameters
 }
 
-codec-parameter = {
+format-parameter = {
   0: string ; key
   1: bytes ; value
 }
 
 receive-audio-capability = {
-  0: codec ; codec
+  0: format ; codec
   ? 1: uint ; max-audio-channels
   ? 2: float64 ; min-bit-rate
 }
 
-resolution = {
+video-resolution = {
   0: uint ; horizontal-resolution
   1: uint ; vertical-resolution
 }
 
 receive-video-capability = {
-  0: codec ; codec
-  ? 1: resolution ; max-resolution
+  0: format ; codec
+  ? 1: video-resolution ; max-resolution
   ? 2: float64 ; max-frames-per-second
   ? 3: float64 ; max-pixels-per-second
   ? 4: float64 ; min-bit-rate
   ? 5: float64 ; aspect-ratio
   ? 6: [* string] ; color-profiles
-  ? 7: [* resolution] ; native-resolutions
+  ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling
 }
 
 receive-data-capability = {
-  0: codec ; codec
+  0: format ; format
 }
 
 </pre>

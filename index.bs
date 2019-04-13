@@ -1230,26 +1230,27 @@ message, and receive back a streaming-capabilities-response message with the
 following properties:
 
 : receive-audio (required)
-:: A list of audio capabilities. For an explanation of fields, see below.
+:: A list of capabilities for receiving audio. For an explanation of fields, see below.
 
 : receive-video (required)
-:: A list of video capabilities. For an explanation of fields, see below.
+:: A list of capabilities for receiving video. For an explanation of fields, see below.
 
 : receive-data (required)
-:: A list of arbitrary data formats (represented as codecs) the device supports
+:: A list of arbitrary data formats the device supports
     for receiving data.
 
-The codec type is used as the basis for audio, video, and data capabilities.
-Codes are composed of the following properties:
+The format type is used as the basis for audio, video, and data capabilities.
+Formats are composed of the following properties:
 
-: codec-name (required)
-:: The name of the codec.
+: name (required)
+:: The name of the format. Expected values include "vp8", "h264", "opus."
 
 : parameters (required)
-:: A list of (key, value) parameters that can be used to transmit arbitrary
-    information about a codec.
+:: A list of (key, value) parameters that can be used to pass fields that are
+    properties of a specific format, and not shared by other formats of that type
+    (audio, video, etc.).
 
-Audio capabilities are composed of the above codec type, with the following
+Audio capabilities are composed of the above format type, with the following
 additional fields:
 
 : max-audio-channels (optional)
@@ -1262,17 +1263,21 @@ additional fields:
 :: An optional field indicating the minimum audio bit rate that
     the device can handle.
 
-Video capabilities are similarly composed of the above codec type, with the
+Video capabilities are similarly composed of the above format type, with the
 following additional fields:
 
 : max-resolution (optional)
-:: An optional field composed of a resolution, which includes (1) an unsigned
+:: An optional field composed of a video-resolution, which includes (1) an unsigned
     integer indicating horizontal resolution, and (2) an unsigned integer
     indicating vertical resolution. The device can pass this field to indicate
     the maximum resolution it supports.
 
 : max-frames-per-second (optional)
 :: An optional field indicating the maximum frames-per-second the device is
+    capable of processing.
+
+: max-pixels-per-second (optional)
+:: An optional field indicating the maximum pixels-per-second the device is
     capable of processing.
 
 : min-video-bit-rate (optional)
@@ -1287,17 +1292,17 @@ following additional fields:
 : color-profiles (optional)
 :: An optional field indicating what color profiles are understood, such as
     sRGB v4. The listener may use these values to determine how to encode
-    video.
+    video. The default value is none.
 
 : native-resolutions (optional)
-:: An optional field indicating what resolutions the device supports and
-    considers to be "native." If provided, the supports-scaling bool should
-    be passed if the device is capable of scaling resolutions not in this list.
+:: An optional field indicating what video-resolutions the device supports and
+    considers to be "native," meaning that scaling is not required.
+    The default value is none.
 
 : supports-scaling (optional)
-:: If omitted, this value is assumed to be false. Setting to "True" indicates
-    that the device can scale content provided in a resolution not listed
-    in the native-resolutions list (if provided) or of a different aspect ratio.
+:: A optional boolean field indicating whether the device can scale content
+    provided in a video-resolution not listed in the native-resolutions list
+    (if provided) or of a different aspect ratio. The default value is true.
 
 Sessions {#streaming-sessions}
 ------------------------------------
@@ -1358,16 +1363,14 @@ media-stream-request = {
 
 audio-encoding-offer = {
   encoding-id: uint
-  codec-name: text
-  codec-parameters: [* codec-parameter]
+  codec: format
   time-scale: uint ; AKA sample rate or clock rate
   default-duration: uint ; AKA ptime
 }
 
 video-encoding-offer = {
   encoding-id: uint
-  codec-name: text
-  codec-parameters: [* codec-parameter]
+  codec: format
   time-scale: uint ; AKA clock rate; probably 90khz
   ? default-duration: uint ; AKA ptime
   ? default-rotation: video-rotation
@@ -1375,8 +1378,7 @@ video-encoding-offer = {
 
 data-encoding-offer = {
   encoding-id: uint
-  format: text ; "text-cue" defined to mean text cues
-  format-parameters: [* codec-parameter] ; format-specific
+  format: format ; "text-cue" defined to mean text cues
   time-scale: uint ; AKA clock rate; probably 1mhz
 }
 
@@ -2425,41 +2427,41 @@ streaming-capabilities = {
   2: [* receive-data-capability] ; receive-data
 }
 
-codec = {
-  0: string ; codec-name
-  1: [* codec-parameter] ; parameters
+format = {
+  0: string ; name
+  1: [* format-parameter] ; parameters
 }
 
-codec-parameter = {
+format-parameter = {
   0: string ; key
   1: bytes ; value
 }
 
 receive-audio-capability = {
-  0: codec ; codec
+  0: format ; codec
   ? 1: uint ; max-audio-channels
   ? 2: float64 ; min-bit-rate
 }
 
-resolution = {
+video-resolution = {
   0: uint ; horizontal-resolution
   1: uint ; vertical-resolution
 }
 
 receive-video-capability = {
-  0: codec ; codec
-  ? 1: resolution ; max-resolution
+  0: format ; codec
+  ? 1: video-resolution ; max-resolution
   ? 2: float64 ; max-frames-per-second
   ? 3: float64 ; max-pixels-per-second
   ? 4: float64 ; min-bit-rate
   ? 5: float64 ; aspect-ratio
   ? 6: [* string] ; color-profiles
-  ? 7: [* resolution] ; native-resolutions
+  ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling
 }
 
 receive-data-capability = {
-  0: codec ; codec
+  0: format ; format
 }
 
 </pre>
