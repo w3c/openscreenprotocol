@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 4d208866a95a1121fceca549a36bfb09c5bf1705" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="db31d4c1b58aea5d5f9e3a3e22426759a6a745da" name="document-revision">
+  <meta content="309925bf9926e9b4f318968b28ff582d4a0ec997" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -2520,53 +2520,50 @@ additional fields:</p>
     <dt data-md>max-audio-channels (optional)
     <dd data-md>
      <p>An optional field indicating the maximum amount of audio
-channels the device is capable of supporting. For example, a stereo speaker
-system could supply this optional field with a value of "2" for the left and
-right channels.</p>
+channels the receiver is capable of supporting. Default value is "2," meaning
+a stereo speaker channel setup.</p>
     <dt data-md>min-bit-rate (optional)
     <dd data-md>
      <p>An optional field indicating the minimum audio bit rate that
-the device can handle.</p>
+the receiver can handle, in kilobits per second. Default is no minimum.</p>
    </dl>
    <p>Video capabilities are similarly composed of the above format type, with the
 following additional fields:</p>
    <dl>
     <dt data-md>max-resolution (optional)
     <dd data-md>
-     <p>An optional field composed of a video-resolution, which includes (1) an unsigned
-integer indicating horizontal resolution, and (2) an unsigned integer
-indicating vertical resolution. The device can pass this field to indicate
-the maximum resolution it supports.</p>
+     <p>An optional field indicating the maximum video-resolution (width, height)
+that the receiver is capable of processing. Default is no maximum.</p>
     <dt data-md>max-frames-per-second (optional)
     <dd data-md>
-     <p>An optional field indicating the maximum frames-per-second the device is
-capable of processing.</p>
+     <p>An optional field indicating the maximum frames-per-second the receiver is
+capable of processing. Default is no maximum.</p>
     <dt data-md>max-pixels-per-second (optional)
     <dd data-md>
-     <p>An optional field indicating the maximum pixels-per-second the device is
-capable of processing.</p>
+     <p>An optional field indicating the maximum pixels-per-second the receiver is
+capable of processing, in pixels per second. Default is no maximum.</p>
     <dt data-md>min-video-bit-rate (optional)
     <dd data-md>
      <p>An optional field indicating the minimum video bit rate the device is
-capable of processing.</p>
+capable of processing, in kilobits per second. Default is no minimum.</p>
     <dt data-md>aspect-ratio (optional)
     <dd data-md>
      <p>An optional field indicating what its ideal aspect ratio is, e.g. a 16:10
 display could return this value as 1.6 to indicate its preferred content
-scaling.</p>
+scaling. Default is none.</p>
     <dt data-md>color-profiles (optional)
     <dd data-md>
-     <p>An optional field indicating what color profiles are understood, such as
-sRGB v4. The listener may use these values to determine how to encode
-video. The default value is none.</p>
+     <p>An optional field indicating what color profiles are understood.
+The listener may use these values to determine how to encode
+video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.</p>
     <dt data-md>native-resolutions (optional)
     <dd data-md>
-     <p>An optional field indicating what video-resolutions the device supports and
+     <p>An optional field indicating what video-resolutions the receiver supports and
 considers to be "native," meaning that scaling is not required.
 The default value is none.</p>
     <dt data-md>supports-scaling (optional)
     <dd data-md>
-     <p>A optional boolean field indicating whether the device can scale content
+     <p>A optional boolean field indicating whether the receiver can scale content
 provided in a video-resolution not listed in the native-resolutions list
 (if provided) or of a different aspect ratio. The default value is true.</p>
    </dl>
@@ -3472,13 +3469,17 @@ data-frame = {
   ? 5: media-time ; sync-time
 }
 
-; TODO(jophba): Why do some have type keys, but not others?
 ; type key 120
 video-frame-request = {
  1: uint; encoding-id
  2: uint; sequence-number
  ? 3: uint; highest-decoded-frame-sequence-number
 }
+
+ratio = [
+  antecedent: uint
+  consequent: uint
+]
 
 streaming-capabilities-request = {
   request
@@ -3508,21 +3509,21 @@ format-parameter = {
 receive-audio-capability = {
   0: format ; codec
   ? 1: uint ; max-audio-channels
-  ? 2: float64 ; min-bit-rate
+  ? 2: uint ; min-bit-rate
 }
 
 video-resolution = {
-  0: uint ; horizontal-resolution
-  1: uint ; vertical-resolution
+  0: uint ; height
+  1: uint ; width
 }
 
 receive-video-capability = {
   0: format ; codec
   ? 1: video-resolution ; max-resolution
-  ? 2: float64 ; max-frames-per-second
-  ? 3: float64 ; max-pixels-per-second
-  ? 4: float64 ; min-bit-rate
-  ? 5: float64 ; aspect-ratio
+  ? 2: uint ; max-frames-per-second
+  ? 3: uint ; max-pixels-per-second
+  ? 4: uint ; min-bit-rate
+  ? 5: ratio ; aspect-ratio
   ? 6: [* string] ; color-profiles
   ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling

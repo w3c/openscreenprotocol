@@ -1255,52 +1255,49 @@ additional fields:
 
 : max-audio-channels (optional)
 :: An optional field indicating the maximum amount of audio
-    channels the device is capable of supporting. For example, a stereo speaker
-    system could supply this optional field with a value of "2" for the left and
-    right channels.
+    channels the receiver is capable of supporting. Default value is "2," meaning
+    a stereo speaker channel setup.
 
 : min-bit-rate (optional)
 :: An optional field indicating the minimum audio bit rate that
-    the device can handle.
+    the receiver can handle, in kilobits per second. Default is no minimum.
 
 Video capabilities are similarly composed of the above format type, with the
 following additional fields:
 
 : max-resolution (optional)
-:: An optional field composed of a video-resolution, which includes (1) an unsigned
-    integer indicating horizontal resolution, and (2) an unsigned integer
-    indicating vertical resolution. The device can pass this field to indicate
-    the maximum resolution it supports.
+:: An optional field indicating the maximum video-resolution (width, height)
+    that the receiver is capable of processing. Default is no maximum.
 
 : max-frames-per-second (optional)
-:: An optional field indicating the maximum frames-per-second the device is
-    capable of processing.
+:: An optional field indicating the maximum frames-per-second the receiver is
+    capable of processing. Default is no maximum.
 
 : max-pixels-per-second (optional)
-:: An optional field indicating the maximum pixels-per-second the device is
-    capable of processing.
+:: An optional field indicating the maximum pixels-per-second the receiver is
+    capable of processing, in pixels per second. Default is no maximum.
 
 : min-video-bit-rate (optional)
 :: An optional field indicating the minimum video bit rate the device is
-    capable of processing.
+    capable of processing, in kilobits per second. Default is no minimum.
 
 : aspect-ratio (optional)
 :: An optional field indicating what its ideal aspect ratio is, e.g. a 16:10
     display could return this value as 1.6 to indicate its preferred content
-    scaling.
+    scaling. Default is none.
 
 : color-profiles (optional)
-:: An optional field indicating what color profiles are understood, such as
-    sRGB v4. The listener may use these values to determine how to encode
-    video. The default value is none.
+:: An optional field indicating what color profiles are understood.
+    The listener may use these values to determine how to encode
+    video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.
 
 : native-resolutions (optional)
-:: An optional field indicating what video-resolutions the device supports and
+:: An optional field indicating what video-resolutions the receiver supports and
     considers to be "native," meaning that scaling is not required.
     The default value is none.
 
 : supports-scaling (optional)
-:: A optional boolean field indicating whether the device can scale content
+:: A optional boolean field indicating whether the receiver can scale content
     provided in a video-resolution not listed in the native-resolutions list
     (if provided) or of a different aspect ratio. The default value is true.
 
@@ -2404,13 +2401,17 @@ data-frame = {
   ? 5: media-time ; sync-time
 }
 
-; TODO(jophba): Why do some have type keys, but not others?
 ; type key 120
 video-frame-request = {
  1: uint; encoding-id
  2: uint; sequence-number
  ? 3: uint; highest-decoded-frame-sequence-number
 }
+
+ratio = [
+  antecedent: uint
+  consequent: uint
+]
 
 streaming-capabilities-request = {
   request
@@ -2440,21 +2441,21 @@ format-parameter = {
 receive-audio-capability = {
   0: format ; codec
   ? 1: uint ; max-audio-channels
-  ? 2: float64 ; min-bit-rate
+  ? 2: uint ; min-bit-rate
 }
 
 video-resolution = {
-  0: uint ; horizontal-resolution
-  1: uint ; vertical-resolution
+  0: uint ; height
+  1: uint ; width
 }
 
 receive-video-capability = {
   0: format ; codec
   ? 1: video-resolution ; max-resolution
-  ? 2: float64 ; max-frames-per-second
-  ? 3: float64 ; max-pixels-per-second
-  ? 4: float64 ; min-bit-rate
-  ? 5: float64 ; aspect-ratio
+  ? 2: uint ; max-frames-per-second
+  ? 3: uint ; max-pixels-per-second
+  ? 4: uint ; min-bit-rate
+  ? 5: ratio ; aspect-ratio
   ? 6: [* string] ; color-profiles
   ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling
