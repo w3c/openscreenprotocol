@@ -1514,7 +1514,12 @@ Appendix A: Messages {#appendix-a}
 
 The following messages are defined with [[CDDL]]. When
 integer keys are used, a comment is appended to the line to indicate
-the name of the field. Each root message (one that can be put into a
+the name of the field. Object definitions in this specification have this
+unusual syntax to reduce the number of bytes-on-the-wire, while maintaining a
+human-readable name for each key. Integer keys are used instead of object arrays
+to allow for easy indexing of optional fields.
+
+Each root message (one that can be put into a
 QUIC stream without being enclosed by another message) has a comment
 indicating the message type key.
 
