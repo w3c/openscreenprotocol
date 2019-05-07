@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 9c6ae748322940994300e90a77c34437364b40a6" name="generator">
+  <meta content="Bikeshed version 4d208866a95a1121fceca549a36bfb09c5bf1705" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="3e0675f2a5988fafb4a697958a7314c695dfdb42" name="document-revision">
+  <meta content="309925bf9926e9b4f318968b28ff582d4a0ec997" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1403,7 +1403,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-03-25">25 March 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-04-13">13 April 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1456,36 +1456,47 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li><a href="#remote-playback-api"><span class="secno">7.5</span> <span class="content">Remote Playback API</span></a>
      </ol>
     <li>
-     <a href="#security-privacy"><span class="secno">8</span> <span class="content">Security and Privacy</span></a>
+     <a href="#streaming-protocol"><span class="secno">8</span> <span class="content">Streaming Protocol</span></a>
+     <ol class="toc">
+      <li><a href="#streaming-capabilities"><span class="secno">8.1</span> <span class="content">Capabilities</span></a>
+      <li><a href="#streaming-sessions"><span class="secno">8.2</span> <span class="content">Sessions</span></a>
+      <li><a href="#streaming-audio"><span class="secno">8.3</span> <span class="content">Audio</span></a>
+      <li><a href="#streaming-video"><span class="secno">8.4</span> <span class="content">Video</span></a>
+      <li><a href="#media-streaming-data"><span class="secno">8.5</span> <span class="content">Data</span></a>
+      <li><a href="#streaming-feedback"><span class="secno">8.6</span> <span class="content">Feedback</span></a>
+      <li><a href="#streaming-stats"><span class="secno">8.7</span> <span class="content">Stats</span></a>
+     </ol>
+    <li>
+     <a href="#security-privacy"><span class="secno">9</span> <span class="content">Security and Privacy</span></a>
      <ol class="toc">
       <li>
-       <a href="#threat-models"><span class="secno">8.1</span> <span class="content">Threat Models</span></a>
+       <a href="#threat-models"><span class="secno">9.1</span> <span class="content">Threat Models</span></a>
        <ol class="toc">
-        <li><a href="#passive-network-attackers"><span class="secno">8.1.1</span> <span class="content">Passive Network Attackers</span></a>
-        <li><a href="#active-network-attackers"><span class="secno">8.1.2</span> <span class="content">Active Network Attackers</span></a>
-        <li><a href="#denial-of-service"><span class="secno">8.1.3</span> <span class="content">Denial of Service</span></a>
-        <li><a href="#same-origin-policy-violations"><span class="secno">8.1.4</span> <span class="content">Same-Origin Policy Violations</span></a>
+        <li><a href="#passive-network-attackers"><span class="secno">9.1.1</span> <span class="content">Passive Network Attackers</span></a>
+        <li><a href="#active-network-attackers"><span class="secno">9.1.2</span> <span class="content">Active Network Attackers</span></a>
+        <li><a href="#denial-of-service"><span class="secno">9.1.3</span> <span class="content">Denial of Service</span></a>
+        <li><a href="#same-origin-policy-violations"><span class="secno">9.1.4</span> <span class="content">Same-Origin Policy Violations</span></a>
        </ol>
       <li>
-       <a href="#security-privacy-questions"><span class="secno">8.2</span> <span class="content">Open Screen Protocol Security and Privacy Considerations</span></a>
+       <a href="#security-privacy-questions"><span class="secno">9.2</span> <span class="content">Open Screen Protocol Security and Privacy Considerations</span></a>
        <ol class="toc">
-        <li><a href="#personally-identifiable-information"><span class="secno">8.2.1</span> <span class="content">Personally Identifiable Information &amp; High-Value Data</span></a>
-        <li><a href="#cross-origin-state"><span class="secno">8.2.2</span> <span class="content">Cross Origin State Considerations</span></a>
-        <li><a href="#origin-access-devices"><span class="secno">8.2.3</span> <span class="content">Origin Access to Other Devices</span></a>
-        <li><a href="#incognito-mode"><span class="secno">8.2.4</span> <span class="content">Incognito Mode</span></a>
-        <li><a href="#persistent-state"><span class="secno">8.2.5</span> <span class="content">Persistent State</span></a>
-        <li><a href="#other-considerations"><span class="secno">8.2.6</span> <span class="content">Other Considerations</span></a>
+        <li><a href="#personally-identifiable-information"><span class="secno">9.2.1</span> <span class="content">Personally Identifiable Information &amp; High-Value Data</span></a>
+        <li><a href="#cross-origin-state"><span class="secno">9.2.2</span> <span class="content">Cross Origin State Considerations</span></a>
+        <li><a href="#origin-access-devices"><span class="secno">9.2.3</span> <span class="content">Origin Access to Other Devices</span></a>
+        <li><a href="#incognito-mode"><span class="secno">9.2.4</span> <span class="content">Incognito Mode</span></a>
+        <li><a href="#persistent-state"><span class="secno">9.2.5</span> <span class="content">Persistent State</span></a>
+        <li><a href="#other-considerations"><span class="secno">9.2.6</span> <span class="content">Other Considerations</span></a>
        </ol>
-      <li><a href="#presentation-api-considerations"><span class="secno">8.3</span> <span class="content">Presentation API Considerations</span></a>
-      <li><a href="#remote-playback-considerations"><span class="secno">8.4</span> <span class="content">Remote Playback API Considerations</span></a>
+      <li><a href="#presentation-api-considerations"><span class="secno">9.3</span> <span class="content">Presentation API Considerations</span></a>
+      <li><a href="#remote-playback-considerations"><span class="secno">9.4</span> <span class="content">Remote Playback API Considerations</span></a>
       <li>
-       <a href="#security-mitigations"><span class="secno">8.5</span> <span class="content">Mitigation Strategies</span></a>
+       <a href="#security-mitigations"><span class="secno">9.5</span> <span class="content">Mitigation Strategies</span></a>
        <ol class="toc">
-        <li><a href="#local-passive-mitigations"><span class="secno">8.5.1</span> <span class="content">Local passive network attackers</span></a>
-        <li><a href="#local-active-mitigations"><span class="secno">8.5.2</span> <span class="content">Local active network attackers</span></a>
-        <li><a href="#remote-active-mitigations"><span class="secno">8.5.3</span> <span class="content">Remote active network attackers</span></a>
-        <li><a href="#denial-of-service-mitigations"><span class="secno">8.5.4</span> <span class="content">Denial of service</span></a>
-        <li><a href="#malicious-input-mitigations"><span class="secno">8.5.5</span> <span class="content">Malicious input</span></a>
+        <li><a href="#local-passive-mitigations"><span class="secno">9.5.1</span> <span class="content">Local passive network attackers</span></a>
+        <li><a href="#local-active-mitigations"><span class="secno">9.5.2</span> <span class="content">Local active network attackers</span></a>
+        <li><a href="#remote-active-mitigations"><span class="secno">9.5.3</span> <span class="content">Remote active network attackers</span></a>
+        <li><a href="#denial-of-service-mitigations"><span class="secno">9.5.4</span> <span class="content">Denial of service</span></a>
+        <li><a href="#malicious-input-mitigations"><span class="secno">9.5.5</span> <span class="content">Malicious input</span></a>
        </ol>
      </ol>
     <li><a href="#appendix-a"><span class="secno"></span> <span class="content">Appendix A: Messages</span></a>
@@ -1540,7 +1551,9 @@ existing APIs, or new APIs.</p>
 the agent that is used to discover and initiate presentation of Web content on
 another device the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controller" id="ref-for-dfn-controller">controller</a> (or <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent">controlling user agent</a> when it is a
 browser).  We call the agent on the device rendering the Web content the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver">receiver</a> or <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display" id="ref-for-dfn-presentation-display">presentation display</a> (or <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent">receiving user agent</a> when it is
-a browser). <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display-availability" id="ref-for-dfn-presentation-display-availability">presentation display availability</a> refers to whether or not a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver①">receiver</a> is compatible with a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a></p>
+a browser). <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-display-availability" id="ref-for-dfn-presentation-display-availability">presentation display availability</a> refers to whether or not a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver①">receiver</a> is compatible with a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a>.  However, in the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>, a "controller" refers to as a specific
+browsing context within the browser, whereas here the "controller" refers to the
+browser itself, although it may be acting on behalf of a browsing context.</p>
    <p>We borrow terminology from the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>.  The
 agent responsible for rendering media of a remote playback is called the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices">remote playback device</a>. In this document, we also refer to it as the <em>receiver</em> because it is shorter and keeps terminology consistent between
 presentations and remote playbacks. Similarly, we use the term "controller"
@@ -1855,7 +1868,7 @@ the responder in the QUIC crypto handshake during connection establishment.</p>
    </ul>
    <ol start="9">
     <li data-md>
-     <p>Let proof be the result of running <a href="https://tools.ietf.org/html/rfc5869">\HKDF</a> on scryptResult with 
+     <p>Let proof be the result of running <a href="https://tools.ietf.org/html/rfc5869">\HKDF</a> on scryptResult with
  both the extract and expand steps, hash function hashFunction,
  application-specific info, and output key length keyLength.</p>
    </ol>
@@ -1883,25 +1896,25 @@ presentation-url-availability-request message with the following values:</p>
     <dt data-md>watch-duration
     <dd data-md>
      <p>The period of time that the controller is interested in receiving updates
-about the URLs, should the availability change.</p>
+about their URLs, should the availability change.</p>
     <dt data-md>watch-id
     <dd data-md>
-     <p>An identifier the receiver may use when sending updates about URL
+     <p>An identifier the receiver must use when sending updates about URL
 availability so that the controller knows which URLs the receiver is referring
-to.</p>
+to.  The controller must choose a value that is unique across all
+presentation URL availability watches to the same receiver.</p>
    </dl>
    <p>In response, the receiver should send one presentation-url-availability-response
 message with the following values:</p>
    <dl>
     <dt data-md>url-availabilities
     <dd data-md>
-     <p>A list of URL availability states (available,
-unavailable, or invalid).  Each state must correspond to the matching URL
+     <p>A list of URL availability states.  Each state must correspond to the matching URL
 from the request by list index.</p>
    </dl>
-   <p>The receivers should later (up to the current time plus request
-watch-duration) send presentation-url-availability-event messages if
-URL availabilities change.  Such events contain the following values:</p>
+   <p>While the watch is valid (the watch-duration has not expired), the receivers
+should send remote-playback-availability-event messages when URL availabilities change.
+Such events contain the following values:</p>
    <dl>
     <dt data-md>watch-id
     <dd data-md>
@@ -1909,8 +1922,7 @@ URL availabilities change.  Such events contain the following values:</p>
 used to refer to the presentation URLs whose availability has changed.</p>
     <dt data-md>url-availabilities
     <dd data-md>
-     <p>A list of URL availability states (available,
-unavailable, or invalid).  Each state must correspond to the URLs from the
+     <p>A list of URL availability states.  Each state must correspond to the URLs from the
 request referred to by the watch-id.</p>
    </dl>
    <p>Note that these messages are not broadcasted to all controllers. They are sent
@@ -1918,18 +1930,22 @@ individually to controllers that have requested availability for the URLs that
 have changed in availability state within the watch duration of the original
 availability request.</p>
    <p>To save power, the controller may disconnect the QUIC connection and
-later reconnect to send availablity requests and receive availability
-responses and updates.</p>
+later reconnect to send availability requests and receive availability
+responses and updates.  The QUIC connection ID may or may not be the same
+when reconnecting.  Note that the lifetime of a watch-id is not limited
+to one QUIC connection.  The receiver must continue sending updates for watches
+even if the QUIC connection changes, and thus controller need not send
+new URL availability requests if the QUIC connection changes.</p>
    <p>To start a presentation, the controller may send a
 presentation-start-request message to the receiver with the following
 values:</p>
    <dl>
     <dt data-md>presentation-id
     <dd data-md>
-     <p>the presentation identifier</p>
+     <p>The presentation identifier</p>
     <dt data-md>url
     <dd data-md>
-     <p>the selected presentation URL</p>
+     <p>The selected presentation URL</p>
     <dt data-md>headers
     <dd data-md>
      <p>headers that the receiver should use to fetch the
@@ -1962,7 +1978,7 @@ presentation-connection-message with the following values:</p>
 presentation-connection-open-response messages.</p>
     <dt data-md>message
     <dd data-md>
-     <p>the presentation message data.</p>
+     <p>The presentation message data.</p>
    </dl>
    <p>To terminate a presentation, the controller may send a
 presentation-termination-request message with the following values:</p>
@@ -2079,14 +2095,646 @@ agent</a> may send a presentation-termination-request message.</p>
 controlling browsing context using an implementation specific
 mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> must receive and process the
 presentation-connection-open-request.</p>
-   <p>When <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
-6.7.1</a> says "Establish the connection between the controlling and receiving browsing
-contexts using an implementation specific mechanism.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving user
-agent</a>, must send a presentation-connection-open-response message.</p>
-   <h3 class="heading settled" data-level="7.3" id="remote-playback"><span class="secno">7.3. </span><span class="content">Remote Playback API Protocol</span><a class="self-link" href="#remote-playback"></a></h3>
-   <p class="issue" id="issue-eaed3698"><a class="self-link" href="#issue-eaed3698"></a> Propose control protocol for Remote
-Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a></p>
-   <h2 class="heading settled" data-level="8" id="security-privacy"><span class="secno">8. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
+   <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
+6.7.1</a> says "Establish the connection between the controlling and receiving
+browsing contexts using an implementation specific mechanism.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving
+user agent</a>, must send a presentation-connection-open-response message.</p>
+   <h3 class="heading settled" data-level="7.3" id="remote-playback-protocol"><span class="secno">7.3. </span><span class="content">Remote Playback Protocol</span><a class="self-link" href="#remote-playback-protocol"></a></h3>
+   <p>This section defines the use of the Open Screen Protocol for starting, terminating,
+and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§7.5 Remote Playback API</a> defines how
+APIs in <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> map to the protocol messages
+defined in this section.</p>
+   <p>For all messages defined in this section, see Appendix A for the full
+CDDL definitions.</p>
+   <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device" id="ref-for-dfn-compatible-remote-playback-device">compatible remote playback device</a>s (also called
+available <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback devices</a>) for a particular URL or set of URLs, the
+controller may send a remote-playback-availability-request message with the
+following values:</p>
+   <dl>
+    <dt data-md>urls
+    <dd data-md>
+     <p>A list of <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources">media resources</a>.  Must not be empty.</p>
+    <dt data-md>headers
+    <dd data-md>
+     <p>headers that the receiver should use to fetch the
+urls.  For example, <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section 6.2.4 of
+the Remote Playback API</a> says that the Accept-Language header should be
+provided.</p>
+    <dt data-md>watch-duration
+    <dd data-md>
+     <p>The period of time that the controller is interested in receiving updates
+about their URLs, should the availability change.</p>
+    <dt data-md>watch-id
+    <dd data-md>
+     <p>An identifier the receiver must use when sending updates about URL
+availability so that the controller knows which URLs the receiver is referring
+to. The controller must choose a value that is unique across all
+remote playback availability watches to the same receiver.</p>
+   </dl>
+   <p>In response, the receiver should send a remote-playback-availability-response
+message with the following values:</p>
+   <dl>
+    <dt data-md>url-availabilities
+    <dd data-md>
+     <p>A list of URL availability states.  Each state must correspond to the matching URL
+from the request by list index.</p>
+   </dl>
+   <p>The receivers should later (up to the current time plus request
+watch-duration) send remote-playback-availability-event  messages if
+URL availabilities change.  Such events contain the following values:</p>
+   <dl>
+    <dt data-md>watch-id
+    <dd data-md>
+     <p>The watch-id given in the remote-playback-url-availability-response,
+used to refer to the remote playback URLs whose availability has changed.</p>
+    <dt data-md>url-availabilities
+    <dd data-md>
+     <p>A list of URL availability states.  Each state must correspond to the URLs from the
+request referred to by the watch-id.</p>
+   </dl>
+   <p>Note that these messages are not broadcasted to all controllers. They are sent
+individually to controllers that have requested availability for the URLs that
+have changed in availability state within the watch duration of the original
+availability request.</p>
+   <p>To save power, the controller may disconnect the QUIC connection and
+later reconnect to send availablity requests and receive availability
+responses and updates. The QUIC connection ID may or may not be the same
+when reconnecting.  Note that the lifetime of a watch-id is not limited
+to one QUIC connection.  The receiver must continue sending updates for watches
+even if the QUIC connection changes, and thus controller need not send
+new URL availability requests if the QUIC connection changes.</p>
+   <p>To start remote playback, the controller may send a
+remote-playback-start-request message to the receiver with the following
+values:</p>
+   <dl>
+    <dt data-md>remote-playback-id
+    <dd data-md>
+     <p>An identifier that uniquely identifies the remote playback from the
+controller to the receiver.  It does not need to be unique across all remote
+playbacks from that controllers to all receivers nor unique across all remote
+playbacks from all controllers to that receivers.</p>
+    <dt data-md>urls
+    <dd data-md>
+     <p>The <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources①">media resources</a> that the controller has selected for playback on the
+receiver.</p>
+    <dt data-md>text-track-urls
+    <dd data-md>
+     <p>URLs of text tracks associated with the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources②">media resources</a>.</p>
+    <dt data-md>controls
+    <dd data-md>
+     <p>Initial controls for modifying the initial state of the remote playback, as
+defined in <a href="#remote-playback-state-and-controls">§7.4 Remote Playback State and Controls</a>.  The controller may send
+controls that are optional for the receiver to support before it knows the
+receiver supports them.  If the receiver does not support them, it will
+ignore them and the controller will learn that it does not support them from
+the remote-playback-start-response message.</p>
+   </dl>
+   <p>When the receiver receives a remote-playback-start-request message, it should
+send back a remote-playback-start-response message.  It should do so quickly,
+usually before the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources③">media resource</a> has been loaded and instead give updates
+of the progress of  loading with remote-playback-state-event messages, unless
+the receiver decides to not attempt to load the resource at all.  If it chooses
+not to, it must respond with the appropriate failure result (such as timeout or
+invalid-url).  Additionally, the response must include the following:</p>
+   <dl>
+    <dt data-md>state
+    <dd data-md>
+     <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§7.4 Remote Playback State and Controls</a>.</p>
+   </dl>
+   <p>If the controller wishes to modify the state of the remote playback (for
+example, to pause, resume, skip, etc), it may send a
+remote-playback-modify-request message with the following values:</p>
+   <dl>
+    <dt data-md>remote-playback-id
+    <dd data-md>
+     <p>The ID of the remote playback to be modified.</p>
+    <dt data-md>controls
+    <dd data-md>
+     <p>Updated controls as defined in {#remote-playback-state-and-controls}</p>
+   </dl>
+   <p>When a receiver receives a remote-playback-modify-request it should send a
+remote-playback-modify-response message in reply with the following values:</p>
+   <dl>
+    <dt data-md>state
+    <dd data-md>
+     <p>The updated state of the remote playback as defined in <a href="#remote-playback-state-and-controls">§7.4 Remote Playback State and Controls</a>.</p>
+   </dl>
+   <p>When the state of remote playback changes without request for modification from
+the controller (such as when the skips or pauses due to user user interaction on
+the receiver), the receiver may send a remote-playback-state-event to the
+controller.</p>
+   <dl>
+    <dt data-md>remote-playback-id
+    <dd data-md>
+     <p>The ID of the remote playback whose state has changed.</p>
+    <dt data-md>state
+    <dd data-md>
+     <p>The updated state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§7.4 Remote Playback State and Controls</a>.</p>
+   </dl>
+   <p>To terminate the remote playback, the controller may send a
+remote-playback-termination-request message with the following values:</p>
+   <dl>
+    <dt data-md>remote-playback-id
+    <dd data-md>
+     <p>The ID of the remote playback to terminate.</p>
+    <dt data-md>reason
+    <dd data-md>
+     <p>The reason the remote playback is being terminated.</p>
+   </dl>
+   <p>When a receiver receives a remote-playback-termination-request, it should
+send back a remote-playback-termination-response message to the controller.</p>
+   <p>If a receiver terminates a remote playback without a request from the controller
+to do so, it must send a remote-playback-termination-event message to the
+controller with the following values:</p>
+   <dl>
+    <dt data-md>remote-playback-id
+    <dd data-md>
+     <p>The ID of the remote playback that was terminated.</p>
+    <dt data-md>reason
+    <dd data-md>
+     <p>The reason the remote playback was terminated.</p>
+   </dl>
+   <p>As mentioned in <a href="https://www.w3.org/TR/remote-playback/#disconnecting-from-a-remote-playback-device">Remote Playback
+API section 6.2.7</a>, terminating the remote playback means the controller is no
+longer controlling the remote playback and does not necessarily stop media from
+rendering on the receiver.  Whether or not the receiver stops rendering media depends
+upon the implmentation of the receiver.</p>
+   <h3 class="heading settled" data-level="7.4" id="remote-playback-state-and-controls"><span class="secno">7.4. </span><span class="content">Remote Playback State and Controls</span><a class="self-link" href="#remote-playback-state-and-controls"></a></h3>
+   <p>In order for the controller and receiver to stay in sync with regards to the
+state of the remote playback, the controller may send controls to modify the state
+(for example, via the remote-playback-modify-request message) and the receiver
+may send updates about state changes (for example, via the
+remote-playback-state-event message).</p>
+   <p>The controls sent by the controller include the following individual control
+values, each of which is optional.  This allows the controller to change one
+control value or many control values at once without having to specify all
+control values every time.  A non-present control value indicates no change.  A
+present control value indicates the change defined below. These controls
+intentionally mirror settable attributes and methods of the <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">HtmlMediaElement</a>.</p>
+   <dl>
+    <dt data-md>source
+    <dd data-md>
+     <p>Change the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources④">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src">HtmlMediaElement.src</a> for more details. Must not be used in the initial controls of the
+remote-playback-start-request message (which already contains a list of URLs).</p>
+    <dt data-md>preload
+    <dd data-md>
+     <p>Set how aggresively to preload media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload">HtmlMediaElement.preload</a> for more details. Should only be used in the initial controls of the
+remote-playback-start-request message or when the source is changed.  If not
+set in the initial controls, it is left to the receiver to decide.  This is
+optional for the receiver to support and if not supported, the receiver will
+behave as though it were never set.</p>
+    <dt data-md>loop
+    <dd data-md>
+     <p>Set whether or not to loop media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop">HtmlMediaElement.loop</a> for more details. Should only be used in the initial control of the
+remote-playback-start-request.  If not set in the initial controls, it is
+assumed to be false.</p>
+    <dt data-md>paused
+    <dd data-md>
+     <p>If true, pause; if false, resume. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-pause">HtmlMediaElement.pause()</a>.
+and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-play">HtmlMediaElement.play()</a> for more details.  If not set in the initial controls, it is left to the
+receiver to decide.</p>
+    <dt data-md>muted
+    <dd data-md>
+     <p>If true, mute; if false, unmute. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">HtmlMediaElement.muted</a> for more details.  If not set in the initial controls, it is left to the
+receiver to decide.</p>
+    <dt data-md>volume
+    <dd data-md>
+     <p>Set the audio volume in the range from 0.0 to 1.0 inclusive. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a> for more details.  If not set in the initial controls, it is left to the
+receiver to decide.</p>
+    <dt data-md>seek
+    <dd data-md>
+     <p>Seek to a precise time. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">HtmlMediaElement.currentTime</a> for more details.</p>
+    <dt data-md>fast-seek
+    <dd data-md>
+     <p>Seek to an approximate time as fast as possible. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek">HtmlMediaElement.fastSeek()</a> for more details.</p>
+    <dt data-md>playback-rate
+    <dd data-md>
+     <p>Set the rate a which the media plays. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">HtmlMediaElement.playbackRate</a> for more details.  If not set in the initial controls, it is left to the
+receiver to decide.  This is optional for the receiver to support and if not
+supported, the receiver will behave as though it were never set.</p>
+    <dt data-md>poster
+    <dd data-md>
+     <p>Set the URL of an image to show when video data is not available. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-poster">HtmlMediaElement.poster</a> for more details. If not set in the initial controls, no poster is used and
+the receiver can choose what to render when video data is unavailable.  This
+is optional for the receiver to support and if not supported, the receiver
+will behave as though it were never set.</p>
+    <dt data-md>enabled-audio-track-ids
+    <dd data-md>
+     <p>Enable included audio tracks by ID and disable all other audio tracks. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">HtmlMediaElement.audioTracks</a> for more details.</p>
+    <dt data-md>select-video-track-id
+    <dd data-md>
+     <p>Select the given video track by ID and unselect all other video tracks. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.videoTracks</a> for more details.</p>
+    <dt data-md>added-text-tracks
+    <dd data-md>
+     <p>Add text tracks with the given kinds, labels, and languages. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack">HtmlMediaElement.addTextTrack</a> for more details.  This is optional for the receiver to support and if not
+supported, the receiver will behave as though it were never set.</p>
+    <dt data-md>changed-text-tracks
+    <dd data-md>
+     <p>Change text tracks by ID.  All other text tracks are left
+unchanged.  Set the mode, add cues, and remove cues by id. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a> for more details.  Note that future specifications or extensions to this
+specifications are expected to add new properties to the text-track-cue
+(such as text size, alignment, position, etc).  Adding and removing
+cues is optional for the receiver to support and if not supported, the
+receiver will behave as though no cues were added or removed (both adding
+and removing are indicated via the support for "added-cues").  As specified in <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a>,
+if a cue ID is invalid (removing an un-added ID or adding an ID twice, for example),
+the receiver may reject the text track change.</p>
+   </dl>
+   <p>The states sent by the receiver include the following individual state values,
+each of which is optional.  This allows the receiver to update the controller
+about more than one state value at once without having to specify all
+state values every time.  A non-present state value indicates the state has not
+changed.</p>
+   <dl>
+    <dt data-md>supports
+    <dd data-md>
+     <p>The controls the receiver supports.  These may differ for different <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑤">media
+resource</a>s and should not changes unless the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑥">media resource</a> changes.
+The default is empty (support for nothing)
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>source
+    <dd data-md>
+     <p>The current <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑦">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">HtmlMediaElement.currentSrc</a>.
+Must be present in the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>loading
+    <dd data-md>
+     <p>The state of network activity for loading the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑧">media resource</a>. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">HtmlMediaElement.networkState</a>.
+The default is empty (NETWORK_EMPTY)
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>loaded
+    <dd data-md>
+     <p>The state of the loaded media (whether enough is loaded to play). See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate">HtmlMediaElement.readyState</a>.
+The default is nothing (HAVE_NOTHING)
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>error
+    <dd data-md>
+     <p>A major error occurred which prevents the remote playback from continuing. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error">HtmlMediaElement.error</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code">HtmlMediaElement media error codes</a>.
+The default is no error
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>epoch
+    <dd data-md>
+     <p>The "zero time" of the media timeline. See <a href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset">HtmlMediaElement’s timeline offset</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate">HtmlMediaElement.getStartDate()</a>.
+The default is an unknown epoch
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>duration
+    <dd data-md>
+     <p>The duration of the media timeline. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration">HtmlMediaElement.duration</a>.
+The default is an unknown duration
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>buffered-time-ranges
+    <dd data-md>
+     <p>The time ranges for which media has been buffered. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">HtmlMediaElement.buffered</a>.</p>
+    <dt data-md>played-time-ranges
+    <dd data-md>
+     <p>The time ranges reached by the playback position during normal playback. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played">HtmlMediaElement.played</a>.</p>
+    <dt data-md>seekable-time-ranges
+    <dd data-md>
+     <p>The time ranges for which media is seekable by the controller or the receiver. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable">HtmlMediaElement.seekable</a>.</p>
+    <dt data-md>position
+    <dd data-md>
+     <p>The playback position. See <a href="https://html.spec.whatwg.org/multipage/media.html#official-playback-position">HtmlMediaElement’s official playback
+position</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">HtmlMediaElement.currentTime</a>.
+The default is 0
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>playbackRate
+    <dd data-md>
+     <p>The current rate of playback on a scale where 1.0 is "normal speed". See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">HtmlMediaElement.playbackRate</a>.
+The default is 1.0
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>paused
+    <dd data-md>
+     <p>Whether media is paused or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused">HtmlMediaElement.paused</a>.
+The default is false
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>seeking
+    <dd data-md>
+     <p>Whether the receiver is seeking or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking">HtmlMediaElement.seeking</a>.
+The default is false
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>stalled
+    <dd data-md>
+     <p>If true, media is not playing because not enough media is loaded, and false otherwise. See <a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">HtmlMediaElement.stalled</a>.
+The default is false
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>ended
+    <dd data-md>
+     <p>Whether media has reached the end or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">HtmlMediaElement.ended</a>.
+The default is false
+for the initial state in the remote-playback-start-response message.</p>
+    <dt data-md>volume
+    <dd data-md>
+     <p>The current volume of playback on a scale of 0.0 to 1.0. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a>.</p>
+    <dt data-md>muted
+    <dd data-md>
+     <p>True if audio is muted (overriding the volume value) and false otherwise.
+See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">HtmlMediaElement.muted</a>.</p>
+    <dt data-md>resolution
+    <dd data-md>
+     <p>The "intrinsic width" and "intrinsic width" of the video. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth">HtmlMediaElement.videoWidth</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight">HtmlMediaElement.videoHeight</a>.</p>
+    <dt data-md>audio-tracks
+    <dd data-md>
+     <p>The available audio tracks, which can individually enabled or disabled. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">HtmlMediaElement.audioTracks</a></p>
+    <dt data-md>video-tracks
+    <dd data-md>
+     <p>The available video tracks.  Only one may be selected. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.videoTracks</a></p>
+    <dt data-md>text-tracks
+    <dd data-md>
+     <p>The available text tracks, which can be individually shown, hidden, or disabled. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.textTracks</a>.
+The controller can also add cues to and remove cues from text tracks.</p>
+   </dl>
+   <p>All times, time ranges, and durations (such as position, duration, and
+seekable-time-ranges) used above use a common media-time value (see Appendix A)
+which includes a time scale.  This allows time values which work on different
+time scales to be expressed without loss of precision.  The scale is represented
+in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
+   <h3 class="heading settled" data-level="7.5" id="remote-playback-api"><span class="secno">7.5. </span><span class="content">Remote Playback API</span><a class="self-link" href="#remote-playback-api"></a></h3>
+   <p>This section defines how the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> uses the
+messages defined in <a href="#remote-playback-protocol">§7.3 Remote Playback Protocol</a>.</p>
+   <p>When <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
+6.2.1.2</a> says "This list contains remote playback devices and is populated
+based on an implementation specific discovery mechanism" and <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
+6.2.1.4</a> says "Retrieve available remote playback devices (using an
+implementation specific mechanism)", the user agent may use the
+mDNS, QUIC, agent-info-request, and remote-playback-availability messages
+defined previously in this spec to discover <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices②">remote playback devices</a>.  The
+remote-playback-availiability urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability sources set</a>.</p>
+   <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
+6.2.4</a> says "Request connection of remote to device. The implementation of this
+step is specific to the user agent." and  "Synchronize the current media element
+state with the remote playback state", the user agent may send the
+remote-playback-start-request message to start remote playback.  The
+remote-playback-start-request urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote playback source</a>.
+The current <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> only allows a single source,
+but the protocol allows for several and future versions of <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> may allow for several.</p>
+   <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
+6.2.4</a> says "The mechanism that is used to connect the user agent with the
+remote playback device and play the remote playback source is an implementation
+choice of the user agent. The connection will likely have to provide a two-way
+messaging abstraction capable of carrying media commands to the remote playback
+device and receiving media playback state in order to keep the media element
+state and remote playback state in sync", the user agent may send
+remote-playback-modify-request messages to change the remote playback state
+based on changes to the local media element and receive
+remote-playback-modify-response and remote-playback-state-event messages to
+change the local media element based on changes to the remote playback state.</p>
+   <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
+6.2.7</a> says "Request disconnection of remote from the device. The
+implementation of this step is specific to the user agent.", the controlling
+user agent may send the remote-playback-termination-request message.</p>
+   <h2 class="heading settled" data-level="8" id="streaming-protocol"><span class="secno">8. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
+   <p>The section defines the use of the Open Screen Protocol for streaming
+media from one agent to another. We refer to the agent sending media
+as the <em>sender</em> and the agent receiving the media as the <em>receiver</em>.</p>
+   <h3 class="heading settled" data-level="8.1" id="streaming-capabilities"><span class="secno">8.1. </span><span class="content">Capabilities</span><a class="self-link" href="#streaming-capabilities"></a></h3>
+    If the advertiser is already authenticated, the requester has the ability to
+request additional information by sending an streaming-capabilities-request
+message, and receive back a streaming-capabilities-response message with the
+following properties: 
+   <dl>
+    <dt data-md>receive-audio (required)
+    <dd data-md>
+     <p>A list of capabilities for receiving audio. For an explanation of fields, see below.</p>
+    <dt data-md>receive-video (required)
+    <dd data-md>
+     <p>A list of capabilities for receiving video. For an explanation of fields, see below.</p>
+    <dt data-md>receive-data (required)
+    <dd data-md>
+     <p>A list of arbitrary data formats the device supports
+for receiving data.</p>
+   </dl>
+   <p>The format type is used as the basis for audio, video, and data capabilities.
+Formats are composed of the following properties:</p>
+   <dl>
+    <dt data-md>name (required)
+    <dd data-md>
+     <p>The name of the format. Expected values include "vp8", "h264", "opus."</p>
+    <dt data-md>parameters (required)
+    <dd data-md>
+     <p>A list of (key, value) parameters that can be used to pass fields that are
+properties of a specific format, and not shared by other formats of that type
+(audio, video, etc.).</p>
+   </dl>
+   <p>Audio capabilities are composed of the above format type, with the following
+additional fields:</p>
+   <dl>
+    <dt data-md>max-audio-channels (optional)
+    <dd data-md>
+     <p>An optional field indicating the maximum amount of audio
+channels the receiver is capable of supporting. Default value is "2," meaning
+a stereo speaker channel setup.</p>
+    <dt data-md>min-bit-rate (optional)
+    <dd data-md>
+     <p>An optional field indicating the minimum audio bit rate that
+the receiver can handle, in kilobits per second. Default is no minimum.</p>
+   </dl>
+   <p>Video capabilities are similarly composed of the above format type, with the
+following additional fields:</p>
+   <dl>
+    <dt data-md>max-resolution (optional)
+    <dd data-md>
+     <p>An optional field indicating the maximum video-resolution (width, height)
+that the receiver is capable of processing. Default is no maximum.</p>
+    <dt data-md>max-frames-per-second (optional)
+    <dd data-md>
+     <p>An optional field indicating the maximum frames-per-second the receiver is
+capable of processing. Default is no maximum.</p>
+    <dt data-md>max-pixels-per-second (optional)
+    <dd data-md>
+     <p>An optional field indicating the maximum pixels-per-second the receiver is
+capable of processing, in pixels per second. Default is no maximum.</p>
+    <dt data-md>min-video-bit-rate (optional)
+    <dd data-md>
+     <p>An optional field indicating the minimum video bit rate the device is
+capable of processing, in kilobits per second. Default is no minimum.</p>
+    <dt data-md>aspect-ratio (optional)
+    <dd data-md>
+     <p>An optional field indicating what its ideal aspect ratio is, e.g. a 16:10
+display could return this value as 1.6 to indicate its preferred content
+scaling. Default is none.</p>
+    <dt data-md>color-profiles (optional)
+    <dd data-md>
+     <p>An optional field indicating what color profiles are understood.
+The listener may use these values to determine how to encode
+video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.</p>
+    <dt data-md>native-resolutions (optional)
+    <dd data-md>
+     <p>An optional field indicating what video-resolutions the receiver supports and
+considers to be "native," meaning that scaling is not required.
+The default value is none.</p>
+    <dt data-md>supports-scaling (optional)
+    <dd data-md>
+     <p>A optional boolean field indicating whether the receiver can scale content
+provided in a video-resolution not listed in the native-resolutions list
+(if provided) or of a different aspect ratio. The default value is true.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.2" id="streaming-sessions"><span class="secno">8.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
+   <h3 class="heading settled" data-level="8.3" id="streaming-audio"><span class="secno">8.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
+   <p>Senders may send audio to receivers by sending audio-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  An audio frame message
+contains a set of encoded audio samples for a range of time. A series of
+encoded audio frames that share a codec, codec parameters and a timeline form an
+audio encoding.</p>
+   <p>Unlike most Open Screen Protocol messages, this one uses an
+array-based grouping rather than a struct-based grouping.  For
+required fields, this allows for a more efficient use of bytes on the
+wire, which is important for streaming audio because the payload is
+typically so small and every byte of overhead is relatively large.  In
+order to accomodate optional values in the array-based grouping, one
+optional field in the array is used to hold all optional values in a
+struct-based grouping.  This will hopefully provide a good balance of
+efficiency and flexibility.</p>
+   <p>To further increase efficiency, each audio-frame message must be sent
+in a separate QUIC stream without the length prefix.  It must only use
+the type key prefix and then the encoded CBOR message immediately
+after.  Separate QUIC streams also allow audio frames to be received
+out of order.</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the media encoding to which this audio frame belongs.  This can be
+used to reference properties of the encoding such as the codec, codec
+properties, time scale (aka clock rate or sample rate), and default
+duration.  Referencing properties of the encoding through the encoding id
+helps to avoid sending duplicate information in every frame.</p>
+    <dt data-md>start-time
+    <dd data-md>
+     <p>Identifies the beginning of the time range of the audio frame.  The time
+scale is inferred from the properties of the encoding.  The end time can be
+inferred from the start time and duration.</p>
+    <dt data-md>duration
+    <dd data-md>
+     <p>If present, the duration of the audio frame.  The time
+scale is inferred from the properties of the encoding.  Likewise, if not
+present, the duration is inferred from the properties of the encoding.</p>
+    <dt data-md>sync-time
+    <dd data-md>
+     <p>If present, a time used to synchronize the start time of this audio frame (and
+thus, this encoding) with that of other media encodings on different
+timelines.</p>
+    <dt data-md>payload
+    <dd data-md>
+     <p>The data.  The type of data is inferred from the properties of the encoding.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.4" id="streaming-video"><span class="secno">8.4. </span><span class="content">Video</span><a class="self-link" href="#streaming-video"></a></h3>
+   <p>Senders may send video to receivers by sending video-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video frame message
+contains an encoded video frame (an encoded image) at a specific point in time
+or over a specfic time range (if the duration is known).  A series of encoded
+video frames that share a codec, codec parameters and a timeline form a video
+encoding.</p>
+   <p>To allow for video frames to be sent out of order, they may be sent in
+separate QUIC streams.  If the encoding is a long chain of encoded video frames
+dependent on the previous one back until an independent frame, it may make sense
+to send them in a single QUIC stream starting at the indepdendent frame and
+ending at the last dependent frame.</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the media encoding to which this video frame belongs.  This can be
+used to reference properties of the encoding such as the codec, codec
+properties, time scale, and default rotation.  Referencing properties of the
+encoding through the encoding id helps to avoid sending duplicate
+information in every frame.</p>
+    <dt data-md>sequence-number
+    <dd data-md>
+     <p>Identifies the frame and its order in the encoding.
+Within an encoding, larger sequence numbers mean later start times.
+Within an encoding, gaps in sequence numbers mean frames are missing.</p>
+    <dt data-md>depends-on
+    <dd data-md>
+     <p>If present, the sequence numbers of the frames this frame depends on.
+If a sequence numbers is negative, it is treated as a relative sequence numbers
+and the sequence numbers is calculated by adding it to the sequence number of this frame.
+If empty, this is an independent frame (a key frame).
+If not present, the default value is [-1].</p>
+    <dt data-md>start-time
+    <dd data-md>
+     <p>Identifies the beginning of the time range of the video frame.  The time
+scale is inferred from the properties of the encoding.  The end time can be
+inferred from the start time and duration.</p>
+    <dt data-md>duration
+    <dd data-md>
+     <p>If present, the duration of the video frame.  The time
+scale is inferred from the properties of the encoding.  If not
+present, that means duration is unknown.</p>
+    <dt data-md>sync-time
+    <dd data-md>
+     <p>If present, a time used to synchronize the start time of this frame (and
+thus, this encoding) with that of other media encodings on different
+timelines.</p>
+    <dt data-md>rotation
+    <dd data-md>
+     <p>If present, indicates how the frame should be rotated after decoding but
+before rendering.  Rotation is clockwise in increments of 90 degrees.
+The default is 0 (no rotation).</p>
+    <dt data-md>payload
+    <dd data-md>
+     <p>The encoded video frame (encoded image).  The codec and codec parameters are
+inferred from the properties of the encoding.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.5" id="media-streaming-data"><span class="secno">8.5. </span><span class="content">Data</span><a class="self-link" href="#media-streaming-data"></a></h3>
+   <p>Senders may send timed data to receivers by sending data-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
+contains an arbitrary payload that can be synchronized with and video, such as
+text track data.  A series of data frames that share a data type and timeline
+form a data encoding.</p>
+   <p>To allow for data frames to be sent out of order, they may be sent in separate
+QUIC streams, but more than one data frame may be sent in one QUIC stream if
+that makes sense for a specific type of data.</p>
+   <p>Text track data uses a payload type of text, a default duration of unknown, and
+a timescale of 1000000 (microseconds).</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the media encoding to which this data frame belongs.  This can be
+used to reference properties of the encoding such as the type of data and
+time scale.  Referencing properties of the encoding through the encoding id
+helps to avoid sending duplicate information in every frame.</p>
+    <dt data-md>sequence-number
+    <dd data-md>
+     <p>Identifies the frame and its order in the encoding.
+Within an encoding, larger sequence numbers mean later start times.
+Within an encoding, gaps in sequence numbers mean frames are missing.</p>
+    <dt data-md>start-time
+    <dd data-md>
+     <p>Identifies the beginning of the time range of the data frame.  The time
+scale is inferred from the properties of the encoding.  The end time can be
+inferred from the start time and duration.</p>
+    <dt data-md>duration
+    <dd data-md>
+     <p>If present, the duration of the data frame.  The time
+scale is inferred from the properties of the encoding.  Likewise, if not
+present, the duration is inferred from the properties of the encoding.</p>
+    <dt data-md>sync-time
+    <dd data-md>
+     <p>If present, a time used to synchronize the start time of this audio frame (and
+thus, this encoding) with that of other media encodings on different
+timelines.</p>
+    <dt data-md>payload
+    <dd data-md>
+     <p>The encoded audio samples.  The codec and codec parameters are inferred from
+the properties of the encoding.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.6" id="streaming-feedback"><span class="secno">8.6. </span><span class="content">Feedback</span><a class="self-link" href="#streaming-feedback"></a></h3>
+   <p>The receiver can send feedback to the sender, such as key frame requests.</p>
+   <p>A video key frame is requested by sending a video-request message with
+the following keys and values.</p>
+   <p>To allow for video frames to be sent out of order, they may be sent in separate
+QUIC streams.</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>The encoding for which the sender should send a new key frame.</p>
+    <dt data-md>sequence-number
+    <dd data-md>
+     <p>Gives the order in the encoding.
+Within an encoding, larger sequence numbers invalidate previous ones.
+A sender may ignore smaller sequence numbers after a larger one has been processed.
+This it to prevent out-of-order requests from generating more key frames than necessary.</p>
+    <dt data-md>highest-decoded-frame-sequence-number: uint
+    <dd data-md>
+     <p>If set, the sender may generate a video frame dependent on the last decoded
+frame.  If not set, the sender must generate an indepdendent (key) frame.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.7" id="streaming-stats"><span class="secno">8.7. </span><span class="content">Stats</span><a class="self-link" href="#streaming-stats"></a></h3>
+   <h2 class="heading settled" data-level="9" id="security-privacy"><span class="secno">9. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
 considerations should be closely examined.  We first evaluate the protocol
@@ -2095,8 +2743,8 @@ Questionnaire</a>.  We then examine whether the security and privacy guidelines
 recommended by the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> are met.  Finally we discuss recommended
 mitigations that agents can use to meet these security and privacy
 requirements.</p>
-   <h3 class="heading settled" data-level="8.1" id="threat-models"><span class="secno">8.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
-   <h4 class="heading settled" data-level="8.1.1" id="passive-network-attackers"><span class="secno">8.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
+   <h3 class="heading settled" data-level="9.1" id="threat-models"><span class="secno">9.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
+   <h4 class="heading settled" data-level="9.1.1" id="passive-network-attackers"><span class="secno">9.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
    <p>The Open Screen Protocol should assume that all parties that are connected to
 the same LAN, either through a wired connection or through WiFi, are able to
 observe all data flowing between Open Screen Protocol agents.</p>
@@ -2104,7 +2752,7 @@ observe all data flowing between Open Screen Protocol agents.</p>
 messages, such as mDNS records and the QUIC handshakes.</p>
    <p>These parties may attempt to learn cryptographic parameters by observing data
 flows on the QUIC connection, or by observing cryptographic timing.</p>
-   <h4 class="heading settled" data-level="8.1.2" id="active-network-attackers"><span class="secno">8.1.2. </span><span class="content">Active Network Attackers</span><a class="self-link" href="#active-network-attackers"></a></h4>
+   <h4 class="heading settled" data-level="9.1.2" id="active-network-attackers"><span class="secno">9.1.2. </span><span class="content">Active Network Attackers</span><a class="self-link" href="#active-network-attackers"></a></h4>
    <p>Active attackers, such as compromised routers, will be able to manipulate data
 exchanged between agents.  They can inject traffic into existing QUIC
 connections and attempt to inititate new QUIC connections.  These abilities can
@@ -2124,7 +2772,7 @@ expose local network devices (such as Open Screen Protocol agents) to the
 Internet.  This vector of attack has been used by malicious parties to take
 control of printers and smart TVs by connecting to local network services that
 would normally be inaccessible from the Internet.</p>
-   <h4 class="heading settled" data-level="8.1.3" id="denial-of-service"><span class="secno">8.1.3. </span><span class="content">Denial of Service</span><a class="self-link" href="#denial-of-service"></a></h4>
+   <h4 class="heading settled" data-level="9.1.3" id="denial-of-service"><span class="secno">9.1.3. </span><span class="content">Denial of Service</span><a class="self-link" href="#denial-of-service"></a></h4>
    <p>Parties with connected to the LAN may attempt to deny access to Open Screen
 Protocol agents.  For example, an attacker my attempt to open
 a large number of QUIC connections to an agent in an attempt to block
@@ -2132,7 +2780,7 @@ legitimate connections or exhaust the agent’s system resources.  They may
 also multicast spurious DNS-SD records in an attempt to exhaust the cache
 capacity for mDNS listeners, or to get listeners to open a large number of bogus
 QUIC connections.</p>
-   <h4 class="heading settled" data-level="8.1.4" id="same-origin-policy-violations"><span class="secno">8.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
+   <h4 class="heading settled" data-level="9.1.4" id="same-origin-policy-violations"><span class="secno">9.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
    <p>The Presentation API allows cross-origin communication between controlling pages
 and presentations with the consent of each origin (through their use of the
 API).  This is similar to cross-origin communication via <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options" id="ref-for-dom-window-postmessage-options">postMessage()</a></code> with a target origin of <code>*</code>.  However, the Presentation
@@ -2140,8 +2788,8 @@ API does not convey source origin information with each message.  Therefore, the
 Open Screen Protocol does not convey origin information between its agents.</p>
    <p>The <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id③">presentation ID</a> carries some protection against unrestricted
 cross-origin access; but, rigorous authentication of the parties connected by a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection②">PresentationConnection</a></code> must be done at the application level.</p>
-   <h3 class="heading settled" data-level="8.2" id="security-privacy-questions"><span class="secno">8.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
-   <h4 class="heading settled" data-level="8.2.1" id="personally-identifiable-information"><span class="secno">8.2.1. </span><span class="content">Personally Identifiable Information &amp; High-Value Data</span><a class="self-link" href="#personally-identifiable-information"></a></h4>
+   <h3 class="heading settled" data-level="9.2" id="security-privacy-questions"><span class="secno">9.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
+   <h4 class="heading settled" data-level="9.2.1" id="personally-identifiable-information"><span class="secno">9.2.1. </span><span class="content">Personally Identifiable Information &amp; High-Value Data</span><a class="self-link" href="#personally-identifiable-information"></a></h4>
    <p>The following data exchanged by the protocol can be personally identifiable
 and/or high value data:</p>
    <ol>
@@ -2173,20 +2821,20 @@ considered public and untrusted data:</p>
      <p>Data advertised through mDNS, including the display name prefix, the
 certificate fingerprint, and the metadata version.</p>
    </ol>
-   <h4 class="heading settled" data-level="8.2.2" id="cross-origin-state"><span class="secno">8.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
+   <h4 class="heading settled" data-level="9.2.2" id="cross-origin-state"><span class="secno">9.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
    <p>Access to origin state across browsing sessions is possible through the
 Presentation API by reconnecting to a presentation that was started by a
 previous session. This scenario is addressed in <a href="https://www.w3.org/TR/presentation-api/#cross-origin-access">Presentation API §cross-origin-access</a>.</p>
    <p>Presentation display availability and remote playback device availability are
 states that are available cross-origin depending on the user’s network
 context.  Exposure of this data to the Web is also discussed in <a href="https://www.w3.org/TR/presentation-api/#personally-identifiable-information">Presentation API §personally-identifiable-information</a> and <a href="https://www.w3.org/TR/remote-playback/#personally-identifiable-information">Remote Playback API §personally-identifiable-information</a>.</p>
-   <h4 class="heading settled" data-level="8.2.3" id="origin-access-devices"><span class="secno">8.2.3. </span><span class="content">Origin Access to Other Devices</span><a class="self-link" href="#origin-access-devices"></a></h4>
+   <h4 class="heading settled" data-level="9.2.3" id="origin-access-devices"><span class="secno">9.2.3. </span><span class="content">Origin Access to Other Devices</span><a class="self-link" href="#origin-access-devices"></a></h4>
    <p>By design, the Open Screen Protocol allows access to presentation displays and
 remote playback devices from the Web.  By implementing the protocol, these
 devices are knowingly making themselves available to the Web and should be
 designed accordingly.</p>
    <p>Below, we discuss mitigation steps to prevent malicious use of these devices.</p>
-   <h4 class="heading settled" data-level="8.2.4" id="incognito-mode"><span class="secno">8.2.4. </span><span class="content">Incognito Mode</span><a class="self-link" href="#incognito-mode"></a></h4>
+   <h4 class="heading settled" data-level="9.2.4" id="incognito-mode"><span class="secno">9.2.4. </span><span class="content">Incognito Mode</span><a class="self-link" href="#incognito-mode"></a></h4>
    <p>The Open Screen Protocol does not distinguish between the user agent’s normal
 browsing and incognito modes, and agents that follow the specification
 behave identically regardless of which mode is in use.</p>
@@ -2194,7 +2842,7 @@ behave identically regardless of which mode is in use.</p>
 connections for normal and incognito profiles from the same user agent instance.
 This prevents Open Screen agents from correlating activity among profiles
 belonging to the same user (both normal and incognito).</p>
-   <h4 class="heading settled" data-level="8.2.5" id="persistent-state"><span class="secno">8.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
+   <h4 class="heading settled" data-level="9.2.5" id="persistent-state"><span class="secno">9.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
    <p>An agent is likely to persist the identity of agents that have successfully
 completed <a href="#authentication">§6 Authentication</a>.  This may include the public key fingerprints,
 metadata versions, and metadata for those parties.</p>
@@ -2204,7 +2852,7 @@ process.  It can be an implementation choice whether the user agent clears or
 retains this data when the user clears browsing data.</p>
    <p class="issue" id="issue-7d9298b1"><a class="self-link" href="#issue-7d9298b1"></a> [Privacy] Fate of metadata / authentication history when clearing
 browsing data <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a></p>
-   <h4 class="heading settled" data-level="8.2.6" id="other-considerations"><span class="secno">8.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
+   <h4 class="heading settled" data-level="9.2.6" id="other-considerations"><span class="secno">9.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
    <p>The Open Screen Protocol does not grant to the Web additional access to the
 following:</p>
    <ul>
@@ -2221,7 +2869,7 @@ following:</p>
     <li data-md>
      <p>Security characteristics of the user agent</p>
    </ul>
-   <h3 class="heading settled" data-level="8.3" id="presentation-api-considerations"><span class="secno">8.3. </span><span class="content">Presentation API Considerations</span><a class="self-link" href="#presentation-api-considerations"></a></h3>
+   <h3 class="heading settled" data-level="9.3" id="presentation-api-considerations"><span class="secno">9.3. </span><span class="content">Presentation API Considerations</span><a class="self-link" href="#presentation-api-considerations"></a></h3>
    <p><a href="https://www.w3.org/TR/presentation-api/#security-and-privacy-considerations">Presentation API §security-and-privacy-considerations</a> place these
 requirements on the Open Screen Protocol:</p>
    <ol>
@@ -2247,15 +2895,15 @@ connections.</p>
      <p>Adding explicit messages and connection IDs for individual <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection③">PresentationConnections</a></code> so that agents can track
  the number of active connections.</p>
    </ol>
-   <h3 class="heading settled" data-level="8.4" id="remote-playback-considerations"><span class="secno">8.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
+   <h3 class="heading settled" data-level="9.4" id="remote-playback-considerations"><span class="secno">9.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
    <p>The <a href="https://www.w3.org/TR/remote-playback/#security-and-privacy-considerations">Remote Playback API §security-and-privacy-considerations</a> also state that
 messaging between local and remote playback devices should also be authenticated
 and confidential.</p>
    <p>This consideration is handled by requiring mutual authentication and a
 TLS-secured QUIC connection before any remote playback related messages are
 exchanged.</p>
-   <h3 class="heading settled" data-level="8.5" id="security-mitigations"><span class="secno">8.5. </span><span class="content">Mitigation Strategies</span><a class="self-link" href="#security-mitigations"></a></h3>
-   <h4 class="heading settled" data-level="8.5.1" id="local-passive-mitigations"><span class="secno">8.5.1. </span><span class="content">Local passive network attackers</span><a class="self-link" href="#local-passive-mitigations"></a></h4>
+   <h3 class="heading settled" data-level="9.5" id="security-mitigations"><span class="secno">9.5. </span><span class="content">Mitigation Strategies</span><a class="self-link" href="#security-mitigations"></a></h3>
+   <h4 class="heading settled" data-level="9.5.1" id="local-passive-mitigations"><span class="secno">9.5.1. </span><span class="content">Local passive network attackers</span><a class="self-link" href="#local-passive-mitigations"></a></h4>
    <p>Local passive attackers may attempt to harvest data about user activities and
 device capabilties using the Open Screen Protocol.  The main strategy to address
 this is data minimization, by only exposing opaque public key fingerprints
@@ -2263,7 +2911,7 @@ before user-mediated authentication takes place.</p>
    <p>Passive attackers may also attempt timing attacks to learn the
 cryptographic parameters of the TLS 1.3 QUIC connection.</p>
    <p class="issue" id="issue-5107ff88"><a class="self-link" href="#issue-5107ff88"></a> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
-   <h4 class="heading settled" data-level="8.5.2" id="local-active-mitigations"><span class="secno">8.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="9.5.2" id="local-active-mitigations"><span class="secno">9.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
    <p>Local active attackers may attempt to impersonate a presentation display the
 user would normally trust.  The <a href="#authentication">§6 Authentication</a> step of the Open Screen
 Protocol prevents a man-in-the-middle from impersonating an agent, without
@@ -2309,19 +2957,19 @@ display - to prevent the user from blindly clicking through this step.</p>
 connection by injecting or modifying traffic.  These attacks should be mitigated
 by a correct implementation of TLS 1.3.</p>
    <p class="issue" id="issue-5107ff88①"><a class="self-link" href="#issue-5107ff88①"></a> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
-   <h4 class="heading settled" data-level="8.5.3" id="remote-active-mitigations"><span class="secno">8.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="9.5.3" id="remote-active-mitigations"><span class="secno">9.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
    <p>Unfortunately, we cannot rely on network devices to fully protect Open Screen
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Inernet host.</p>
    <p class="issue" id="issue-1353180f"><a class="self-link" href="#issue-1353180f"></a> [Security] Mitigations for remote network attackers <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a></p>
-   <h4 class="heading settled" data-level="8.5.4" id="denial-of-service-mitigations"><span class="secno">8.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="9.5.4" id="denial-of-service-mitigations"><span class="secno">9.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
    <p>It will be difficult to completely prevent denial service of attacks that
 originate on the user’s local area network.  Open Screen Protocol agents can
 refuse new connections, close connections that receive too many messages, or
 limit the number of mDNS records cached from a specific responder in an attempt
 to allow existing activities to continue in spite of such an attack.</p>
-   <h4 class="heading settled" data-level="8.5.5" id="malicious-input-mitigations"><span class="secno">8.5.5. </span><span class="content">Malicious input</span><a class="self-link" href="#malicious-input-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="9.5.5" id="malicious-input-mitigations"><span class="secno">9.5.5. </span><span class="content">Malicious input</span><a class="self-link" href="#malicious-input-mitigations"></a></h4>
    <p>Open Screen Protocol agents should be robust against malicious input that
 attempts to compromise the target device by exploiting parsing vulnerabilities.</p>
    <p>CBOR is intended to be less vulnerable to such attacks relative to alternatives
@@ -2382,7 +3030,7 @@ response = (
 
 request-id = uint
 
-; type key 1001 
+; type key 1001
 authentication-request = {
   request
   1: authentication-mechanism ; mechanism
@@ -2390,7 +3038,7 @@ authentication-request = {
   3: uint ; cost
 }
 
-; type key 1002 
+; type key 1002
 authentication-response = {
   response
   1: authentication-response-result ; result
@@ -2652,7 +3300,7 @@ remote-playback-state-event = {
   2: remote-playback-state ; state
 }
 
-remote-playback-id = uint 
+remote-playback-id = uint
 
 remote-playback-controls = {
   ? 1: url ; source
@@ -2660,10 +3308,10 @@ remote-playback-controls = {
   ? 3: bool ; loop
   ? 4: bool ; paused
   ? 5: bool ; muted
-  ? 6: float ; volume 
+  ? 6: float ; volume
   ? 7: media-time ; seek
   ? 8: media-time ; fast-seek
-  ? 9: float ; playback-rate 
+  ? 9: float ; playback-rate
   ? 10: url ; poster
   ? 11: [* text] ; enabled-audio-track-ids
   ? 12: text ; selected-video-track-id
@@ -2672,8 +3320,12 @@ remote-playback-controls = {
 }
 
 remote-playback-state = {
-  ? 1: (rate: bool, preload: bool, poster: bool, added-text-track: bool, added-cues: bool) ; supports
-
+  ? 1: &amp;(rate: bool,
+         preload: bool,
+         poster: bool,
+         added-text-track:
+         bool,
+         added-cues: bool) ; supports
   ? 2: url ; source
   ? 3: &amp;(
     empty: 0
@@ -2683,31 +3335,26 @@ remote-playback-state = {
   ) ; loading
   ? 4: &amp;(
     nothing: 0
-    metdata: 1
+    metadata: 1
     current: 2
     future: 3
     enough: 4
   ) ; loaded
   ? 5: media-error : error
-
   ? 6: media-time / unknown; epoch
   ? 7: media-time / unknown / forever ; duration
   ? 8: [* media-time-range] ; buffered-time-ranges
   ? 9: [* media-time-range] ; seekable-time-ranges
   ? 10: [* media-time-range] ; played-time-ranges
-
   ? 11: media-time ; position
   ? 12: float : playbackRate
   ? 13: bool ; paused
   ? 14: bool ; seeking
   ? 15: bool ; stalled
   ? 16: bool ; ended
-
   ? 17: float ; volume
   ? 18: bool ; muted
-
   ? 19: video-resolution / unknown ; resolution
-
   ? 20: [* audio-track-state] audio-tracks
   ? 21: [* video-track-state] video-tracks
   ? 22: [* text-track-state] text-tracks
@@ -2745,7 +3392,7 @@ text-track-cue = {
 }
 
 media-time-range = [
-  start: media-time, 
+  start: media-time,
   end: media-time
 ]
 
@@ -2754,7 +3401,7 @@ media-time = [
   scale: uint
 ]
 
-unknown = 0 
+unknown = 0
 forever = 1
 
 media-error = [
@@ -2763,6 +3410,7 @@ media-error = [
     network-error: 2
     decode-error: 3
     source-not-supported: 4
+    unknown-error: 5
   )
   message: text
 ]
@@ -2783,9 +3431,106 @@ video-track-state = {
   5 : bool ; selected
 }
 
-track-track-state = {
+text-track-state = {
   track-state
   6 : mode ; text-track-mode
+}
+
+; type key 22
+audio-frame = [
+  encoding-id: uint
+  start-time: uint
+  payload: bytes
+  ? optional: {
+    ? 0: uint ; duration
+    ? 1: media-time ; sync-time
+  }
+]
+
+; type key 23
+video-frame = {
+  0: uint ; encoding-id
+  1: uint ; sequence-number
+  ? 2: [* int] ; depends-on
+  3: uint ; start-time
+  ? 4: uint ; duration
+  5: bytes ; payload
+  ? 6: uint ; rotation
+  ? 7: media-time ; sync-time
+}
+
+; type key 24
+data-frame = {
+  0: uint; encoding-id
+  ? 1: uint ; sequence-number
+  ? 2: uint ; start-time
+  ? 3: uint ; duration
+  4: any; payload
+  ? 5: media-time ; sync-time
+}
+
+; type key 120
+video-frame-request = {
+ 1: uint; encoding-id
+ 2: uint; sequence-number
+ ? 3: uint; highest-decoded-frame-sequence-number
+}
+
+ratio = [
+  antecedent: uint
+  consequent: uint
+]
+
+streaming-capabilities-request = {
+  request
+}
+
+streaming-capabilities-response = {
+  response
+  1: streaming-capabilities ; streaming-capabilities
+}
+
+streaming-capabilities = {
+  0: [* receive-audio-capability] ; receive-audio
+  1: [* receive-video-capability] ; receive-video
+  2: [* receive-data-capability] ; receive-data
+}
+
+format = {
+  0: string ; name
+  1: [* format-parameter] ; parameters
+}
+
+format-parameter = {
+  0: string ; key
+  1: bytes ; value
+}
+
+receive-audio-capability = {
+  0: format ; codec
+  ? 1: uint ; max-audio-channels
+  ? 2: uint ; min-bit-rate
+}
+
+video-resolution = {
+  0: uint ; height
+  1: uint ; width
+}
+
+receive-video-capability = {
+  0: format ; codec
+  ? 1: video-resolution ; max-resolution
+  ? 2: uint ; max-frames-per-second
+  ? 3: uint ; max-pixels-per-second
+  ? 4: uint ; min-bit-rate
+  ? 5: ratio ; aspect-ratio
+  ? 6: [* string] ; color-profiles
+  ? 7: [* video-resolution] ; native-resolutions
+  ? 8: bool ; supports-scaling
+}
+
+receive-data-capability = {
+  0: format ; format
 }
 
 </pre>
@@ -2940,21 +3685,15 @@ track-track-state = {
   <aside class="dfn-panel" data-for="term-for-dom-window-postmessage-options">
    <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-window-postmessage-options">8.1.4. Same-Origin Policy Violations</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-media-element">
-   <a href="https://www.w3.org/TR/html51/single-page.html#media-element">https://www.w3.org/TR/html51/single-page.html#media-element</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-media-element">1.1. Terminology</a>
+    <li><a href="#ref-for-dom-window-postmessage-options">9.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-presentationconnection">
    <a href="https://w3c.github.io/presentation-api/#presentationconnection">https://w3c.github.io/presentation-api/#presentationconnection</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentationconnection">2.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
-    <li><a href="#ref-for-presentationconnection②">8.1.4. Same-Origin Policy Violations</a>
-    <li><a href="#ref-for-presentationconnection③">8.3. Presentation API Considerations</a>
+    <li><a href="#ref-for-presentationconnection②">9.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-presentationconnection③">9.3. Presentation API Considerations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-available-presentation-display">
@@ -2993,7 +3732,7 @@ track-track-state = {
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-id">https://w3c.github.io/presentation-api/#dfn-presentation-id</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-presentation-id">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
-    <li><a href="#ref-for-dfn-presentation-id③">8.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-dfn-presentation-id③">9.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
@@ -3058,11 +3797,6 @@ track-track-state = {
      <li><span class="dfn-paneled" id="term-for-dom-window-postmessage-options" style="color:initial">postMessage(message, options)</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[html51]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="term-for-media-element" style="color:initial">media element</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-presentationconnection" style="color:initial">PresentationConnection</span>
@@ -3091,8 +3825,6 @@ track-track-state = {
   <dl>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
-   <dt id="biblio-html51">[HTML51]
-   <dd>Steve Faulkner; et al. <a href="https://www.w3.org/TR/html51/">HTML 5.1 2nd Edition</a>. 3 October 2017. REC. URL: <a href="https://www.w3.org/TR/html51/">https://www.w3.org/TR/html51/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
    <dd>Mark Foltz; Dominik Röttsches. <a href="https://www.w3.org/TR/presentation-api/">Presentation API</a>. 1 June 2017. CR. URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
@@ -3110,14 +3842,14 @@ track-track-state = {
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
+   <dt id="biblio-rfc7049">[RFC7049]
+   <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
    <dd>Mike West. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 10 December 2015. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a><a href="#issue-a1f35a95"> ↵ </a></div>
-   <div class="issue"> Propose control protocol for Remote
-Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/12">&lt;https://github.com/webscreens/openscreenprotocol/issues/12></a><a href="#issue-eaed3698"> ↵ </a></div>
    <div class="issue"> [Privacy] Fate of metadata / authentication history when clearing
 browsing data <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-7d9298b1"> ↵ </a></div>
    <div class="issue"> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-5107ff88"> ↵ </a></div>
