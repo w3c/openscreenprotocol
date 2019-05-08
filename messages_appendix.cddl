@@ -55,20 +55,6 @@ auth-response-hkdf-scrypt-psk = {
   2 : bytes .size 32 ; proof
 }
 
-certificate-fingerprint-pair = [
-  challenger-fingerprint: bytes
-  responder-fingerprint: bytes
-]
-
-; type key 1003
-auth-status = {
-  1 : auth-status-result ; result
-}
-
-authentication-mechanism = &(
-  hkdf-of-scrypt-of-psk: 1
-)
-
 auth-response-hkdf-scrypt-psk-result = &(
   success: 0
   unknown-error: 1
@@ -78,6 +64,16 @@ auth-response-hkdf-scrypt-psk-result = &(
   cost-too-low: 5
   cost-too-high: 6
 )
+
+certificate-fingerprint-pair = [
+  challenger-fingerprint: bytes
+  responder-fingerprint: bytes
+]
+
+; type key 1003
+auth-status = {
+  1 : auth-status-result ; result
+}
 
 auth-status-result = &(
   authenticated: 0

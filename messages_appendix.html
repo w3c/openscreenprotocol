@@ -55,20 +55,6 @@
   <span class="mi">2</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; proof</span>
 <span class="p">}</span>
 
-<span class="nx">certificate-fingerprint-pair </span><span class="p">=</span> <span class="p">[</span>
-  <span class="nx">challenger-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
-<span class="nx">  responder-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
-<span class="p">]</span>
-
-<span class="c1">; type key 1003</span>
-<span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
-<span class="p">}</span>
-
-<span class="nx">authentication-mechanism </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">hkdf-of-scrypt-of-psk</span><span class="p">:</span> <span class="mi">1</span>
-<span class="p">)</span>
-
 <span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">success</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
@@ -78,6 +64,16 @@
   <span class="nx">cost-too-low</span><span class="p">:</span> <span class="mi">5</span>
   <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">6</span>
 <span class="p">)</span>
+
+<span class="nx">certificate-fingerprint-pair </span><span class="p">=</span> <span class="p">[</span>
+  <span class="nx">challenger-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
+<span class="nx">  responder-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
+<span class="p">]</span>
+
+<span class="c1">; type key 1003</span>
+<span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
+<span class="p">}</span>
 
 <span class="nx">auth-status-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">authenticated</span><span class="p">:</span> <span class="mi">0</span>

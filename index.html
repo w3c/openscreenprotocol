@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="9e945234d426f50e673f000c31fe08cd1d25b3f8" name="document-revision">
+  <meta content="b7936b6165027da5c4a437cf05323e575eba10e6" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-02">2 May 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-08">8 May 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1850,12 +1850,8 @@ such as a number or a short password that could be entered by a user on a
 keyboard or TV remote control.</p>
    <p>For all messages and objects defined in this section, see Appendix A for the full
 CDDL definitions.</p>
-   <p>The challenger sends an authentication-request message with the following values:</p>
+   <p>The challenger sends an auth-request-hkdf-scrypt-psk message with the following values:</p>
    <ul>
-    <li data-md>
-     <p>mechanism: The authentication mechanism being used.  This standard only
-defines the mechanism hkdf-of-scrypt-of-psk but this field gives a place for
-other mechanisms to be specified.</p>
     <li data-md>
      <p>salt: 32 random bytes.  This salt is used in HKDF, so see
 https://tools.ietf.org/html/rfc5869#section-3.1 for more details on how this
@@ -1867,7 +1863,8 @@ greater than or equal to 14 (to avoid being too weak) and less than or equal
 to 128 (the limit defined by scrypt).  A value of 15 is recommended (an
 scrypt N of 2^15 or 32768).</p>
    </ul>
-   <p>The responder replies with an authentication-response message with the following values:</p>
+   <p>The responder replies with an auth-response-hkdf-scrypt-psk-result message with
+the following values:</p>
    <ul>
     <li data-md>
      <p>result:  If the responder was able to calculate proof of possession of the
@@ -1876,8 +1873,8 @@ shared secret, and if it failed, why it failed.</p>
      <p>proof: The result of running the authentication mechanism.  The steps for
 hkdf-of-scrypt-of-psk are described below.</p>
    </ul>
-   <p>The challenger verifies the proof and sends the responder an
-authentication-result message with the following values:</p>
+   <p>The challenger verifies the proof and sends the responder an auth-status message
+with the following values:</p>
    <ul>
     <li data-md>
      <p>result:  If the challenger was able to authenticate the responder or not,
@@ -2853,20 +2850,6 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="mi">2</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; proof</span>
 <span class="p">}</span></p>
 
-<p><span class="nx">certificate-fingerprint-pair </span><span class="p">=</span> <span class="p">[</span>
-  <span class="nx">challenger-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
-<span class="nx">  responder-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
-<span class="p">]</span></p>
-
-<p><span class="c1">; type key 1003</span>
-<span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">authentication-mechanism </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">hkdf-of-scrypt-of-psk</span><span class="p">:</span> <span class="mi">1</span>
-<span class="p">)</span></p>
-
 <p><span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">success</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
@@ -2876,6 +2859,16 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">cost-too-low</span><span class="p">:</span> <span class="mi">5</span>
   <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">6</span>
 <span class="p">)</span></p>
+
+<p><span class="nx">certificate-fingerprint-pair </span><span class="p">=</span> <span class="p">[</span>
+  <span class="nx">challenger-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
+<span class="nx">  responder-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
+<span class="p">]</span></p>
+
+<p><span class="c1">; type key 1003</span>
+<span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
+<span class="p">}</span></p>
 
 <p><span class="nx">auth-status-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">authenticated</span><span class="p">:</span> <span class="mi">0</span>
