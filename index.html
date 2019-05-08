@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 4d208866a95a1121fceca549a36bfb09c5bf1705" name="generator">
+  <meta content="Bikeshed version a816d78e14132d4d4d2ee44ccaf1b8bc90ac75d5" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="fc0788aebd5ff2b54bcd3f188ed0b53c1888769c" name="document-revision">
+  <meta content="b7936b6165027da5c4a437cf05323e575eba10e6" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-04-13">13 April 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-08">8 May 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1489,9 +1489,9 @@ pre .property::before, pre .property::after {
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>The Open Screen Protocol is a suite of network protocols that allow
 
-          user agents to implement the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and
-          the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> in an interoperable
-          fashion.</p>
+user agents to implement the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and
+the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> in an interoperable
+fashion.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -1850,12 +1850,8 @@ such as a number or a short password that could be entered by a user on a
 keyboard or TV remote control.</p>
    <p>For all messages and objects defined in this section, see Appendix A for the full
 CDDL definitions.</p>
-   <p>The challenger sends an authentication-request message with the following values:</p>
+   <p>The challenger sends an auth-request-hkdf-scrypt-psk message with the following values:</p>
    <ul>
-    <li data-md>
-     <p>mechanism: The authentication mechanism being used.  This standard only
-defines the mechanism hkdf-of-scrypt-of-psk but this field gives a place for
-other mechanisms to be specified.</p>
     <li data-md>
      <p>salt: 32 random bytes.  This salt is used in HKDF, so see
 https://tools.ietf.org/html/rfc5869#section-3.1 for more details on how this
@@ -1867,7 +1863,8 @@ greater than or equal to 14 (to avoid being too weak) and less than or equal
 to 128 (the limit defined by scrypt).  A value of 15 is recommended (an
 scrypt N of 2^15 or 32768).</p>
    </ul>
-   <p>The responder replies with an authentication-response message with the following values:</p>
+   <p>The responder replies with an auth-response-hkdf-scrypt-psk-result message with
+the following values:</p>
    <ul>
     <li data-md>
      <p>result:  If the responder was able to calculate proof of possession of the
@@ -1876,8 +1873,8 @@ shared secret, and if it failed, why it failed.</p>
      <p>proof: The result of running the authentication mechanism.  The steps for
 hkdf-of-scrypt-of-psk are described below.</p>
    </ul>
-   <p>The challenger verifies the proof and sends the responder an
-authentication-result message with the following values:</p>
+   <p>The challenger verifies the proof and sends the responder an auth-status message
+with the following values:</p>
    <ul>
     <li data-md>
      <p>result:  If the challenger was able to authenticate the responder or not,
@@ -2586,7 +2583,7 @@ QUIC connections.</p>
    <h4 class="heading settled" data-level="8.1.4" id="same-origin-policy-violations"><span class="secno">8.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
    <p>The Presentation API allows cross-origin communication between controlling pages
 and presentations with the consent of each origin (through their use of the
-API).  This is similar to cross-origin communication via <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options" id="ref-for-dom-window-postmessage-options">postMessage()</a></code> with a target origin of <code>*</code>.  However, the Presentation
+API).  This is similar to cross-origin communication via <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage" id="ref-for-dom-window-postmessage">postMessage()</a></code> with a target origin of <code>*</code>.  However, the Presentation
 API does not convey source origin information with each message.  Therefore, the
 Open Screen Protocol does not convey origin information between its agents.</p>
    <p>The <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id③">presentation ID</a> carries some protection against unrestricted
@@ -2825,8 +2822,7 @@ because smaller type keys encode on the wire smaller.</p>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
 <span class="p">}</span></p>
 
-<p><span class="nx">status </span><span class="p">=</span> <span class="p">{</span>
-<span class="p">}</span></p>
+<p><span class="nx">status </span><span class="p">=</span> <span class="p">{}</span></p>
 
 <p><span class="nx">request </span><span class="p">=</span> <span class="p">(</span>
  <span class="mi">0</span><span class="p">:</span> <span class="nx">request-id </span><span class="c1">; request-id</span>
@@ -2838,20 +2834,31 @@ because smaller type keys encode on the wire smaller.</p>
 
 <p><span class="nx">request-id </span><span class="p">=</span> <span class="kt">uint</span></p>
 
+<p><span class="nx">microseconds </span><span class="p">=</span> <span class="kt">uint</span></p>
+
 <p><span class="c1">; type key 1001</span>
-<span class="nx">authentication-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nx">auth-request-hkdf-scrypt-psk </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="nx">authentication-mechanism </span><span class="c1">; mechanism</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; salt</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cost</span>
+<span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; salt</span>
+  <span class="mi">2</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cost</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1002</span>
-<span class="nx">authentication-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nx">auth-response-hkdf-scrypt-psk </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="nx">authentication-response-result </span><span class="c1">; result</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; proof</span>
+<span class="nx">  1 </span><span class="p">:</span> <span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="c1">; result</span>
+  <span class="mi">2</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; proof</span>
 <span class="p">}</span></p>
+
+<p><span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">success</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">timeout</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="nx">calculation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">cost-too-low</span><span class="p">:</span> <span class="mi">5</span>
+  <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">6</span>
+<span class="p">)</span></p>
 
 <p><span class="nx">certificate-fingerprint-pair </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">challenger-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
@@ -2859,30 +2866,17 @@ because smaller type keys encode on the wire smaller.</p>
 <span class="p">]</span></p>
 
 <p><span class="c1">; type key 1003</span>
-<span class="nx">authentication-result </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="nx">authentication-result-result </span><span class="c1">; result</span>
+<span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
-
-<p><span class="nx">authentication-mechanism </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">hkdf-of-scrypt-of-psk</span><span class="p">:</span> <span class="mi">1</span>
-<span class="p">)</span></p>
-
-<p><span class="nx">authentication-response-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">ok</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">mechanism-unknown</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="nx">salt-too-small</span><span class="p">:</span> <span class="mi">3</span>
-  <span class="nx">cost-too-low</span><span class="p">:</span> <span class="mi">4</span>
-  <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">5</span>
-  <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">6</span>
-  <span class="nx">calculation-took-too-long</span><span class="p">:</span> <span class="mi">7</span>
-<span class="p">)</span></p>
-
-<p><span class="nx">authentication-result-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<p><span class="nx">auth-status-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">authenticated</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">timeout</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="nx">validation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 14</span>
@@ -2890,7 +2884,7 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 15</span>
@@ -2901,10 +2895,9 @@ because smaller type keys encode on the wire smaller.</p>
 
 <p><span class="c1">; type key 103</span>
 <span class="nx">presentation-url-availability-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span></p>
-
 
 <p><span class="c1">; idea: use HTTP response codes?</span>
 <span class="nx">url-availability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -2947,7 +2940,7 @@ because smaller type keys encode on the wire smaller.</p>
 <p><span class="c1">; type key 107</span>
 <span class="nx">presentation-termination-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="nx">result </span><span class="c1">; result</span>
+<span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 108</span>
@@ -3003,7 +2996,6 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="p">)</span> <span class="c1">; reason</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; error-message</span>
 <span class="p">}</span></p>
-
 
 <p><span class="c1">; type key 16</span>
 <span class="nx">presentation-connection-message </span><span class="p">=</span> <span class="p">{</span>
@@ -3393,10 +3385,10 @@ because smaller type keys encode on the wire smaller.</p>
 })();
 </script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <aside class="dfn-panel" data-for="term-for-dom-window-postmessage-options">
-   <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dom-window-postmessage">
+   <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-window-postmessage-options">8.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-dom-window-postmessage">8.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-presentationconnection">
@@ -3505,7 +3497,7 @@ because smaller type keys encode on the wire smaller.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dom-window-postmessage-options" style="color:initial">postMessage(message, options)</span>
+     <li><span class="dfn-paneled" id="term-for-dom-window-postmessage" style="color:initial">postMessage(message, targetOrigin, transfer)</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:

@@ -27,8 +27,7 @@
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
 <span class="p">}</span>
 
-<span class="nx">status </span><span class="p">=</span> <span class="p">{</span>
-<span class="p">}</span>
+<span class="nx">status </span><span class="p">=</span> <span class="p">{}</span>
 
 <span class="nx">request </span><span class="p">=</span> <span class="p">(</span>
  <span class="mi">0</span><span class="p">:</span> <span class="nx">request-id </span><span class="c1">; request-id</span>
@@ -40,20 +39,31 @@
 
 <span class="nx">request-id </span><span class="p">=</span> <span class="kt">uint</span>
 
+<span class="nx">microseconds </span><span class="p">=</span> <span class="kt">uint</span>
+
 <span class="c1">; type key 1001</span>
-<span class="nx">authentication-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nx">auth-request-hkdf-scrypt-psk </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="nx">authentication-mechanism </span><span class="c1">; mechanism</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; salt</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cost</span>
+<span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; salt</span>
+  <span class="mi">2</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cost</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 1002</span>
-<span class="nx">authentication-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nx">auth-response-hkdf-scrypt-psk </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="nx">authentication-response-result </span><span class="c1">; result</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; proof</span>
+<span class="nx">  1 </span><span class="p">:</span> <span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="c1">; result</span>
+  <span class="mi">2</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; proof</span>
 <span class="p">}</span>
+
+<span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">success</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">timeout</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="nx">calculation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">cost-too-low</span><span class="p">:</span> <span class="mi">5</span>
+  <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">6</span>
+<span class="p">)</span>
 
 <span class="nx">certificate-fingerprint-pair </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">challenger-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
@@ -61,30 +71,17 @@
 <span class="p">]</span>
 
 <span class="c1">; type key 1003</span>
-<span class="nx">authentication-result </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="nx">authentication-result-result </span><span class="c1">; result</span>
+<span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
 <span class="p">}</span>
 
-
-<span class="nx">authentication-mechanism </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">hkdf-of-scrypt-of-psk</span><span class="p">:</span> <span class="mi">1</span>
-<span class="p">)</span>
-
-<span class="nx">authentication-response-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">ok</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">mechanism-unknown</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="nx">salt-too-small</span><span class="p">:</span> <span class="mi">3</span>
-  <span class="nx">cost-too-low</span><span class="p">:</span> <span class="mi">4</span>
-  <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">5</span>
-  <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">6</span>
-  <span class="nx">calculation-took-too-long</span><span class="p">:</span> <span class="mi">7</span>
-<span class="p">)</span>
-
-<span class="nx">authentication-result-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<span class="nx">auth-status-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">authenticated</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">timeout</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="nx">validation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
 <span class="p">)</span>
 
 <span class="c1">; type key 14</span>
@@ -92,7 +89,7 @@
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 15</span>
@@ -103,10 +100,9 @@
 
 <span class="c1">; type key 103</span>
 <span class="nx">presentation-url-availability-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span>
-
 
 <span class="c1">; idea: use HTTP response codes?</span>
 <span class="nx">url-availability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -149,7 +145,7 @@
 <span class="c1">; type key 107</span>
 <span class="nx">presentation-termination-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="nx">result </span><span class="c1">; result</span>
+<span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 108</span>
@@ -205,7 +201,6 @@
   <span class="p">)</span> <span class="c1">; reason</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; error-message</span>
 <span class="p">}</span>
-
 
 <span class="c1">; type key 16</span>
 <span class="nx">presentation-connection-message </span><span class="p">=</span> <span class="p">{</span>

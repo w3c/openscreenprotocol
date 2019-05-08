@@ -399,11 +399,7 @@ keyboard or TV remote control.
 For all messages and objects defined in this section, see Appendix A for the full
 CDDL definitions.
 
-The challenger sends an authentication-request message with the following values:
-
--   mechanism: The authentication mechanism being used.  This standard only
-    defines the mechanism hkdf-of-scrypt-of-psk but this field gives a place for
-    other mechanisms to be specified.
+The challenger sends an auth-request-hkdf-scrypt-psk message with the following values:
 
 -   salt: 32 random bytes.  This salt is used in HKDF, so see
     https://tools.ietf.org/html/rfc5869#section-3.1 for more details on how this
@@ -415,7 +411,8 @@ The challenger sends an authentication-request message with the following values
     to 128 (the limit defined by scrypt).  A value of 15 is recommended (an
     scrypt N of 2^15 or 32768).
 
-The responder replies with an authentication-response message with the following values:
+The responder replies with an auth-response-hkdf-scrypt-psk-result message with
+the following values:
 
 -   result:  If the responder was able to calculate proof of possession of the
     shared secret, and if it failed, why it failed.
@@ -423,8 +420,8 @@ The responder replies with an authentication-response message with the following
 -   proof: The result of running the authentication mechanism.  The steps for
     hkdf-of-scrypt-of-psk are described below.
 
-The challenger verifies the proof and sends the responder an
-authentication-result message with the following values:
+The challenger verifies the proof and sends the responder an auth-status message
+with the following values:
 
 -   result:  If the challenger was able to authenticate the responder or not,
     and if not, why not.
