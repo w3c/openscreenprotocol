@@ -4,8 +4,8 @@ The goal of this benchmark design is to create a controlled environment in which
 we can gather data on performance, efficiency, and reliability of the two
 network discovery protocols proposed for Open Screen:
 
-* [SSDP](../ssdp.md)
-* [mDNS](../mdns.md)
+* [SSDP](../archive/ssdp.md)
+* [mDNS](../archive/mdns.md)
 
 # Observables
 
@@ -64,7 +64,7 @@ software that is available as a Debian package.
 For SSDP, we will either:
 
 1. Fork and customize [libupnp](http://pupnp.sourceforge.net/) for the
-[Open Screen SSDP discovery protocol](../ssdp.md).
+[Open Screen SSDP discovery protocol](../archive/ssdp.md).
 2. Write our own SSDP implementation from scratch, possibly based on the
 [Chromium](https://cs.chromium.org/chromium/src/chrome/browser/media/router/discovery/dial/dial_service.h)
 implementation or the [Fraunhofer FOKUS](https://github.com/fraunhoferfokus/peer-ssdp/blob/master/lib/peer-ssdp.js)
