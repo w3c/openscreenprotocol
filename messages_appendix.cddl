@@ -42,18 +42,17 @@ request-id = uint
 microseconds = uint
 
 ; type key 1001
-authentication-request = {
+auth-request-hkdf-scrypt-psk = {
   request
-  1: authentication-mechanism ; mechanism
-  2: bytes ; salt
-  3: uint ; cost
+  1 : bytes .size 32 ; salt
+  2 : uint ; cost
 }
 
 ; type key 1002
-authentication-response = {
+auth-response-hkdf-scrypt-psk = {
   response
-  1: authentication-response-result ; result
-  2: bytes ; proof
+  1 : auth-response-hkdf-scrypt-psk-result ; result
+  2 : bytes .size 32 ; proof
 }
 
 certificate-fingerprint-pair = [
@@ -62,29 +61,31 @@ certificate-fingerprint-pair = [
 ]
 
 ; type key 1003
-authentication-result = {
-  1: authentication-result-result ; result
+auth-status = {
+  1 : auth-status-result ; result
 }
 
 authentication-mechanism = &(
   hkdf-of-scrypt-of-psk: 1
 )
 
-authentication-response-result = &(
-  ok: 0
+auth-response-hkdf-scrypt-psk-result = &(
+  success: 0
   unknown-error: 1
-  mechanism-unknown: 2
-  salt-too-small: 3
-  cost-too-low: 4
-  cost-too-high: 5
-  secret-unknown: 6
-  calculation-took-too-long: 7
+  timeout: 2
+  secret-unknown: 3
+  calculation-took-too-long : 4
+  cost-too-low: 5
+  cost-too-high: 6
 )
 
-authentication-result-result = &(
+auth-status-result = &(
   authenticated: 0
   unknown-error: 1
-  proof-invalid: 2
+  timeout: 2
+  secret-unknown: 3
+  validation-took-too-long : 4
+  proof-invalid: 5
 )
 
 ; type key 14
