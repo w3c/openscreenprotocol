@@ -308,11 +308,11 @@ message (see [[#appendix-a]]) and receive back an agent-info-response message.
 Any agent may send this request to learn about the capabilities of
 another device.
 
-The agent-info-response messages contain the following properties:
+The agent-info-response message contains the following properties:
 
 : display-name (required)
 :: The display name of the agent, intended to be displayed to a user by the
-     requester. The requester should indicate through the UI if the device
+     requester. The requester should indicate through the UI if the responder
      is not authenticated or if the display name changes.
 
 : model-name (optional)
@@ -320,13 +320,13 @@ The agent-info-response messages contain the following properties:
     the device.  This is used mainly for debugging purposes, but may be
     displayed to the user of the requesting agent.
 
-: supports-audio (optional)
-:: The agent has to indicate that it supports audio streaming. If false
-    or not included, it is assumed audio streaming is not supported.
+: receives-audio (optional)
+:: The agent has to indicate that it supports audio. If false
+    or not included, it is assumed audio content is not supported.
 
-: supports-video (optional)
-:: The agent has to indicate that it supports video streaming. If false
-    or not included, it is assumed video streaming is not supported.
+: receives-video (optional)
+:: The agent has to indicate that it supports video . If false
+    or not included, it is assumed video content is not supported.
 
 
 Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.
@@ -349,7 +349,7 @@ If a client agent wishes to send messages to a server agent, the client
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.
 
-The agent-info-response message and agent-status-response
+The agent-info-response and agent-status-response
 messages may be extended to include additional information not defined
 in this spec.  If done ad-hoc by applications and not in future specs,
 keys should be chosen to avoid collision, such as by choosing large

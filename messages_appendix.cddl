@@ -12,8 +12,8 @@ agent-info-response = {
 agent-info = {
   0: text ; display-name
   1: text ; model-name
-  ? 2: bool ; supports-audio
-  ? 3: bool ; supports-video
+  ? 2: bool ; receives-audio
+  ? 3: bool ; receives-video
 }
 
 ; type key 12

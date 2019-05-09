@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 1cff2db4ee2c3bba7a4077d3007528ec73b0485d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="1a5904fd8a04c5fe1ea7ff607726a94a4931c453" name="document-revision">
+  <meta content="ea3c6aac3a6a66d40fa6477b76ace2774e393ee9" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1774,26 +1774,26 @@ a display name of an unauthenticated agent is unverified).</p>
 message (see <a href="#appendix-a">Appendix A: Messages</a>) and receive back an agent-info-response message.
 Any agent may send this request to learn about the capabilities of
 another device.</p>
-   <p>The agent-info-response messages contain the following properties:</p>
+   <p>The agent-info-response message contains the following properties:</p>
    <dl>
     <dt data-md>display-name (required)
     <dd data-md>
      <p>The display name of the agent, intended to be displayed to a user by the
- requester. The requester should indicate through the UI if the device
+ requester. The requester should indicate through the UI if the responder
  is not authenticated or if the display name changes.</p>
     <dt data-md>model-name (optional)
     <dd data-md>
      <p>If the agent is a hardware device, the model name of
 the device.  This is used mainly for debugging purposes, but may be
 displayed to the user of the requesting agent.</p>
-    <dt data-md>supports-audio (optional)
+    <dt data-md>receives-audio (optional)
     <dd data-md>
-     <p>The agent has to indicate that it supports audio streaming. If false
-or not included, it is assumed audio streaming is not supported.</p>
-    <dt data-md>supports-video (optional)
+     <p>The agent has to indicate that it supports audio. If false
+or not included, it is assumed audio content is not supported.</p>
+    <dt data-md>receives-video (optional)
     <dd data-md>
-     <p>The agent has to indicate that it supports video streaming. If false
-or not included, it is assumed video streaming is not supported.</p>
+     <p>The agent has to indicate that it supports video . If false
+or not included, it is assumed video content is not supported.</p>
    </dl>
    <p>Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
@@ -1812,7 +1812,7 @@ timer expires, a agent-status-request message should be sent.</p>
    <p>If a client agent wishes to send messages to a server agent, the client
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.</p>
-   <p>The agent-info-response message and agent-status-response
+   <p>The agent-info-response and agent-status-response
 messages may be extended to include additional information not defined
 in this spec.  If done ad-hoc by applications and not in future specs,
 keys should be chosen to avoid collision, such as by choosing large
@@ -2812,8 +2812,8 @@ because smaller type keys encode on the wire smaller.</p>
 <p><span class="nx">agent-info </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-audio</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-video</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-audio</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-video</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 12</span>
