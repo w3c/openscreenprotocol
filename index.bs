@@ -61,6 +61,10 @@ urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML5
     text: media element
 </pre>
 
+<pre class="link-defaults">
+spec:html; type:method; text:postMessage(message, targetOrigin, transfer)
+</pre>
+
 <h2 class='no-num no-toc no-ref' id='status'>Status of this document</h2>
 
 This specification was published by the [Second Screen Community
@@ -155,7 +159,7 @@ Presentation API Requirements {#requirements-presentation-api}
     {{PresentationConnection}} to an existing presentation on the
     receiver, given its [=presentation request URL=] and [=presentation ID=].
 
-6.  It must be possible to to close a {{PresentationConnection}} between a
+6.  It must be possible to close a {{PresentationConnection}} between a
     controller and a presentation, and signal both parties with the
     reason why the connection was closed.
 
@@ -303,30 +307,37 @@ mechanism for metadata discovery.
 Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
-If a listening agent wants to connect to an advertising agent, or to
-learn further metadata about it, it initiates a [[QUIC]] connection to
-the IP and port from the SRV record.  Prior to authentication, a message may be
-exchanged (such as further metadata), but such info should be treated as
-unverified (such as indicating to a user that a display name of an
-unauthenticated agent is unverified).
+If an agent wants to connect to or learn further metadata about another agent,
+it initiates a [[QUIC]] connection to the IP and port from the SRV record.
+Prior to authentication, a message may be exchanged (such as further metadata),
+but such info should be treated as unverified (such as indicating to a user that
+a display name of an unauthenticated agent is unverified).
 
 To learn further metadata, an agent may send an agent-info-request
-message (see [[#appendix-a]]) and receive back an agent-info-response message.  The
-messages may contain the following information with the following meaning:
+message (see [[#appendix-a]]) and receive back an agent-info-response message.
+Any agent may send this request to learn about the capabilities of
+another device.
+
+The agent-info-response message contains the following properties:
 
 : display-name (required)
-:: The display name of the responding agent intended
-    to be displayed to a user by the requesting agent.  If the responding agent
-    is not yet authenticated, the requesting agent should make UI affordance for
-    indicating to the user that the display name is not yet verified.  If the
-    responding agent changes its display name, the requesting agent should
-    make UI affordance for indicating to the user that the display name has
-    changed.
+:: The display name of the agent, intended to be displayed to a user by the
+     requester. The requester should indicate through the UI if the responder
+     is not authenticated or if the display name changes.
 
 : model-name (optional)
 :: If the agent is a hardware device, the model name of
     the device.  This is used mainly for debugging purposes, but may be
     displayed to the user of the requesting agent.
+
+: receives-audio (optional)
+:: The agent has to indicate that it supports audio. If false
+    or not included, it is assumed audio content is not supported.
+
+: receives-video (optional)
+:: The agent has to indicate that it supports video . If false
+    or not included, it is assumed video content is not supported.
+
 
 Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.
 
@@ -344,20 +355,18 @@ recommended.  The agent should behave as though a timer less than the
 idle_timeout were reset every time a message is sent on a QUIC stream.  If the
 timer expires, a agent-status-request message should be sent.
 
-
 If a client agent wishes to send messages to a server agent, the client
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.
 
 Issue(108): Define suspend and resume behavior for connection protocol
 
-The agent-info-response message and agent-status-response
-messages may be extended to include additional information not defined
-in this spec.  If done ad-hoc by applications and not in future specs,
-keys should be chosen to avoid collision, such as by choosing large
-integers or long strings.  Agents must ignore keys in the
-agent-info-message that it does not understand to allow agents
-to easily extend this message.
+The agent-info-response message and agent-status-response messages may be
+extended to include additional information not defined in this spec.  If done
+ad-hoc by applications and not in future specs, keys should be chosen to avoid
+collision, such as by choosing large integers or long strings.  Agents must
+ignore keys in the agent-info-message that it does not understand to allow
+agents to easily extend this message.
 
 Messages delivery using CBOR and QUIC streams {#messages}
 ========================================================

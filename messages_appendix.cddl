@@ -10,9 +10,10 @@ agent-info-response = {
 }
 
 agent-info = {
-  0: text ; friendly-name
+  0: text ; display-name
   1: text ; model-name
-  ; ...
+  ? 2: bool ; receives-audio
+  ? 3: bool ; receives-video
 }
 
 ; type key 12

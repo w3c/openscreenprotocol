@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 10ff3eb4050069e20bb9b943c8b76fe5bfe3a48f" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="e048cf0cc3ccf1c426aff654035d623802a31b53" name="document-revision">
+  <meta content="b4f2c7bb1ee499b9abf3bd68439a99867edff073" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1641,7 +1641,7 @@ reasonably capable of rendering a specific <a data-link-type="dfn" href="https:/
      <p>A controlling user agent must be able to create a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection">PresentationConnection</a></code> to an existing presentation on the
 receiver, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url③">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id①">presentation ID</a>.</p>
     <li data-md>
-     <p>It must be possible to to close a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection①">PresentationConnection</a></code> between a
+     <p>It must be possible to close a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection①">PresentationConnection</a></code> between a
 controller and a presentation, and signal both parties with the
 reason why the connection was closed.</p>
     <li data-md>
@@ -1773,30 +1773,35 @@ Protocol uses mDNS but breaks compatibility with the metadata discovery process,
 it should change the DNS-SD service name to a new value, indicating a new
 mechanism for metadata discovery.</p>
    <h2 class="heading settled" data-level="4" id="transport"><span class="secno">4. </span><span class="content">Transport and metadata discovery with QUIC</span><a class="self-link" href="#transport"></a></h2>
-   <p>If a listening agent wants to connect to an advertising agent, or to
-learn further metadata about it, it initiates a <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a> connection to
-the IP and port from the SRV record.  Prior to authentication, a message may be
-exchanged (such as further metadata), but such info should be treated as
-unverified (such as indicating to a user that a display name of an
-unauthenticated agent is unverified).</p>
+   <p>If an agent wants to connect to or learn further metadata about another agent,
+it initiates a <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a> connection to the IP and port from the SRV record.
+Prior to authentication, a message may be exchanged (such as further metadata),
+but such info should be treated as unverified (such as indicating to a user that
+a display name of an unauthenticated agent is unverified).</p>
    <p>To learn further metadata, an agent may send an agent-info-request
-message (see <a href="#appendix-a">Appendix A: Messages</a>) and receive back an agent-info-response message.  The
-messages may contain the following information with the following meaning:</p>
+message (see <a href="#appendix-a">Appendix A: Messages</a>) and receive back an agent-info-response message.
+Any agent may send this request to learn about the capabilities of
+another device.</p>
+   <p>The agent-info-response message contains the following properties:</p>
    <dl>
     <dt data-md>display-name (required)
     <dd data-md>
-     <p>The display name of the responding agent intended
-to be displayed to a user by the requesting agent.  If the responding agent
-is not yet authenticated, the requesting agent should make UI affordance for
-indicating to the user that the display name is not yet verified.  If the
-responding agent changes its display name, the requesting agent should
-make UI affordance for indicating to the user that the display name has
-changed.</p>
+     <p>The display name of the agent, intended to be displayed to a user by the
+ requester. The requester should indicate through the UI if the responder
+ is not authenticated or if the display name changes.</p>
     <dt data-md>model-name (optional)
     <dd data-md>
      <p>If the agent is a hardware device, the model name of
 the device.  This is used mainly for debugging purposes, but may be
 displayed to the user of the requesting agent.</p>
+    <dt data-md>receives-audio (optional)
+    <dd data-md>
+     <p>The agent has to indicate that it supports audio. If false
+or not included, it is assumed audio content is not supported.</p>
+    <dt data-md>receives-video (optional)
+    <dd data-md>
+     <p>The agent has to indicate that it supports video . If false
+or not included, it is assumed video content is not supported.</p>
    </dl>
    <p>Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
@@ -1816,13 +1821,12 @@ timer expires, a agent-status-request message should be sent.</p>
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.</p>
    <p class="issue" id="issue-e5f1b094"><a class="self-link" href="#issue-e5f1b094"></a> Define suspend and resume behavior for connection protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a></p>
-   <p>The agent-info-response message and agent-status-response
-messages may be extended to include additional information not defined
-in this spec.  If done ad-hoc by applications and not in future specs,
-keys should be chosen to avoid collision, such as by choosing large
-integers or long strings.  Agents must ignore keys in the
-agent-info-message that it does not understand to allow agents
-to easily extend this message.</p>
+   <p>The agent-info-response message and agent-status-response messages may be
+extended to include additional information not defined in this spec.  If done
+ad-hoc by applications and not in future specs, keys should be chosen to avoid
+collision, such as by choosing large integers or long strings.  Agents must
+ignore keys in the agent-info-message that it does not understand to allow
+agents to easily extend this message.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
    <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To
 send a group of messages in order, that group of messages must be sent in one
@@ -2832,9 +2836,10 @@ because smaller type keys encode on the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="nx">agent-info </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; friendly-name</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
-  <span class="c1">; ...</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-audio</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-video</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 12</span>
