@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 10ff3eb4050069e20bb9b943c8b76fe5bfe3a48f" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="b4f2c7bb1ee499b9abf3bd68439a99867edff073" name="document-revision">
+  <meta content="dd5ef4882da775f68b602f66af0f20402d979de0" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -2613,9 +2613,9 @@ QUIC connections.</p>
    <h4 class="heading settled" data-level="8.1.4" id="same-origin-policy-violations"><span class="secno">8.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
    <p>The Presentation API allows cross-origin communication between controlling pages
 and presentations with the consent of each origin (through their use of the
-API).  This is similar to cross-origin communication via <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options" id="ref-for-dom-window-postmessage-options">postMessage()</a></code> with a target origin of <code>*</code>.  However, the Presentation
-API does not convey source origin information with each message.  Therefore, the
-Open Screen Protocol does not convey origin information between its agents.</p>
+API).  This is similar to cross-origin communication via <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage" id="ref-for-dom-window-postmessage">postMessage(message, targetOrigin, transfer)</a></code> with a target origin of <code>*</code>.  However, the Presentation API does not convey source origin information
+with each message.  Therefore, the Open Screen Protocol does not convey origin
+information between its agents.</p>
    <p>The <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id③">presentation ID</a> carries some protection against unrestricted
 cross-origin access; but, rigorous authentication of the parties connected by a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection②">PresentationConnection</a></code> must be done at the application level.</p>
    <h3 class="heading settled" data-level="8.2" id="security-privacy-questions"><span class="secno">8.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
@@ -3417,10 +3417,10 @@ because smaller type keys encode on the wire smaller.</p>
 })();
 </script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <aside class="dfn-panel" data-for="term-for-dom-window-postmessage-options">
-   <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage-options</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dom-window-postmessage">
+   <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-window-postmessage-options">8.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-dom-window-postmessage">8.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-presentationconnection">
@@ -3529,7 +3529,7 @@ because smaller type keys encode on the wire smaller.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dom-window-postmessage-options" style="color:initial">postMessage(message, options)</span>
+     <li><span class="dfn-paneled" id="term-for-dom-window-postmessage" style="color:initial">postMessage(message, targetOrigin, transfer)</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:
