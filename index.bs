@@ -28,9 +28,12 @@ Markup Shorthands: markdown yes, dfn yes, idl yes
   is available.
 </p>
 
-<!-- TODO: Add short names to Presentation API spec,
-           so that BS autolinking works as designed. -->
-<!-- TODO: Can autolinks to HTML51 be automatically generated? -->
+Issue: Add short names to Presentation API spec, so that BS autolinking works as designed.
+
+
+Issue: Can autolinks to HTML51 be automatically generated?
+
+
 <pre class="anchors">
 urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
     text: available presentation display
@@ -126,6 +129,7 @@ For additional terms and idioms specific to the [[PRESENTATION-API|Presentation
 API]] or [[REMOTE-PLAYBACK|Remote Playback API]], please consult the respective
 specifications.
 
+Issue(144): Receiver/Controller/Agent terminology
 
 Requirements {#requirements}
 ============================
@@ -251,6 +255,8 @@ Discovery with mDNS {#discovery}
 Agents may discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
 To do so, agents must use the service name "_openscreen._udp.local".
 
+Issue(107): Define suspend and resume behavior for discovery protocol
+
 Advertising Agents must use an instance name that is a prefix of the agent's
 display name. If the instance name is not the complete display name (if it has
 been truncated), it must be terminated by a null character.  It is prefix so
@@ -275,7 +281,7 @@ keys and values:
     All agents must support the following hash functions: "sha-256", "sha-512".
     Agents must not support the following hash functions: "md2", "md5".
 
-  <!-- TODO: include cross references to the specs for these hash functions. -->
+Issue: Include cross references to the specs for these hash functions.
 
 : mv
 :: An unsigned integer value that indicates that
@@ -283,7 +289,7 @@ keys and values:
     value.  This signals to the listening agent that it should connect to the
     advertising agent to discover updated metadata.
 
-  <!-- TODO: Add examples of sample mDNS records. -->
+Issue: Add examples of sample mDNS records.
 
 
 Future extensions to this QUIC-based protocol can use the same metadata
@@ -322,8 +328,6 @@ messages may contain the following information with the following meaning:
     the device.  This is used mainly for debugging purposes, but may be
     displayed to the user of the requesting agent.
 
-<!-- TODO: Add device type and/or capabilities -->
-
 Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.
 
 If a listening agent wishes to receive messages from an advertising agent or an
@@ -344,6 +348,8 @@ timer expires, a agent-status-request message should be sent.
 If a client agent wishes to send messages to a server agent, the client
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.
+
+Issue(108): Define suspend and resume behavior for connection protocol
 
 The agent-info-response message and agent-status-response
 messages may be extended to include additional information not defined
@@ -384,6 +390,8 @@ Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.
+
+Issue(139): Clarify scoping/uniqueness of request IDs
 
 Authentication {#authentication}
 ================================
@@ -495,9 +503,10 @@ protocol messages defined in this section.
 For all messages defined in this section, see [[#appendix-a]] for the full
 CDDL definitions.
 
-<!-- TODO: Add a capability that indicates support for the
-presentation protocol.
-See https://github.com/webscreens/openscreenprotocol/issues/123 -->
+Issue(123): Add a capability that indicates support for the presentation protocol
+
+
+Issue(160): Refinements to Presentation API protocol
 
 To learn which receivers are [=available presentation displays=] for a
 particular URL or set of URLs, the controller may send a
@@ -516,6 +525,7 @@ presentation-url-availability-request message with the following values:
     to.  The controller must choose a value that is unique across all
     presentation URL availability watches to the same receiver.
 
+Issue(145): Watch ID Uniqueness
 
 In response, the receiver should send one presentation-url-availability-response
 message with the following values:
@@ -586,8 +596,6 @@ response must include the following:
     the message receiver chooses the connection-id, it may keep the ID unique
     across connections, thus making message demuxing/routing easier.
 
-<!-- TODO: Add optional HTTP response code to the response? -->
-
 To send a presentation message, the controller or receiver may send a
 presentation-connection-message with the following values:
 
@@ -622,10 +630,6 @@ message contains the following values:
 : reason
 :: The reason the presentation was terminated.
 
-<!-- TODO: Split up reason into reason and whether it was triggered by the user
-or not? -->
-
-
 To accept incoming connections requests from controller, a receiver
 must receive and process the presentation-connection-open-request
 message which contains the following values:
@@ -658,6 +662,7 @@ values:
 : connection-id
 :: The ID of the connection to close.
 
+Issue(124): Is a Presentation close/terminate from a controller a request/response or event?
 
 The receiver should, upon receipt of a presentation-connection-close-request,
 send back a presentation-connection-close-response message with the following
@@ -665,6 +670,8 @@ values:
 
 : result
 :: If the close succeed or failed, and if it failed why it failed.
+
+Issue(138): Remove presentation-connection-close-response message
 
 The receiver may also close a connection without a request from the controller
 to do so and without terminating a presentation.  If it does so, it should send
@@ -680,11 +687,6 @@ values:
 : error-message
 :: A debug message suitable for a log or perhaps presented to
     the user with more explanation as to why it was closed.
-
-<!-- TODO: Why does the Presentation API spec not mention the use of the close
-message? -->
-
-<!-- TODO: Specify message ordering groups. -->
 
 
 Presentation API {#presentation-api}
@@ -712,8 +714,8 @@ browsing context with D, presentationUrl, and I as parameters.", U (the
 (the receiver), with I for the presentation identifier and presentationUrl for
 the selected presentation URL.
 
-<!-- TODO: Once the Presentation API has text about reconnecting via an
-implementation specific mechanism, quote that here and map it to a message -->
+Issue: Once the Presentation API has text about reconnecting via an
+implementation specific mechanism, quote that here and map it to a message.
 
 When [[PRESENTATION-API#sending-a-message-through-presentationconnection|section
 6.5.2]] says "Using an implementation specific mechanism, transmit the contents
@@ -755,12 +757,13 @@ defined in this section.
 For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
 
-<!-- TODO: Add a capability that indicates support for the
-remote playback protocol.
-See https://github.com/webscreens/openscreenprotocol/issues/123 -->
-<!-- TODO: Frequency to update current-time (HtmlMediaElement does every 250ms?) -->
-<!-- TODO: extended mime types in source tag? -->
-<!-- TODO: media queries replacing URLs? -->
+Issue(123): Add a capability that indicates support for the remote playback protocol
+
+
+Issue(148): Make a required/default remote playback state table
+
+
+Issue(159): Refinements to Remote Playback protocol
 
 To learn which receivers are [=compatible remote playback device=]s (also called
 available [=remote playback devices=]) for a particular URL or set of URLs, the
@@ -770,7 +773,8 @@ following values:
 : urls
 :: A list of [=media resources=].  Must not be empty.
 
-<!-- TODO: Should we allow different headers for different URLs? -->
+Issue(146): Remote Playback HTTP headers
+
 : headers
 :: headers that the receiver should use to fetch the
     urls.  For example,
@@ -847,6 +851,7 @@ values:
     ignore them and the controller will learn that it does not support them from
     the remote-playback-start-response message.
 
+Issue(147): Remote playback ID uniqueness
 
 When the receiver receives a remote-playback-start-request message, it should
 send back a remote-playback-start-response message.  It should do so quickly,
@@ -1033,8 +1038,7 @@ intentionally mirror settable attributes and methods of the
     if a cue ID is invalid (removing an un-added ID or adding an ID twice, for example),
     the receiver may reject the text track change.
 
-<!-- TODO: Add a table for whether it's required and what the default is -->
-
+Issue: Add a table for whether it's required and what the default is.
 
 The states sent by the receiver include the following individual state values,
 each of which is optional.  This allows the receiver to update the controller
@@ -1211,9 +1215,7 @@ based on changes to the local media element and receive
 remote-playback-modify-response and remote-playback-state-event messages to
 change the local media element based on changes to the remote playback state.
 
-<!-- TODO: Have a very descriptive, precise algorithm for what messages to send
-when the local media element changes and what changes to make to the remote
-media element when controls are received? -->
+Issue(158): Algorithm for what messages to send when local/remote media element changes
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
@@ -1366,8 +1368,7 @@ UI of the user agent during the display selection or display authentication
 process.  It can be an implementation choice whether the user agent clears or
 retains this data when the user clears browsing data.
 
-Issue(132): [Privacy] Fate of metadata / authentication history when clearing
-browsing data
+Issue(132): Fate of metadata / authentication history when clearing browsing data
 
 ### Other Considerations ### {#other-considerations}
 
@@ -1405,6 +1406,8 @@ The Open Screen Protocol addresses these considerations by:
      {{PresentationConnection|PresentationConnections}} so that agents can track
      the number of active connections.
 
+Issue(143): Notify endpoints when new connection is created
+
 Remote Playback API Considerations {#remote-playback-considerations}
 ----------------------------------
 
@@ -1429,7 +1432,7 @@ before user-mediated authentication takes place.
 Passive attackers may also attempt timing attacks to learn the
 cryptographic parameters of the TLS 1.3 QUIC connection.
 
-Issue(130): [Security] Review attack and mitigation considerations for TLS 1.3
+Issue(130): Review attack and mitigation considerations for TLS 1.3
 
 ### Local active network attackers ### {#local-active-mitigations}
 
@@ -1458,6 +1461,8 @@ Flagging means that the user is notified of the attempt at impersonation.  In
 the last case, the user should be required to re-authenticate to the
 already-trusted agent to verify its identity.
 
+Issue(118): UI guidelines for pairing and trusted/untrusted data
+
 The second is through management of the low-entropy secret during mutual
 authentication:
 
@@ -1472,7 +1477,7 @@ The active attacker may also attempt to disrupt data exchanged over the QUIC
 connection by injecting or modifying traffic.  These attacks should be mitigated
 by a correct implementation of TLS 1.3.
 
-Issue(130): [Security] Review attack and mitigation considerations for TLS 1.3
+Issue(130): Review attack and mitigation considerations for TLS 1.3
 
 ### Remote active network attackers ### {#remote-active-mitigations}
 
@@ -1481,7 +1486,7 @@ Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.
 
-Issue(131): [Security] Mitigations for remote network attackers
+Issue(131): Mitigations for remote network attackers
 
 ### Denial of service ### {#denial-of-service-mitigations}
 
