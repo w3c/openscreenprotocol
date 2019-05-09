@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 1cff2db4ee2c3bba7a4077d3007528ec73b0485d" name="generator">
+  <meta content="Bikeshed version 10ff3eb4050069e20bb9b943c8b76fe5bfe3a48f" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="ea3c6aac3a6a66d40fa6477b76ace2774e393ee9" name="document-revision">
+  <meta content="b4f2c7bb1ee499b9abf3bd68439a99867edff073" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-08">8 May 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-09">9 May 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1572,6 +1572,8 @@ pre .property::before, pre .property::after {
    </ol>
   </nav>
   <main>
+   <p class="issue" id="issue-b711fac3"><a class="self-link" href="#issue-b711fac3"></a> Add short names to Presentation API spec, so that BS autolinking works as designed.</p>
+   <p class="issue" id="issue-a8c8d59b"><a class="self-link" href="#issue-a8c8d59b"></a> Can autolinks to HTML51 be automatically generated?</p>
    <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
    <p>This specification was published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community
 Group</a>. It is not a W3C Standard nor
@@ -1618,6 +1620,7 @@ to refer to the agent that starts, terminates, and controls the remote playback.
    <p>For additional terms and idioms specific to the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation
 API</a> or <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>, please consult the respective
 specifications.</p>
+   <p class="issue" id="issue-b4e60ded"><a class="self-link" href="#issue-b4e60ded"></a> Receiver/Controller/Agent terminology <a href="https://github.com/webscreens/openscreenprotocol/issues/144">&lt;https://github.com/webscreens/openscreenprotocol/issues/144></a></p>
    <h2 class="heading settled" data-level="2" id="requirements"><span class="secno">2. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
    <h3 class="heading settled" data-level="2.1" id="requirements-presentation-api"><span class="secno">2.1. </span><span class="content">Presentation API Requirements</span><a class="self-link" href="#requirements-presentation-api"></a></h3>
    <ol>
@@ -1728,6 +1731,7 @@ APIs.</p>
    <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Discovery with mDNS</span><a class="self-link" href="#discovery"></a></h2>
    <p>Agents may discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.
 To do so, agents must use the service name "_openscreen._udp.local".</p>
+   <p class="issue" id="issue-4cf40026"><a class="self-link" href="#issue-4cf40026"></a> Define suspend and resume behavior for discovery protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a></p>
    <p>Advertising Agents must use an instance name that is a prefix of the agent’s
 display name. If the instance name is not the complete display name (if it has
 been truncated), it must be terminated by a null character.  It is prefix so
@@ -1751,6 +1755,9 @@ The format of the fingerprint is defined by <a href="https://tools.ietf.org/html
 fingerprint.  The fingerprint value also functions as an ID for the agent.
 All agents must support the following hash functions: "sha-256", "sha-512".
 Agents must not support the following hash functions: "md2", "md5".</p>
+   </dl>
+   <p class="issue" id="issue-ad92979f"><a class="self-link" href="#issue-ad92979f"></a> Include cross references to the specs for these hash functions.</p>
+   <dl>
     <dt data-md>mv
     <dd data-md>
      <p>An unsigned integer value that indicates that
@@ -1758,6 +1765,7 @@ metadata has changed.   The advertising agent must update it to a greater
 value.  This signals to the listening agent that it should connect to the
 advertising agent to discover updated metadata.</p>
    </dl>
+   <p class="issue" id="issue-49bdd4e6"><a class="self-link" href="#issue-49bdd4e6"></a> Add examples of sample mDNS records.</p>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
 capabilities mechanism to be determined. If a future version of the Open Screen
@@ -1812,13 +1820,13 @@ timer expires, a agent-status-request message should be sent.</p>
    <p>If a client agent wishes to send messages to a server agent, the client
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.</p>
-   <p>The agent-info-response and agent-status-response
-messages may be extended to include additional information not defined
-in this spec.  If done ad-hoc by applications and not in future specs,
-keys should be chosen to avoid collision, such as by choosing large
-integers or long strings.  Agents must ignore keys in the
-agent-info-message that it does not understand to allow agents
-to easily extend this message.</p>
+   <p class="issue" id="issue-e5f1b094"><a class="self-link" href="#issue-e5f1b094"></a> Define suspend and resume behavior for connection protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a></p>
+   <p>The agent-info-response message and agent-status-response messages may be
+extended to include additional information not defined in this spec.  If done
+ad-hoc by applications and not in future specs, keys should be chosen to avoid
+collision, such as by choosing large integers or long strings.  Agents must
+ignore keys in the agent-info-message that it does not understand to allow
+agents to easily extend this message.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
    <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To
 send a group of messages in order, that group of messages must be sent in one
@@ -1845,6 +1853,7 @@ code of 404 and should include the unknown type key in the reason phrase
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.</p>
+   <p class="issue" id="issue-f1b3bb85"><a class="self-link" href="#issue-f1b3bb85"></a> Clarify scoping/uniqueness of request IDs <a href="https://github.com/webscreens/openscreenprotocol/issues/139">&lt;https://github.com/webscreens/openscreenprotocol/issues/139></a></p>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p>In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
@@ -1944,6 +1953,8 @@ terminating, and controlling presentations as defined by <a data-link-type="bibl
 protocol messages defined in this section.</p>
    <p>For all messages defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for the full
 CDDL definitions.</p>
+   <p class="issue" id="issue-89be52a5"><a class="self-link" href="#issue-89be52a5"></a> Add a capability that indicates support for the presentation protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/123">&lt;https://github.com/webscreens/openscreenprotocol/issues/123></a></p>
+   <p class="issue" id="issue-3934e36d"><a class="self-link" href="#issue-3934e36d"></a> Refinements to Presentation API protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/160">&lt;https://github.com/webscreens/openscreenprotocol/issues/160></a></p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation displays</a> for a
 particular URL or set of URLs, the controller may send a
 presentation-url-availability-request message with the following values:</p>
@@ -1962,6 +1973,7 @@ availability so that the controller knows which URLs the receiver is referring
 to.  The controller must choose a value that is unique across all
 presentation URL availability watches to the same receiver.</p>
    </dl>
+   <p class="issue" id="issue-2d0cb797"><a class="self-link" href="#issue-2d0cb797"></a> Watch ID Uniqueness <a href="https://github.com/webscreens/openscreenprotocol/issues/145">&lt;https://github.com/webscreens/openscreenprotocol/issues/145></a></p>
    <p>In response, the receiver should send one presentation-url-availability-response
 message with the following values:</p>
    <dl>
@@ -2096,6 +2108,7 @@ values:</p>
     <dd data-md>
      <p>The ID of the connection to close.</p>
    </dl>
+   <p class="issue" id="issue-b4b59633"><a class="self-link" href="#issue-b4b59633"></a> Is a Presentation close/terminate from a controller a request/response or event? <a href="https://github.com/webscreens/openscreenprotocol/issues/124">&lt;https://github.com/webscreens/openscreenprotocol/issues/124></a></p>
    <p>The receiver should, upon receipt of a presentation-connection-close-request,
 send back a presentation-connection-close-response message with the following
 values:</p>
@@ -2104,6 +2117,7 @@ values:</p>
     <dd data-md>
      <p>If the close succeed or failed, and if it failed why it failed.</p>
    </dl>
+   <p class="issue" id="issue-a67cb441"><a class="self-link" href="#issue-a67cb441"></a> Remove presentation-connection-close-response message <a href="https://github.com/webscreens/openscreenprotocol/issues/138">&lt;https://github.com/webscreens/openscreenprotocol/issues/138></a></p>
    <p>The receiver may also close a connection without a request from the controller
 to do so and without terminating a presentation.  If it does so, it should send
 a presentation-connection-close-event to the controller with the following
@@ -2137,6 +2151,8 @@ agent</a> may use the power saving mechanism defined in the previous section.</p
 browsing context with D, presentationUrl, and I as parameters.", U (the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent④">controlling user agent</a>) may send a presentation-start-request message to D
 (the receiver), with I for the presentation identifier and presentationUrl for
 the selected presentation URL.</p>
+   <p class="issue" id="issue-733afe74"><a class="self-link" href="#issue-733afe74"></a> Once the Presentation API has text about reconnecting via an
+implementation specific mechanism, quote that here and map it to a message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection">section
 6.5.2</a> says "Using an implementation specific mechanism, transmit the contents
 of messageOrData as the presentation message data and messageType as the
@@ -2164,6 +2180,9 @@ APIs in <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playbac
 defined in this section.</p>
    <p>For all messages defined in this section, see Appendix A for the full
 CDDL definitions.</p>
+   <p class="issue" id="issue-cb7132ef"><a class="self-link" href="#issue-cb7132ef"></a> Add a capability that indicates support for the remote playback protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/123">&lt;https://github.com/webscreens/openscreenprotocol/issues/123></a></p>
+   <p class="issue" id="issue-1624d26d"><a class="self-link" href="#issue-1624d26d"></a> Make a required/default remote playback state table <a href="https://github.com/webscreens/openscreenprotocol/issues/148">&lt;https://github.com/webscreens/openscreenprotocol/issues/148></a></p>
+   <p class="issue" id="issue-83707a3f"><a class="self-link" href="#issue-83707a3f"></a> Refinements to Remote Playback protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/159">&lt;https://github.com/webscreens/openscreenprotocol/issues/159></a></p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device" id="ref-for-dfn-compatible-remote-playback-device">compatible remote playback device</a>s (also called
 available <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback devices</a>) for a particular URL or set of URLs, the
 controller may send a remote-playback-availability-request message with the
@@ -2172,6 +2191,9 @@ following values:</p>
     <dt data-md>urls
     <dd data-md>
      <p>A list of <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources">media resources</a>.  Must not be empty.</p>
+   </dl>
+   <p class="issue" id="issue-6ecb1d18"><a class="self-link" href="#issue-6ecb1d18"></a> Remote Playback HTTP headers <a href="https://github.com/webscreens/openscreenprotocol/issues/146">&lt;https://github.com/webscreens/openscreenprotocol/issues/146></a></p>
+   <dl>
     <dt data-md>headers
     <dd data-md>
      <p>headers that the receiver should use to fetch the
@@ -2247,6 +2269,7 @@ receiver supports them.  If the receiver does not support them, it will
 ignore them and the controller will learn that it does not support them from
 the remote-playback-start-response message.</p>
    </dl>
+   <p class="issue" id="issue-7785df11"><a class="self-link" href="#issue-7785df11"></a> Remote playback ID uniqueness <a href="https://github.com/webscreens/openscreenprotocol/issues/147">&lt;https://github.com/webscreens/openscreenprotocol/issues/147></a></p>
    <p>When the receiver receives a remote-playback-start-request message, it should
 send back a remote-playback-start-response message.  It should do so quickly,
 usually before the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources③">media resource</a> has been loaded and instead give updates
@@ -2398,6 +2421,7 @@ and removing are indicated via the support for "added-cues").  As specified in <
 if a cue ID is invalid (removing an un-added ID or adding an ID twice, for example),
 the receiver may reject the text track change.</p>
    </dl>
+   <p class="issue" id="issue-6098c204"><a class="self-link" href="#issue-6098c204"></a> Add a table for whether it’s required and what the default is.</p>
    <p>The states sent by the receiver include the following individual state values,
 each of which is optional.  This allows the receiver to update the controller
 about more than one state value at once without having to specify all
@@ -2535,6 +2559,7 @@ remote-playback-modify-request messages to change the remote playback state
 based on changes to the local media element and receive
 remote-playback-modify-response and remote-playback-state-event messages to
 change the local media element based on changes to the remote playback state.</p>
+   <p class="issue" id="issue-52dfae94"><a class="self-link" href="#issue-52dfae94"></a> Algorithm for what messages to send when local/remote media element changes <a href="https://github.com/webscreens/openscreenprotocol/issues/158">&lt;https://github.com/webscreens/openscreenprotocol/issues/158></a></p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 6.2.7</a> says "Request disconnection of remote from the device. The
 implementation of this step is specific to the user agent.", the controlling
@@ -2655,8 +2680,7 @@ metadata versions, and metadata for those parties.</p>
 UI of the user agent during the display selection or display authentication
 process.  It can be an implementation choice whether the user agent clears or
 retains this data when the user clears browsing data.</p>
-   <p class="issue" id="issue-7d9298b1"><a class="self-link" href="#issue-7d9298b1"></a> [Privacy] Fate of metadata / authentication history when clearing
-browsing data <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a></p>
+   <p class="issue" id="issue-546a99af"><a class="self-link" href="#issue-546a99af"></a> Fate of metadata / authentication history when clearing browsing data <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a></p>
    <h4 class="heading settled" data-level="8.2.6" id="other-considerations"><span class="secno">8.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
    <p>The Open Screen Protocol does not grant to the Web additional access to the
 following:</p>
@@ -2700,6 +2724,7 @@ connections.</p>
      <p>Adding explicit messages and connection IDs for individual <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection③">PresentationConnections</a></code> so that agents can track
  the number of active connections.</p>
    </ol>
+   <p class="issue" id="issue-13cafd7b"><a class="self-link" href="#issue-13cafd7b"></a> Notify endpoints when new connection is created <a href="https://github.com/webscreens/openscreenprotocol/issues/143">&lt;https://github.com/webscreens/openscreenprotocol/issues/143></a></p>
    <h3 class="heading settled" data-level="8.4" id="remote-playback-considerations"><span class="secno">8.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
    <p>The <a href="https://www.w3.org/TR/remote-playback/#security-and-privacy-considerations">Remote Playback API §security-and-privacy-considerations</a> also state that
 messaging between local and remote playback devices should also be authenticated
@@ -2715,7 +2740,7 @@ this is data minimization, by only exposing opaque public key fingerprints
 before user-mediated authentication takes place.</p>
    <p>Passive attackers may also attempt timing attacks to learn the
 cryptographic parameters of the TLS 1.3 QUIC connection.</p>
-   <p class="issue" id="issue-5107ff88"><a class="self-link" href="#issue-5107ff88"></a> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
+   <p class="issue" id="issue-84520e29"><a class="self-link" href="#issue-84520e29"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
    <h4 class="heading settled" data-level="8.5.2" id="local-active-mitigations"><span class="secno">8.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
    <p>Local active attackers may attempt to impersonate a presentation display the
 user would normally trust.  The <a href="#authentication">§6 Authentication</a> step of the Open Screen
@@ -2744,6 +2769,7 @@ already-trusted agent.</p>
    <p>Flagging means that the user is notified of the attempt at impersonation.  In
 the last case, the user should be required to re-authenticate to the
 already-trusted agent to verify its identity.</p>
+   <p class="issue" id="issue-bbfd470b"><a class="self-link" href="#issue-bbfd470b"></a> UI guidelines for pairing and trusted/untrusted data <a href="https://github.com/webscreens/openscreenprotocol/issues/118">&lt;https://github.com/webscreens/openscreenprotocol/issues/118></a></p>
    <p>The second is through management of the low-entropy secret during mutual
 authentication:</p>
    <ul>
@@ -2761,13 +2787,13 @@ display - to prevent the user from blindly clicking through this step.</p>
    <p>The active attacker may also attempt to disrupt data exchanged over the QUIC
 connection by injecting or modifying traffic.  These attacks should be mitigated
 by a correct implementation of TLS 1.3.</p>
-   <p class="issue" id="issue-5107ff88①"><a class="self-link" href="#issue-5107ff88①"></a> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
+   <p class="issue" id="issue-84520e29①"><a class="self-link" href="#issue-84520e29①"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
    <h4 class="heading settled" data-level="8.5.3" id="remote-active-mitigations"><span class="secno">8.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
    <p>Unfortunately, we cannot rely on network devices to fully protect Open Screen
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.</p>
-   <p class="issue" id="issue-1353180f"><a class="self-link" href="#issue-1353180f"></a> [Security] Mitigations for remote network attackers <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a></p>
+   <p class="issue" id="issue-702347fb"><a class="self-link" href="#issue-702347fb"></a> Mitigations for remote network attackers <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a></p>
    <h4 class="heading settled" data-level="8.5.4" id="denial-of-service-mitigations"><span class="secno">8.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
    <p>It will be difficult to completely prevent denial service of attacks that
 originate on the user’s local area network.  Open Screen Protocol agents can
@@ -3558,12 +3584,35 @@ because smaller type keys encode on the wire smaller.</p>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
+   <div class="issue"> Add short names to Presentation API spec, so that BS autolinking works as designed.<a href="#issue-b711fac3"> ↵ </a></div>
+   <div class="issue"> Can autolinks to HTML51 be automatically generated?<a href="#issue-a8c8d59b"> ↵ </a></div>
+   <div class="issue"> Receiver/Controller/Agent terminology <a href="https://github.com/webscreens/openscreenprotocol/issues/144">&lt;https://github.com/webscreens/openscreenprotocol/issues/144></a><a href="#issue-b4e60ded"> ↵ </a></div>
    <div class="issue"> Requirements for Remote Playback API <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a><a href="#issue-a1f35a95"> ↵ </a></div>
-   <div class="issue"> [Privacy] Fate of metadata / authentication history when clearing
-browsing data <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-7d9298b1"> ↵ </a></div>
-   <div class="issue"> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-5107ff88"> ↵ </a></div>
-   <div class="issue"> [Security] Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-5107ff88①"> ↵ </a></div>
-   <div class="issue"> [Security] Mitigations for remote network attackers <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a><a href="#issue-1353180f"> ↵ </a></div>
+   <div class="issue"> Define suspend and resume behavior for discovery protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a><a href="#issue-4cf40026"> ↵ </a></div>
+   <div class="issue"> Include cross references to the specs for these hash functions.<a href="#issue-ad92979f"> ↵ </a></div>
+   <div class="issue"> Add examples of sample mDNS records.<a href="#issue-49bdd4e6"> ↵ </a></div>
+   <div class="issue"> Define suspend and resume behavior for connection protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a><a href="#issue-e5f1b094"> ↵ </a></div>
+   <div class="issue"> Clarify scoping/uniqueness of request IDs <a href="https://github.com/webscreens/openscreenprotocol/issues/139">&lt;https://github.com/webscreens/openscreenprotocol/issues/139></a><a href="#issue-f1b3bb85"> ↵ </a></div>
+   <div class="issue"> Add a capability that indicates support for the presentation protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/123">&lt;https://github.com/webscreens/openscreenprotocol/issues/123></a><a href="#issue-89be52a5"> ↵ </a></div>
+   <div class="issue"> Refinements to Presentation API protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/160">&lt;https://github.com/webscreens/openscreenprotocol/issues/160></a><a href="#issue-3934e36d"> ↵ </a></div>
+   <div class="issue"> Watch ID Uniqueness <a href="https://github.com/webscreens/openscreenprotocol/issues/145">&lt;https://github.com/webscreens/openscreenprotocol/issues/145></a><a href="#issue-2d0cb797"> ↵ </a></div>
+   <div class="issue"> Is a Presentation close/terminate from a controller a request/response or event? <a href="https://github.com/webscreens/openscreenprotocol/issues/124">&lt;https://github.com/webscreens/openscreenprotocol/issues/124></a><a href="#issue-b4b59633"> ↵ </a></div>
+   <div class="issue"> Remove presentation-connection-close-response message <a href="https://github.com/webscreens/openscreenprotocol/issues/138">&lt;https://github.com/webscreens/openscreenprotocol/issues/138></a><a href="#issue-a67cb441"> ↵ </a></div>
+   <div class="issue"> Once the Presentation API has text about reconnecting via an
+implementation specific mechanism, quote that here and map it to a message.<a href="#issue-733afe74"> ↵ </a></div>
+   <div class="issue"> Add a capability that indicates support for the remote playback protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/123">&lt;https://github.com/webscreens/openscreenprotocol/issues/123></a><a href="#issue-cb7132ef"> ↵ </a></div>
+   <div class="issue"> Make a required/default remote playback state table <a href="https://github.com/webscreens/openscreenprotocol/issues/148">&lt;https://github.com/webscreens/openscreenprotocol/issues/148></a><a href="#issue-1624d26d"> ↵ </a></div>
+   <div class="issue"> Refinements to Remote Playback protocol <a href="https://github.com/webscreens/openscreenprotocol/issues/159">&lt;https://github.com/webscreens/openscreenprotocol/issues/159></a><a href="#issue-83707a3f"> ↵ </a></div>
+   <div class="issue"> Remote Playback HTTP headers <a href="https://github.com/webscreens/openscreenprotocol/issues/146">&lt;https://github.com/webscreens/openscreenprotocol/issues/146></a><a href="#issue-6ecb1d18"> ↵ </a></div>
+   <div class="issue"> Remote playback ID uniqueness <a href="https://github.com/webscreens/openscreenprotocol/issues/147">&lt;https://github.com/webscreens/openscreenprotocol/issues/147></a><a href="#issue-7785df11"> ↵ </a></div>
+   <div class="issue"> Add a table for whether it’s required and what the default is.<a href="#issue-6098c204"> ↵ </a></div>
+   <div class="issue"> Algorithm for what messages to send when local/remote media element changes <a href="https://github.com/webscreens/openscreenprotocol/issues/158">&lt;https://github.com/webscreens/openscreenprotocol/issues/158></a><a href="#issue-52dfae94"> ↵ </a></div>
+   <div class="issue"> Fate of metadata / authentication history when clearing browsing data <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-546a99af"> ↵ </a></div>
+   <div class="issue"> Notify endpoints when new connection is created <a href="https://github.com/webscreens/openscreenprotocol/issues/143">&lt;https://github.com/webscreens/openscreenprotocol/issues/143></a><a href="#issue-13cafd7b"> ↵ </a></div>
+   <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29"> ↵ </a></div>
+   <div class="issue"> UI guidelines for pairing and trusted/untrusted data <a href="https://github.com/webscreens/openscreenprotocol/issues/118">&lt;https://github.com/webscreens/openscreenprotocol/issues/118></a><a href="#issue-bbfd470b"> ↵ </a></div>
+   <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29①"> ↵ </a></div>
+   <div class="issue"> Mitigations for remote network attackers <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a><a href="#issue-702347fb"> ↵ </a></div>
   </div>
 <script>/* script-dfn-panel */
 
