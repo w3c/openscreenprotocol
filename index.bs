@@ -129,7 +129,7 @@ For additional terms and idioms specific to the [[PRESENTATION-API|Presentation
 API]] or [[REMOTE-PLAYBACK|Remote Playback API]], please consult the respective
 specifications.
 
-Issue(144): Receiver/Controller/Agent terminology
+Issue(144): Receiver/Controller/Agent terminology.
 
 Requirements {#requirements}
 ============================
@@ -187,7 +187,7 @@ Presentation API Requirements {#requirements-presentation-api}
 Remote Playback API Requirements {#requirements-remote-playback}
 ----------------------------------------------------------------
 
-Issue(3): Requirements for Remote Playback API
+Issue(3): Requirements for Remote Playback API.
 
 Non-Functional Requirements {#requirements-non-functional}
 ----------------------------------------------------------
@@ -255,7 +255,7 @@ Discovery with mDNS {#discovery}
 Agents may discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
 To do so, agents must use the service name "_openscreen._udp.local".
 
-Issue(107): Define suspend and resume behavior for discovery protocol
+Issue(107): Define suspend and resume behavior for discovery protocol.
 
 Advertising Agents must use an instance name that is a prefix of the agent's
 display name. If the instance name is not the complete display name (if it has
@@ -355,7 +355,7 @@ If a client agent wishes to send messages to a server agent, the client
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.
 
-Issue(108): Define suspend and resume behavior for connection protocol
+Issue(108): Define suspend and resume behavior for connection protocol.
 
 The agent-info-response message and agent-status-response messages may be
 extended to include additional information not defined in this spec.  If done
@@ -396,7 +396,7 @@ those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.
 
-Issue(139): Clarify scoping/uniqueness of request IDs
+Issue(139): Clarify scoping/uniqueness of request IDs.
 
 Authentication {#authentication}
 ================================
@@ -508,10 +508,10 @@ protocol messages defined in this section.
 For all messages defined in this section, see [[#appendix-a]] for the full
 CDDL definitions.
 
-Issue(123): Add a capability that indicates support for the presentation protocol
+Issue(123): Add a capability that indicates support for the presentation protocol.
 
 
-Issue(160): Refinements to Presentation API protocol
+Issue(160): Refinements to Presentation API protocol.
 
 To learn which receivers are [=available presentation displays=] for a
 particular URL or set of URLs, the controller may send a
@@ -530,7 +530,7 @@ presentation-url-availability-request message with the following values:
     to.  The controller must choose a value that is unique across all
     presentation URL availability watches to the same receiver.
 
-Issue(145): Watch ID Uniqueness
+Issue(145): Watch ID Uniqueness.
 
 In response, the receiver should send one presentation-url-availability-response
 message with the following values:
@@ -676,7 +676,7 @@ values:
 : result
 :: If the close succeed or failed, and if it failed why it failed.
 
-Issue(138): Remove presentation-connection-close-response message
+Issue(138): Remove presentation-connection-close-response message.
 
 The receiver may also close a connection without a request from the controller
 to do so and without terminating a presentation.  If it does so, it should send
@@ -762,13 +762,13 @@ defined in this section.
 For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
 
-Issue(123): Add a capability that indicates support for the remote playback protocol
+Issue(123): Add a capability that indicates support for the remote playback protocol.
 
 
-Issue(148): Make a required/default remote playback state table
+Issue(148): Make a required/default remote playback state table.
 
 
-Issue(159): Refinements to Remote Playback protocol
+Issue(159): Refinements to Remote Playback protocol.
 
 To learn which receivers are [=compatible remote playback device=]s (also called
 available [=remote playback devices=]) for a particular URL or set of URLs, the
@@ -778,7 +778,7 @@ following values:
 : urls
 :: A list of [=media resources=].  Must not be empty.
 
-Issue(146): Remote Playback HTTP headers
+Issue(146): Remote Playback HTTP headers.
 
 : headers
 :: headers that the receiver should use to fetch the
@@ -856,7 +856,7 @@ values:
     ignore them and the controller will learn that it does not support them from
     the remote-playback-start-response message.
 
-Issue(147): Remote playback ID uniqueness
+Issue(147): Remote playback ID uniqueness.
 
 When the receiver receives a remote-playback-start-request message, it should
 send back a remote-playback-start-response message.  It should do so quickly,
@@ -1220,7 +1220,7 @@ based on changes to the local media element and receive
 remote-playback-modify-response and remote-playback-state-event messages to
 change the local media element based on changes to the remote playback state.
 
-Issue(158): Algorithm for what messages to send when local/remote media element changes
+Issue(158): Algorithm for what messages to send when local/remote media element changes.
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
@@ -1374,7 +1374,7 @@ UI of the user agent during the display selection or display authentication
 process.  It can be an implementation choice whether the user agent clears or
 retains this data when the user clears browsing data.
 
-Issue(132): Fate of metadata / authentication history when clearing browsing data
+Issue(132): Fate of metadata / authentication history when clearing browsing data.
 
 ### Other Considerations ### {#other-considerations}
 
@@ -1412,7 +1412,7 @@ The Open Screen Protocol addresses these considerations by:
      {{PresentationConnection|PresentationConnections}} so that agents can track
      the number of active connections.
 
-Issue(143): Notify endpoints when new connection is created
+Issue(143): Notify endpoints when new connection is created.
 
 Remote Playback API Considerations {#remote-playback-considerations}
 ----------------------------------
@@ -1467,7 +1467,7 @@ Flagging means that the user is notified of the attempt at impersonation.  In
 the last case, the user should be required to re-authenticate to the
 already-trusted agent to verify its identity.
 
-Issue(118): UI guidelines for pairing and trusted/untrusted data
+Issue(118): UI guidelines for pairing and trusted/untrusted data.
 
 The second is through management of the low-entropy secret during mutual
 authentication:
@@ -1492,7 +1492,7 @@ Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.
 
-Issue(131): Mitigations for remote network attackers
+Issue(131): Mitigations for remote network attackers.
 
 ### Denial of service ### {#denial-of-service-mitigations}
 
