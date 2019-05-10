@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 10ff3eb4050069e20bb9b943c8b76fe5bfe3a48f" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="93fe1e6b5ad8afba95b674b385c80aa2996252a5" name="document-revision">
+  <meta content="d5e604f6865adb6c9aa30c94998ee064bd63223e" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1668,7 +1668,26 @@ ID</a>.</p>
 when a presentation is terminated.</p>
    </ol>
    <h3 class="heading settled" data-level="2.2" id="requirements-remote-playback"><span class="secno">2.2. </span><span class="content">Remote Playback API Requirements</span><a class="self-link" href="#requirements-remote-playback"></a></h3>
-   <p class="issue" id="issue-443110bc"><a class="self-link" href="#issue-443110bc"></a> Requirements for Remote Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a></p>
+   <ol>
+    <li data-md>
+     <p>A <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agent</a> must be able to find out whether there is at
+least one compatible <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback device</a> available for a given <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement">HTMLMediaElement</a></code>, both instantaneously and continuously.</p>
+    <li data-md>
+     <p>A controlling user agent must be able to start sending the content of an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement①">HTMLMediaElement</a></code> to a compatible remote playback device.</p>
+    <li data-md>
+     <p>The <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement②">HTMLMediaElement</a></code> content to be sent should include both media data
+and text tracks.</p>
+    <li data-md>
+     <p>During remote playback, the controlling user agent and the remote playback
+device must be able to synchronize the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-element-state" id="ref-for-dfn-media-element-state">media element state</a> of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement③">HTMLMediaElement</a></code>.</p>
+    <li data-md>
+     <p>During remote playback, either the controlling user agent or the remote
+playback device must be able to disconnect from the other party.</p>
+    <li data-md>
+     <p>The controlling user agent should be able to pass locale and text direction
+information to the remote playback device to assist in rendering text during
+remote playback.</p>
+   </ol>
    <h3 class="heading settled" data-level="2.3" id="requirements-non-functional"><span class="secno">2.3. </span><span class="content">Non-Functional Requirements</span><a class="self-link" href="#requirements-non-functional"></a></h3>
    <ol>
     <li data-md>
@@ -2138,17 +2157,17 @@ the user with more explanation as to why it was closed.</p>
    <p>This section defines how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§7.1 Presentation Protocol</a>.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "This list of presentation displays ... is populated based on an
-implementation specific discovery mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agent</a> may
+implementation specific discovery mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent③">controlling user agent</a> may
 use the mDNS, QUIC, agent-info-request, and
 presentation-url-availability-request messages defined previously in this spec
 to discover receivers.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "To further save power, ... implementation specific discovery of
-presentation displays can be resumed or suspended.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent③">controlling user
+presentation displays can be resumed or suspended.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent④">controlling user
 agent</a> may use the power saving mechanism defined in the previous section.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#starting-a-presentation-connection">section 6.3.4</a> says
 "Using an implementation specific mechanism, tell U to create a receiving
-browsing context with D, presentationUrl, and I as parameters.", U (the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent④">controlling user agent</a>) may send a presentation-start-request message to D
+browsing context with D, presentationUrl, and I as parameters.", U (the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑤">controlling user agent</a>) may send a presentation-start-request message to D
 (the receiver), with I for the presentation identifier and presentationUrl for
 the selected presentation URL.</p>
    <p class="issue" id="issue-733afe74"><a class="self-link" href="#issue-733afe74"></a> Once the Presentation API has text about reconnecting via an
@@ -2156,13 +2175,13 @@ implementation specific mechanism, quote that here and map it to a message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection">section
 6.5.2</a> says "Using an implementation specific mechanism, transmit the contents
 of messageOrData as the presentation message data and messageType as the
-presentation message type to the destination browsing context", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑤">controlling user agent</a> may send a presentation-connection-message with
+presentation message type to the destination browsing context", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑥">controlling user agent</a> may send a presentation-connection-message with
 messageOrData for the presentation message data.  Note that the messageType is
 embedded in the encoded CBOR type and does not need an additional value in the
 message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
-user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑥">controlling user
+user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
 agent</a> may send a presentation-termination-request message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "it MUST listen to and accept incoming connection requests from a
@@ -2184,7 +2203,7 @@ CDDL definitions.</p>
    <p class="issue" id="issue-58529898"><a class="self-link" href="#issue-58529898"></a> Make a required/default remote playback state table. <a href="https://github.com/webscreens/openscreenprotocol/issues/148">&lt;https://github.com/webscreens/openscreenprotocol/issues/148></a></p>
    <p class="issue" id="issue-649c173f"><a class="self-link" href="#issue-649c173f"></a> Refinements to Remote Playback protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/159">&lt;https://github.com/webscreens/openscreenprotocol/issues/159></a></p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device" id="ref-for-dfn-compatible-remote-playback-device">compatible remote playback device</a>s (also called
-available <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback devices</a>) for a particular URL or set of URLs, the
+available <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices②">remote playback devices</a>) for a particular URL or set of URLs, the
 controller may send a remote-playback-availability-request message with the
 following values:</p>
    <dl>
@@ -2351,7 +2370,7 @@ values, each of which is optional.  This allows the controller to change one
 control value or many control values at once without having to specify all
 control values every time.  A non-present control value indicates no change.  A
 present control value indicates the change defined below. These controls
-intentionally mirror settable attributes and methods of the <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">HtmlMediaElement</a>.</p>
+intentionally mirror settable attributes and methods of the <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="termref-for-">HtmlMediaElement</a>.</p>
    <dl>
     <dt data-md>source
     <dd data-md>
@@ -2538,7 +2557,7 @@ based on an implementation specific discovery mechanism" and <a href="https://ww
 6.2.1.4</a> says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the
 mDNS, QUIC, agent-info-request, and remote-playback-availability messages
-defined previously in this spec to discover <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices②">remote playback devices</a>.  The
+defined previously in this spec to discover <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices③">remote playback devices</a>.  The
 remote-playback-availability urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability sources set</a>.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 6.2.4</a> says "Request connection of remote to device. The implementation of this
@@ -3417,6 +3436,13 @@ because smaller type keys encode on the wire smaller.</p>
 })();
 </script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <aside class="dfn-panel" data-for="term-for-htmlmediaelement">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-htmlmediaelement">2.2. Remote Playback API Requirements</a> <a href="#ref-for-htmlmediaelement①">(2)</a> <a href="#ref-for-htmlmediaelement②">(3)</a> <a href="#ref-for-htmlmediaelement③">(4)</a>
+    <li><a href="#termref-for-">7.4. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-dom-window-postmessage">
    <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage</a><b>Referenced in:</b>
    <ul>
@@ -3448,7 +3474,8 @@ because smaller type keys encode on the wire smaller.</p>
    <ul>
     <li><a href="#ref-for-dfn-controlling-user-agent">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-controlling-user-agent①">2.1. Presentation API Requirements</a>
-    <li><a href="#ref-for-dfn-controlling-user-agent②">7.2. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent③">(2)</a> <a href="#ref-for-dfn-controlling-user-agent④">(3)</a> <a href="#ref-for-dfn-controlling-user-agent⑤">(4)</a> <a href="#ref-for-dfn-controlling-user-agent⑥">(5)</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent②">2.2. Remote Playback API Requirements</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent③">7.2. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent④">(2)</a> <a href="#ref-for-dfn-controlling-user-agent⑤">(3)</a> <a href="#ref-for-dfn-controlling-user-agent⑥">(4)</a> <a href="#ref-for-dfn-controlling-user-agent⑦">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-display">
@@ -3503,6 +3530,12 @@ because smaller type keys encode on the wire smaller.</p>
     <li><a href="#ref-for-dfn-compatible-remote-playback-device">7.3. Remote Playback Protocol</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-media-element-state">
+   <a href="https://w3c.github.io/remote-playback/#dfn-media-element-state">https://w3c.github.io/remote-playback/#dfn-media-element-state</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-media-element-state">2.2. Remote Playback API Requirements</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-media-resources">
    <a href="https://w3c.github.io/remote-playback/#dfn-media-resources">https://w3c.github.io/remote-playback/#dfn-media-resources</a><b>Referenced in:</b>
    <ul>
@@ -3514,8 +3547,9 @@ because smaller type keys encode on the wire smaller.</p>
    <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices">https://w3c.github.io/remote-playback/#dfn-remote-playback-devices</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-remote-playback-devices">1.1. Terminology</a>
-    <li><a href="#ref-for-dfn-remote-playback-devices①">7.3. Remote Playback Protocol</a>
-    <li><a href="#ref-for-dfn-remote-playback-devices②">7.5. Remote Playback API</a>
+    <li><a href="#ref-for-dfn-remote-playback-devices①">2.2. Remote Playback API Requirements</a>
+    <li><a href="#ref-for-dfn-remote-playback-devices②">7.3. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dfn-remote-playback-devices③">7.5. Remote Playback API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-source">
@@ -3529,6 +3563,7 @@ because smaller type keys encode on the wire smaller.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-htmlmediaelement" style="color:initial">HTMLMediaElement</span>
      <li><span class="dfn-paneled" id="term-for-dom-window-postmessage" style="color:initial">postMessage(message, targetOrigin, transfer)</span>
     </ul>
    <li>
@@ -3550,6 +3585,7 @@ because smaller type keys encode on the wire smaller.</p>
     <ul>
      <li><span class="dfn-paneled" id="term-for-dfn-availability-sources-set" style="color:initial">availability sources set</span>
      <li><span class="dfn-paneled" id="term-for-dfn-compatible-remote-playback-device" style="color:initial">compatible remote playback device</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-media-element-state" style="color:initial">media element state</span>
      <li><span class="dfn-paneled" id="term-for-dfn-media-resources" style="color:initial">media resources</span>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-devices" style="color:initial">remote playback devices</span>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-source" style="color:initial">remote playback source</span>
@@ -3587,7 +3623,6 @@ because smaller type keys encode on the wire smaller.</p>
    <div class="issue"> Add short names to Presentation API spec, so that BS autolinking works as designed.<a href="#issue-b711fac3"> ↵ </a></div>
    <div class="issue"> Can autolinks to HTML51 be automatically generated?<a href="#issue-a8c8d59b"> ↵ </a></div>
    <div class="issue"> Receiver/Controller/Agent terminology. <a href="https://github.com/webscreens/openscreenprotocol/issues/144">&lt;https://github.com/webscreens/openscreenprotocol/issues/144></a><a href="#issue-8ce75287"> ↵ </a></div>
-   <div class="issue"> Requirements for Remote Playback API. <a href="https://github.com/webscreens/openscreenprotocol/issues/3">&lt;https://github.com/webscreens/openscreenprotocol/issues/3></a><a href="#issue-443110bc"> ↵ </a></div>
    <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a><a href="#issue-56c2cd35"> ↵ </a></div>
    <div class="issue"> Include cross references to the specs for these hash functions.<a href="#issue-ad92979f"> ↵ </a></div>
    <div class="issue"> Add examples of sample mDNS records.<a href="#issue-49bdd4e6"> ↵ </a></div>
