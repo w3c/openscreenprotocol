@@ -7,7 +7,10 @@ ED: https://webscreens.github.io/openscreenprotocol/
 Canonical URL: ED
 Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
 Repository: webscreens/openscreenprotocol
-Abstract: The Open Screen Protocol is a suite of network protocols that allow user agents to implement the [[PRESENTATION-API|Presentation API]] and the [[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable fashion.
+Abstract: The Open Screen Protocol is a suite of network protocols that allow
+          user agents to implement the [[PRESENTATION-API|Presentation API]] and
+          the [[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable
+          fashion.
 Group: Second Screen Community Group
 Mailing List: public-webscreens@w3c.org
 Mailing List Archives: https://lists.w3.org/Archives/Public/public-webscreens/
@@ -15,11 +18,18 @@ Markup Shorthands: markdown yes, dfn yes, idl yes
 </pre>
 
 <p boilerplate="copyright">
-<a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © [YEAR] the Contributors to the [TITLE] Specification, published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
-A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.
+<a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">
+  Copyright</a> © [YEAR] the Contributors to the [TITLE] Specification,
+  published by the <a href="https://www.w3.org/community/webscreens/">
+  Second Screen Community Group</a> under the
+  <a href="https://www.w3.org/community/about/agreements/cla/">
+  W3C Community Contributor License Agreement (CLA)</a>.  A human-readable
+  <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a>
+  is available.
 </p>
 
-<!-- TODO: Add short names to Presentation API spec, so that BS autolinking works as designed. -->
+<!-- TODO: Add short names to Presentation API spec,
+           so that BS autolinking works as designed. -->
 <!-- TODO: Can autolinks to HTML51 be automatically generated? -->
 <pre class="anchors">
 urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
@@ -395,11 +405,7 @@ keyboard or TV remote control.
 For all messages and objects defined in this section, see Appendix A for the full
 CDDL definitions.
 
-The challenger sends an authentication-request message with the following values:
-
--   mechanism: The authentication mechanism being used.  This standard only
-    defines the mechanism hkdf-of-scrypt-of-psk but this field gives a place for
-    other mechanisms to be specified.
+The challenger sends an auth-request-hkdf-scrypt-psk message with the following values:
 
 -   salt: 32 random bytes.  This salt is used in HKDF, so see
     https://tools.ietf.org/html/rfc5869#section-3.1 for more details on how this
@@ -411,7 +417,8 @@ The challenger sends an authentication-request message with the following values
     to 128 (the limit defined by scrypt).  A value of 15 is recommended (an
     scrypt N of 2^15 or 32768).
 
-The responder replies with an authentication-response message with the following values:
+The responder replies with an auth-response-hkdf-scrypt-psk-result message with
+the following values:
 
 -   result:  If the responder was able to calculate proof of possession of the
     shared secret, and if it failed, why it failed.
@@ -419,8 +426,8 @@ The responder replies with an authentication-response message with the following
 -   proof: The result of running the authentication mechanism.  The steps for
     hkdf-of-scrypt-of-psk are described below.
 
-The challenger verifies the proof and sends the responder an
-authentication-result message with the following values:
+The challenger verifies the proof and sends the responder an auth-status message
+with the following values:
 
 -   result:  If the challenger was able to authenticate the responder or not,
     and if not, why not.
@@ -465,14 +472,14 @@ For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
     the responder in the QUIC crypto handshake during connection establishment.
 
 9. Let proof be the result of running
-     [\HKDF](https://tools.ietf.org/html/rfc5869) on scryptResult with 
+     [\HKDF](https://tools.ietf.org/html/rfc5869) on scryptResult with
      both the extract and expand steps, hash function hashFunction,
      application-specific info, and output key length keyLength.
 
 To verify that the responder's proof is correct, the challenger makes the same
 calculation of the proof and compares the result. If the results are the same,
 the challenger considers the responder authenticated, and considers it
-unauthenticated otherwise.  
+unauthenticated otherwise.
 
 Note: the values of 32 above (for salt length, keyLength) are based on the
 output size of sha-256.  If a different hash mechanism is used in the future,
@@ -502,7 +509,7 @@ To learn which receivers are [=available presentation displays=] for a
 particular URL or set of URLs, the controller may send a
 presentation-url-availability-request message with the following values:
 
-: urls 
+: urls
 :: A list of presentation URLs.  Must not be empty.
 
 : watch-duration
@@ -560,7 +567,7 @@ values:
 : url
 :: The selected presentation URL
 
-: headers 
+: headers
 :: headers that the receiver should use to fetch the
     presentationUrl.  For example,
     [[PRESENTATION-API#establishing-a-presentation-connection|section 6.6.1]] of
@@ -749,8 +756,8 @@ This section defines the use of the Open Screen Protocol for starting, terminati
 and controlling remote playback of media as defined by the
 [[REMOTE-PLAYBACK|Remote Playback API]].  [[#remote-playback-api]] defines how
 APIs in [[REMOTE-PLAYBACK|Remote Playback API]] map to the protocol messages
-defined in this section.  
- 
+defined in this section.
+
 For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
 
@@ -770,7 +777,7 @@ following values:
 :: A list of [=media resources=].  Must not be empty.
 
 <!-- TODO: Should we allow different headers for different URLs? -->
-: headers 
+: headers
 :: headers that the receiver should use to fetch the
     urls.  For example,
     [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section 6.2.4 of
@@ -789,7 +796,7 @@ following values:
 
 In response, the receiver should send a remote-playback-availability-response
 message with the following values:
-  
+
 : url-availabilities
 :: A list of URL availability states.  Each state must correspond to the matching URL
     from the request by list index.
@@ -813,7 +820,7 @@ have changed in availability state within the watch duration of the original
 availability request.
 
 To save power, the controller may disconnect the QUIC connection and
-later reconnect to send availablity requests and receive availability
+later reconnect to send availability requests and receive availability
 responses and updates. The QUIC connection ID may or may not be the same
 when reconnecting.  Note that the lifetime of a watch-id is not limited
 to one QUIC connection.  The receiver must continue sending updates for watches
@@ -825,7 +832,7 @@ To start remote playback, the controller may send a
 remote-playback-start-request message to the receiver with the following
 values:
 
-: remote-playback-id 
+: remote-playback-id
 :: An identifier that uniquely identifies the remote playback from the
     controller to the receiver.  It does not need to be unique across all remote
     playbacks from that controllers to all receivers nor unique across all remote
@@ -863,7 +870,7 @@ If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
 remote-playback-modify-request message with the following values:
 
-: remote-playback-id 
+: remote-playback-id
 :: The ID of the remote playback to be modified.
 
 : controls
@@ -881,7 +888,7 @@ the controller (such as when the skips or pauses due to user user interaction on
 the receiver), the receiver may send a remote-playback-state-event to the
 controller.
 
-: remote-playback-id 
+: remote-playback-id
 :: The ID of the remote playback whose state has changed.
 
 : state
@@ -892,7 +899,7 @@ controller.
 To terminate the remote playback, the controller may send a
 remote-playback-termination-request message with the following values:
 
-: remote-playback-id 
+: remote-playback-id
 :: The ID of the remote playback to terminate.
 
 : reason
@@ -916,7 +923,7 @@ As mentioned in
 API section 6.2.7]], terminating the remote playback means the controller is no
 longer controlling the remote playback and does not necessarily stop media from
 rendering on the receiver.  Whether or not the receiver stops rendering media depends
-upon the implmentation of the receiver.
+upon the implementation of the receiver.
 
 Remote Playback State and Controls {#remote-playback-state-and-controls}
 ------------------------------------------------------------------------
@@ -940,9 +947,9 @@ intentionally mirror settable attributes and methods of the
     [HtmlMediaElement.src](https://html.spec.whatwg.org/multipage/media.html#dom-media-src)
     for more details. Must not be used in the initial controls of the
     remote-playback-start-request message (which already contains a list of URLs).
- 
+
 : preload
-:: Set how aggresively to preload media. See
+:: Set how aggressively to preload media. See
     [HtmlMediaElement.preload](https://html.spec.whatwg.org/multipage/media.html#dom-media-preload)
     for more details. Should only be used in the initial controls of the
     remote-playback-start-request message or when the source is changed.  If not
@@ -957,7 +964,7 @@ intentionally mirror settable attributes and methods of the
     remote-playback-start-request.  If not set in the initial controls, it is
     assumed to be false.
 
-: paused 
+: paused
 :: If true, pause; if false, resume. See
     [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause).
     and
@@ -980,7 +987,7 @@ intentionally mirror settable attributes and methods of the
 : seek
 :: Seek to a precise time. See
     [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime)
-    for more details. 
+    for more details.
 
 : fast-seek
 :: Seek to an approximate time as fast as possible. See
@@ -1017,8 +1024,8 @@ intentionally mirror settable attributes and methods of the
     [HtmlMediaElement.addTextTrack](https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack)
     for more details.  This is optional for the receiver to support and if not
     supported, the receiver will behave as though it were never set.
-    
-: changed-text-tracks 
+
+: changed-text-tracks
 :: Change text tracks by ID.  All other text tracks are left
     unchanged.  Set the mode, add cues, and remove cues by id. See
     [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks)
@@ -1066,14 +1073,14 @@ changed.
 
 : error
 :: A major error occurred which prevents the remote playback from continuing. See
-    [HtmlMediaElement.error](https://html.spec.whatwg.org/multipage/media.html#dom-media-error) and 
+    [HtmlMediaElement.error](https://html.spec.whatwg.org/multipage/media.html#dom-media-error) and
     [HtmlMediaElement media error codes](https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code).
     The default is no error
     for the initial state in the remote-playback-start-response message.
 
 : epoch
 :: The "zero time" of the media timeline. See
-    [HtmlMediaElement's timeline offset](https://html.spec.whatwg.org/multipage/media.html#timeline-offset) and 
+    [HtmlMediaElement's timeline offset](https://html.spec.whatwg.org/multipage/media.html#timeline-offset) and
     [HtmlMediaElement.getStartDate()](https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate).
     The default is an unknown epoch
     for the initial state in the remote-playback-start-response message.
@@ -1184,7 +1191,7 @@ based on an implementation specific discovery mechanism" and
 implementation specific mechanism)", the user agent may use the
 mDNS, QUIC, agent-info-request, and remote-playback-availability messages
 defined previously in this spec to discover [=remote playback devices=].  The
-remote-playback-availiability urls must contain the [=availability sources set=].
+remote-playback-availability urls must contain the [=availability sources set=].
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
@@ -1229,52 +1236,82 @@ media from a media sender to a media receiver.
 
 Capabilities {#streaming-capabilities}
 --------------------------------------------
+If the advertiser is already authenticated, the requester has the ability to
+request additional information by sending an streaming-capabilities-request
+message, and receive back a streaming-capabilities-response message with the
+following properties:
 
-<!--
-  TODO:
+: receive-audio (required)
+:: A list of capabilities for receiving audio. For an explanation of fields, see below.
 
-  Put in something like this:
+: receive-video (required)
+:: A list of capabilities for receiving video. For an explanation of fields, see below.
 
-streaming-capabilities-request {
-  request
-}
+: receive-data (required)
+:: A list of arbitrary data formats the device supports
+    for receiving data.
 
-streaming-capabilities-response {
-  response
-  capabilities: streaming-capabilities
-}
+The format type is used as the basis for audio, video, and data capabilities.
+Formats are composed of the following properties:
 
-streaming-capabilities = {
-  receive-audio: [* receive-audio-capability]
-  receive-video: [* receive-video-capability]
-  receive-data: [* receive-data-capability]
-}
+: name (required)
+:: The name of the format. Expected values include "vp8", "h264", "opus."
 
+: parameters (required)
+:: A list of (key, value) parameters that can be used to pass fields that are
+    properties of a specific format, and not shared by other formats of that type
+    (audio, video, etc.).
 
-receive-audio-capability = {
-  codec-name: text
-  codec-parameters: [* codec-parameter]
-}
+Audio capabilities are composed of the above format type, with the following
+additional fields:
 
-receive-video-capability = {
-  codec-name: text
-  codec-parameters: [* codec-parameter]
-  ? max-resolution: video-resolution
-  ? max-frames-per-second: float
-  ? max-pixels-per-second: float
-}
+: max-audio-channels (optional)
+:: An optional field indicating the maximum amount of audio
+    channels the receiver is capable of supporting. Default value is "2," meaning
+    a stereo speaker channel setup.
 
-receive-data-capability = {
-  format: text ; we define "text-cue" for text cues
-  format-parameters: codec-parameters
-}
+: min-bit-rate (optional)
+:: An optional field indicating the minimum audio bit rate that
+    the receiver can handle, in kilobits per second. Default is no minimum.
 
-codec-parameter = {
-  key: text
-  value: bytes
-}
+Video capabilities are similarly composed of the above format type, with the
+following additional fields:
 
--->
+: max-resolution (optional)
+:: An optional field indicating the maximum video-resolution (width, height)
+    that the receiver is capable of processing. Default is no maximum.
+
+: max-frames-per-second (optional)
+:: An optional field indicating the maximum frames-per-second the receiver is
+    capable of processing. Default is no maximum.
+
+: max-pixels-per-second (optional)
+:: An optional field indicating the maximum pixels-per-second the receiver is
+    capable of processing, in pixels per second. Default is no maximum.
+
+: min-video-bit-rate (optional)
+:: An optional field indicating the minimum video bit rate the device is
+    capable of processing, in kilobits per second. Default is no minimum.
+
+: aspect-ratio (optional)
+:: An optional field indicating what its ideal aspect ratio is, e.g. a 16:10
+    display could return this value as 1.6 to indicate its preferred content
+    scaling. Default is none.
+
+: color-profiles (optional)
+:: An optional field indicating what color profiles are understood.
+    The listener may use these values to determine how to encode
+    video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.
+
+: native-resolutions (optional)
+:: An optional field indicating what video-resolutions the receiver supports and
+    considers to be "native," meaning that scaling is not required.
+    The default value is none.
+
+: supports-scaling (optional)
+:: A optional boolean field indicating whether the receiver can scale content
+    provided in a video-resolution not listed in the native-resolutions list
+    (if provided) or of a different aspect ratio. The default value is true.
 
 Sessions {#streaming-sessions}
 ------------------------------------
@@ -1335,16 +1372,14 @@ media-stream-request = {
 
 audio-encoding-offer = {
   encoding-id: uint
-  codec-name: text
-  codec-parameters: [* codec-parameter]
+  codec: format
   time-scale: uint ; AKA sample rate or clock rate
   default-duration: uint ; AKA ptime
 }
 
 video-encoding-offer = {
   encoding-id: uint
-  codec-name: text
-  codec-parameters: [* codec-parameter]
+  codec: format
   time-scale: uint ; AKA clock rate; probably 90khz
   ? default-duration: uint ; AKA ptime
   ? default-rotation: video-rotation
@@ -1352,8 +1387,7 @@ video-encoding-offer = {
 
 data-encoding-offer = {
   encoding-id: uint
-  format: text ; "text-cue" defined to mean text cues
-  format-parameters: [* codec-parameter] ; format-specific
+  format: format ; "text-cue" defined to mean text cues
   time-scale: uint ; AKA clock rate; probably 1mhz
 }
 
@@ -1454,7 +1488,7 @@ ending at the last dependent frame.
 
 : depends-on
 :: If present, the sequence numbers of the frames this frame depends on.
-    If a sequence numbers is negative, it is treated as a relative sequence numbers 
+    If a sequence numbers is negative, it is treated as a relative sequence numbers
     and the sequence numbers is calculated by adding it to the sequence number of this frame.
     If empty, this is an independent frame (a key frame).
     If not present, the default value is [-1].
@@ -1548,7 +1582,7 @@ QUIC streams.
 :: Gives the order in the encoding.
     Within an encoding, larger sequence numbers invalidate previous ones.
     A sender may ignore smaller sequence numbers after a larger one has been processed.
-    This it to prevent out-of-order requests from generating more key frames than necessary. 
+    This it to prevent out-of-order requests from generating more key frames than necessary.
 
 : highest-decoded-frame-sequence-number: uint
 :: If set, the sender may generate a video frame dependent on the last decoded
@@ -1557,7 +1591,7 @@ QUIC streams.
 Stats {#streaming-stats}
 ------------------------------
 
-<!-- 
+<!--
 
  TODO: Something like this:
 
@@ -1629,7 +1663,7 @@ flows on the QUIC connection, or by observing cryptographic timing.
 
 Active attackers, such as compromised routers, will be able to manipulate data
 exchanged between agents.  They can inject traffic into existing QUIC
-connections and attempt to inititate new QUIC connections.  These abilities can
+connections and attempt to initiate new QUIC connections.  These abilities can
 be used to attempt the following:
 
 *   Impersonate an agent or one already trusted by the user, in an attempt
@@ -1637,7 +1671,7 @@ be used to attempt the following:
 *   Connect to an agent and query its capabilities.
 *   Connect to and control a presentation or remote playback, or extract data
     from the application state of the presentation or remote playback.
-    
+
 One particular attack of concern is misconfigured or compromised routers that
 expose local network devices (such as Open Screen Protocol agents) to the
 Internet.  This vector of attack has been used by malicious parties to take
@@ -1696,7 +1730,7 @@ considered public and untrusted data:
 1. IP addresses and ports used by the Open Screen Protocol.
 1. Data advertised through mDNS, including the display name prefix, the
     certificate fingerprint, and the metadata version.
-   
+
 ### Cross Origin State Considerations ### {#cross-origin-state}
 
 Access to origin state across browsing sessions is possible through the
@@ -1797,7 +1831,7 @@ Mitigation Strategies {#security-mitigations}
 ### Local passive network attackers ### {#local-passive-mitigations}
 
 Local passive attackers may attempt to harvest data about user activities and
-device capabilties using the Open Screen Protocol.  The main strategy to address
+device capabilities using the Open Screen Protocol.  The main strategy to address
 this is data minimization, by only exposing opaque public key fingerprints
 before user-mediated authentication takes place.
 
@@ -1828,11 +1862,11 @@ should be flagged include:
     already-trusted agent.
 * Already-trusted agents whose metadata provided through the `agent-info`
     message has changed.
-  
+
 Flagging means that the user is notified of the attempt at impersonation.  In
 the last case, the user should be required to re-authenticate to the
 already-trusted agent to verify its identity.
-  
+
 The second is through management of the low-entropy secret during mutual
 authentication:
 
@@ -1854,7 +1888,7 @@ Issue(130): [Security] Review attack and mitigation considerations for TLS 1.3
 Unfortunately, we cannot rely on network devices to fully protect Open Screen
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
-should be secure against attack from any Inernet host.
+should be secure against attack from any Internet host.
 
 Issue(131): [Security] Mitigations for remote network attackers
 
@@ -1886,7 +1920,12 @@ Appendix A: Messages {#appendix-a}
 
 The following messages are defined with [[CDDL]]. When
 integer keys are used, a comment is appended to the line to indicate
-the name of the field. Each root message (one that can be put into a
+the name of the field. Object definitions in this specification have this
+unusual syntax to reduce the number of bytes-on-the-wire, while maintaining a
+human-readable name for each key. Integer keys are used instead of object arrays
+to allow for easy indexing of optional fields.
+
+Each root message (one that can be put into a
 QUIC stream without being enclosed by another message) has a comment
 indicating the message type key.
 
@@ -1895,497 +1934,10 @@ frequently or are very small or both and larger numbers should be
 reserved for messages that are infrequently sent or large or both
 because smaller type keys encode on the wire smaller.
 
-<!-- TODO: Make a bikeshed formatter CDDL -->
-
-<pre>
-; type key 10
-agent-info-request = {
-  request
-}
-
-; type key 11
-agent-info-response = {
-  response
-  1: agent-info ; agent-info
-}
-
-agent-info = {
-  0: text ; friendly-name
-  1: text ; model-name
-  ; ...
-}
-
-; type key 12
-agent-status-request = {
-  request
-  ? 1: status ; status
-}
-
-; type key 13
-agent-status-response = {
-  response
-  ? 1: status ; status
-}
-
-status = {
-}
-
-request = (
- 0: request-id ; request-id
-)
-
-response = (
- 0: request-id ; request-id
-)
-
-request-id = uint
-
-; type key 1001 
-authentication-request = {
-  request
-  1: authentication-mechanism ; mechanism
-  2: bytes ; salt
-  3: uint ; cost
-}
-
-; type key 1002 
-authentication-response = {
-  response
-  1: authentication-response-result ; result
-  2: bytes ; proof
-}
-
-certificate-fingerprint-pair = [
-  challenger-fingerprint: bytes
-  responder-fingerprint: bytes
-]
-
-; type key 1003
-authentication-result = {
-  1: authentication-result-result ; result
-}
-
-
-authentication-mechanism = &(
-  hkdf-of-scrypt-of-psk: 1
-)
-
-authentication-response-result = &(
-  ok: 0
-  unknown-error: 1
-  mechanism-unknown: 2
-  salt-too-small: 3
-  cost-too-low: 4
-  cost-too-high: 5
-  secret-unknown: 6
-  calculation-took-too-long: 7
-)
-
-authentication-result-result = &(
-  authenticated: 0
-  unknown-error: 1
-  proof-invalid: 2
-)
-
-; type key 14
-presentation-url-availability-request = {
-  request
-  1: [1* text] ; urls
-  2: microseconds ; watch-duration
-  3: int ; watch-id
-}
-
-; type key 15
-presentation-url-availability-response = {
-  response
-  1: [1* url-availability] ; url-availabilities
-}
-
-; type key 103
-presentation-url-availability-event = {
-  1: int ; watch-id
-  2: [1* url-availability] ; url-availabilities
-}
-
-
-; idea: use HTTP response codes?
-url-availability = &(
-  available: 0
-  unavailable: 1
-  invalid: 10
-)
-
-; type key 104
-presentation-start-request = {
-  request
-  1: text ; presentation-id
-  2: text ; url
-  3: [* http-header] ; headers
-}
-
-http-header = [
-  key: text
-  value: text
-]
-
-; type key 105
-presentation-start-response = {
-  response
-  1: &result ; result
-  2: uint ; connection-id
-}
-
-; type key 106
-presentation-termination-request = {
-  request
-  1: text ; presentation-id
-  2: &(
-    controller-called-terminate: 10
-    user-terminated-via-controller: 11
-    unknown: 255
-  ) ; reason
-}
-
-; type key 107
-presentation-termination-response = {
-  response
-  1: result ; result
-}
-
-; type key 108
-presentation-termination-event = {
-  1: text ; presentation-id
-  2: &(
-    receiver-called-terminate: 1
-    user-terminated-via-receiver: 2
-    controller-called-terminate: 10
-    user-terminated-via-controller: 11
-    receiver-replaced-presentation: 20
-    receiver-idle-too-long: 30
-    receiver-attempted-to-navigate: 31
-    receiver-powering-down: 100
-    receiver-crashed: 101
-    unknown: 255
-  ) ; reason
-}
-
-; type key 109
-presentation-connection-open-request = {
-  request
-  1: text ; presentation-id
-  2: text ; url
-}
-
-; type key 110
-presentation-connection-open-response = {
-  response
-  1: &result ; result
-  2: uint; connection-id
-}
-
-; type key 111
-presentation-connection-close-request = {
-  request
-  1: uint ; connection-id
-}
-
-; type key 112
-presentation-connection-close-response = {
-  response
-  1: &result ; result
-}
-
-; type key 113
-presentation-connection-close-event = {
-  1: uint; connection-id
-  2: &(
-    close-method-called: 1
-    connection-object-discarded: 10
-    unrecoverable-error-while-sending-or-receiving-message: 100
-  ) ; reason
-  ? 3: text ; error-message
-}
-
-
-; type key 16
-presentation-connection-message = {
-  1: uint ; connection-id
-  2: bytes / text ; message
-}
-
-result = (
-  success: 1
-  invalid-url: 10
-  invalid-presentation-id: 11
-  timeout: 100
-  transient-error: 101
-  permanent-error: 102
-  terminating: 103
-  unknown-error: 199
-)
-
-; type key 17
-remote-playback-availability-request = {
-  request
-  1: [* text] ; urls
-  2: microseconds ; watch-duration
-  3: int ; watch-id
-}
-
-; type key 18
-remote-playback-availability-response = {
-  response
-  url-availabilities: [* url-availability]
-}
-
-; type key 114
-remote-playback-availability-event = {
-  1: int ; watch-id
-  2: [* url-availability] ; url-availabilities
-}
-
-; type key 115
-remote-playback-start-request = {
-  request
-  1: remote-playback-id ; remote-playback-id
-  2: [* text] ; urls
-  ? 3: [* text] ; text-track-urls
-  ? 4: [* http-header] ; headers
-  ? 5: remote-playback-controls ; controls
-}
-
-; type key 116
-remote-playback-start-response = {
-  response
-  1: &result ; result
-  ? 2: remote-playback-state ; state
-}
-
-; type key 117
-remote-playback-termination-request = {
-  request
-  1: remote-playback-id ; remote-playback-id
-  2: &(
-    user-terminated-via-controller: 11
-    unknown: 255
-  ) ; reason
-}
-
-; type key 118
-remote-playback-termination-response = {
-  response
-  1: &result ; result
-}
-
-; type key 119
-remote-playback-termination-event = {
- 1: remote-playback-id ; remote-playback-id
- 2: &(
-    receiver-called-terminate: 1
-    user-terminated-via-receiver: 2
-    receiver-idle-too-long: 30
-    receiver-powering-down: 100
-    receiver-crashed: 101
-    unknown: 255
-  ) ; reason
-}
-
-; type key 19
-remote-playback-modify-request = {
-  request
-  1: remote-playback-id ; remote-playback-id
-  2: remote-playback-controls ; controls
-)
-
-; type key 20
-remote-playback-modify-response = {
-  response
-  1: &result ; result
-  ? 2: remote-playback-state ; state
-}
-
-; type key 21
-remote-playback-state-event = {
-  1: remote-playback-id ; remote-playback-id
-  2: remote-playback-state ; state
-}
-
-remote-playback-id = uint 
-
-remote-playback-controls = {
-  ? 1: url ; source
-  ? 2: &(none, metadata, auto) ; preload
-  ? 3: bool ; loop
-  ? 4: bool ; paused
-  ? 5: bool ; muted
-  ? 6: float ; volume 
-  ? 7: media-time ; seek
-  ? 8: media-time ; fast-seek
-  ? 9: float ; playback-rate 
-  ? 10: url ; poster
-  ? 11: [* text] ; enabled-audio-track-ids
-  ? 12: text ; selected-video-track-id
-  ? 13: [* added-text-track] ; added-text-tracks
-  ? 14: [* changed-text-track] ; changed-text-tracks
-}
-
-remote-playback-state = {
-  ? 1: &(rate: bool, preload: bool, poster: bool, added-text-track: bool, added-cues: bool) ; supports
-
-  ? 2: url ; source
-  ? 3: &(
-    empty: 0
-    idle: 1
-    loading: 2
-    no-source: 3
-  ) ; loading
-  ? 4: &(
-    nothing: 0
-    metadata: 1
-    current: 2
-    future: 3
-    enough: 4
-  ) ; loaded
-  ? 5: media-error : error
-
-  ? 6: media-time / unknown; epoch
-  ? 7: media-time / unknown / forever ; duration
-  ? 8: [* media-time-range] ; buffered-time-ranges
-  ? 9: [* media-time-range] ; seekable-time-ranges
-  ? 10: [* media-time-range] ; played-time-ranges
-
-  ? 11: media-time ; position
-  ? 12: float : playbackRate
-  ? 13: bool ; paused
-  ? 14: bool ; seeking
-  ? 15: bool ; stalled
-  ? 16: bool ; ended
-
-  ? 17: float ; volume
-  ? 18: bool ; muted
-
-  ? 19: video-resolution / unknown ; resolution
-
-  ? 20: [* audio-track-state] audio-tracks
-  ? 21: [* video-track-state] video-tracks
-  ? 22: [* text-track-state] text-tracks
-}
-
-added-text-track = {
-  1: &(
-    subtitles
-    captions
-    descriptions
-    chapters
-    metadata
-  ) ; kind
-  ? 2: text ; label
-  ? 3: text ; language
-}
-
-changed-text-track = {
-  1: text ; id
-  2: mode ; mode
-  ? 3: [* text-track-cue] ; added-cues
-  ? 4: [* text] ; removed-cue-ids
-}
-
-text-track-mode = &(
-  disabled
-  showing
-  hidden
-)
-
-text-track-cue = {
-  1: text ; id
-  2: media-time-range ; range
-  3: text ; text
-}
-
-media-time-range = [
-  start: media-time, 
-  end: media-time
-]
-
-media-time = [
-  value: uint
-  scale: uint
-]
-
-unknown = 0 
-forever = 1
-
-media-error = [
-  code: &(
-    user-aborted: 1
-    network-error: 2
-    decode-error: 3
-    source-not-supported: 4
-    unknown-error: 5
-  )
-  message: text
-]
-
-track-state = (
-  1: text ; id
-  2: text ; label
-  3: text ; language
-)
-
-audio-track-state = {
-  track-state
-  4: bool ; enabled
-}
-
-video-track-state = {
-  track-state
-  5 : bool ; selected
-}
-
-text-track-state = {
-  track-state
-  6 : mode ; text-track-mode
-}
-
-; type key 22
-audio-frame = [
-  encoding-id: uint
-  start-time: uint
-  payload: bytes
-  ? optional: {
-    ? 0: uint ; duration
-    ? 1: media-time ; sync-time
-  }
-]
-
-; type key 23
-video-frame = {
-  0: uint ; encoding-id
-  1: uint ; sequence-number
-  ? 2: [* int] ; depends-on
-  3: uint ; start-time
-  ? 4: uint ; duration 
-  5: bytes ; payload
-  ? 6: uint ; rotation
-  ? 7: media-time ; sync-time
-}
-
-; type key 24
-data-frame = {
-  0: uint; encoding-id
-  ? 1: uint ; sequence-number
-  ? 2: uint ; start-time
-  ? 3: uint ; duration
-  4: any; payload
-  ? 5: media-time ; sync-time
-}
-
-; type key 120
-video-frame-request = {
- 1: uint; encoding-id
- 2: uint; sequence-number: 
- ? 3: uint; highest-decoded-frame-sequence-number
-}
-
-
+<pre class=include>
+path: messages_appendix.html
+</pre>
+
+<pre class=include>
+path: code-style.html
 </pre>
