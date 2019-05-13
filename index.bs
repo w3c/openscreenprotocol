@@ -112,6 +112,12 @@ presentations and remote playbacks. Similarly, we use the term "controller"
 (referred to as the "user agent" in the [[REMOTE-PLAYBACK|Remote Playback API]])
 to refer to the agent that starts, terminates, and controls the remote playback.
 
+For media streaming, we refer to the agent sending media as the media
+*sender* and the agent receiving the media as the media *receiver*.
+Note that this is a media *receiver* may or may not be a *receiver* or
+*controller* as defined by the Presentation API or Remote Playback
+API.
+
 For additional terms and idioms specific to the [[PRESENTATION-API|Presentation
 API]] or [[REMOTE-PLAYBACK|Remote Playback API]], please consult the respective
 specifications.
@@ -1218,9 +1224,8 @@ user agent may send the remote-playback-termination-request message.
 Streaming Protocol {#streaming-protocol}
 ========================================
 
-The section defines the use of the Open Screen Protocol for streaming
-media from one agent to another. We refer to the agent sending media
-as the *sender* and the agent receiving the media as the *receiver*.
+This section defines the use of the Open Screen Protocol for streaming
+media from a media sender to a media receiver.
 
 Capabilities {#streaming-capabilities}
 --------------------------------------------
