@@ -80,6 +80,18 @@ auth-status-result = &(
   proof-invalid: 5
 )
 
+; type key 1004
+auth-capabilities = {
+  0: uint ; psk-ease-of-input
+  1: [* psk-input-method] ; psk-input-methods
+}
+
+psk-input-method = &(
+  numeric: 0
+  alphanumeric: 1
+  qr-code: 2
+)
+
 ; type key 14
 presentation-url-availability-request = {
   request

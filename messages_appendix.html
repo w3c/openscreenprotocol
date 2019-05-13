@@ -80,6 +80,18 @@
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
 <span class="p">)</span>
 
+<span class="c1">; type key 1004</span>
+<span class="nx">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
+<span class="p">}</span>
+
+<span class="nx">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">alphanumeric</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">)</span>
+
 <span class="c1">; type key 14</span>
 <span class="nx">presentation-url-availability-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>

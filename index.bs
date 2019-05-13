@@ -401,6 +401,25 @@ Issue(139): Clarify scoping/uniqueness of request IDs.
 Authentication {#authentication}
 ================================
 
+Each supported authentication method is implemeted via authentication messages
+specific to that method.  Authentication method is explicitly specified by
+the message itself.  Authentication status message is common for all authentication
+methods.  Any new authentication method added must define new authentication messages.
+Default authentication method is a challenge-response authentication with
+auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.
+
+Prior to authentication, agents exchange auth-capabilities messages specifying
+pre-shared key ease of input for the user and supported PSK input methods.
+The agent with the lowest PSK ease of input presents PSK to the user when the agent
+either sends or receives an authentication request.  In case both agents have the same
+PSK ease of input value, the receiver presents PSK to the user.  The same pre-shared key
+is used by both agents to issue an authentication request.
+
+PSK ease of input is an integer in [0, 100] range, where 0 means it is not possible for
+the user to input PSK on this device and 100 means that it's easy for the user to
+input PSK on the device. Supported PSK input methods are numeric, alphanumeric and
+scanning a QR-code.
+
 In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
 authentication-response message to be sent back from the responder.  To
@@ -408,13 +427,6 @@ mutually authenticate, this mechanism is used twice, once by each side acting as
 the challenger.  This mechanism assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 keyboard or TV remote control.
-
-Each supported authentication method is implemeted via authentication messages
-specific to that method. Authentication method is explicitly specified by
-the message itself. Authentication status message is common for all authentication
-methods. Any new authentication method added must define new authentication messages.
-Default authentication method is a challenge-response authentication with
-auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.
 
 For all messages and objects defined in this section, see Appendix A for the full
 CDDL definitions.
@@ -497,7 +509,6 @@ unauthenticated otherwise.
 Note: the values of 32 above (for salt length, keyLength) are based on the
 output size of sha-256.  If a different hash mechanism is used in the future,
 these values should be updated as well.
-
 
 Control Protocols {#control-protocols}
 ============================
