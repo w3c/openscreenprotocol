@@ -66,11 +66,6 @@ auth-response-hkdf-scrypt-psk-result = &(
   cost-too-high: 6
 )
 
-certificate-fingerprint-pair = [
-  challenger-fingerprint: bytes
-  responder-fingerprint: bytes
-]
-
 ; type key 1003
 auth-status = {
   1 : auth-status-result ; result
