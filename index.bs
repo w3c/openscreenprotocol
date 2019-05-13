@@ -409,6 +409,13 @@ the challenger.  This mechanism assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 keyboard or TV remote control.
 
+Each supported authentication method is implemeted via authentication messages
+specific to that method. Authentication method is explicitly specified by
+the message itself. Authentication status message is common for all authentication
+methods. Any new authentication method added must define new authentication messages.
+Default authentication method is a challenge-response authentication with
+auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.
+
 For all messages and objects defined in this section, see Appendix A for the full
 CDDL definitions.
 
@@ -465,16 +472,15 @@ For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
 
 8. Let salt be the salt from the authentication-request message.
 
-9. Let info be a CBOR-serialized certificate-fingerprint-pair object (CDDL
-     defined in Appendix A) with the following values:
+9. Let info be a 64 byte array containing certificate fingerprint pair with the following values:
 
--   challenger-fingerprint: The result of running sha-256 on the
-    Distinguished Encoding Rules (DER) form (see
+-   Bytes 0-31 of the array are challenger fingerprint: The result of running
+    sha-256 on the Distinguished Encoding Rules (DER) form (see
     https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
     the challenger in the QUIC crypto handshake during connection establishment.
 
--   responder-fingerprint: The result of running sha-256 on the
-    Distinguished Encoding Rules (DER) form (see
+-   Bytes 32-63 of the array are responder fingerprint: The result of running
+    sha-256 on the Distinguished Encoding Rules (DER) form (see
     https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
     the responder in the QUIC crypto handshake during connection establishment.
 
