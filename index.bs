@@ -54,6 +54,7 @@ urlPrefix: https://w3c.github.io/presentation-api/; type: interface; spec: PRESE
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
     text: availability sources set
     text: compatible remote playback device
+    text: initiate remote playback
     text: media element state
     text: media resources
     text: remote playback devices
@@ -198,11 +199,11 @@ Remote Playback API Requirements {#requirements-remote-playback}
     least one compatible [=remote playback device=] available for a given
     {{HTMLMediaElement}}, both instantaneously and continuously.
 
-2.  A controlling user agent must be able to start sending the content of an
-    {{HTMLMediaElement}} to a compatible remote playback device.
+2.  A controlling user agent must be able to to [=initiate remote playback=] of
+    an {{HTMLMediaElement}} to a compatible remote playback device.
 
-3.  The controlling user agent should be able to send both media data
-    and text tracks from an {{HTMLMediaElement}} to the remote playback device.
+3.  The controlling user agent must be able send media data and text tracks
+    from an {{HTMLMediaElement}} to a compatible remote playback device.
 
 4.  During remote playback, the controlling user agent and the remote playback
     device must be able to synchronize the [=media element state=] of the
