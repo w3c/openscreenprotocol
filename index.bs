@@ -402,23 +402,23 @@ Authentication {#authentication}
 ================================
 
 Each supported authentication method is implemeted via authentication messages
-specific to that method.  Authentication method is explicitly specified by
-the message itself.  Authentication status message is common for all authentication
+specific to that method.  The authentication method is explicitly specified by
+the message itself.  The authentication status message is common for all authentication
 methods.  Any new authentication method added must define new authentication messages.
-Default authentication method is a challenge-response authentication with
+The default authentication method is a challenge-response authentication with
 auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.
 
 Prior to authentication, agents exchange auth-capabilities messages specifying
-pre-shared key ease of input for the user and supported PSK input methods.
-The agent with the lowest PSK ease of input presents PSK to the user when the agent
+pre-shared key (PSK) ease of input for the user and supported PSK input methods.
+The agent with the lowest PSK ease of input presents a PSK to the user when the agent
 either sends or receives an authentication request.  In case both agents have the same
-PSK ease of input value, the receiver presents PSK to the user.  The same pre-shared key
+PSK ease of input value, the receiver presents the PSK to the user.  The same pre-shared key
 is used by both agents to issue an authentication request.
 
-PSK ease of input is an integer in [0, 100] range, where 0 means it is not possible for
-the user to input PSK on this device and 100 means that it's easy for the user to
-input PSK on the device.  Supported PSK input methods are numeric, alphanumeric and
-scanning a QR-code.
+PSK ease of input is an integer in [0, 100] inclusive range, where 0 means
+it is not possible for the user to input PSK on this device and 100 means
+that it's easy for the user to input PSK on the device.  Supported PSK input methods
+are numeric, alphanumeric and scanning a QR-code.
 
 In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
@@ -484,14 +484,14 @@ For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
 
 8. Let salt be the salt from the authentication-request message.
 
-9. Let info be a 64 byte array containing certificate fingerprint pair with the following values:
+9. Let info be a 64-byte array containing certificate fingerprint pair with the following values:
 
--   Bytes 0-31 of the array are challenger fingerprint: The result of running
+-   Bytes 0-31 of the array are the challenger's fingerprint: The result of running
     sha-256 on the Distinguished Encoding Rules (DER) form (see
     https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
     the challenger in the QUIC crypto handshake during connection establishment.
 
--   Bytes 32-63 of the array are responder fingerprint: The result of running
+-   Bytes 32-63 of the array are the responder's fingerprint: The result of running
     sha-256 on the Distinguished Encoding Rules (DER) form (see
     https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
     the responder in the QUIC crypto handshake during connection establishment.
