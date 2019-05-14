@@ -201,19 +201,19 @@ Remote Playback API Requirements {#requirements-remote-playback}
 2.  A controlling user agent must be able to start sending the content of an
     {{HTMLMediaElement}} to a compatible remote playback device.
 
-3.  The {{HTMLMediaElement}} content to be sent should include both media data
-    and text tracks.
+3.  The controlling user agent should be able to send both media data
+    and text tracks from an {{HTMLMediaElement}} to the remote playback device.
 
 4.  During remote playback, the controlling user agent and the remote playback
     device must be able to synchronize the [=media element state=] of the
     {{HTMLMediaElement}}.
 
-5.  During remote playback, either the controlling user agent or the remote
-    playback device must be able to disconnect from the other party.
+5.  During remote playback, either the controlling user agent or the
+    remote playback device must be able to disconnect from the other party.
 
-6.  The controlling user agent should be able to pass locale and text direction
-    information to the remote playback device to assist in rendering text during
-    remote playback.
+6.  The controlling user agent should be able to pass locale and text
+    direction information to the remote playback device to assist in rendering
+    text during remote playback.
 
 
 Non-Functional Requirements {#requirements-non-functional}
