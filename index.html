@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 10ff3eb4050069e20bb9b943c8b76fe5bfe3a48f" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="b63571235699ff7dc9ba528aa91e37831a348b82" name="document-revision">
+  <meta content="534c64f4d52929ce2c877a5de7a8ab9cfbb24636" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1673,10 +1673,11 @@ when a presentation is terminated.</p>
      <p>A <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agent</a> must be able to find out whether there is at
 least one compatible <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback device</a> available for a given <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement">HTMLMediaElement</a></code>, both instantaneously and continuously.</p>
     <li data-md>
-     <p>A controlling user agent must be able to start sending the content of an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement①">HTMLMediaElement</a></code> to a compatible remote playback device.</p>
+     <p>A controlling user agent must be able to to <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback" id="ref-for-dfn-initiate-remote-playback">initiate remote playback</a> of
+an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement①">HTMLMediaElement</a></code> to a compatible remote playback device.</p>
     <li data-md>
-     <p>The controlling user agent should be able to send both media data
-and text tracks from an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement②">HTMLMediaElement</a></code> to the remote playback device.</p>
+     <p>The controlling user agent must be able send media data and text tracks
+from an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement②">HTMLMediaElement</a></code> to a compatible remote playback device.</p>
     <li data-md>
      <p>During remote playback, the controlling user agent and the remote playback
 device must be able to synchronize the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-element-state" id="ref-for-dfn-media-element-state">media element state</a> of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement③">HTMLMediaElement</a></code>.</p>
@@ -3530,6 +3531,12 @@ because smaller type keys encode on the wire smaller.</p>
     <li><a href="#ref-for-dfn-compatible-remote-playback-device">7.3. Remote Playback Protocol</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-initiate-remote-playback">
+   <a href="https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback">https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-initiate-remote-playback">2.2. Remote Playback API Requirements</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-media-element-state">
    <a href="https://w3c.github.io/remote-playback/#dfn-media-element-state">https://w3c.github.io/remote-playback/#dfn-media-element-state</a><b>Referenced in:</b>
    <ul>
@@ -3585,6 +3592,7 @@ because smaller type keys encode on the wire smaller.</p>
     <ul>
      <li><span class="dfn-paneled" id="term-for-dfn-availability-sources-set" style="color:initial">availability sources set</span>
      <li><span class="dfn-paneled" id="term-for-dfn-compatible-remote-playback-device" style="color:initial">compatible remote playback device</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-initiate-remote-playback" style="color:initial">initiate remote playback</span>
      <li><span class="dfn-paneled" id="term-for-dfn-media-element-state" style="color:initial">media element state</span>
      <li><span class="dfn-paneled" id="term-for-dfn-media-resources" style="color:initial">media resources</span>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-devices" style="color:initial">remote playback devices</span>
