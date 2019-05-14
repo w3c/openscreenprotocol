@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version ee4d7efc3ed6155392d49e10a542e2351fd5792d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="57393f0d1f4a9c3a5afb24ada83e276748e481d4" name="document-revision">
+  <meta content="d9b360ffa3c2624da5de3a7e2f216a85846535fa" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1869,6 +1869,22 @@ integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.</p>
    <p class="issue" id="issue-7a02cf11"><a class="self-link" href="#issue-7a02cf11"></a> Clarify scoping/uniqueness of request IDs. <a href="https://github.com/webscreens/openscreenprotocol/issues/139">&lt;https://github.com/webscreens/openscreenprotocol/issues/139></a></p>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
+   <p>Each supported authentication method is implemeted via authentication messages
+specific to that method.  The authentication method is explicitly specified by
+the message itself.  The authentication status message is common for all authentication
+methods.  Any new authentication method added must define new authentication messages.
+The default authentication method is a challenge-response authentication with
+auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.</p>
+   <p>Prior to authentication, agents exchange auth-capabilities messages specifying
+pre-shared key (PSK) ease of input for the user and supported PSK input methods.
+The agent with the lowest PSK ease of input presents a PSK to the user when the agent
+either sends or receives an authentication request.  In case both agents have the same
+PSK ease of input value, the receiver presents the PSK to the user.  The same pre-shared key
+is used by both agents to issue an authentication request.</p>
+   <p>PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
+it is not possible for the user to input PSK on this device and 100 means
+that it’s easy for the user to input PSK on the device.  Supported PSK input methods
+are numeric, alphanumeric and scanning a QR-code.</p>
    <p>In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
 authentication-response message to be sent back from the responder.  To
@@ -1932,18 +1948,17 @@ seconds (to avoid the possibility of brute-force attacks.)</p>
     <li data-md>
      <p>Let salt be the salt from the authentication-request message.</p>
     <li data-md>
-     <p>Let info be a CBOR-serialized certificate-fingerprint-pair object (CDDL
- defined in Appendix A) with the following values:</p>
+     <p>Let info be a 64-byte array containing certificate fingerprint pair with the following values:</p>
    </ol>
    <ul>
     <li data-md>
-     <p>challenger-fingerprint: The result of running sha-256 on the
-Distinguished Encoding Rules (DER) form (see
+     <p>Bytes 0-31 of the array are the challenger’s fingerprint: The result of running
+sha-256 on the Distinguished Encoding Rules (DER) form (see
 https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
 the challenger in the QUIC crypto handshake during connection establishment.</p>
     <li data-md>
-     <p>responder-fingerprint: The result of running sha-256 on the
-Distinguished Encoding Rules (DER) form (see
+     <p>Bytes 32-63 of the array are the responder’s fingerprint: The result of running
+sha-256 on the Distinguished Encoding Rules (DER) form (see
 https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
 the responder in the QUIC crypto handshake during connection establishment.</p>
    </ul>
@@ -3164,11 +3179,6 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">6</span>
 <span class="p">)</span></p>
 
-<p><span class="nx">certificate-fingerprint-pair </span><span class="p">=</span> <span class="p">[</span>
-  <span class="nx">challenger-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
-<span class="nx">  responder-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
-<span class="p">]</span></p>
-
 <p><span class="c1">; type key 1003</span>
 <span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
@@ -3181,6 +3191,18 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
   <span class="nx">validation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
+<span class="p">)</span></p>
+
+<p><span class="c1">; type key 1004</span>
+<span class="nx">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">alphanumeric</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">2</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 14</span>
