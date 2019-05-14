@@ -415,7 +415,7 @@ either sends or receives an authentication request.  In case both agents have th
 PSK ease of input value, the receiver presents the PSK to the user.  The same pre-shared key
 is used by both agents to issue an authentication request.
 
-PSK ease of input is an integer in [0, 100] inclusive range, where 0 means
+PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
 it is not possible for the user to input PSK on this device and 100 means
 that it's easy for the user to input PSK on the device.  Supported PSK input methods
 are numeric, alphanumeric and scanning a QR-code.
