@@ -86,6 +86,30 @@ auth-capabilities = {
   1: [* psk-input-method] ; psk-input-methods
 }
 
+; type key 1005
+auth-jpake-round1 = {
+  0: bytes ; g1
+  1: zero-knowledge-proof ; x1-zkp
+  2: bytes ; g2
+  3: zero-knowledge-proof ; x2-zkp
+}
+
+zero-knowledge-proof = {
+  0: bytes ; gv
+  1: bytes ; r
+}
+
+; type key 1006
+auth-jpake-round2 = {
+  0: bytes ; a
+  1: zero-knowledge-proof; x2s-zkp
+}
+
+; type key 1007
+auth-jpake-confirmation = {
+  0: bytes ; hashed-key
+}
+
 psk-input-method = &(
   numeric: 0
   alphanumeric: 1

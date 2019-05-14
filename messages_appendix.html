@@ -86,6 +86,30 @@
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
 <span class="p">}</span>
 
+<span class="c1">; type key 1005</span>
+<span class="nx">auth-jpake-round1 </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; g1</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">zero-knowledge-proof </span><span class="c1">; x1-zkp</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; g2</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">zero-knowledge-proof </span><span class="c1">; x2-zkp</span>
+<span class="p">}</span>
+
+<span class="nx">zero-knowledge-proof </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; gv</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; r</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 1006</span>
+<span class="nx">auth-jpake-round2 </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; a</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">zero-knowledge-proof</span><span class="c1">; x2s-zkp</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 1007</span>
+<span class="nx">auth-jpake-confirmation </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; hashed-key</span>
+<span class="p">}</span>
+
 <span class="nx">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">alphanumeric</span><span class="p">:</span> <span class="mi">1</span>

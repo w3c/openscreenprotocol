@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version ee4d7efc3ed6155392d49e10a542e2351fd5792d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="d9b360ffa3c2624da5de3a7e2f216a85846535fa" name="document-revision">
+  <meta content="0580952ce4d0b4aeeb7282a8673e76d267c314e9" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -3197,6 +3197,30 @@ because smaller type keys encode on the wire smaller.</p>
 <span class="nx">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 1005</span>
+<span class="nx">auth-jpake-round1 </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; g1</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">zero-knowledge-proof </span><span class="c1">; x1-zkp</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; g2</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">zero-knowledge-proof </span><span class="c1">; x2-zkp</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">zero-knowledge-proof </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; gv</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; r</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 1006</span>
+<span class="nx">auth-jpake-round2 </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; a</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">zero-knowledge-proof</span><span class="c1">; x2s-zkp</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 1007</span>
+<span class="nx">auth-jpake-confirmation </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; hashed-key</span>
 <span class="p">}</span></p>
 
 <p><span class="nx">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
