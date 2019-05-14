@@ -66,11 +66,6 @@
   <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">6</span>
 <span class="p">)</span>
 
-<span class="nx">certificate-fingerprint-pair </span><span class="p">=</span> <span class="p">[</span>
-  <span class="nx">challenger-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
-<span class="nx">  responder-fingerprint</span><span class="p">:</span> <span class="nx">bytes</span>
-<span class="p">]</span>
-
 <span class="c1">; type key 1003</span>
 <span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
@@ -83,6 +78,18 @@
   <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
   <span class="nx">validation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
+<span class="p">)</span>
+
+<span class="c1">; type key 1004</span>
+<span class="nx">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
+<span class="p">}</span>
+
+<span class="nx">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">alphanumeric</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">2</span>
 <span class="p">)</span>
 
 <span class="c1">; type key 14</span>
@@ -440,5 +447,102 @@
 <span class="nx">text-track-state </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">track-state</span>
 <span class="nx">  6 </span><span class="p">:</span> <span class="nx">mode </span><span class="c1">; text-track-mode</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 22</span>
+<span class="nx">audio-frame </span><span class="p">=</span> <span class="p">[</span>
+  <span class="nx">encoding-id</span><span class="p">:</span> <span class="kt">uint</span>
+  <span class="nx">start-time</span><span class="p">:</span> <span class="kt">uint</span>
+  <span class="nx">payload</span><span class="p">:</span> <span class="nx">bytes</span>
+<span class="nx">  </span><span class="p">?</span> <span class="nx">optional</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">?</span> <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
+    <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="c1">; type key 23</span>
+<span class="nx">video-frame </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="kt">int</span><span class="p">]</span> <span class="c1">; depends-on</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
+  <span class="mi">5</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; payload</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; rotation</span>
+  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 24</span>
+<span class="nx">data-frame </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="nx">any</span><span class="c1">; payload</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 120</span>
+<span class="nx">video-frame-request </span><span class="p">=</span> <span class="p">{</span>
+ <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
+ <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; sequence-number</span>
+ <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; highest-decoded-frame-sequence-number</span>
+<span class="p">}</span>
+
+<span class="nx">ratio </span><span class="p">=</span> <span class="p">[</span>
+  <span class="nx">antecedent</span><span class="p">:</span> <span class="kt">uint</span>
+  <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
+<span class="p">]</span>
+
+<span class="nx">streaming-capabilities-request </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">request</span>
+<span class="p">}</span>
+
+<span class="nx">streaming-capabilities-response </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">response</span>
+<span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
+<span class="p">}</span>
+
+<span class="nx">streaming-capabilities </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-audio-capability</span><span class="p">]</span> <span class="c1">; receive-audio</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-video-capability</span><span class="p">]</span> <span class="c1">; receive-video</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-data-capability</span><span class="p">]</span> <span class="c1">; receive-data</span>
+<span class="p">}</span>
+
+<span class="nx">format </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; name</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">format-parameter</span><span class="p">]</span> <span class="c1">; parameters</span>
+<span class="p">}</span>
+
+<span class="nx">format-parameter </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; key</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; value</span>
+<span class="p">}</span>
+
+<span class="nx">receive-audio-capability </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-audio-channels</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
+<span class="p">}</span>
+
+<span class="nx">video-resolution </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; height</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; width</span>
+<span class="p">}</span>
+
+<span class="nx">receive-video-capability </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="c1">; max-resolution</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-frames-per-second</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-pixels-per-second</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">ratio </span><span class="c1">; aspect-ratio</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">string</span><span class="p">]</span> <span class="c1">; color-profiles</span>
+  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-resolution</span><span class="p">]</span> <span class="c1">; native-resolutions</span>
+  <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
+<span class="p">}</span>
+
+<span class="nx">receive-data-capability </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; format</span>
 <span class="p">}</span>
 </pre></div>

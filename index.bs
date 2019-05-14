@@ -127,6 +127,12 @@ presentations and remote playbacks. Similarly, we use the term "controller"
 (referred to as the "user agent" in the [[REMOTE-PLAYBACK|Remote Playback API]])
 to refer to the agent that starts, terminates, and controls the remote playback.
 
+For media streaming, we refer to the agent sending media as the media
+*sender* and the agent receiving the media as the media *receiver*.
+Note that a media *receiver* may or may not be a *receiver* or
+*controller* as defined by the Presentation API or Remote Playback
+API.  Also note that an agent may be both a *sender* and *receiver*.
+
 For additional terms and idioms specific to the [[PRESENTATION-API|Presentation
 API]] or [[REMOTE-PLAYBACK|Remote Playback API]], please consult the respective
 specifications.
@@ -423,6 +429,25 @@ Issue(139): Clarify scoping/uniqueness of request IDs.
 Authentication {#authentication}
 ================================
 
+Each supported authentication method is implemeted via authentication messages
+specific to that method.  The authentication method is explicitly specified by
+the message itself.  The authentication status message is common for all authentication
+methods.  Any new authentication method added must define new authentication messages.
+The default authentication method is a challenge-response authentication with
+auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.
+
+Prior to authentication, agents exchange auth-capabilities messages specifying
+pre-shared key (PSK) ease of input for the user and supported PSK input methods.
+The agent with the lowest PSK ease of input presents a PSK to the user when the agent
+either sends or receives an authentication request.  In case both agents have the same
+PSK ease of input value, the receiver presents the PSK to the user.  The same pre-shared key
+is used by both agents to issue an authentication request.
+
+PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
+it is not possible for the user to input PSK on this device and 100 means
+that it's easy for the user to input PSK on the device.  Supported PSK input methods
+are numeric, alphanumeric and scanning a QR-code.
+
 In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
 authentication-response message to be sent back from the responder.  To
@@ -487,16 +512,15 @@ For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
 
 8. Let salt be the salt from the authentication-request message.
 
-9. Let info be a CBOR-serialized certificate-fingerprint-pair object (CDDL
-     defined in Appendix A) with the following values:
+9. Let info be a 64-byte array containing certificate fingerprint pair with the following values:
 
--   challenger-fingerprint: The result of running sha-256 on the
-    Distinguished Encoding Rules (DER) form (see
+-   Bytes 0-31 of the array are the challenger's fingerprint: The result of running
+    sha-256 on the Distinguished Encoding Rules (DER) form (see
     https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
     the challenger in the QUIC crypto handshake during connection establishment.
 
--   responder-fingerprint: The result of running sha-256 on the
-    Distinguished Encoding Rules (DER) form (see
+-   Bytes 32-63 of the array are the responder's fingerprint: The result of running
+    sha-256 on the Distinguished Encoding Rules (DER) form (see
     https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
     the responder in the QUIC crypto handshake during connection establishment.
 
@@ -513,7 +537,6 @@ unauthenticated otherwise.
 Note: the values of 32 above (for salt length, keyLength) are based on the
 output size of sha-256.  If a different hash mechanism is used in the future,
 these values should be updated as well.
-
 
 Control Protocols {#control-protocols}
 ============================
@@ -1249,6 +1272,293 @@ When
 6.2.7]] says "Request disconnection of remote from the device. The
 implementation of this step is specific to the user agent.", the controlling
 user agent may send the remote-playback-termination-request message.
+
+
+Streaming Protocol {#streaming-protocol}
+========================================
+
+This section defines the use of the Open Screen Protocol for streaming
+media from a media sender to a media receiver.
+
+Capabilities {#streaming-capabilities}
+--------------------------------------------
+If the advertiser is already authenticated, the requester has the ability to
+request additional information by sending an streaming-capabilities-request
+message, and receive back a streaming-capabilities-response message with the
+following properties:
+
+: receive-audio (required)
+:: A list of capabilities for receiving audio. For an explanation of fields, see below.
+
+: receive-video (required)
+:: A list of capabilities for receiving video. For an explanation of fields, see below.
+
+: receive-data (required)
+:: A list of arbitrary data formats the device supports
+    for receiving data.
+
+The format type is used as the basis for audio, video, and data capabilities.
+Formats are composed of the following properties:
+
+<!-- TODO, specify where names are defined. -->
+
+: name (required)
+:: The name of the format. Expected values include "vp8", "h264", "opus."
+
+<!-- TODO, specify where codec-specific parameters are defined. -->
+
+: parameters (required)
+:: A list of (key, value) parameters that can be used to pass fields that are
+    properties of a specific format, and not shared by other formats of that type
+    (audio, video, etc.).
+
+Audio capabilities are composed of the above format type, with the following
+additional fields:
+
+: max-audio-channels (optional)
+:: An optional field indicating the maximum amount of audio
+    channels the receiver is capable of supporting. Default value is "2," meaning
+    a stereo speaker channel setup.
+
+: min-bit-rate (optional)
+:: An optional field indicating the minimum audio bit rate that
+    the receiver can handle, in kilobits per second. Default is no minimum.
+
+Video capabilities are similarly composed of the above format type, with the
+following additional fields:
+
+: max-resolution (optional)
+:: An optional field indicating the maximum video-resolution (width, height)
+    that the receiver is capable of processing. Default is no maximum.
+
+: max-frames-per-second (optional)
+:: An optional field indicating the maximum frames-per-second the receiver is
+    capable of processing. Default is no maximum.
+
+: max-pixels-per-second (optional)
+:: An optional field indicating the maximum pixels-per-second the receiver is
+    capable of processing, in pixels per second. Default is no maximum.
+
+: min-video-bit-rate (optional)
+:: An optional field indicating the minimum video bit rate the device is
+    capable of processing, in kilobits per second. Default is no minimum.
+
+: aspect-ratio (optional)
+:: An optional field indicating what its ideal aspect ratio is, e.g. a 16:10
+    display could return this value as 1.6 to indicate its preferred content
+    scaling. Default is none.
+
+: color-profiles (optional)
+:: An optional field indicating what color profiles are understood.
+    The listener may use these values to determine how to encode
+    video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.
+
+: native-resolutions (optional)
+:: An optional field indicating what video-resolutions the receiver supports and
+    considers to be "native," meaning that scaling is not required.
+    The default value is none.
+
+: supports-scaling (optional)
+:: A optional boolean field indicating whether the receiver can scale content
+    provided in a video-resolution not listed in the native-resolutions list
+    (if provided) or of a different aspect ratio. The default value is true.
+
+<!-- TODO: Add max-bit-rate, color profiles, HDR -->
+
+Sessions {#streaming-sessions}
+------------------------------------
+
+TODO
+
+
+Audio {#streaming-audio}
+------------------------------
+
+Senders may send audio to receivers by sending audio-frame messages (see
+[[#appendix-a]]) with the following keys and values.  An audio frame message
+contains a set of encoded audio samples for a range of time. A series of
+encoded audio frames that share a codec, codec parameters and a timeline form an
+audio encoding.
+
+Unlike most Open Screen Protocol messages, this one uses an
+array-based grouping rather than a struct-based grouping.  For
+required fields, this allows for a more efficient use of bytes on the
+wire, which is important for streaming audio because the payload is
+typically so small and every byte of overhead is relatively large.  In
+order to accomodate optional values in the array-based grouping, one
+optional field in the array is used to hold all optional values in a
+struct-based grouping.  This will hopefully provide a good balance of
+efficiency and flexibility.
+
+To further increase efficiency, each audio-frame message must be sent
+in a separate QUIC stream without the length prefix.  It must only use
+the type key prefix and then the encoded CBOR message immediately
+after.  Separate QUIC streams also allow audio frames to be received
+out of order.
+
+: encoding-id
+:: Identifies the media encoding to which this audio frame belongs.  This can be
+    used to reference properties of the encoding (from the
+    audio-encoding-offer message) such as the codec, codec properties,
+    time scale (aka clock rate or sample rate), and default duration.
+    Referencing properties of the encoding through the encoding id
+    helps to avoid sending duplicate information in every frame.
+
+: start-time
+:: Identifies the beginning of the time range of the audio frame.  The time
+    scale is inferred from the properties of the encoding (from the
+    audio-encoding-offer).  The end time can be inferred from the
+    start time and duration.
+
+: duration
+:: If present, the duration of the audio frame.  The time
+    scale is inferred from the properties of the encoding.  Likewise, if not
+    present, the duration is inferred from the properties of the encoding.
+
+: sync-time
+:: If present, a time used to synchronize the start time of this audio frame (and
+    thus, this encoding) with that of other media encodings on
+    different timelines.  It may be wall clock time, but it need not
+    be; it can be any clock chosen by the sender.
+
+: payload
+:: The data.  The type of data is inferred from the properties of the encoding.
+
+Video {#streaming-video}
+--------------------------------------------
+
+Senders may send video to receivers by sending video-frame messages (see
+[[#appendix-a]]) with the following keys and values.  A video frame message
+contains an encoded video frame (an encoded image) at a specific point in time
+or over a specfic time range (if the duration is known).  A series of encoded
+video frames that share a codec, codec parameters and a timeline form a video
+encoding.
+
+To allow for video frames to be sent out of order, they may be sent in
+separate QUIC streams.  If the encoding is a long chain of encoded video frames
+dependent on the previous one back until an independent frame, it may make sense
+to send them in a single QUIC stream starting at the indepdendent frame and
+ending at the last dependent frame.
+
+: encoding-id
+:: Identifies the media encoding to which this video frame belongs.  This can be
+    used to reference properties of the encoding such as the codec, codec
+    properties, time scale, and default rotation.  Referencing properties of the
+    encoding through the encoding id helps to avoid sending duplicate
+    information in every frame.
+
+: sequence-number
+:: Identifies the frame and its order in the encoding.
+    Within an encoding, larger sequence numbers mean later start times.
+    Within an encoding, gaps in sequence numbers mean frames are missing.
+
+: depends-on
+:: If present, the sequence numbers of the frames this frame depends on.
+    If a sequence numbers is negative, it is treated as a relative sequence numbers
+    and the sequence numbers is calculated by adding it to the sequence number of this frame.
+    If empty, this is an independent frame (a key frame).
+    If not present, the default value is [-1].
+
+: start-time
+:: Identifies the beginning of the time range of the video frame.  The time
+    scale is inferred from the properties of the encoding (from the
+    video-encoding-offer).  The end time can be inferred from the
+    start time and duration.
+
+: duration
+:: If present, the duration of the video frame.  The time
+    scale is inferred from the properties of the encoding.  If not
+    present, that means duration is unknown.
+
+: sync-time
+:: If present, a time used to synchronize the start time of this frame (and
+    thus, this encoding) with that of other media encodings on different
+    timelines.
+
+: rotation
+:: If present, indicates how the frame should be rotated after decoding but
+    before rendering.  Rotation is clockwise in increments of 90 degrees.
+    The default is 0 (no rotation).
+
+: payload
+:: The encoded video frame (encoded image).  The codec and codec parameters are
+    inferred from the properties of the encoding.
+
+
+Data {#media-streaming-data}
+------------------------------------
+
+Senders may send timed data to receivers by sending data-frame messages (see
+[[#appendix-a]]) with the following keys and values.  A data frame message
+contains an arbitrary payload that can be synchronized with and video, such as
+text track data.  A series of data frames that share a data type and timeline
+form a data encoding.
+
+To allow for data frames to be sent out of order, they may be sent in separate
+QUIC streams, but more than one data frame may be sent in one QUIC stream if
+that makes sense for a specific type of data.
+
+Text track data uses a payload type of text, a default duration of unknown, and
+a timescale of 1000000 (microseconds).
+
+: encoding-id
+:: Identifies the media encoding to which this data frame belongs.  This can be
+    used to reference properties of the encoding such as the type of data and
+    time scale.  Referencing properties of the encoding through the encoding id
+    helps to avoid sending duplicate information in every frame.
+
+: sequence-number
+:: Identifies the frame and its order in the encoding.
+    Within an encoding, larger sequence numbers mean later start times.
+    Within an encoding, gaps in sequence numbers mean frames are missing.
+
+: start-time
+:: Identifies the beginning of the time range of the data frame.  The time
+    scale is inferred from the properties of the encoding.  The end time can be
+    inferred from the start time and duration.
+
+: duration
+:: If present, the duration of the data frame.  The time
+    scale is inferred from the properties of the encoding.  Likewise, if not
+    present, the duration is inferred from the properties of the encoding.
+
+: sync-time
+:: If present, a time used to synchronize the start time of this audio frame (and
+    thus, this encoding) with that of other media encodings on different
+    timelines.
+
+: payload
+:: The data.  The format and parameters are inferred from
+    the properties of the encoding.
+
+Feedback {#streaming-feedback}
+------------------------------------
+
+The receiver can send feedback to the sender, such as key frame requests.
+
+A video key frame is requested by sending a video-request message with
+the following keys and values.
+
+To allow for video frames to be sent out of order, they may be sent in separate
+QUIC streams.
+
+: encoding-id
+:: The encoding for which the sender should send a new key frame.
+
+: sequence-number
+:: Gives the order in the encoding.
+    Within an encoding, larger sequence numbers invalidate previous ones.
+    A sender may ignore smaller sequence numbers after a larger one has been processed.
+    This it to prevent out-of-order requests from generating more key frames than necessary.
+
+: highest-decoded-frame-sequence-number: uint
+:: If set, the sender may generate a video frame dependent on the last decoded
+    frame.  If not set, the sender must generate an indepdendent (key) frame.
+
+Stats {#streaming-stats}
+------------------------------
+
+TODO
 
 
 Security and Privacy {#security-privacy}

@@ -66,11 +66,6 @@ auth-response-hkdf-scrypt-psk-result = &(
   cost-too-high: 6
 )
 
-certificate-fingerprint-pair = [
-  challenger-fingerprint: bytes
-  responder-fingerprint: bytes
-]
-
 ; type key 1003
 auth-status = {
   1 : auth-status-result ; result
@@ -83,6 +78,18 @@ auth-status-result = &(
   secret-unknown: 3
   validation-took-too-long : 4
   proof-invalid: 5
+)
+
+; type key 1004
+auth-capabilities = {
+  0: uint ; psk-ease-of-input
+  1: [* psk-input-method] ; psk-input-methods
+}
+
+psk-input-method = &(
+  numeric: 0
+  alphanumeric: 1
+  qr-code: 2
 )
 
 ; type key 14
@@ -441,3 +448,101 @@ text-track-state = {
   track-state
   6 : mode ; text-track-mode
 }
+
+; type key 22
+audio-frame = [
+  encoding-id: uint
+  start-time: uint
+  payload: bytes
+  ? optional: {
+    ? 0: uint ; duration
+    ? 1: media-time ; sync-time
+  }
+]
+
+; type key 23
+video-frame = {
+  0: uint ; encoding-id
+  1: uint ; sequence-number
+  ? 2: [* int] ; depends-on
+  3: uint ; start-time
+  ? 4: uint ; duration
+  5: bytes ; payload
+  ? 6: uint ; rotation
+  ? 7: media-time ; sync-time
+}
+
+; type key 24
+data-frame = {
+  0: uint; encoding-id
+  ? 1: uint ; sequence-number
+  ? 2: uint ; start-time
+  ? 3: uint ; duration
+  4: any; payload
+  ? 5: media-time ; sync-time
+}
+
+; type key 120
+video-frame-request = {
+ 1: uint; encoding-id
+ 2: uint; sequence-number
+ ? 3: uint; highest-decoded-frame-sequence-number
+}
+
+ratio = [
+  antecedent: uint
+  consequent: uint
+]
+
+streaming-capabilities-request = {
+  request
+}
+
+streaming-capabilities-response = {
+  response
+  1: streaming-capabilities ; streaming-capabilities
+}
+
+streaming-capabilities = {
+  0: [* receive-audio-capability] ; receive-audio
+  1: [* receive-video-capability] ; receive-video
+  2: [* receive-data-capability] ; receive-data
+}
+
+format = {
+  0: string ; name
+  1: [* format-parameter] ; parameters
+}
+
+format-parameter = {
+  0: string ; key
+  1: bytes ; value
+}
+
+receive-audio-capability = {
+  0: format ; codec
+  ? 1: uint ; max-audio-channels
+  ? 2: uint ; min-bit-rate
+}
+
+video-resolution = {
+  0: uint ; height
+  1: uint ; width
+}
+
+receive-video-capability = {
+  0: format ; codec
+  ? 1: video-resolution ; max-resolution
+  ? 2: uint ; max-frames-per-second
+  ? 3: uint ; max-pixels-per-second
+  ? 4: uint ; min-bit-rate
+  ? 5: ratio ; aspect-ratio
+  ? 6: [* string] ; color-profiles
+  ? 7: [* video-resolution] ; native-resolutions
+  ? 8: bool ; supports-scaling
+}
+
+receive-data-capability = {
+  0: format ; format
+}
+
