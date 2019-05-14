@@ -124,9 +124,9 @@ to refer to the agent that starts, terminates, and controls the remote playback.
 
 For media streaming, we refer to the agent sending media as the media
 *sender* and the agent receiving the media as the media *receiver*.
-Note that this is a media *receiver* may or may not be a *receiver* or
+Note that a media *receiver* may or may not be a *receiver* or
 *controller* as defined by the Presentation API or Remote Playback
-API.
+API.  Also note that an agent may be both a *sender* and *receiver*.
 
 For additional terms and idioms specific to the [[PRESENTATION-API|Presentation
 API]] or [[REMOTE-PLAYBACK|Remote Playback API]], please consult the respective
@@ -1254,8 +1254,12 @@ following properties:
 The format type is used as the basis for audio, video, and data capabilities.
 Formats are composed of the following properties:
 
+<!-- TODO, specify where names are defined. -->
+
 : name (required)
 :: The name of the format. Expected values include "vp8", "h264", "opus."
+
+<!-- TODO, specify where codec-specific parameters are defined. -->
 
 : parameters (required)
 :: A list of (key, value) parameters that can be used to pass fields that are
@@ -1313,99 +1317,12 @@ following additional fields:
     provided in a video-resolution not listed in the native-resolutions list
     (if provided) or of a different aspect ratio. The default value is true.
 
+<!-- TODO: Add max-bit-rate, color profiles, HDR -->
+
 Sessions {#streaming-sessions}
 ------------------------------------
 
-<!--
-  TODO: Put in something like this
-
-streaming-session-start-request = {
-  request
-  streaming-session-id: uint
-  stream-offers: [* media-stream-offer]
-  stats-interval: microseconds ; please send receiver stats this often
-}
-
-streaming-session-start-response = {
-  response
-  stream-requests: [* media-stream-request]
-  stats-interval: microseconds ; please send sender stats this often
-}
-
-streaming-session-modify-request = {
-  request
-  streaming-session-id: uint
-  stream-requests: [* media-stream-request]
-}
-
-streaming-session-modify-response = {
-  response
-}
-
-streaming-session-stop-request = {
-  request
-  streaming-session-id: uint
-}
-
-streaming-session-stop-response = {
-  response
-}
-
-streaming-session-stop-event= {
-  streaming-session-id: uint
-}
-
-media-stream-offer = {
-  media-stream-id: uint
-  ? friendly-name: text
-  ? audio: [* audio-encoding-offer]
-  ? video: [* video-encoding-offer]
-  ? data: [* data-encoding-offer]
-}
-
-media-stream-request = {
-  media-stream-id: uint
-  ? audio: [* audio-encoding-request]
-  ? video: video-encoding-request
-  ? data: [* data-encoding-request]
-}
-
-audio-encoding-offer = {
-  encoding-id: uint
-  codec: format
-  time-scale: uint ; AKA sample rate or clock rate
-  default-duration: uint ; AKA ptime
-}
-
-video-encoding-offer = {
-  encoding-id: uint
-  codec: format
-  time-scale: uint ; AKA clock rate; probably 90khz
-  ? default-duration: uint ; AKA ptime
-  ? default-rotation: video-rotation
-}
-
-data-encoding-offer = {
-  encoding-id: uint
-  format: format ; "text-cue" defined to mean text cues
-  time-scale: uint ; AKA clock rate; probably 1mhz
-}
-
-audio-stream-request = {
-  encoding-id: uint
-}
-
-video-stream-request = {
-  encoding-id: uint
-  ? target-resolution: video-resolution ; displayed resolution; try to be slightly above; default is unknown
-  ? max-framerate: float
-}
-
-data-stream-request = {
-  encoding-id: uint
-}
-
--->
+TODO
 
 
 Audio {#streaming-audio}
@@ -1435,15 +1352,17 @@ out of order.
 
 : encoding-id
 :: Identifies the media encoding to which this audio frame belongs.  This can be
-    used to reference properties of the encoding such as the codec, codec
-    properties, time scale (aka clock rate or sample rate), and default
-    duration.  Referencing properties of the encoding through the encoding id
+    used to reference properties of the encoding (from the
+    audio-encoding-offer message) such as the codec, codec properties,
+    time scale (aka clock rate or sample rate), and default duration.
+    Referencing properties of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : start-time
 :: Identifies the beginning of the time range of the audio frame.  The time
-    scale is inferred from the properties of the encoding.  The end time can be
-    inferred from the start time and duration.
+    scale is inferred from the properties of the encoding (from the
+    audio-encoding-offer).  The end time can be inferred from the
+    start time and duration.
 
 : duration
 :: If present, the duration of the audio frame.  The time
@@ -1452,8 +1371,9 @@ out of order.
 
 : sync-time
 :: If present, a time used to synchronize the start time of this audio frame (and
-    thus, this encoding) with that of other media encodings on different
-    timelines.
+    thus, this encoding) with that of other media encodings on
+    different timelines.  It may be wall clock time, but it need not
+    be; it can be any clock chosen by the sender.
 
 : payload
 :: The data.  The type of data is inferred from the properties of the encoding.
@@ -1495,8 +1415,9 @@ ending at the last dependent frame.
 
 : start-time
 :: Identifies the beginning of the time range of the video frame.  The time
-    scale is inferred from the properties of the encoding.  The end time can be
-    inferred from the start time and duration.
+    scale is inferred from the properties of the encoding (from the
+    video-encoding-offer).  The end time can be inferred from the
+    start time and duration.
 
 : duration
 :: If present, the duration of the video frame.  The time
@@ -1561,7 +1482,7 @@ a timescale of 1000000 (microseconds).
     timelines.
 
 : payload
-:: The encoded audio samples.  The codec and codec parameters are inferred from
+:: The data.  The format and parameters are inferred from
     the properties of the encoding.
 
 Feedback {#streaming-feedback}
@@ -1591,45 +1512,8 @@ QUIC streams.
 Stats {#streaming-stats}
 ------------------------------
 
-<!--
+TODO
 
- TODO: Something like this:
-
-streaming-session-sender-stats-event = {
-  timestamp: microseconds
-  ? audio: [* {
-    encoding-id: uint
-    ? sent: microseconds
-    ? encode-delay: microseconds
-    ; ...
-  }]
-  ? video: [* {
-    encoding-id: uint
-    ? encode-delay: microseconds
-    ? sent-frames: uint
-    ? dropped-frames: uint
-  }]
-}
-
-streaming-session-receiver-stats-event = {
-  timestamp: microseconds
-  ? audio: [* {
-    encoding-id: uint
-    ? received: microseconds
-    ? lost: microseconds
-    ? buffer-delay: microseconds
-    ? decode-delay: microseconds
-  }]
-  ? video: [* {
-    encoding-id: uint
-    ? received: microseconds
-    ? lost: microseconds
-    ? buffer-delay: microseconds
-    ? decode-delay: microseconds
-  }]
-}
-
--->
 
 Security and Privacy {#security-privacy}
 ====================
