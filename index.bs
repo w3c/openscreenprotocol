@@ -524,10 +524,11 @@ using auth-jpake-round1, auth-jpake-round2 and auth-jpake-confirmation messages,
 (see [[#appendix-a]] for message CDDL definitions).
 J-PAKE provides mutual authentication with  key confirmation step and is fully
 symmetric. Open Screen Protocol uses:
-1. SHA-256 as hash function
-2. HMAC with SHA-256 as MAC function
-3. HKDF with SHA-256 as KDF function
-4. The second key confirmation method described in https://tools.ietf.org/html/rfc8236#section-5
+1. J-PAKE over elliptic curve described in https://tools.ietf.org/html/rfc8236#section-3
+2. SHA-256 as hash function
+3. HMAC with SHA-256 as MAC function
+4. HKDF with SHA-256 as KDF function
+5. The second key confirmation method described in https://tools.ietf.org/html/rfc8236#section-5
 
 An agent may send auth-jpake-round1 message at any time to start
 the authentication process with the other agent.
