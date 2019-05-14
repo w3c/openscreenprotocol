@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 10ff3eb4050069e20bb9b943c8b76fe5bfe3a48f" name="generator">
+  <meta content="Bikeshed version ee4d7efc3ed6155392d49e10a542e2351fd5792d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="93fe1e6b5ad8afba95b674b385c80aa2996252a5" name="document-revision">
+  <meta content="57393f0d1f4a9c3a5afb24ada83e276748e481d4" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-10">10 May 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-13">13 May 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1523,36 +1523,47 @@ pre .property::before, pre .property::after {
       <li><a href="#remote-playback-api"><span class="secno">7.5</span> <span class="content">Remote Playback API</span></a>
      </ol>
     <li>
-     <a href="#security-privacy"><span class="secno">8</span> <span class="content">Security and Privacy</span></a>
+     <a href="#streaming-protocol"><span class="secno">8</span> <span class="content">Streaming Protocol</span></a>
+     <ol class="toc">
+      <li><a href="#streaming-capabilities"><span class="secno">8.1</span> <span class="content">Capabilities</span></a>
+      <li><a href="#streaming-sessions"><span class="secno">8.2</span> <span class="content">Sessions</span></a>
+      <li><a href="#streaming-audio"><span class="secno">8.3</span> <span class="content">Audio</span></a>
+      <li><a href="#streaming-video"><span class="secno">8.4</span> <span class="content">Video</span></a>
+      <li><a href="#media-streaming-data"><span class="secno">8.5</span> <span class="content">Data</span></a>
+      <li><a href="#streaming-feedback"><span class="secno">8.6</span> <span class="content">Feedback</span></a>
+      <li><a href="#streaming-stats"><span class="secno">8.7</span> <span class="content">Stats</span></a>
+     </ol>
+    <li>
+     <a href="#security-privacy"><span class="secno">9</span> <span class="content">Security and Privacy</span></a>
      <ol class="toc">
       <li>
-       <a href="#threat-models"><span class="secno">8.1</span> <span class="content">Threat Models</span></a>
+       <a href="#threat-models"><span class="secno">9.1</span> <span class="content">Threat Models</span></a>
        <ol class="toc">
-        <li><a href="#passive-network-attackers"><span class="secno">8.1.1</span> <span class="content">Passive Network Attackers</span></a>
-        <li><a href="#active-network-attackers"><span class="secno">8.1.2</span> <span class="content">Active Network Attackers</span></a>
-        <li><a href="#denial-of-service"><span class="secno">8.1.3</span> <span class="content">Denial of Service</span></a>
-        <li><a href="#same-origin-policy-violations"><span class="secno">8.1.4</span> <span class="content">Same-Origin Policy Violations</span></a>
+        <li><a href="#passive-network-attackers"><span class="secno">9.1.1</span> <span class="content">Passive Network Attackers</span></a>
+        <li><a href="#active-network-attackers"><span class="secno">9.1.2</span> <span class="content">Active Network Attackers</span></a>
+        <li><a href="#denial-of-service"><span class="secno">9.1.3</span> <span class="content">Denial of Service</span></a>
+        <li><a href="#same-origin-policy-violations"><span class="secno">9.1.4</span> <span class="content">Same-Origin Policy Violations</span></a>
        </ol>
       <li>
-       <a href="#security-privacy-questions"><span class="secno">8.2</span> <span class="content">Open Screen Protocol Security and Privacy Considerations</span></a>
+       <a href="#security-privacy-questions"><span class="secno">9.2</span> <span class="content">Open Screen Protocol Security and Privacy Considerations</span></a>
        <ol class="toc">
-        <li><a href="#personally-identifiable-information"><span class="secno">8.2.1</span> <span class="content">Personally Identifiable Information &amp; High-Value Data</span></a>
-        <li><a href="#cross-origin-state"><span class="secno">8.2.2</span> <span class="content">Cross Origin State Considerations</span></a>
-        <li><a href="#origin-access-devices"><span class="secno">8.2.3</span> <span class="content">Origin Access to Other Devices</span></a>
-        <li><a href="#incognito-mode"><span class="secno">8.2.4</span> <span class="content">Incognito Mode</span></a>
-        <li><a href="#persistent-state"><span class="secno">8.2.5</span> <span class="content">Persistent State</span></a>
-        <li><a href="#other-considerations"><span class="secno">8.2.6</span> <span class="content">Other Considerations</span></a>
+        <li><a href="#personally-identifiable-information"><span class="secno">9.2.1</span> <span class="content">Personally Identifiable Information &amp; High-Value Data</span></a>
+        <li><a href="#cross-origin-state"><span class="secno">9.2.2</span> <span class="content">Cross Origin State Considerations</span></a>
+        <li><a href="#origin-access-devices"><span class="secno">9.2.3</span> <span class="content">Origin Access to Other Devices</span></a>
+        <li><a href="#incognito-mode"><span class="secno">9.2.4</span> <span class="content">Incognito Mode</span></a>
+        <li><a href="#persistent-state"><span class="secno">9.2.5</span> <span class="content">Persistent State</span></a>
+        <li><a href="#other-considerations"><span class="secno">9.2.6</span> <span class="content">Other Considerations</span></a>
        </ol>
-      <li><a href="#presentation-api-considerations"><span class="secno">8.3</span> <span class="content">Presentation API Considerations</span></a>
-      <li><a href="#remote-playback-considerations"><span class="secno">8.4</span> <span class="content">Remote Playback API Considerations</span></a>
+      <li><a href="#presentation-api-considerations"><span class="secno">9.3</span> <span class="content">Presentation API Considerations</span></a>
+      <li><a href="#remote-playback-considerations"><span class="secno">9.4</span> <span class="content">Remote Playback API Considerations</span></a>
       <li>
-       <a href="#security-mitigations"><span class="secno">8.5</span> <span class="content">Mitigation Strategies</span></a>
+       <a href="#security-mitigations"><span class="secno">9.5</span> <span class="content">Mitigation Strategies</span></a>
        <ol class="toc">
-        <li><a href="#local-passive-mitigations"><span class="secno">8.5.1</span> <span class="content">Local passive network attackers</span></a>
-        <li><a href="#local-active-mitigations"><span class="secno">8.5.2</span> <span class="content">Local active network attackers</span></a>
-        <li><a href="#remote-active-mitigations"><span class="secno">8.5.3</span> <span class="content">Remote active network attackers</span></a>
-        <li><a href="#denial-of-service-mitigations"><span class="secno">8.5.4</span> <span class="content">Denial of service</span></a>
-        <li><a href="#malicious-input-mitigations"><span class="secno">8.5.5</span> <span class="content">Malicious input</span></a>
+        <li><a href="#local-passive-mitigations"><span class="secno">9.5.1</span> <span class="content">Local passive network attackers</span></a>
+        <li><a href="#local-active-mitigations"><span class="secno">9.5.2</span> <span class="content">Local active network attackers</span></a>
+        <li><a href="#remote-active-mitigations"><span class="secno">9.5.3</span> <span class="content">Remote active network attackers</span></a>
+        <li><a href="#denial-of-service-mitigations"><span class="secno">9.5.4</span> <span class="content">Denial of service</span></a>
+        <li><a href="#malicious-input-mitigations"><span class="secno">9.5.5</span> <span class="content">Malicious input</span></a>
        </ol>
      </ol>
     <li><a href="#appendix-a"><span class="secno"></span> <span class="content">Appendix A: Messages</span></a>
@@ -1617,6 +1628,9 @@ agent responsible for rendering media of a remote playback is called the <a data
 presentations and remote playbacks. Similarly, we use the term "controller"
 (referred to as the "user agent" in the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>)
 to refer to the agent that starts, terminates, and controls the remote playback.</p>
+   <p>For media streaming, we refer to the agent sending media as the media <em>sender</em> and the agent receiving the media as the media <em>receiver</em>.
+Note that a media <em>receiver</em> may or may not be a <em>receiver</em> or <em>controller</em> as defined by the Presentation API or Remote Playback
+API.  Also note that an agent may be both a <em>sender</em> and <em>receiver</em>.</p>
    <p>For additional terms and idioms specific to the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation
 API</a> or <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>, please consult the respective
 specifications.</p>
@@ -2564,7 +2578,265 @@ change the local media element based on changes to the remote playback state.</p
 6.2.7</a> says "Request disconnection of remote from the device. The
 implementation of this step is specific to the user agent.", the controlling
 user agent may send the remote-playback-termination-request message.</p>
-   <h2 class="heading settled" data-level="8" id="security-privacy"><span class="secno">8. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
+   <h2 class="heading settled" data-level="8" id="streaming-protocol"><span class="secno">8. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
+   <p>This section defines the use of the Open Screen Protocol for streaming
+media from a media sender to a media receiver.</p>
+   <h3 class="heading settled" data-level="8.1" id="streaming-capabilities"><span class="secno">8.1. </span><span class="content">Capabilities</span><a class="self-link" href="#streaming-capabilities"></a></h3>
+    If the advertiser is already authenticated, the requester has the ability to
+request additional information by sending an streaming-capabilities-request
+message, and receive back a streaming-capabilities-response message with the
+following properties: 
+   <dl>
+    <dt data-md>receive-audio (required)
+    <dd data-md>
+     <p>A list of capabilities for receiving audio. For an explanation of fields, see below.</p>
+    <dt data-md>receive-video (required)
+    <dd data-md>
+     <p>A list of capabilities for receiving video. For an explanation of fields, see below.</p>
+    <dt data-md>receive-data (required)
+    <dd data-md>
+     <p>A list of arbitrary data formats the device supports
+for receiving data.</p>
+   </dl>
+   <p>The format type is used as the basis for audio, video, and data capabilities.
+Formats are composed of the following properties:</p>
+   <dl>
+    <dt data-md>name (required)
+    <dd data-md>
+     <p>The name of the format. Expected values include "vp8", "h264", "opus."</p>
+    <dt data-md>parameters (required)
+    <dd data-md>
+     <p>A list of (key, value) parameters that can be used to pass fields that are
+properties of a specific format, and not shared by other formats of that type
+(audio, video, etc.).</p>
+   </dl>
+   <p>Audio capabilities are composed of the above format type, with the following
+additional fields:</p>
+   <dl>
+    <dt data-md>max-audio-channels (optional)
+    <dd data-md>
+     <p>An optional field indicating the maximum amount of audio
+channels the receiver is capable of supporting. Default value is "2," meaning
+a stereo speaker channel setup.</p>
+    <dt data-md>min-bit-rate (optional)
+    <dd data-md>
+     <p>An optional field indicating the minimum audio bit rate that
+the receiver can handle, in kilobits per second. Default is no minimum.</p>
+   </dl>
+   <p>Video capabilities are similarly composed of the above format type, with the
+following additional fields:</p>
+   <dl>
+    <dt data-md>max-resolution (optional)
+    <dd data-md>
+     <p>An optional field indicating the maximum video-resolution (width, height)
+that the receiver is capable of processing. Default is no maximum.</p>
+    <dt data-md>max-frames-per-second (optional)
+    <dd data-md>
+     <p>An optional field indicating the maximum frames-per-second the receiver is
+capable of processing. Default is no maximum.</p>
+    <dt data-md>max-pixels-per-second (optional)
+    <dd data-md>
+     <p>An optional field indicating the maximum pixels-per-second the receiver is
+capable of processing, in pixels per second. Default is no maximum.</p>
+    <dt data-md>min-video-bit-rate (optional)
+    <dd data-md>
+     <p>An optional field indicating the minimum video bit rate the device is
+capable of processing, in kilobits per second. Default is no minimum.</p>
+    <dt data-md>aspect-ratio (optional)
+    <dd data-md>
+     <p>An optional field indicating what its ideal aspect ratio is, e.g. a 16:10
+display could return this value as 1.6 to indicate its preferred content
+scaling. Default is none.</p>
+    <dt data-md>color-profiles (optional)
+    <dd data-md>
+     <p>An optional field indicating what color profiles are understood.
+The listener may use these values to determine how to encode
+video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.</p>
+    <dt data-md>native-resolutions (optional)
+    <dd data-md>
+     <p>An optional field indicating what video-resolutions the receiver supports and
+considers to be "native," meaning that scaling is not required.
+The default value is none.</p>
+    <dt data-md>supports-scaling (optional)
+    <dd data-md>
+     <p>A optional boolean field indicating whether the receiver can scale content
+provided in a video-resolution not listed in the native-resolutions list
+(if provided) or of a different aspect ratio. The default value is true.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.2" id="streaming-sessions"><span class="secno">8.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
+   <p>TODO</p>
+   <h3 class="heading settled" data-level="8.3" id="streaming-audio"><span class="secno">8.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
+   <p>Senders may send audio to receivers by sending audio-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  An audio frame message
+contains a set of encoded audio samples for a range of time. A series of
+encoded audio frames that share a codec, codec parameters and a timeline form an
+audio encoding.</p>
+   <p>Unlike most Open Screen Protocol messages, this one uses an
+array-based grouping rather than a struct-based grouping.  For
+required fields, this allows for a more efficient use of bytes on the
+wire, which is important for streaming audio because the payload is
+typically so small and every byte of overhead is relatively large.  In
+order to accomodate optional values in the array-based grouping, one
+optional field in the array is used to hold all optional values in a
+struct-based grouping.  This will hopefully provide a good balance of
+efficiency and flexibility.</p>
+   <p>To further increase efficiency, each audio-frame message must be sent
+in a separate QUIC stream without the length prefix.  It must only use
+the type key prefix and then the encoded CBOR message immediately
+after.  Separate QUIC streams also allow audio frames to be received
+out of order.</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the media encoding to which this audio frame belongs.  This can be
+used to reference properties of the encoding (from the
+audio-encoding-offer message) such as the codec, codec properties,
+time scale (aka clock rate or sample rate), and default duration.
+Referencing properties of the encoding through the encoding id
+helps to avoid sending duplicate information in every frame.</p>
+    <dt data-md>start-time
+    <dd data-md>
+     <p>Identifies the beginning of the time range of the audio frame.  The time
+scale is inferred from the properties of the encoding (from the
+audio-encoding-offer).  The end time can be inferred from the
+start time and duration.</p>
+    <dt data-md>duration
+    <dd data-md>
+     <p>If present, the duration of the audio frame.  The time
+scale is inferred from the properties of the encoding.  Likewise, if not
+present, the duration is inferred from the properties of the encoding.</p>
+    <dt data-md>sync-time
+    <dd data-md>
+     <p>If present, a time used to synchronize the start time of this audio frame (and
+thus, this encoding) with that of other media encodings on
+different timelines.  It may be wall clock time, but it need not
+be; it can be any clock chosen by the sender.</p>
+    <dt data-md>payload
+    <dd data-md>
+     <p>The data.  The type of data is inferred from the properties of the encoding.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.4" id="streaming-video"><span class="secno">8.4. </span><span class="content">Video</span><a class="self-link" href="#streaming-video"></a></h3>
+   <p>Senders may send video to receivers by sending video-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video frame message
+contains an encoded video frame (an encoded image) at a specific point in time
+or over a specfic time range (if the duration is known).  A series of encoded
+video frames that share a codec, codec parameters and a timeline form a video
+encoding.</p>
+   <p>To allow for video frames to be sent out of order, they may be sent in
+separate QUIC streams.  If the encoding is a long chain of encoded video frames
+dependent on the previous one back until an independent frame, it may make sense
+to send them in a single QUIC stream starting at the indepdendent frame and
+ending at the last dependent frame.</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the media encoding to which this video frame belongs.  This can be
+used to reference properties of the encoding such as the codec, codec
+properties, time scale, and default rotation.  Referencing properties of the
+encoding through the encoding id helps to avoid sending duplicate
+information in every frame.</p>
+    <dt data-md>sequence-number
+    <dd data-md>
+     <p>Identifies the frame and its order in the encoding.
+Within an encoding, larger sequence numbers mean later start times.
+Within an encoding, gaps in sequence numbers mean frames are missing.</p>
+    <dt data-md>depends-on
+    <dd data-md>
+     <p>If present, the sequence numbers of the frames this frame depends on.
+If a sequence numbers is negative, it is treated as a relative sequence numbers
+and the sequence numbers is calculated by adding it to the sequence number of this frame.
+If empty, this is an independent frame (a key frame).
+If not present, the default value is [-1].</p>
+    <dt data-md>start-time
+    <dd data-md>
+     <p>Identifies the beginning of the time range of the video frame.  The time
+scale is inferred from the properties of the encoding (from the
+video-encoding-offer).  The end time can be inferred from the
+start time and duration.</p>
+    <dt data-md>duration
+    <dd data-md>
+     <p>If present, the duration of the video frame.  The time
+scale is inferred from the properties of the encoding.  If not
+present, that means duration is unknown.</p>
+    <dt data-md>sync-time
+    <dd data-md>
+     <p>If present, a time used to synchronize the start time of this frame (and
+thus, this encoding) with that of other media encodings on different
+timelines.</p>
+    <dt data-md>rotation
+    <dd data-md>
+     <p>If present, indicates how the frame should be rotated after decoding but
+before rendering.  Rotation is clockwise in increments of 90 degrees.
+The default is 0 (no rotation).</p>
+    <dt data-md>payload
+    <dd data-md>
+     <p>The encoded video frame (encoded image).  The codec and codec parameters are
+inferred from the properties of the encoding.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.5" id="media-streaming-data"><span class="secno">8.5. </span><span class="content">Data</span><a class="self-link" href="#media-streaming-data"></a></h3>
+   <p>Senders may send timed data to receivers by sending data-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
+contains an arbitrary payload that can be synchronized with and video, such as
+text track data.  A series of data frames that share a data type and timeline
+form a data encoding.</p>
+   <p>To allow for data frames to be sent out of order, they may be sent in separate
+QUIC streams, but more than one data frame may be sent in one QUIC stream if
+that makes sense for a specific type of data.</p>
+   <p>Text track data uses a payload type of text, a default duration of unknown, and
+a timescale of 1000000 (microseconds).</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the media encoding to which this data frame belongs.  This can be
+used to reference properties of the encoding such as the type of data and
+time scale.  Referencing properties of the encoding through the encoding id
+helps to avoid sending duplicate information in every frame.</p>
+    <dt data-md>sequence-number
+    <dd data-md>
+     <p>Identifies the frame and its order in the encoding.
+Within an encoding, larger sequence numbers mean later start times.
+Within an encoding, gaps in sequence numbers mean frames are missing.</p>
+    <dt data-md>start-time
+    <dd data-md>
+     <p>Identifies the beginning of the time range of the data frame.  The time
+scale is inferred from the properties of the encoding.  The end time can be
+inferred from the start time and duration.</p>
+    <dt data-md>duration
+    <dd data-md>
+     <p>If present, the duration of the data frame.  The time
+scale is inferred from the properties of the encoding.  Likewise, if not
+present, the duration is inferred from the properties of the encoding.</p>
+    <dt data-md>sync-time
+    <dd data-md>
+     <p>If present, a time used to synchronize the start time of this audio frame (and
+thus, this encoding) with that of other media encodings on different
+timelines.</p>
+    <dt data-md>payload
+    <dd data-md>
+     <p>The data.  The format and parameters are inferred from
+the properties of the encoding.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.6" id="streaming-feedback"><span class="secno">8.6. </span><span class="content">Feedback</span><a class="self-link" href="#streaming-feedback"></a></h3>
+   <p>The receiver can send feedback to the sender, such as key frame requests.</p>
+   <p>A video key frame is requested by sending a video-request message with
+the following keys and values.</p>
+   <p>To allow for video frames to be sent out of order, they may be sent in separate
+QUIC streams.</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>The encoding for which the sender should send a new key frame.</p>
+    <dt data-md>sequence-number
+    <dd data-md>
+     <p>Gives the order in the encoding.
+Within an encoding, larger sequence numbers invalidate previous ones.
+A sender may ignore smaller sequence numbers after a larger one has been processed.
+This it to prevent out-of-order requests from generating more key frames than necessary.</p>
+    <dt data-md>highest-decoded-frame-sequence-number: uint
+    <dd data-md>
+     <p>If set, the sender may generate a video frame dependent on the last decoded
+frame.  If not set, the sender must generate an indepdendent (key) frame.</p>
+   </dl>
+   <h3 class="heading settled" data-level="8.7" id="streaming-stats"><span class="secno">8.7. </span><span class="content">Stats</span><a class="self-link" href="#streaming-stats"></a></h3>
+   <p>TODO</p>
+   <h2 class="heading settled" data-level="9" id="security-privacy"><span class="secno">9. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
 considerations should be closely examined.  We first evaluate the protocol
@@ -2573,8 +2845,8 @@ Questionnaire</a>.  We then examine whether the security and privacy guidelines
 recommended by the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> are met.  Finally we discuss recommended
 mitigations that agents can use to meet these security and privacy
 requirements.</p>
-   <h3 class="heading settled" data-level="8.1" id="threat-models"><span class="secno">8.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
-   <h4 class="heading settled" data-level="8.1.1" id="passive-network-attackers"><span class="secno">8.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
+   <h3 class="heading settled" data-level="9.1" id="threat-models"><span class="secno">9.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
+   <h4 class="heading settled" data-level="9.1.1" id="passive-network-attackers"><span class="secno">9.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
    <p>The Open Screen Protocol should assume that all parties that are connected to
 the same LAN, either through a wired connection or through WiFi, are able to
 observe all data flowing between Open Screen Protocol agents.</p>
@@ -2582,7 +2854,7 @@ observe all data flowing between Open Screen Protocol agents.</p>
 messages, such as mDNS records and the QUIC handshakes.</p>
    <p>These parties may attempt to learn cryptographic parameters by observing data
 flows on the QUIC connection, or by observing cryptographic timing.</p>
-   <h4 class="heading settled" data-level="8.1.2" id="active-network-attackers"><span class="secno">8.1.2. </span><span class="content">Active Network Attackers</span><a class="self-link" href="#active-network-attackers"></a></h4>
+   <h4 class="heading settled" data-level="9.1.2" id="active-network-attackers"><span class="secno">9.1.2. </span><span class="content">Active Network Attackers</span><a class="self-link" href="#active-network-attackers"></a></h4>
    <p>Active attackers, such as compromised routers, will be able to manipulate data
 exchanged between agents.  They can inject traffic into existing QUIC
 connections and attempt to initiate new QUIC connections.  These abilities can
@@ -2602,7 +2874,7 @@ expose local network devices (such as Open Screen Protocol agents) to the
 Internet.  This vector of attack has been used by malicious parties to take
 control of printers and smart TVs by connecting to local network services that
 would normally be inaccessible from the Internet.</p>
-   <h4 class="heading settled" data-level="8.1.3" id="denial-of-service"><span class="secno">8.1.3. </span><span class="content">Denial of Service</span><a class="self-link" href="#denial-of-service"></a></h4>
+   <h4 class="heading settled" data-level="9.1.3" id="denial-of-service"><span class="secno">9.1.3. </span><span class="content">Denial of Service</span><a class="self-link" href="#denial-of-service"></a></h4>
    <p>Parties with connected to the LAN may attempt to deny access to Open Screen
 Protocol agents.  For example, an attacker my attempt to open
 a large number of QUIC connections to an agent in an attempt to block
@@ -2610,7 +2882,7 @@ legitimate connections or exhaust the agent’s system resources.  They may
 also multicast spurious DNS-SD records in an attempt to exhaust the cache
 capacity for mDNS listeners, or to get listeners to open a large number of bogus
 QUIC connections.</p>
-   <h4 class="heading settled" data-level="8.1.4" id="same-origin-policy-violations"><span class="secno">8.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
+   <h4 class="heading settled" data-level="9.1.4" id="same-origin-policy-violations"><span class="secno">9.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
    <p>The Presentation API allows cross-origin communication between controlling pages
 and presentations with the consent of each origin (through their use of the
 API).  This is similar to cross-origin communication via <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage" id="ref-for-dom-window-postmessage">postMessage()</a></code> with a <code>targetOrigin</code> of <code>*</code>.  However, the Presentation API does not convey source
@@ -2618,8 +2890,8 @@ origin information with each message.  Therefore, the Open Screen Protocol does
 not convey origin information between its agents.</p>
    <p>The <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id③">presentation ID</a> carries some protection against unrestricted
 cross-origin access; but, rigorous authentication of the parties connected by a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection②">PresentationConnection</a></code> must be done at the application level.</p>
-   <h3 class="heading settled" data-level="8.2" id="security-privacy-questions"><span class="secno">8.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
-   <h4 class="heading settled" data-level="8.2.1" id="personally-identifiable-information"><span class="secno">8.2.1. </span><span class="content">Personally Identifiable Information &amp; High-Value Data</span><a class="self-link" href="#personally-identifiable-information"></a></h4>
+   <h3 class="heading settled" data-level="9.2" id="security-privacy-questions"><span class="secno">9.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
+   <h4 class="heading settled" data-level="9.2.1" id="personally-identifiable-information"><span class="secno">9.2.1. </span><span class="content">Personally Identifiable Information &amp; High-Value Data</span><a class="self-link" href="#personally-identifiable-information"></a></h4>
    <p>The following data exchanged by the protocol can be personally identifiable
 and/or high value data:</p>
    <ol>
@@ -2651,20 +2923,20 @@ considered public and untrusted data:</p>
      <p>Data advertised through mDNS, including the display name prefix, the
 certificate fingerprint, and the metadata version.</p>
    </ol>
-   <h4 class="heading settled" data-level="8.2.2" id="cross-origin-state"><span class="secno">8.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
+   <h4 class="heading settled" data-level="9.2.2" id="cross-origin-state"><span class="secno">9.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
    <p>Access to origin state across browsing sessions is possible through the
 Presentation API by reconnecting to a presentation that was started by a
 previous session. This scenario is addressed in <a href="https://www.w3.org/TR/presentation-api/#cross-origin-access">Presentation API §cross-origin-access</a>.</p>
    <p>Presentation display availability and remote playback device availability are
 states that are available cross-origin depending on the user’s network
 context.  Exposure of this data to the Web is also discussed in <a href="https://www.w3.org/TR/presentation-api/#personally-identifiable-information">Presentation API §personally-identifiable-information</a> and <a href="https://www.w3.org/TR/remote-playback/#personally-identifiable-information">Remote Playback API §personally-identifiable-information</a>.</p>
-   <h4 class="heading settled" data-level="8.2.3" id="origin-access-devices"><span class="secno">8.2.3. </span><span class="content">Origin Access to Other Devices</span><a class="self-link" href="#origin-access-devices"></a></h4>
+   <h4 class="heading settled" data-level="9.2.3" id="origin-access-devices"><span class="secno">9.2.3. </span><span class="content">Origin Access to Other Devices</span><a class="self-link" href="#origin-access-devices"></a></h4>
    <p>By design, the Open Screen Protocol allows access to presentation displays and
 remote playback devices from the Web.  By implementing the protocol, these
 devices are knowingly making themselves available to the Web and should be
 designed accordingly.</p>
    <p>Below, we discuss mitigation steps to prevent malicious use of these devices.</p>
-   <h4 class="heading settled" data-level="8.2.4" id="incognito-mode"><span class="secno">8.2.4. </span><span class="content">Incognito Mode</span><a class="self-link" href="#incognito-mode"></a></h4>
+   <h4 class="heading settled" data-level="9.2.4" id="incognito-mode"><span class="secno">9.2.4. </span><span class="content">Incognito Mode</span><a class="self-link" href="#incognito-mode"></a></h4>
    <p>The Open Screen Protocol does not distinguish between the user agent’s normal
 browsing and incognito modes, and agents that follow the specification
 behave identically regardless of which mode is in use.</p>
@@ -2672,7 +2944,7 @@ behave identically regardless of which mode is in use.</p>
 connections for normal and incognito profiles from the same user agent instance.
 This prevents Open Screen agents from correlating activity among profiles
 belonging to the same user (both normal and incognito).</p>
-   <h4 class="heading settled" data-level="8.2.5" id="persistent-state"><span class="secno">8.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
+   <h4 class="heading settled" data-level="9.2.5" id="persistent-state"><span class="secno">9.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
    <p>An agent is likely to persist the identity of agents that have successfully
 completed <a href="#authentication">§6 Authentication</a>.  This may include the public key fingerprints,
 metadata versions, and metadata for those parties.</p>
@@ -2681,7 +2953,7 @@ UI of the user agent during the display selection or display authentication
 process.  It can be an implementation choice whether the user agent clears or
 retains this data when the user clears browsing data.</p>
    <p class="issue" id="issue-8bf4aa9f"><a class="self-link" href="#issue-8bf4aa9f"></a> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a></p>
-   <h4 class="heading settled" data-level="8.2.6" id="other-considerations"><span class="secno">8.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
+   <h4 class="heading settled" data-level="9.2.6" id="other-considerations"><span class="secno">9.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
    <p>The Open Screen Protocol does not grant to the Web additional access to the
 following:</p>
    <ul>
@@ -2698,7 +2970,7 @@ following:</p>
     <li data-md>
      <p>Security characteristics of the user agent</p>
    </ul>
-   <h3 class="heading settled" data-level="8.3" id="presentation-api-considerations"><span class="secno">8.3. </span><span class="content">Presentation API Considerations</span><a class="self-link" href="#presentation-api-considerations"></a></h3>
+   <h3 class="heading settled" data-level="9.3" id="presentation-api-considerations"><span class="secno">9.3. </span><span class="content">Presentation API Considerations</span><a class="self-link" href="#presentation-api-considerations"></a></h3>
    <p><a href="https://www.w3.org/TR/presentation-api/#security-and-privacy-considerations">Presentation API §security-and-privacy-considerations</a> place these
 requirements on the Open Screen Protocol:</p>
    <ol>
@@ -2725,15 +2997,15 @@ connections.</p>
  the number of active connections.</p>
    </ol>
    <p class="issue" id="issue-edc1d8c1"><a class="self-link" href="#issue-edc1d8c1"></a> Notify endpoints when new connection is created. <a href="https://github.com/webscreens/openscreenprotocol/issues/143">&lt;https://github.com/webscreens/openscreenprotocol/issues/143></a></p>
-   <h3 class="heading settled" data-level="8.4" id="remote-playback-considerations"><span class="secno">8.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
+   <h3 class="heading settled" data-level="9.4" id="remote-playback-considerations"><span class="secno">9.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
    <p>The <a href="https://www.w3.org/TR/remote-playback/#security-and-privacy-considerations">Remote Playback API §security-and-privacy-considerations</a> also state that
 messaging between local and remote playback devices should also be authenticated
 and confidential.</p>
    <p>This consideration is handled by requiring mutual authentication and a
 TLS-secured QUIC connection before any remote playback related messages are
 exchanged.</p>
-   <h3 class="heading settled" data-level="8.5" id="security-mitigations"><span class="secno">8.5. </span><span class="content">Mitigation Strategies</span><a class="self-link" href="#security-mitigations"></a></h3>
-   <h4 class="heading settled" data-level="8.5.1" id="local-passive-mitigations"><span class="secno">8.5.1. </span><span class="content">Local passive network attackers</span><a class="self-link" href="#local-passive-mitigations"></a></h4>
+   <h3 class="heading settled" data-level="9.5" id="security-mitigations"><span class="secno">9.5. </span><span class="content">Mitigation Strategies</span><a class="self-link" href="#security-mitigations"></a></h3>
+   <h4 class="heading settled" data-level="9.5.1" id="local-passive-mitigations"><span class="secno">9.5.1. </span><span class="content">Local passive network attackers</span><a class="self-link" href="#local-passive-mitigations"></a></h4>
    <p>Local passive attackers may attempt to harvest data about user activities and
 device capabilities using the Open Screen Protocol.  The main strategy to address
 this is data minimization, by only exposing opaque public key fingerprints
@@ -2741,7 +3013,7 @@ before user-mediated authentication takes place.</p>
    <p>Passive attackers may also attempt timing attacks to learn the
 cryptographic parameters of the TLS 1.3 QUIC connection.</p>
    <p class="issue" id="issue-84520e29"><a class="self-link" href="#issue-84520e29"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
-   <h4 class="heading settled" data-level="8.5.2" id="local-active-mitigations"><span class="secno">8.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="9.5.2" id="local-active-mitigations"><span class="secno">9.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
    <p>Local active attackers may attempt to impersonate a presentation display the
 user would normally trust.  The <a href="#authentication">§6 Authentication</a> step of the Open Screen
 Protocol prevents a man-in-the-middle from impersonating an agent, without
@@ -2788,19 +3060,19 @@ display - to prevent the user from blindly clicking through this step.</p>
 connection by injecting or modifying traffic.  These attacks should be mitigated
 by a correct implementation of TLS 1.3.</p>
    <p class="issue" id="issue-84520e29①"><a class="self-link" href="#issue-84520e29①"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
-   <h4 class="heading settled" data-level="8.5.3" id="remote-active-mitigations"><span class="secno">8.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="9.5.3" id="remote-active-mitigations"><span class="secno">9.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
    <p>Unfortunately, we cannot rely on network devices to fully protect Open Screen
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.</p>
    <p class="issue" id="issue-7e863472"><a class="self-link" href="#issue-7e863472"></a> Mitigations for remote network attackers. <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a></p>
-   <h4 class="heading settled" data-level="8.5.4" id="denial-of-service-mitigations"><span class="secno">8.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="9.5.4" id="denial-of-service-mitigations"><span class="secno">9.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
    <p>It will be difficult to completely prevent denial service of attacks that
 originate on the user’s local area network.  Open Screen Protocol agents can
 refuse new connections, close connections that receive too many messages, or
 limit the number of mDNS records cached from a specific responder in an attempt
 to allow existing activities to continue in spite of such an attack.</p>
-   <h4 class="heading settled" data-level="8.5.5" id="malicious-input-mitigations"><span class="secno">8.5.5. </span><span class="content">Malicious input</span><a class="self-link" href="#malicious-input-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="9.5.5" id="malicious-input-mitigations"><span class="secno">9.5.5. </span><span class="content">Malicious input</span><a class="self-link" href="#malicious-input-mitigations"></a></h4>
    <p>Open Screen Protocol agents should be robust against malicious input that
 attempts to compromise the target device by exploiting parsing vulnerabilities.</p>
    <p>CBOR is intended to be less vulnerable to such attacks relative to alternatives
@@ -3267,6 +3539,103 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">track-state</span>
 <span class="nx">  6 </span><span class="p">:</span> <span class="nx">mode </span><span class="c1">; text-track-mode</span>
 <span class="p">}</span></p>
+
+<p><span class="c1">; type key 22</span>
+<span class="nx">audio-frame </span><span class="p">=</span> <span class="p">[</span>
+  <span class="nx">encoding-id</span><span class="p">:</span> <span class="kt">uint</span>
+  <span class="nx">start-time</span><span class="p">:</span> <span class="kt">uint</span>
+  <span class="nx">payload</span><span class="p">:</span> <span class="nx">bytes</span>
+<span class="nx">  </span><span class="p">?</span> <span class="nx">optional</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">?</span> <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
+    <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+  <span class="p">}</span>
+<span class="p">]</span></p>
+
+<p><span class="c1">; type key 23</span>
+<span class="nx">video-frame </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="kt">int</span><span class="p">]</span> <span class="c1">; depends-on</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
+  <span class="mi">5</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; payload</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; rotation</span>
+  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 24</span>
+<span class="nx">data-frame </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="nx">any</span><span class="c1">; payload</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 120</span>
+<span class="nx">video-frame-request </span><span class="p">=</span> <span class="p">{</span>
+ <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
+ <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; sequence-number</span>
+ <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; highest-decoded-frame-sequence-number</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">ratio </span><span class="p">=</span> <span class="p">[</span>
+  <span class="nx">antecedent</span><span class="p">:</span> <span class="kt">uint</span>
+  <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
+<span class="p">]</span></p>
+
+<p><span class="nx">streaming-capabilities-request </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">request</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">streaming-capabilities-response </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">response</span>
+<span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">streaming-capabilities </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-audio-capability</span><span class="p">]</span> <span class="c1">; receive-audio</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-video-capability</span><span class="p">]</span> <span class="c1">; receive-video</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-data-capability</span><span class="p">]</span> <span class="c1">; receive-data</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">format </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; name</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">format-parameter</span><span class="p">]</span> <span class="c1">; parameters</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">format-parameter </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; key</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; value</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">receive-audio-capability </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-audio-channels</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">video-resolution </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; height</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; width</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">receive-video-capability </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="c1">; max-resolution</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-frames-per-second</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-pixels-per-second</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">ratio </span><span class="c1">; aspect-ratio</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">string</span><span class="p">]</span> <span class="c1">; color-profiles</span>
+  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-resolution</span><span class="p">]</span> <span class="c1">; native-resolutions</span>
+  <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">receive-data-capability </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; format</span>
+<span class="p">}</span></p>
 </pre>
    </div>
   </main>
@@ -3420,15 +3789,15 @@ because smaller type keys encode on the wire smaller.</p>
   <aside class="dfn-panel" data-for="term-for-dom-window-postmessage">
    <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-window-postmessage">8.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-dom-window-postmessage">9.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-presentationconnection">
    <a href="https://w3c.github.io/presentation-api/#presentationconnection">https://w3c.github.io/presentation-api/#presentationconnection</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentationconnection">2.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
-    <li><a href="#ref-for-presentationconnection②">8.1.4. Same-Origin Policy Violations</a>
-    <li><a href="#ref-for-presentationconnection③">8.3. Presentation API Considerations</a>
+    <li><a href="#ref-for-presentationconnection②">9.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-presentationconnection③">9.3. Presentation API Considerations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-available-presentation-display">
@@ -3467,7 +3836,7 @@ because smaller type keys encode on the wire smaller.</p>
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-id">https://w3c.github.io/presentation-api/#dfn-presentation-id</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-presentation-id">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
-    <li><a href="#ref-for-dfn-presentation-id③">8.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-dfn-presentation-id③">9.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
