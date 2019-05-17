@@ -385,7 +385,7 @@ For each message, the sender must write to the QUIC stream the following:
 1.  A type key representing the type of the message, encoded as a variable-length
     integer (see [[#appendix-a]] for type keys)
 
-2.  The message encoded as CBOR (whose length must match the value in step 2)
+2.  The message encoded as CBOR.
 
 If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
