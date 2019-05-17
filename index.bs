@@ -385,9 +385,7 @@ For each message, the sender must write to the QUIC stream the following:
 1.  A type key representing the type of the message, encoded as a variable-length
     integer (see [[#appendix-a]] for type keys)
 
-2.  The message length encoded as a variable-length integer
-
-3.  The message encoded as CBOR (whose length must match the value in step 2)
+2.  The message encoded as CBOR (whose length must match the value in step 2)
 
 If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
@@ -1368,11 +1366,8 @@ optional field in the array is used to hold all optional values in a
 struct-based grouping.  This will hopefully provide a good balance of
 efficiency and flexibility.
 
-To further increase efficiency, each audio-frame message must be sent
-in a separate QUIC stream without the length prefix.  It must only use
-the type key prefix and then the encoded CBOR message immediately
-after.  Separate QUIC streams also allow audio frames to be received
-out of order.
+To allow for audio frames to be sent out of order, they should be sent in
+separate QUIC streams.
 
 : encoding-id
 :: Identifies the media encoding to which this audio frame belongs.  This can be
