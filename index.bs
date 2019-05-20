@@ -416,13 +416,14 @@ Prior to authentication, agents exchange auth-capabilities messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
 either sends or receives an authentication request.  In case both agents have the same
-PSK ease of input value, the receiver presents the PSK to the user.  The same pre-shared key
+PSK ease of input value, the server presents the PSK to the user.  The same pre-shared key
 is used by both agents to issue an authentication request.
 
 PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
 it is not possible for the user to input PSK on this device and 100 means
 that it's easy for the user to input PSK on the device.  Supported PSK input methods
-are numeric, alphanumeric and scanning a QR-code.
+are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
+support the numeric PSK input method.
 
 In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
