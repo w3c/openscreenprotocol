@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version ee4d7efc3ed6155392d49e10a542e2351fd5792d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="b16482b7f9800726af5595ff53b9ecdfbc0e57ab" name="document-revision">
+  <meta content="9f2dee8f70368d1fde43b12ac37442617aa90013" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-14">14 May 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-20">20 May 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1996,25 +1996,25 @@ symmetric. Open Screen Protocol uses:</p>
     <li data-md>
      <p>The second key confirmation method described in https://tools.ietf.org/html/rfc8236#section-5</p>
    </ol>
-   <p>An agent may send auth-jpake-round1 message at any time to start
+   <p>An agent may send a auth-jpake-round1 message at any time to start
 the authentication process with the other agent.</p>
-   <p>After sending auth-jpake-round1, the agent expects to receive auth-jpake-round1
+   <p>After sending the auth-jpake-round1 message, the agent expects to receive auth-jpake-round1
 and auth-jpake-round2 messages.</p>
-   <p>After receiving auth-jpake-round1 message, the agent validates the message and, if
+   <p>After receiving a auth-jpake-round1 message, the agent validates the message and, if
 the validation passes, sends:</p>
    <ol>
     <li data-md>
-     <p>auth-jpake-round1 message, in case the agent has not sent it yet;</p>
+     <p>a auth-jpake-round1 message, in case the agent has not sent it yet;</p>
     <li data-md>
-     <p>auth-jpake-round2 message.</p>
+     <p>a auth-jpake-round2 message.</p>
    </ol>
-   <p>After sending auth-jpake-round2, the agent expects to receive
-auth-jpake-confirmation message.</p>
-   <p>After receiving auth-jpake-round2 message, the agent validates the message and,
-if the validation passes and the agent has received auth-jpake-round1 message
-as well, the agent sends auth-jpake-confirmation message.</p>
-   <p>After receiving auth-jpake-confirmation message, the agent verifies MAC to confirm
-that both agents have derived the same key.</p>
+   <p>After sending the auth-jpake-round2 message, the agent expects to receive
+a auth-jpake-confirmation message.</p>
+   <p>After receiving a auth-jpake-round2 message, the agent validates the message and,
+if the validation passes and the agent has received the auth-jpake-round1 message
+as well, the agent sends a auth-jpake-confirmation message.</p>
+   <p>After receiving the auth-jpake-confirmation message, the agent verifies
+the MAC to confirm that both agents have derived the same key.</p>
    <p>At this point the authentication is complete, the agent sends auth-status
 with success code.</p>
    <p>The agents use auth-capabilities to determine which agent presents
