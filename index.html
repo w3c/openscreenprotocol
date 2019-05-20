@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version ee4d7efc3ed6155392d49e10a542e2351fd5792d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="d9b360ffa3c2624da5de3a7e2f216a85846535fa" name="document-revision">
+  <meta content="056d1cf2d18f1fcdf84d5147dfc622fe1135f13a" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-13">13 May 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-20">20 May 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1854,9 +1854,7 @@ is used.</p>
      <p>A type key representing the type of the message, encoded as a variable-length
 integer (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
     <li data-md>
-     <p>The message length encoded as a variable-length integer</p>
-    <li data-md>
-     <p>The message encoded as CBOR (whose length must match the value in step 2)</p>
+     <p>The message encoded as CBOR.</p>
    </ol>
    <p>If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
@@ -1879,12 +1877,13 @@ auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.</p>
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
 either sends or receives an authentication request.  In case both agents have the same
-PSK ease of input value, the receiver presents the PSK to the user.  The same pre-shared key
+PSK ease of input value, the server presents the PSK to the user.  The same pre-shared key
 is used by both agents to issue an authentication request.</p>
    <p>PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
 it is not possible for the user to input PSK on this device and 100 means
 that it’s easy for the user to input PSK on the device.  Supported PSK input methods
-are numeric, alphanumeric and scanning a QR-code.</p>
+are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
+support at least basic numeric PSK input.</p>
    <p>In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
 authentication-response message to be sent back from the responder.  To
@@ -2694,11 +2693,8 @@ order to accomodate optional values in the array-based grouping, one
 optional field in the array is used to hold all optional values in a
 struct-based grouping.  This will hopefully provide a good balance of
 efficiency and flexibility.</p>
-   <p>To further increase efficiency, each audio-frame message must be sent
-in a separate QUIC stream without the length prefix.  It must only use
-the type key prefix and then the encoded CBOR message immediately
-after.  Separate QUIC streams also allow audio frames to be received
-out of order.</p>
+   <p>To allow for audio frames to be sent out of order, they should be sent in
+separate QUIC streams.</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
