@@ -337,6 +337,12 @@ Prior to authentication, a message may be exchanged (such as further metadata),
 but such info should be treated as unverified (such as indicating to a user that
 a display name of an unauthenticated agent is unverified).
 
+The connection IDs used both by the [[QUIC]] client and server should
+be zero length.  If zero length connection IDs are chosen, agents are
+restricted from changing IP or port without establshing a new QUIC
+connection.  In such cases, clients and servers must establish a new
+QUIC connection in order to change IP or port.
+
 To learn further metadata, an agent may send an agent-info-request
 message (see [[#appendix-a]]) and receive back an agent-info-response message.
 Any agent may send this request to learn about the capabilities of
