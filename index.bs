@@ -332,13 +332,46 @@ The agent-info-response message contains the following properties:
     the device.  This is used mainly for debugging purposes, but may be
     displayed to the user of the requesting agent.
 
-: receives-audio (optional)
-:: The agent has to indicate that it supports audio. If false
-    or not included, it is assumed audio content is not supported.
+: capabilities (required)
+:: The contorol protocols, roles, and media types the agent support.
+    Presence indicates capability and absence indicates lack of
+    capability.  Capabilities should should affect how an agent is
+    presented to a user, such as drawing a different icon depending on
+    the media types it supports.
 
-: receives-video (optional)
-:: The agent has to indicate that it supports video . If false
-    or not included, it is assumed video content is not supported.
+The various capabilities have the following meanings:
+
+: receive-audio
+:: The agent can generally receive audio for the control protocols it
+    supports.  Each control protocol can have more specific capability
+    mechanisms, such as support for specific URLs in the presentation
+    protocol.
+
+: receive-video
+:: The agent can generally receive video for the control protocols it
+    supports.  Each control protocol can have more specific capability
+    mechanisms, such as support for specific URLs in the presentation
+    protocol.
+
+: receive-presentation
+:: The agent can receive presentations using the presentation protocol.
+
+: control-presentation
+:: The agent can control presentations using the presentation protocol.
+
+: receive-remote-playback
+:: The agent can receive remote playback using the remote playback
+    protocol.
+
+: control-remote-playback
+:: The agent can control remote playback using the remote playback
+    protocol.
+
+: receive-streaming
+:: The agent can receiving streaming using the streaming protocol.
+
+: send-streaming
+:: The agent can send streaming using the streaming protocol.
 
 
 Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.

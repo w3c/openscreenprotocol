@@ -9,11 +9,24 @@ agent-info-response = {
   1: agent-info ; agent-info
 }
 
+agent-capability = &(
+  receive-audio: 1
+  receive-video: 2
+
+  receive-presentation: 2
+  control-presentation: 3
+
+  receive-remote-playback: 4
+  control-remote-playback: 5
+
+  receive-streaming: 6
+  send-streaming: 7
+)
+
 agent-info = {
   0: text ; display-name
   1: text ; model-name
-  ? 2: bool ; receives-audio
-  ? 3: bool ; receives-video
+  2: [* agent-capabilitiy] ; capabilities
 }
 
 ; type key 12
