@@ -1377,7 +1377,7 @@ Each stream offer contains the following properties:
 :: A list of audio encodings offered.  An audio encoding is a series
     of encoded audio frames.  Encodings define properties needed by
     the receiver to know how to decode the encoding, such as codec and
-    sample rate.  They can differ by codec, language, and potentially
+    sample rate.  They can differ by codec and potentially
     other properties.
 
 : video
@@ -1452,7 +1452,10 @@ Each data encoding offered defines the following properties:
     make data-frame messages smaller by not including the time scale
     in each one.
 
-<!-- TODO: Indicate the language of a text track -->
+: language
+:: If the data contains text, the language of the text, according to
+    [[https://www.w3.org/International/articles/language-tags/]].
+
 
 After receiving a streaming-session-start-request message, a receiver
 should send back a streaming-session-start-response message with the
@@ -1471,13 +1474,11 @@ Each stream request contains the following properties:
 : media-stream-id
 :: The ID of the stream reqeusted.
 
-: audio
-:: The audio encodings requested, each by encoding ID.
+: audio (optional)
+:: The requested audio encoding, by encoding ID
 
-<!-- TODO: Why can you request multiple audio encodings if they are the same?  -->
-
-: video
-:: Optionally, a video encoding requested, by encoding ID.  It may
+: videon (optional)
+:: The rquested video encoding, by encoding ID.  It may
     include a target resolution and maximum frame rate.  The sender
     should not exceed the maximum frame rate and should attempt to
     send at the target bitrate, possibly exceeding it by a small amount.
@@ -1486,7 +1487,6 @@ Each stream request contains the following properties:
 :: The data encodings requested, each by encoding ID.
 
 
-<!-- TODO: Modify and terminate a session -->
 
 Audio {#streaming-audio}
 ------------------------------

@@ -558,9 +558,9 @@ media-stream-offer = {
 
 media-stream-request = {
   1 : uint ; media-stream-id
-  ? 2 : [* audio-encoding-request] ; audio
+  ? 2 : audio-encoding-request ; audio
   ? 3 : video-encoding-request ; video
-  ? 4 : [* data-encoding-request] ; data
+  ? 4 : [1* data-encoding-request] ; data
 }
 
 audio-encoding-offer = {
@@ -599,43 +599,6 @@ data-encoding-request = {
   1 : uint ; encoding-id
 }
 
-; TODO: Finish these
-; type key 141
-streaming-session-sender-stats-event = {
-  timestamp: microseconds
-  ? audio: [1* {
-    encoding-id: uint
-    ? sent: microseconds
-    ? encode-delay: microseconds
-    ; ...
-  }]
-  ? video: [1* {
-    encoding-id: uint
-    ? encode-delay: microseconds
-    ? sent-frames: uint
-    ? dropped-frames: uint
-  }]
-}
-
-; type key 142
-streaming-session-receiver-stats-event = {
-  timestamp: microseconds
-  ? audio: [1* {
-    encoding-id: uint
-    ? received: microseconds
-    ? lost: microseconds
-    ? buffer-delay: microseconds
-    ? decode-delay: microseconds
-  }]
-  ? video: [1* {
-    encoding-id: uint
-    ? received: microseconds
-    ? lost: microseconds
-    ? buffer-delay: microseconds
-    ? decode-delay: microseconds
-  }]
-}
-
 ; type key 13
 audio-frame = [
   encoding-id: uint
@@ -669,7 +632,7 @@ data-frame = {
   ? 5: media-time ; sync-time
 }
 
-; type key 143
+; type key 141
 video-frame-request = {
  1: uint; encoding-id
  2: uint; sequence-number
@@ -681,4 +644,39 @@ ratio = [
   consequent: uint
 ]
 
+
+; type key 142
+streaming-session-sender-stats-event = {
+  1: microseconds ; sync-time
+  ? 2: [1* {
+    1: uint ; encoding-id
+    ? 2: uint ; cumulative-sent-frames
+    ? 3: microseconds ; cumulative-encode-delay
+  }] ; audio
+  ? 3: [1* {
+    1: uint ; encoding-id
+    ? 2: microseconds ; cumulative-sent-duration
+    ? 3: microseconds ; cumulative-encode-delay
+    ? 4: uint ; cumulative-dropped-frames
+  }] ; video
+}
+
+; type key 143
+streaming-session-receiver-stats-event = {
+  timestamp: microseconds
+  ? audio: [1* {
+    1: uint ; encoding-id
+    ? 2: microseconds ; cumulative-sent-duration
+    ? 3: microseconds ; cumulative-lost-duration
+    ? 3: microseconds ; cumulative-jitter-buffer-delay
+    ? 4: microseconds ; cumulative-decode-delay
+  }]
+  ? video: [1* {
+    1: uint ; encoding-id
+    ? 2: uint ; cumulative-decoded-frames
+    ? 3: uint ; cumulative-lost-frames
+    ? 4: microseconds ; cumulative-jitter-buffer-delay
+    ? 5: microseconds ; cumulative-decode-delay
+  }]
+}
 
