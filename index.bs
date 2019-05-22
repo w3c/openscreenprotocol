@@ -52,10 +52,12 @@ urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESEN
 urlPrefix: https://w3c.github.io/presentation-api/; type: interface; spec: PRESENTATION-API
     text: PresentationConnection
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
-    text: remote playback devices
-    text: compatible remote playback device
-    text: media resources
     text: availability sources set
+    text: compatible remote playback device
+    text: initiate remote playback
+    text: media element state
+    text: media resources
+    text: remote playback devices
     text: remote playback source
 urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML51
     text: media element
@@ -193,7 +195,27 @@ Presentation API Requirements {#requirements-presentation-api}
 Remote Playback API Requirements {#requirements-remote-playback}
 ----------------------------------------------------------------
 
-Issue(3): Requirements for Remote Playback API.
+1.  A [=controlling user agent=] must be able to find out whether there is at
+    least one compatible [=remote playback device=] available for a given
+    {{HTMLMediaElement}}, both instantaneously and continuously.
+
+2.  A controlling user agent must be able to to [=initiate remote playback=] of
+    an {{HTMLMediaElement}} to a compatible remote playback device.
+
+3.  The controlling user agent must be able send media sources as URLs and text
+    tracks from an {{HTMLMediaElement}} to a compatible remote playback device.
+
+4.  During remote playback, the controlling user agent and the remote playback
+    device must be able to synchronize the [=media element state=] of the
+    {{HTMLMediaElement}}.
+
+5.  During remote playback, either the controlling user agent or the
+    remote playback device must be able to disconnect from the other party.
+
+6.  The controlling user agent should be able to pass locale and text
+    direction information to the remote playback device to assist in rendering
+    text during remote playback.
+
 
 Non-Functional Requirements {#requirements-non-functional}
 ----------------------------------------------------------
