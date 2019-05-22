@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 10ff3eb4050069e20bb9b943c8b76fe5bfe3a48f" name="generator">
+  <meta content="Bikeshed version 4c94409a0f8f9bae15b929d2cd1d918c8334e6ff" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="5440b97b7b61ea7d592f69836ab0162f01cb7c70" name="document-revision">
+  <meta content="8b058c14ed6472c873ef8955531a342bf5ea49e8" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-14">14 May 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-21">21 May 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1690,8 +1690,8 @@ least one compatible <a data-link-type="dfn" href="https://w3c.github.io/remote-
      <p>A controlling user agent must be able to to <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback" id="ref-for-dfn-initiate-remote-playback">initiate remote playback</a> of
 an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement①">HTMLMediaElement</a></code> to a compatible remote playback device.</p>
     <li data-md>
-     <p>The controlling user agent must be able send media data and text tracks
-from an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement②">HTMLMediaElement</a></code> to a compatible remote playback device.</p>
+     <p>The controlling user agent must be able send media sources as URLs and text
+tracks from an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement②">HTMLMediaElement</a></code> to a compatible remote playback device.</p>
     <li data-md>
      <p>During remote playback, the controlling user agent and the remote playback
 device must be able to synchronize the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-element-state" id="ref-for-dfn-media-element-state">media element state</a> of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement③">HTMLMediaElement</a></code>.</p>
@@ -1874,9 +1874,7 @@ is used.</p>
      <p>A type key representing the type of the message, encoded as a variable-length
 integer (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
     <li data-md>
-     <p>The message length encoded as a variable-length integer</p>
-    <li data-md>
-     <p>The message encoded as CBOR (whose length must match the value in step 2)</p>
+     <p>The message encoded as CBOR.</p>
    </ol>
    <p>If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
@@ -1899,12 +1897,13 @@ auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.</p>
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
 either sends or receives an authentication request.  In case both agents have the same
-PSK ease of input value, the receiver presents the PSK to the user.  The same pre-shared key
+PSK ease of input value, the server presents the PSK to the user.  The same pre-shared key
 is used by both agents to issue an authentication request.</p>
    <p>PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
 it is not possible for the user to input PSK on this device and 100 means
 that it’s easy for the user to input PSK on the device.  Supported PSK input methods
-are numeric, alphanumeric and scanning a QR-code.</p>
+are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
+support the numeric PSK input method.</p>
    <p>In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
 authentication-response message to be sent back from the responder.  To
@@ -2714,11 +2713,8 @@ order to accomodate optional values in the array-based grouping, one
 optional field in the array is used to hold all optional values in a
 struct-based grouping.  This will hopefully provide a good balance of
 efficiency and flexibility.</p>
-   <p>To further increase efficiency, each audio-frame message must be sent
-in a separate QUIC stream without the length prefix.  It must only use
-the type key prefix and then the encoded CBOR message immediately
-after.  Separate QUIC streams also allow audio frames to be received
-out of order.</p>
+   <p>To allow for audio frames to be sent out of order, they should be sent in
+separate QUIC streams.</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>

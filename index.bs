@@ -407,9 +407,7 @@ For each message, the sender must write to the QUIC stream the following:
 1.  A type key representing the type of the message, encoded as a variable-length
     integer (see [[#appendix-a]] for type keys)
 
-2.  The message length encoded as a variable-length integer
-
-3.  The message encoded as CBOR (whose length must match the value in step 2)
+2.  The message encoded as CBOR.
 
 If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
@@ -440,13 +438,14 @@ Prior to authentication, agents exchange auth-capabilities messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
 either sends or receives an authentication request.  In case both agents have the same
-PSK ease of input value, the receiver presents the PSK to the user.  The same pre-shared key
+PSK ease of input value, the server presents the PSK to the user.  The same pre-shared key
 is used by both agents to issue an authentication request.
 
 PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
 it is not possible for the user to input PSK on this device and 100 means
 that it's easy for the user to input PSK on the device.  Supported PSK input methods
-are numeric, alphanumeric and scanning a QR-code.
+are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
+support the numeric PSK input method.
 
 In order for one agent (the challenger) to authenticate another (the responder),
 the challenger may send an authentication-request message and expect an
@@ -1390,11 +1389,8 @@ optional field in the array is used to hold all optional values in a
 struct-based grouping.  This will hopefully provide a good balance of
 efficiency and flexibility.
 
-To further increase efficiency, each audio-frame message must be sent
-in a separate QUIC stream without the length prefix.  It must only use
-the type key prefix and then the encoded CBOR message immediately
-after.  Separate QUIC streams also allow audio frames to be received
-out of order.
+To allow for audio frames to be sent out of order, they should be sent in
+separate QUIC streams.
 
 : encoding-id
 :: Identifies the media encoding to which this audio frame belongs.  This can be
