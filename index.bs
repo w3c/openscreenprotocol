@@ -202,8 +202,8 @@ Remote Playback API Requirements {#requirements-remote-playback}
 2.  A controlling user agent must be able to to [=initiate remote playback=] of
     an {{HTMLMediaElement}} to a compatible remote playback device.
 
-3.  The controlling user agent must be able send media data and text tracks
-    from an {{HTMLMediaElement}} to a compatible remote playback device.
+3.  The controlling user agent must be able send media sources as URLs and text
+    tracks from an {{HTMLMediaElement}} to a compatible remote playback device.
 
 4.  During remote playback, the controlling user agent and the remote playback
     device must be able to synchronize the [=media element state=] of the
