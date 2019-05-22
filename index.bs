@@ -1336,7 +1336,7 @@ following additional fields:
     The default value is none.
 
 : supports-scaling (optional)
-:: A optional boolean field indicating whether the receiver can scale content
+:: An optional boolean field indicating whether the receiver can scale content
     provided in a video-resolution not listed in the native-resolutions list
     (if provided) or of a different aspect ratio. The default value is true.
 
@@ -1345,8 +1345,148 @@ following additional fields:
 Sessions {#streaming-sessions}
 ------------------------------------
 
-TODO
+To start a streaming session, a sender may send a
+streaming-session-start-request message with the following properties:
 
+: streaming-session-id
+:: Identifies the streaming session.  Must be unique for the (sender,
+    receiver) pair.  Can be used later to modify or terminate a
+    streaming session.
+
+: stats-interval
+:: Indicates the frequency the receiver should send stats messages to
+    the sender.
+
+: stream-offers
+:: Indicates the streams that the receiver can request from the sender.
+
+Each stream offer contains the following properties:
+
+: media-stream-id
+:: Identifies the media stream being offered.  Must be unique within
+    the streaming session.  Can be used by the receiver to request the
+    media session.
+
+: friendly-name
+:: An optional name intended to be shown to a user, such that the
+    receiver may allow the user to choose which media streams to
+    receive, or if they are received automatically by the receiver,
+    give the user some information about what th e media stream is.
+
+: audio
+:: A list of audio encodings offered.  An audio encoding is a series
+    of encoded audio frames.  Encodings define properties needed by
+    the receiver to know how to decode the encoding, such as codec and
+    sample rate.  They can differ by codec, language, and potentially
+    other properties.
+
+: video
+:: A list of video encodings offered.  A video encoding is a series of
+    encoded video frames.  Encodings define properties needed by the
+    receiver to know how to decode the encoding, such as codec and
+    default duration.  They can differ by codec and potentially other
+    properties.
+
+: data
+:: A list of data encodings offered.  An data encoding is a series of
+    encoded data frames.  Encodings define properties needed by the
+    receiver to know how to decode the encoding, such as data type and
+    sample rate.  They can differ by data type, language, and
+    potentially other properties.
+
+Each audio encoding offered defines the following properties:
+
+: encoding-id
+:: Identifies the audio encoding being offered.  Must be unique within
+    the media stream.  Can be the receiver to request an encoding.
+
+: codec
+:: The name of the codec used by the encoding.
+
+: time-scale
+:: The time scale used by all audio frames.  This allows senders to
+    make audio-frame messages smaller by not including the time scale
+    in each one.
+
+: default-duration:
+:: The duration of an audio frame .  This allows senders to make
+    audio-frame messagse smaller by not including the duration for
+    audio-frame messages that have the default duration.
+
+Each video encoding offered defines the following properties:
+
+: encoding-id
+:: Identifies the video encoding being offered.  Must be unique within
+    the media stream.  Can be the receiver to request an encoding.
+
+: codec
+:: The name of the codec used by the encoding.
+
+: time-scale
+:: The time scale used by all video frames.  This allows senders to
+    make video-frame messages smaller by not including the time scale
+    in each one.
+
+: default-duration:
+:: The default duration of a video frame .  This allows senders to make
+    video-frame messagse smaller by not including the duration for
+    video-frame messages that have the default duration.
+
+: default-rotation:
+:: The default rotation of a video frame .  This allows senders to make
+    video-frame messagse smaller by not including the rotation for
+    video-frame messages that have the default rotation.
+
+Each data encoding offered defines the following properties:
+
+: encoding-id
+:: Identifies the data encoding being offered.  Must be unique within
+    the media stream.  Can be the receiver to request an encoding.
+
+: type
+:: The type of data encoded.  "text-cue" represents means it's a text
+    track cue.
+
+: time-scale
+:: The time scale used by all data frames.  This allows senders to
+    make data-frame messages smaller by not including the time scale
+    in each one.
+
+<!-- TODO: Indicate the language of a text track -->
+
+After receiving a streaming-session-start-request message, a receiver
+should send back a streaming-session-start-response message with the
+following properties:
+
+: stats-interval
+:: Indicates the frequency the sender should send stats messages to
+    the receiver.
+
+: stream-requests
+:: Indicates which media streams the receiver would like to receiver
+    from the sender.
+
+Each stream request contains the following properties:
+
+: media-stream-id
+:: The ID of the stream reqeusted.
+
+: audio
+:: The audio encodings requested, each by encoding ID.
+
+<!-- TODO: Why can you request multiple audio encodings if they are the same?  -->
+
+: video
+:: Optionally, a video encoding requested, by encoding ID.  It may
+    include a target resolution and maximum frame rate.  The sender
+    should not exceed the maximum frame rate and should attempt to
+    send at the target bitrate, possibly exceeding it by a small amount.
+
+: data
+:: The data encodings requested, each by encoding ID.
+
+
+<!-- TODO: Modify and terminate a session -->
 
 Audio {#streaming-audio}
 ------------------------------
