@@ -888,9 +888,13 @@ the receiver decides to not attempt to load the resource at all.  If it chooses
 not to, it must respond with the appropriate failure result (such as timeout or
 invalid-url).  Additionally, the response must include the following:
 
-: state
+: state (optional)
 :: The initial state of the remote playback, as defined in
     [[#remote-playback-state-and-controls]].
+
+: remoting-capabilities (optional)
+:: What kind of remoting (using the streaming protocol) that the
+    receiver can receive.
 
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -902,12 +906,28 @@ remote-playback-modify-request message with the following values:
 : controls
 :: Updated controls as defined in {#remote-playback-state-and-controls}
 
+: remoting-audio
+:: Audio encodings that the controller can send to the receiver once they
+    are acked via the remote-playback-modify-response message.
+
+: remoting-video
+:: Videos encodings that the controller can send to the receiver once they
+    are acked via the remote-playback-modify-response message.
+
+: remoting-stats-interval
+:: The frequency the contorller would like for the receiver to send
+    remoting stats using the streaming stats message.
+
 When a receiver receives a remote-playback-modify-request it should send a
 remote-playback-modify-response message in reply with the following values:
 
 : state
 :: The updated state of the remote playback as defined in
     [[#remote-playback-state-and-controls]].
+
+: remoting-stats-interval
+:: The frequency the contorller would like for the receiver to send
+    back remoting stats using the streaming stats message.
 
 When the state of remote playback changes without request for modification from
 the controller (such as when the skips or pauses due to user user interaction on
@@ -1360,7 +1380,7 @@ audio encoding.
 Unlike most Open Screen Protocol messages, this one uses an
 array-based grouping rather than a struct-based grouping.  For
 required fields, this allows for a more efficient use of bytes on the
-wire, which is important for streaming audio because the payload is
+
 typically so small and every byte of overhead is relatively large.  In
 order to accomodate optional values in the array-based grouping, one
 optional field in the array is used to hold all optional values in a
