@@ -463,7 +463,6 @@ streaming-capabilities-response = {
 streaming-capabilities = {
   0: [* receive-audio-capability] ; receive-audio
   1: [* receive-video-capability] ; receive-video
-  2: [* receive-data-capability] ; receive-data
 }
 
 format = {
@@ -497,10 +496,6 @@ receive-video-capability = {
   ? 6: [* string] ; color-profiles
   ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling
-}
-
-receive-data-capability = {
-  0: format ; format
 }
 
 ; type key 134
@@ -553,14 +548,12 @@ media-stream-offer = {
   ? 2 : text ; friendly-name
   ? 3 : [1* audio-encoding-offer] ; audio
   ? 4 : [1* video-encoding-offer] ; video
-  ? 5 : [1* data-encoding-offer] ; data
 }
 
 media-stream-request = {
   1 : uint ; media-stream-id
   ? 2 : audio-encoding-request ; audio
   ? 3 : video-encoding-request ; video
-  ? 4 : [1* data-encoding-request] ; data
 }
 
 audio-encoding-offer = {
@@ -578,13 +571,6 @@ video-encoding-offer = {
   ? 5 : video-rotation ; default-rotation
 }
 
-data-encoding-offer = {
-  1 : uint ; encoding-id
-  2 : text ; type
-  3 : uint ; time-scale
-  ? 4 : text ; language
-}
-
 audio-encoding-request = {
   1: uint ; encoding-id
 }
@@ -593,10 +579,6 @@ video-encoding-request = {
   1 : uint ; encoding-id
   ? 2 : video-resolution ; target-resolution
   ? 3 : float32 ; max-frames-per-second
-}
-
-data-encoding-request = {
-  1 : uint ; encoding-id
 }
 
 ; type key 13
@@ -622,16 +604,6 @@ video-frame = {
   ? 7: media-time ; sync-time
 }
 
-; type key 15
-data-frame = {
-  0: uint; encoding-id
-  ? 1: uint ; sequence-number
-  ? 2: uint ; start-time
-  ? 3: uint ; duration
-  4: any; payload
-  ? 5: media-time ; sync-time
-}
-
 ; type key 141
 video-frame-request = {
  1: uint; encoding-id
@@ -647,13 +619,14 @@ ratio = [
 
 ; type key 142
 streaming-session-sender-stats-event = {
-  1: microseconds ; sync-time
-  ? 2: [1* {
+  1: uint; streaming-session-id
+  2: microseconds ; system-time
+  ? 3: [1* {
     1: uint ; encoding-id
     ? 2: uint ; cumulative-sent-frames
     ? 3: microseconds ; cumulative-encode-delay
   }] ; audio
-  ? 3: [1* {
+  ? 4: [1* {
     1: uint ; encoding-id
     ? 2: microseconds ; cumulative-sent-duration
     ? 3: microseconds ; cumulative-encode-delay
@@ -663,20 +636,21 @@ streaming-session-sender-stats-event = {
 
 ; type key 143
 streaming-session-receiver-stats-event = {
-  timestamp: microseconds
-  ? audio: [1* {
+  1: uint; streaming-session-id
+  2: microseconds ; system-time
+  ? 3: [1* {
     1: uint ; encoding-id
-    ? 2: microseconds ; cumulative-sent-duration
+    ? 2: microseconds ; cumulative-received-duration
     ? 3: microseconds ; cumulative-lost-duration
     ? 3: microseconds ; cumulative-jitter-buffer-delay
     ? 4: microseconds ; cumulative-decode-delay
-  }]
-  ? video: [1* {
+  }] ; audio
+  ? 4: [1* {
     1: uint ; encoding-id
     ? 2: uint ; cumulative-decoded-frames
     ? 3: uint ; cumulative-lost-frames
     ? 4: microseconds ; cumulative-jitter-buffer-delay
     ? 5: microseconds ; cumulative-decode-delay
-  }]
+  }] ; video
 }
 

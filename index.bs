@@ -1270,11 +1270,8 @@ following properties:
 : receive-video (required)
 :: A list of capabilities for receiving video. For an explanation of fields, see below.
 
-: receive-data (required)
-:: A list of arbitrary data formats the device supports
-    for receiving data.
 
-The format type is used as the basis for audio, video, and data capabilities.
+The format type is used as the basis for audio and video capabilities.
 Formats are composed of the following properties:
 
 <!-- TODO, specify where names are defined. -->
@@ -1363,7 +1360,7 @@ streaming-session-start-request message with the following properties:
 Each stream offer contains the following properties:
 
 : media-stream-id
-:: Identifies the media stream being offered.  Must be unique within
+:: Identifies the media stream b	eing offered.  Must be unique within
     the streaming session.  Can be used by the receiver to request the
     media session.
 
@@ -1377,22 +1374,16 @@ Each stream offer contains the following properties:
 :: A list of audio encodings offered.  An audio encoding is a series
     of encoded audio frames.  Encodings define properties needed by
     the receiver to know how to decode the encoding, such as codec and
-    sample rate.  They can differ by codec and potentially
-    other properties.
+    sample rate.  They can differ by codec and related properties,
+    but should be different encodings of the same audio.
 
 : video
 :: A list of video encodings offered.  A video encoding is a series of
     encoded video frames.  Encodings define properties needed by the
     receiver to know how to decode the encoding, such as codec and
     default duration.  They can differ by codec and potentially other
-    properties.
+    properties, but should be different encodings of the same video.
 
-: data
-:: A list of data encodings offered.  An data encoding is a series of
-    encoded data frames.  Encodings define properties needed by the
-    receiver to know how to decode the encoding, such as data type and
-    sample rate.  They can differ by data type, language, and
-    potentially other properties.
 
 Each audio encoding offered defines the following properties:
 
@@ -1437,26 +1428,6 @@ Each video encoding offered defines the following properties:
     video-frame messagse smaller by not including the rotation for
     video-frame messages that have the default rotation.
 
-Each data encoding offered defines the following properties:
-
-: encoding-id
-:: Identifies the data encoding being offered.  Must be unique within
-    the media stream.  Can be the receiver to request an encoding.
-
-: type
-:: The type of data encoded.  "text-cue" represents means it's a text
-    track cue.
-
-: time-scale
-:: The time scale used by all data frames.  This allows senders to
-    make data-frame messages smaller by not including the time scale
-    in each one.
-
-: language
-:: If the data contains text, the language of the text, according to
-    [[https://www.w3.org/International/articles/language-tags/]].
-
-
 After receiving a streaming-session-start-request message, a receiver
 should send back a streaming-session-start-response message with the
 following properties:
@@ -1477,16 +1448,25 @@ Each stream request contains the following properties:
 : audio (optional)
 :: The requested audio encoding, by encoding ID
 
-: videon (optional)
-:: The rquested video encoding, by encoding ID.  It may
+: video (optional)
+:: The requested video encoding, by encoding ID.  It may
     include a target resolution and maximum frame rate.  The sender
     should not exceed the maximum frame rate and should attempt to
     send at the target bitrate, possibly exceeding it by a small amount.
 
-: data
-:: The data encodings requested, each by encoding ID.
 
+During a streaming session, the receiver can modify the requests it
+made for encodings by sending a streaming-session-modify-request
+containing a modify list of stream-requests.  When the sender receives
+a streaming-session-modify-request, it should send back a
+streaming-session-modify-response.
 
+Finally, either sender may terminate the streaming session by sending
+a streaming-session-terminate-request command.  When the receiver
+receives the streaming-session-terminate-request, it should send back
+a streaming-session-terminate-response.  The receiver can terminate at
+any point and notify the sender by sending a
+streaming-session-terminate-event message.
 
 Audio {#streaming-audio}
 ------------------------------
@@ -1599,52 +1579,6 @@ ending at the last dependent frame.
     inferred from the properties of the encoding.
 
 
-Data {#media-streaming-data}
-------------------------------------
-
-Senders may send timed data to receivers by sending data-frame messages (see
-[[#appendix-a]]) with the following keys and values.  A data frame message
-contains an arbitrary payload that can be synchronized with and video, such as
-text track data.  A series of data frames that share a data type and timeline
-form a data encoding.
-
-To allow for data frames to be sent out of order, they may be sent in separate
-QUIC streams, but more than one data frame may be sent in one QUIC stream if
-that makes sense for a specific type of data.
-
-Text track data uses a payload type of text, a default duration of unknown, and
-a timescale of 1000000 (microseconds).
-
-: encoding-id
-:: Identifies the media encoding to which this data frame belongs.  This can be
-    used to reference properties of the encoding such as the type of data and
-    time scale.  Referencing properties of the encoding through the encoding id
-    helps to avoid sending duplicate information in every frame.
-
-: sequence-number
-:: Identifies the frame and its order in the encoding.
-    Within an encoding, larger sequence numbers mean later start times.
-    Within an encoding, gaps in sequence numbers mean frames are missing.
-
-: start-time
-:: Identifies the beginning of the time range of the data frame.  The time
-    scale is inferred from the properties of the encoding.  The end time can be
-    inferred from the start time and duration.
-
-: duration
-:: If present, the duration of the data frame.  The time
-    scale is inferred from the properties of the encoding.  Likewise, if not
-    present, the duration is inferred from the properties of the encoding.
-
-: sync-time
-:: If present, a time used to synchronize the start time of this audio frame (and
-    thus, this encoding) with that of other media encodings on different
-    timelines.
-
-: payload
-:: The data.  The format and parameters are inferred from
-    the properties of the encoding.
-
 Feedback {#streaming-feedback}
 ------------------------------------
 
@@ -1672,7 +1606,114 @@ QUIC streams.
 Stats {#streaming-stats}
 ------------------------------
 
-TODO
+Durings a streaming session, the sender should send stats with the
+streaming-session-sender-stats-event at the interval the receiver
+requested.  The streaming-session-sender-stats-event message contains
+the following properties:
+
+: streaming-session-id
+:: The ID of the streaming session these stats apply to.
+
+: system-time
+:: The time when the stats were calculated, using a monotonic system
+    clock.
+
+: audio
+:: Stats specific to audio.  Stats for multiple encodings can be sent
+    at once, but encodings need not be included if the stats haven't
+    changed.  See below.
+
+: video
+:: Stats specific to video.  Stats for multiple encodings can be sent
+    at once, but encodings need not be included if the stats haven't
+    changed.  See below.
+
+Audio encoding sender stats include the following properties:
+
+: encoding-id
+:: The ID of the encoding for which the stats apply.
+
+: cumulative-sent-frames
+:: The total number of frames sent.
+
+: cumulative-encode-delay
+:: The sum of the time spent encoding frames sent.
+
+Video encoding sender stats include the following properties:
+
+: encoding-id
+:: The ID of the encoding for which the stats apply.
+
+: cumulative-sent-duration
+:: The sum of all of the durations of all of the audio frames sent.
+
+: cumulative-encode-delay
+:: The sum of the time spent encoding frames sent.
+
+: cumulative-dropped frames
+:: The total number of frames that were not sent due to network, CPU,
+    or other contraints.
+
+
+Durings a streaming session, the receiver should send stats with the
+streaming-session-receiver-stats-event at the interval the sender
+requested.  The streaming-session-receiver-stats-event message contains
+the following properties:
+
+: streaming-session-id
+:: The ID of the streaming session these stats apply to.
+
+: system-time
+:: The time when the stats were calculated, using a monotonic system
+    clock.
+
+: audio
+:: Stats specific to audio.  Stats for multiple encodings can be sent
+    at once, but encodings need not be included if the stats haven't
+    changed.  See below.
+
+: video
+:: Stats specific to video.  Stats for multiple encodings can be sent
+    at once, but encodings need not be included if the stats haven't
+    changed.  See below.
+
+Audio encoding receiver stats include the following properties:
+
+: encoding-id
+:: The ID of the encoding for which the stats apply.
+
+: cumulative-decoded-frames
+:: The total number of audio frames received and decoded.
+
+: cumulative-received-duration
+:: The sum of all of the durations of all of the audio frames received.
+
+: cumulative-lost-duration
+:: The sum of all of the durations of all of the audio frames detected as lost.
+
+: cumulative-jitter-buffer-delay
+:: The sum of the time frames spend in the jitter buffer.
+
+: cumulative-decode-delay
+:: The sum of the time spent decoding frames received.
+
+Video encoding receiver stats include the following properties:
+
+: encoding-id
+:: The ID of the encoding for which the stats apply.
+
+: cumulative-decoded-frames
+:: The total number of video frames received and decoded.
+
+: cumulative-lost-frames
+:: The total number of video frames detected as lost.
+
+: cumulative-jitter-buffer-delay
+:: The sum of the time frames spent in the jitter buffer.
+
+: cumulative-decode-delay
+:: The sum of the time spent decoding frames received.
+
 
 
 Security and Privacy {#security-privacy}
