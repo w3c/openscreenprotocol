@@ -264,6 +264,14 @@ remote-playback-start-request = {
   ? 5: remote-playback-controls ; controls
 }
 
+; type key 125
+remote-playback-start-response = {
+  response
+  1: &result ; result
+  ? 2: remote-playback-state ; state
+  ? 3: streaming-capabilities ; remoting-capabilities
+}
+p
 ; type key 116
 remote-playback-start-response = {
   response
@@ -305,6 +313,9 @@ remote-playback-modify-request = {
   request
   1: remote-playback-id ; remote-playback-id
   2: remote-playback-controls ; controls
+  ? 3: [1* audio-encoding-offer] ; remoting-audio
+  ? 4: [1* video-encoding-offer] ; remoting-video
+  ? 5: microseconds ; remoting-stats-interval
 )
 
 ; type key 20
@@ -312,6 +323,7 @@ remote-playback-modify-response = {
   response
   1: &result ; result
   ? 2: remote-playback-state ; state
+  ? 3: microseconds ; remoting-stats-interval
 }
 
 ; type key 21
