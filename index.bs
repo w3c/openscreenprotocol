@@ -480,20 +480,22 @@ SPAKE2 describes in detail how auth-spake2-message and auth-spake2-confirmation
 are computed.
 
 If the PSK-presenter wants to perform authentication, the PSK-presenter
-starts authentication process by presenting the PSK to the user and sending
-auth-spake2-message message.
+starts the authentication process by presenting the PSK to the user and sending
+a auth-spake2-message message. When the PSK-consumer receives
+the auth-spake2-message message, the PSK-consumer prompts the user for the PSK
+input if it has not done so yet.
 
 If the PSK-consumer wants to perform authentication, the PSK-consumer
 sends auth-spake2-need-psk message to the PSK-presenter to start authentication
-process.  After the user inputs the PSK into the PSK-consumer,
-the PSK-consumer computes and sends auth-spake2-message.
+process and prompts the user to input the PSK. If the PSK-presenter receives
+a auth-spake2-need-psk message after starting authentication from their side,
+the PSK-presenter ignores the auth-spake2-need-psk message.
 
-If the PSK-presenter receives a auth-spake2-need-psk message after starting
-authentication from their side, the PSK-presenter ignores
-the auth-spake2-need-psk message.
+After the user inputs the PSK into the PSK-consumer, the PSK-consumer computes
+and sends auth-spake2-message.
 
-When either agent knows PSK and has received a auth-spake2-message message,
-the agent computes and sends a auth-spake2-confirmation message.
+When either agent both knows the PSK and has received a auth-spake2-message
+message, the agent computes and sends a auth-spake2-confirmation message.
 
 When either agent has received both auth-spake2-message and
 auth-spake2-confirmation messages, the agent validates the confirmation message
