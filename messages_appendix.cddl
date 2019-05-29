@@ -42,37 +42,32 @@ request-id = uint
 
 microseconds = uint
 
-; type key 104
+; type key 1001
 auth-capabilities = {
   0: uint ; psk-ease-of-input
   1: [* psk-input-method] ; psk-input-methods
 }
 
-; type key 105
-auth-request-hkdf-scrypt-psk = {
-  request
-  1 : bytes .size 32 ; salt
-  2 : uint ; cost
-}
-
-; type key 106
-auth-response-hkdf-scrypt-psk = {
-  response
-  1 : auth-response-hkdf-scrypt-psk-result ; result
-  2 : bytes .size 32 ; proof
-}
-
-auth-response-hkdf-scrypt-psk-result = &(
-  success: 0
-  unknown-error: 1
-  timeout: 2
-  secret-unknown: 3
-  calculation-took-too-long : 4
-  cost-too-low: 5
-  cost-too-high: 6
+psk-input-method = &(
+  numeric: 0
+  qr-code: 1
 )
 
-; type key 107
+; type key 1002
+auth-spake2-need-psk = {
+}
+
+; type key 1003
+auth-spake2-message = {
+  1 : bytes .size 32 ; message
+}
+
+; type key 1004
+auth-spake2-confirmation = {
+  1 : bytes .size 32 ; confirmation
+}
+
+; type key 1005
 auth-status = {
   1 : auth-status-result ; result
 }
