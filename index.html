@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 4c94409a0f8f9bae15b929d2cd1d918c8334e6ff" name="generator">
+  <meta content="Bikeshed version ee4d7efc3ed6155392d49e10a542e2351fd5792d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="8b058c14ed6472c873ef8955531a342bf5ea49e8" name="document-revision">
+  <meta content="3e4ad9b7a74573691ac0aba5993550e26c94b699" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-21">21 May 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-29">29 May 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1898,102 +1898,54 @@ pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
 either sends or receives an authentication request.  In case both agents have the same
 PSK ease of input value, the server presents the PSK to the user.  The same pre-shared key
-is used by both agents to issue an authentication request.</p>
+is used by both agents.  The agent presenting the PSK to the user is the PSK-presenter,
+the agent requiring the user to input the PSK is the PSK-consumer.</p>
    <p>PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
 it is not possible for the user to input PSK on this device and 100 means
 that it’s easy for the user to input PSK on the device.  Supported PSK input methods
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
-   <p>In order for one agent (the challenger) to authenticate another (the responder),
-the challenger may send an authentication-request message and expect an
-authentication-response message to be sent back from the responder.  To
-mutually authenticate, this mechanism is used twice, once by each side acting as
-the challenger.  This mechanism assumes the agents share a low-entropy secret,
-such as a number or a short password that could be entered by a user on a
-keyboard or TV remote control.</p>
    <p>For all messages and objects defined in this section, see Appendix A for the full
 CDDL definitions.</p>
-   <p>The challenger sends an auth-request-hkdf-scrypt-psk message with the following values:</p>
-   <ul>
-    <li data-md>
-     <p>salt: 32 random bytes.  This salt is used in HKDF, so see
-https://tools.ietf.org/html/rfc5869#section-3.1 for more details on how this
-value should be generated.</p>
-    <li data-md>
-     <p>cost: log base 2 of the cost parameter (N) for scrypt defined in <a href="https://tools.ietf.org/html/rfc7914#section-2">RFC
-7914 section 2</a>.  It must be
-greater than or equal to 14 (to avoid being too weak) and less than or equal
-to 128 (the limit defined by scrypt).  A value of 15 is recommended (an
-scrypt N of 2^15 or 32768).</p>
-   </ul>
-   <p>The responder replies with an auth-response-hkdf-scrypt-psk-result message with
-the following values:</p>
-   <ul>
-    <li data-md>
-     <p>result:  If the responder was able to calculate proof of possession of the
-shared secret, and if it failed, why it failed.</p>
-    <li data-md>
-     <p>proof: The result of running the authentication mechanism.  The steps for
-hkdf-of-scrypt-of-psk are described below.</p>
-   </ul>
-   <p>The challenger verifies the proof and sends the responder an auth-status message
-with the following values:</p>
-   <ul>
-    <li data-md>
-     <p>result:  If the challenger was able to authenticate the responder or not,
-and if not, why not.</p>
-   </ul>
-   <p>The challenger must limit the time the responder has to send a response to 60
-seconds (to avoid the possibility of brute-force attacks.)</p>
-   <p>For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:</p>
+   <p>The default authentication method is <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08">\SPAKE2</a> with the following
+cipher suite:</p>
    <ol>
     <li data-md>
-     <p>Let secret be the pre-shared secret.</p>
+     <p>Elliptic curve is Curve25519</p>
     <li data-md>
-     <p>Let N be 2 to the power of of the cost from the authentication-request
- message.</p>
+     <p>Hash function is SHA-512.</p>
     <li data-md>
-     <p>Let r be 8.</p>
+     <p>Key derivation function is HKDF.</p>
     <li data-md>
-     <p>Let p be 1.</p>
+     <p>Message authentication code is HMAC.</p>
     <li data-md>
-     <p>Let keyLength be 32.</p>
-    <li data-md>
-     <p>Let scryptResult be the result of running <a href="https://tools.ietf.org/html/rfc7914">scrypt</a> on secret with cost parameter N,
- block size r, parallelization parameter p, and derived key length of
- keyLength.</p>
-    <li data-md>
-     <p>Let hashFunction be sha-256.</p>
-    <li data-md>
-     <p>Let salt be the salt from the authentication-request message.</p>
-    <li data-md>
-     <p>Let info be a 64-byte array containing certificate fingerprint pair with the following values:</p>
+     <p>Password hash function is SHA-512.</p>
    </ol>
-   <ul>
-    <li data-md>
-     <p>Bytes 0-31 of the array are the challenger’s fingerprint: The result of running
-sha-256 on the Distinguished Encoding Rules (DER) form (see
-https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
-the challenger in the QUIC crypto handshake during connection establishment.</p>
-    <li data-md>
-     <p>Bytes 32-63 of the array are the responder’s fingerprint: The result of running
-sha-256 on the Distinguished Encoding Rules (DER) form (see
-https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
-the responder in the QUIC crypto handshake during connection establishment.</p>
-   </ul>
-   <ol start="9">
-    <li data-md>
-     <p>Let proof be the result of running <a href="https://tools.ietf.org/html/rfc5869">\HKDF</a> on scryptResult with
- both the extract and expand steps, hash function hashFunction,
- application-specific info, and output key length keyLength.</p>
-   </ol>
-   <p>To verify that the responder’s proof is correct, the challenger makes the same
-calculation of the proof and compares the result. If the results are the same,
-the challenger considers the responder authenticated, and considers it
-unauthenticated otherwise.</p>
-   <p class="note" role="note"><span>Note:</span> the values of 32 above (for salt length, keyLength) are based on the
-output size of sha-256.  If a different hash mechanism is used in the future,
-these values should be updated as well.</p>
+   <p>Open Screen Protocol does not use a memory-hard hash function to hash PSKs
+with SPAKE2 and uses SHA-512 instead as the PSK is one-time use and
+is not stored in any form.</p>
+   <p>SPAKE2 provides explicit mutual authentication.</p>
+   <p>This authentication method assumes the agents share a low-entropy secret,
+such as a number or a short password that could be entered by a user on a
+phone, a keyboard or a TV remote control.</p>
+   <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
+The client acts as Alice, the server acts as Bob.</p>
+   <p>The messages used in this authentication method are: auth-spake2-need-psk,
+auth-spake2-message, auth-spake2-confirmation and auth-status. <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08">\SPAKE2</a> describes in detail
+how auth-spake2-message and auth-spake2-confirmation are computed.</p>
+   <p>If the PSK-presenter wants to perform authentication, the PSK-presenter
+starts authentication process by presenting the PSK to the user and sending
+auth-spake2-message message.</p>
+   <p>If the PSK-consumer wants to perform authentication, the PSK-consumer
+sends auth-spake2-need-psk message to the PSK-presenter to start authentication
+process.  After the user inputs the PSK into the PSK-consumer,
+the PSK-consumer computes and sends auth-spake2-message.</p>
+   <p>If the PSK-presenter receives a auth-spake2-need-psk message after starting authentication
+from their side, the PSK-presenter ignores the auth-spake2-need-psk message.</p>
+   <p>When either agent knows PSK and has received a auth-spake2-message message,
+the agent computes and sends a auth-spake2-confirmation message.</p>
+   <p>When either agent has received both auth-spake2-message and auth-spake2-confirmation messages,
+the agent validates the confirmation message and sends the auth-status authenticated message.</p>
    <h2 class="heading settled" data-level="7" id="control-protocols"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control-protocols"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="presentation-protocol"><span class="secno">7.1. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h3>
    <p>This section defines the use of the Open Screen Protocol for starting,
@@ -3172,30 +3124,31 @@ because smaller type keys encode on the wire smaller.</p>
 <p><span class="nx">microseconds </span><span class="p">=</span> <span class="kt">uint</span></p>
 
 <p><span class="c1">; type key 1001</span>
-<span class="nx">auth-request-hkdf-scrypt-psk </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; salt</span>
-  <span class="mi">2</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cost</span>
+<span class="nx">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 1002</span>
-<span class="nx">auth-response-hkdf-scrypt-psk </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="nx">  1 </span><span class="p">:</span> <span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="c1">; result</span>
-  <span class="mi">2</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; proof</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">success</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">timeout</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
-  <span class="nx">calculation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
-  <span class="nx">cost-too-low</span><span class="p">:</span> <span class="mi">5</span>
-  <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">6</span>
+<p><span class="nx">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">)</span></p>
 
+<p><span class="c1">; type key 1002</span>
+<span class="nx">auth-spake2-need-psk </span><span class="p">=</span> <span class="p">{</span>
+<span class="p">}</span></p>
+
 <p><span class="c1">; type key 1003</span>
+<span class="nx">auth-spake2-message </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 1004</span>
+<span class="nx">auth-spake2-confirmation </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; confirmation</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 1005</span>
 <span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
@@ -3207,18 +3160,6 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
   <span class="nx">validation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
-<span class="p">)</span></p>
-
-<p><span class="c1">; type key 1004</span>
-<span class="nx">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="nx">alphanumeric</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">2</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 14</span>
