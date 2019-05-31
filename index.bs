@@ -361,8 +361,8 @@ The agent-info-response message contains the following properties:
     displayed to the user of the requesting agent.
 
 : capabilities (required)
-:: The contorol protocols, roles, and media types the agent support.
-    Presence indicates capability and absence indicates lack of
+:: The control protocols, roles, and media types the agent supports.
+    Presence indicates a capability and absence indicates lack of a
     capability.  Capabilities should should affect how an agent is
     presented to a user, such as drawing a different icon depending on
     the media types it supports.
