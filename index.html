@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version ee4d7efc3ed6155392d49e10a542e2351fd5792d" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="06a44820a4b3e1acb861b3aaf0c2cb135dc157f3" name="document-revision">
+  <meta content="de573339f57979ede2601a0b9421a68061662a7d" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-29">29 May 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-31">31 May 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1898,8 +1898,8 @@ pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
 either sends or receives an authentication request.  In case both agents have the same
 PSK ease of input value, the server presents the PSK to the user.  The same pre-shared key
-is used by both agents.  The agent presenting the PSK to the user is the PSK-presenter,
-the agent requiring the user to input the PSK is the PSK-consumer.</p>
+is used by both agents.  The agent presenting the PSK to the user is the PSK presenter,
+the agent requiring the user to input the PSK is the PSK consumer.</p>
    <p>PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
 it is not possible for the user to input PSK on this device and 100 means
 that it’s easy for the user to input PSK on the device.  Supported PSK input methods
@@ -1911,13 +1911,13 @@ the full CDDL definitions.</p>
 the following cipher suite:</p>
    <ol>
     <li data-md>
-     <p>Elliptic curve is Curve25519</p>
+     <p>Elliptic curve is <a href="https://tools.ietf.org/html/rfc7748#page-4">Curve25519</a>.</p>
     <li data-md>
-     <p>Hash function is SHA-512.</p>
+     <p>Hash function is <a href="https://tools.ietf.org/html/rfc6234">SHA-512</a>.</p>
     <li data-md>
-     <p>Key derivation function is HKDF.</p>
+     <p>Key derivation function is <a href="https://tools.ietf.org/html/rfc5869">HKDF</a>.</p>
     <li data-md>
-     <p>Message authentication code is HMAC.</p>
+     <p>Message authentication code is <a href="https://tools.ietf.org/html/rfc2104">HMAC</a>.</p>
     <li data-md>
      <p>Password hash function is SHA-512.</p>
    </ol>
@@ -1934,18 +1934,18 @@ The client acts as Alice, the server acts as Bob.</p>
 auth-spake2-message, auth-spake2-confirmation and auth-status.
 SPAKE2 describes in detail how auth-spake2-message and auth-spake2-confirmation
 are computed.</p>
-   <p>If the PSK-presenter wants to perform authentication, the PSK-presenter
+   <p>If the PSK presenter wants to perform authentication, the PSK presenter
 starts the authentication process by presenting the PSK to the user and sending
-a auth-spake2-message message. When the PSK-consumer receives
-the auth-spake2-message message, the PSK-consumer prompts the user for the PSK
+a auth-spake2-message message. When the PSK consumer receives
+the auth-spake2-message message, the PSK consumer prompts the user for the PSK
 input if it has not done so yet.</p>
-   <p>If the PSK-consumer wants to perform authentication, the PSK-consumer
-sends auth-spake2-need-psk message to the PSK-presenter to start authentication
-process and prompts the user to input the PSK. If the PSK-presenter receives
+   <p>If the PSK consumer wants to perform authentication, the PSK consumer
+sends a auth-spake2-need-psk message to the PSK presenter to start authentication
+process and prompts the user to input the PSK. If the PSK presenter receives
 a auth-spake2-need-psk message after starting authentication from their side,
-the PSK-presenter ignores the auth-spake2-need-psk message.</p>
-   <p>After the user inputs the PSK into the PSK-consumer, the PSK-consumer computes
-and sends auth-spake2-message.</p>
+the PSK presenter ignores the auth-spake2-need-psk message.</p>
+   <p>After the user inputs the PSK into the PSK consumer, the PSK consumer computes
+and sends a auth-spake2-message.</p>
    <p>When either agent both knows the PSK and has received a auth-spake2-message
 message, the agent computes and sends a auth-spake2-confirmation message.</p>
    <p>When either agent has received both auth-spake2-message and
