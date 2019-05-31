@@ -339,7 +339,7 @@ a display name of an unauthenticated agent is unverified).
 
 The connection IDs used both by the [[QUIC]] client and server should
 be zero length.  If zero length connection IDs are chosen, agents are
-restricted from changing IP or port without establshing a new QUIC
+restricted from changing IP or port without establishing a new QUIC
 connection.  In such cases, clients and servers must establish a new
 QUIC connection in order to change IP or port.
 
