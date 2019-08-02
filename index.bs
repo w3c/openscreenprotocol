@@ -297,6 +297,9 @@ such (possibly  truncated) display names to be visible to the user sooner
 as unverified and must verify that the instance name is a prefix of the verified
 display name before showing the user a verified display name.
 
+Agents should use the complete display name to the user rather than a
+truncated display name.
+
 Advertising agents must include DNS TXT records with the following
 keys and values:
 
