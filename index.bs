@@ -150,7 +150,7 @@ Presentation API Requirements {#requirements-presentation-api}
     by IP multicast.
 
 2.  A controlling user agent must be able to obtain the IPv4 or IPv6 address of
-    the display, a friendly name for the display, and an IP port number for
+    the display, a display name for the display, and an IP port number for
     establishing a network transport to the display.
 
 3.  A controlling user agent must be able to determine if the receiver is
@@ -280,25 +280,29 @@ Non-Functional Requirements {#requirements-non-functional}
 Discovery with mDNS {#discovery}
 ===============================
 
-Agents may discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
-To do so, agents must use the service name "_openscreen._udp.local".
+Agents must discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
+To do so, agents must use the service name `_openscreen._udp.local`.
 
 Issue(107): Define suspend and resume behavior for discovery protocol.
 
-Advertising Agents must use an instance name that is a prefix of the agent's
-display name. If the instance name is not the complete display name (if it has
-been truncated), it must be terminated by a null character.  It is prefix so
-that the name displayed to the user pre-verification can be verified later.  It
-is terminated by a null character in the case of truncation so that the
-listening agent knows it has been truncated.  This complexity is necessary to
-all for display names that exceed the size allowed in an instance name and for
-such (possibly  truncated) display names to be visible to the user sooner
-(before a QUIC connection is made).  Listening agents must treat instance names
-as unverified and must verify that the instance name is a prefix of the verified
-display name before showing the user a verified display name.
+An <dfn noexport>advertising agent</dfn> is one that responds to mDNS queries
+for `_openscreen._udp.local`.  Such an agent should have a <dfn noexport>display
+name</dfn> (a non-empty string) that is a human readable description of the
+presentation display, e.g. "Living Room TV."
 
-Agents should use the complete display name to the user rather than a
-truncated display name.
+A <dfn noexport>listening agent</dfn> is one that sends mDNS queries for
+`_openscreen._udp.local`.  Listening agents may have a display name.
+
+Advertising agents must use an DNS-SD instance name that is a prefix of the
+agent's display name.  If the instance name is not the complete display name, it
+must be terminated by a null (`\000`) character, so that a listening agent knows
+it has been truncated.  Agents must show only complete display names to the
+user, and never truncated display names.
+
+Agents must treat instance names as unverified information, and should check that
+the instance name is a prefix of the display name received through the
+`agent-info` message after a successful QUIC connection.  Once an agent has done
+this check, it can show the name as a <dfn noexport>verified display name</dfn>.
 
 Advertising agents must include DNS TXT records with the following
 keys and values:
@@ -1833,7 +1837,7 @@ and/or high value data:
 Presentation IDs are considered high value data because they can be used in
 conjunction with a Presentation URL to connect to a running presentation.
 
-Presentation display friendly names, model names, and capabilities, while not
+Presentation display names, model names, and capabilities, while not
 considered personally identifiable, are important to protect to prevent an
 attacker from changing them or substituting other values during the discovery
 and authentication process.
@@ -1970,10 +1974,10 @@ should be flagged include:
 
 * Untrusted agents whose public key fingerprint collides with that from an
     already-trusted agent that is concurrently being advertised.
-* Untrusted agents whose friendly name differs from the one previously
+* Untrusted agents whose display name differs from the one previously
     advertised under a given public key fingerprint.
 * Untrusted agents that fail the authentication challenge a certain number of times.
-* Untrusted agents that advertise a friendly name that is similar to that from an
+* Untrusted agents that advertise a display name that is similar to that from an
     already-trusted agent.
 * Already-trusted agents whose metadata provided through the `agent-info`
     message has changed.
