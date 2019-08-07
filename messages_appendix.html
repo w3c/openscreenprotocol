@@ -9,11 +9,24 @@
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span>
 
+<span class="nx">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">receive-audio</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span>
+
+  <span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">3</span>
+
+  <span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">5</span>
+
+  <span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">6</span>
+  <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">7</span>
+<span class="p">)</span>
+
 <span class="nx">agent-info </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-audio</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-video</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">agent-capabilitiy</span><span class="p">]</span> <span class="c1">; capabilities</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 12</span>
