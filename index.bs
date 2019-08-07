@@ -296,13 +296,27 @@ A <dfn noexport>listening agent</dfn> is one that sends mDNS queries for
 Advertising agents must use an DNS-SD instance name that is a prefix of the
 agent's display name.  If the instance name is not the complete display name, it
 must be terminated by a null (`\000`) character, so that a listening agent knows
-it has been truncated.  Agents must show only complete display names to the
-user, and never truncated display names.
+it has been truncated.
 
-Agents must treat instance names as unverified information, and should check that
-the instance name is a prefix of the display name received through the
+Agents must treat instance names as unverified information, and should check
+that the instance name is a prefix of the display name received through the
 `agent-info` message after a successful QUIC connection.  Once an agent has done
 this check, it can show the name as a <dfn noexport>verified display name</dfn>.
+
+Agents should show only complete display names to the user, instead of truncated
+display names from DNS-SD.  A truncated display name should be verified as above
+before being shown in full as a [=verified display name=].
+
+<div class="note">
+This means there are three categories of display names that agents should be
+capable of handling:
+<ol>
+  <li>Truncated and unverified DNS-SD instance names, which should not be shown to the user.</li>
+  <li>Complete but unverified DNS-SD instance names, which can be shown as
+     unverified prior to [[#authentication]].</li>
+  <li>Verified display names.</li>
+</ol>
+</div>
 
 Advertising agents must include DNS TXT records with the following
 keys and values:
