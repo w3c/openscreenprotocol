@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="db6056d9460cfd0e00d68d315ce6b720964522ff" name="document-revision">
+  <meta content="5a073d21fafe614cb4571349eeadf19bc25fd5dd" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1775,11 +1775,23 @@ presentation display, e.g. "Living Room TV."</p>
    <p>Advertising agents must use an DNS-SD instance name that is a prefix of the
 agent’s display name.  If the instance name is not the complete display name, it
 must be terminated by a null (<code>\000</code>) character, so that a listening agent knows
-it has been truncated.  Agents must show only complete display names to the
-user, and never truncated display names.</p>
-   <p>Agents must treat instance names as unverified information, and should check that
-the instance name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an agent has done
-this check, it can show the name as a <dfn data-dfn-type="dfn" data-noexport id="verified-display-name">verified display name<a class="self-link" href="#verified-display-name"></a></dfn>.</p>
+it has been truncated.</p>
+   <p>Agents must treat instance names as unverified information, and should check
+that the instance name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an agent has done
+this check, it can show the name as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="verified-display-name">verified display name</dfn>.</p>
+   <p>Agents should show only complete display names to the user, instead of truncated
+display names from DNS-SD.  A truncated display name should be verified as above
+before being shown in full as a <a data-link-type="dfn" href="#verified-display-name" id="ref-for-verified-display-name">verified display name</a>.</p>
+   <div class="note" role="note">
+     This means there are three categories of display names that agents should be
+capable of handling: 
+    <ol>
+     <li>Truncated and unverified DNS-SD instance names, which should not be shown to the user.
+     <li>Complete but unverified DNS-SD instance names, which can be shown as
+     unverified prior to <a href="#authentication">§ 6 Authentication</a>.
+     <li>Verified display names.
+    </ol>
+   </div>
    <p>Advertising agents must include DNS TXT records with the following
 keys and values:</p>
    <dl>
@@ -4039,6 +4051,12 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29①"> ↵ </a></div>
    <div class="issue"> Mitigations for remote network attackers. <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a><a href="#issue-7e863472"> ↵ </a></div>
   </div>
+  <aside class="dfn-panel" data-for="verified-display-name">
+   <b><a href="#verified-display-name">#verified-display-name</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-verified-display-name">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
 <script>/* script-dfn-panel */
 
 document.body.addEventListener("click", function(e) {
