@@ -61,6 +61,8 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: remote playback source
 urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML51
     text: media element
+url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
+url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
 </pre>
 
 <h2 class='no-num no-toc no-ref' id='status'>Status of this document</h2>
@@ -281,7 +283,7 @@ Discovery with mDNS {#discovery}
 ===============================
 
 Agents must discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
-To do so, agents must use the service name `_openscreen._udp.local`.
+To do so, agents must use the [=Service Name=] `_openscreen._udp.local`.
 
 Issue(107): Define suspend and resume behavior for discovery protocol.
 
@@ -293,13 +295,13 @@ presentation display, e.g. "Living Room TV."
 A <dfn noexport>listening agent</dfn> is one that sends mDNS queries for
 `_openscreen._udp.local`.  Listening agents may have a display name.
 
-Advertising agents must use an DNS-SD instance name that is a prefix of the
-agent's display name.  If the instance name is not the complete display name, it
+Advertising agents must use a DNS-SD [=Instance Name=] that is a prefix of the
+agent's display name.  If the Instance Name is not the complete display name, it
 must be terminated by a null (`\000`) character, so that a listening agent knows
 it has been truncated.
 
-Agents must treat instance names as unverified information, and should check
-that the instance name is a prefix of the display name received through the
+Agents must treat Instance Names as unverified information, and should check
+that the Instance Name is a prefix of the display name received through the
 `agent-info` message after a successful QUIC connection.  Once an agent has done
 this check, it can show the name as a <dfn noexport>verified display name</dfn>.
 
@@ -311,8 +313,8 @@ before being shown in full as a [=verified display name=].
 This means there are three categories of display names that agents should be
 capable of handling:
 <ol>
-  <li>Truncated and unverified DNS-SD instance names, which should not be shown to the user.</li>
-  <li>Complete but unverified DNS-SD instance names, which can be shown as
+  <li>Truncated and unverified DNS-SD Instance Names, which should not be shown to the user.</li>
+  <li>Complete but unverified DNS-SD Instance Names, which can be shown as
      unverified prior to [[#authentication]].</li>
   <li>Verified display names.</li>
 </ol>
