@@ -1592,6 +1592,8 @@ extension protocols.  However, this is not required; agents that support
 non-CBOR extensions must be able to decode QUIC streams that contain a mix of
 CBOR messages and non-CBOR extension messages.
 
+TODO: Document how extensions should add fields to standard CBOR messages.
+
 Security and Privacy {#security-privacy}
 ====================
 
