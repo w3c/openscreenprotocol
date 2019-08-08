@@ -1798,7 +1798,8 @@ extension messages should include the corresponding capability ID in the
 `capabilities` field of its `agent-info` message.
 
 Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
-Capability IDs 1000 and above are available for extensions.
+Capability IDs 1000 and above are available for extensions.  See [[#appendix-b]]
+for legal ranges for extension message type keys.
 
 Note: This will prevent conflicts between multiple extension authors' capability
 IDs and message type keys.
@@ -1811,8 +1812,6 @@ simplify implementations and provide an easier path to standardization of
 extension protocols.  However, this is not required; agents that support
 non-CBOR extensions must be able to decode QUIC streams that contain a mix of
 CBOR messages and non-CBOR extension messages.
-
-TODO: Define extension message type key ranges.
 
 Security and Privacy {#security-privacy}
 ====================
@@ -2131,3 +2130,77 @@ path: messages_appendix.html
 <pre class=include>
 path: code-style.html
 </pre>
+
+Appendix B: Message Type Key Ranges {#appendix-b}
+===================================
+
+The following appendix describes how the range of message type keys is divided.
+Legal values are 1 to 2<sup>64</sup>.
+
+Each type key is encoded as a variable-length integer on the wire of 1, 2, 4 or
+8 bytes.  For each wire byte size, 1/4 to 1/2 of the keys are available for
+extensions.
+
+<!--
+ASCII-art equivalent:
+
+| Bytes | Range           | Purpose                      |
+|-------|-----------------|------------------------------|
+| 1     | 1 - 48          | Open Screen Protocol         |
+| 1     | 49 - 63         | Available for extensions     |
+| 2     | 64 - 8,192      | Open Screen Protocol         |
+| 2     | 8,193 - 16,383  | Available for extensions     |
+| 4     | 16,384 - 2^29   | Reserved for future use      |
+| 4     | 2^29+1 - 2^30-1 | Available for extensions     |
+| 8     | >= 2^30         | Reserved for future use      |
+
+because @tabatkins doesn't like markdown tables:
+https://github.com/tabatkins/bikeshed/issues/1128
+-->
+
+<table>
+<thead>
+<tr>
+<th>Bytes</th>
+<th>Range</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1 - 48</td>
+<td>Open Screen Protocol</td>
+</tr>
+<tr>
+<td>1</td>
+<td>49 - 63</td>
+<td>Available for extensions</td>
+</tr>
+<tr>
+<td>2</td>
+<td>64 - 8,192</td>
+<td>Open Screen Protocol</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8,193 - 16,383</td>
+<td>Available for extensions</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16,384 - 2<sup>29</sup></td>
+<td>Reserved for future use</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2<sup>29</sup>+1 - 2<sup>30</sup>-1</td>
+<td>Available for extensions</td>
+</tr>
+<tr>
+<td>8</td>
+<td>&gt;= 2<sup>30</sup></td>
+<td>Reserved for future use</td>
+</tr>
+</tbody>
+</table>
