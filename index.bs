@@ -1563,6 +1563,36 @@ Stats {#streaming-stats}
 TODO
 
 
+Protocol Extensions {#protocol-extensions}
+===================
+
+Open Screen agents may exchange extension messages that are not defined by this
+specification.  This could be used for experimentation, customization or other
+purposes.
+
+If an agent wishes to support extension messages, the author of the extension
+must register a capability ID and a range of message type keys in a public
+registry, whose location will be determined later.  Agents that accept the
+extension messages should include the corresponding capability ID in the
+`capabilities` field of its `agent-info` message.
+
+Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
+Capability IDs 1000 and above are available for extensions.
+
+Note: This will prevent conflicts between multiple extension authors' capability
+IDs and message type keys.
+
+Agents must not send extension messages to another agent that has not advertised
+the corresponding extension capability ID.
+
+It is recommended that the extension messages are also encoded in CBOR, to
+simplify implementations and provide an easier path to standardization of
+extension protocols.  However, this is not required; agents that support
+non-CBOR extensions must be able to decode QUIC streams that contain a mix of
+CBOR messages and non-CBOR extension messages.
+
+TODO: Define extension message type key ranges.
+
 Security and Privacy {#security-privacy}
 ====================
 
