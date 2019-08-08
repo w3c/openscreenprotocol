@@ -1029,7 +1029,7 @@ Possible extra rowspan handling
 		}
 	/* } */
 
-	@supports (display:grid) {
+	@supports (display:grid) and (display:contents) {
 		/* Use #toc over .toc to override non-@supports rules. */
 		#toc {
 			display: grid;
@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version ee4d7efc3ed6155392d49e10a542e2351fd5792d" name="generator">
+  <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="de573339f57979ede2601a0b9421a68061662a7d" name="document-revision">
+  <meta content="db6056d9460cfd0e00d68d315ce6b720964522ff" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-05-31">31 May 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-08">8 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1512,7 +1512,11 @@ pre .property::before, pre .property::after {
     <li><a href="#discovery"><span class="secno">3</span> <span class="content">Discovery with mDNS</span></a>
     <li><a href="#transport"><span class="secno">4</span> <span class="content">Transport and metadata discovery with QUIC</span></a>
     <li><a href="#messages"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
-    <li><a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
+    <li>
+     <a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
+     <ol class="toc">
+      <li><a href="#authentication-with-spake2"><span class="secno">6.1</span> <span class="content">Authentication with SPAKE2</span></a>
+     </ol>
     <li>
      <a href="#control-protocols"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
      <ol class="toc">
@@ -1777,6 +1781,8 @@ such (possibly  truncated) display names to be visible to the user sooner
 (before a QUIC connection is made).  Listening agents must treat instance names
 as unverified and must verify that the instance name is a prefix of the verified
 display name before showing the user a verified display name.</p>
+   <p>Agents should use the complete display name to the user rather than a
+truncated display name.</p>
    <p>Advertising agents must include DNS TXT records with the following
 keys and values:</p>
    <dl>
@@ -1799,6 +1805,14 @@ metadata has changed.   The advertising agent must update it to a greater
 value.  This signals to the listening agent that it should connect to the
 advertising agent to discover updated metadata.</p>
    </dl>
+   <p>The advertising agent may add an additional field to the TXT record:</p>
+   <dl>
+    <dt data-md>pw
+    <dd data-md>
+     <p>An alphanumeric, unguessable token consisting of a <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc4648#section-4" id="ref-for-section-4">Base64</a> encoded 128-bit
+random value (24 characters in length).</p>
+   </dl>
+   <p class="note" role="note"><span>Note:</span> The requirements for <code>pw</code> are the same as for an <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8445#section-5.3" id="ref-for-section-5.3">ICE password</a>.</p>
    <p class="issue" id="issue-49bdd4e6"><a class="self-link" href="#issue-49bdd4e6"></a> Add examples of sample mDNS records.</p>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
@@ -1812,6 +1826,11 @@ it initiates a <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a> connect
 Prior to authentication, a message may be exchanged (such as further metadata),
 but such info should be treated as unverified (such as indicating to a user that
 a display name of an unauthenticated agent is unverified).</p>
+   <p>The connection IDs used both by the <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a> client and server should
+be zero length.  If zero length connection IDs are chosen, agents are
+restricted from changing IP or port without establishing a new QUIC
+connection.  In such cases, clients and servers must establish a new
+QUIC connection in order to change IP or port.</p>
    <p>To learn further metadata, an agent may send an agent-info-request
 message (see <a href="#appendix-a">Appendix A: Messages</a>) and receive back an agent-info-response message.
 Any agent may send this request to learn about the capabilities of
@@ -1828,14 +1847,48 @@ another device.</p>
      <p>If the agent is a hardware device, the model name of
 the device.  This is used mainly for debugging purposes, but may be
 displayed to the user of the requesting agent.</p>
-    <dt data-md>receives-audio (optional)
+    <dt data-md>capabilities (required)
     <dd data-md>
-     <p>The agent has to indicate that it supports audio. If false
-or not included, it is assumed audio content is not supported.</p>
-    <dt data-md>receives-video (optional)
+     <p>The control protocols, roles, and media types the agent supports.
+Presence indicates a capability and absence indicates lack of a
+capability.  Capabilities should should affect how an agent is
+presented to a user, such as drawing a different icon depending on
+the media types it supports.</p>
+   </dl>
+   <p>The various capabilities have the following meanings:</p>
+   <dl>
+    <dt data-md>receive-audio
     <dd data-md>
-     <p>The agent has to indicate that it supports video . If false
-or not included, it is assumed video content is not supported.</p>
+     <p>The agent can generally receive audio for the control protocols it
+supports.  Each control protocol can have more specific capability
+mechanisms, such as support for specific URLs in the presentation
+protocol.</p>
+    <dt data-md>receive-video
+    <dd data-md>
+     <p>The agent can generally receive video for the control protocols it
+supports.  Each control protocol can have more specific capability
+mechanisms, such as support for specific URLs in the presentation
+protocol.</p>
+    <dt data-md>receive-presentation
+    <dd data-md>
+     <p>The agent can receive presentations using the presentation protocol.</p>
+    <dt data-md>control-presentation
+    <dd data-md>
+     <p>The agent can control presentations using the presentation protocol.</p>
+    <dt data-md>receive-remote-playback
+    <dd data-md>
+     <p>The agent can receive remote playback using the remote playback
+protocol.</p>
+    <dt data-md>control-remote-playback
+    <dd data-md>
+     <p>The agent can control remote playback using the remote playback
+protocol.</p>
+    <dt data-md>receive-streaming
+    <dd data-md>
+     <p>The agent can receiving streaming using the streaming protocol.</p>
+    <dt data-md>send-streaming
+    <dd data-md>
+     <p>The agent can send streaming using the streaming protocol.</p>
    </dl>
    <p>Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
@@ -1890,9 +1943,8 @@ request they are associated with.</p>
    <p>Each supported authentication method is implemeted via authentication messages
 specific to that method.  The authentication method is explicitly specified by
 the message itself.  The authentication status message is common for all authentication
-methods.  Any new authentication method added must define new authentication messages.
-The default authentication method is a challenge-response authentication with
-auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.</p>
+methods.  Any new authentication method added must define new authentication messages.</p>
+   <p>Open Screen Agents must implement <a href="#authentication-with-spake2">§ 6.1 Authentication with SPAKE2</a> with pre-shared keys.</p>
    <p>Prior to authentication, agents exchange auth-capabilities messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
@@ -1905,6 +1957,14 @@ it is not possible for the user to input PSK on this device and 100 means
 that it’s easy for the user to input PSK on the device.  Supported PSK input methods
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
+   <p>Any authentication method may require an <code>auth-initiation-password</code> before
+showing a PSK to the user or requesting PSK input from the user.  If an
+advertising agent has the <code>pw</code> field in its mDNS TXT record, it must be used as
+the <code>auth-initiation-password</code> in the the first authentication message sent to
+or from that agent.  Agents should discard any authentication message whose <code>auth-initiation-password</code> is set and does not match the <code>pw</code> provided by the
+advertising agent.</p>
+   <p>TODO: Autolink advertising agent when PR #180 lands.</p>
+   <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
    <p>For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.</p>
    <p>The default authentication method is <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08">SPAKE2</a> with
@@ -1934,13 +1994,13 @@ The client acts as Alice, the server acts as Bob.</p>
 auth-spake2-message, auth-spake2-confirmation and auth-status.
 SPAKE2 describes in detail how auth-spake2-message and auth-spake2-confirmation
 are computed.</p>
-   <p>If the PSK presenter wants to perform authentication, the PSK presenter
-starts the authentication process by presenting the PSK to the user and sending
-a auth-spake2-message message. When the PSK consumer receives
-the auth-spake2-message message, the PSK consumer prompts the user for the PSK
-input if it has not done so yet.</p>
+   <p>If the PSK presenter wants to perform authentication, the PSK presenter starts
+the authentication process by presenting the PSK to the user and sending a
+auth-spake2-message message. When the PSK consumer receives the
+auth-spake2-message message, the PSK consumer prompts the user for the PSK input
+if it has not done so yet.</p>
    <p>If the PSK consumer wants to perform authentication, the PSK consumer
-sends a auth-spake2-need-psk message to the PSK presenter to start authentication
+sends a auth-spake2-need-psk message to the PSK presenter  to start authentication
 process and prompts the user to input the PSK. If the PSK presenter receives
 a auth-spake2-need-psk message after starting authentication from their side,
 the PSK presenter ignores the auth-spake2-need-psk message.</p>
@@ -1954,7 +2014,7 @@ and sends the auth-status authenticated message.</p>
    <h2 class="heading settled" data-level="7" id="control-protocols"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control-protocols"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="presentation-protocol"><span class="secno">7.1. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h3>
    <p>This section defines the use of the Open Screen Protocol for starting,
-terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§7.2 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
+terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§ 7.2 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
 protocol messages defined in this section.</p>
    <p>For all messages defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for the full
 CDDL definitions.</p>
@@ -2140,7 +2200,7 @@ values:</p>
 the user with more explanation as to why it was closed.</p>
    </dl>
    <h3 class="heading settled" data-level="7.2" id="presentation-api"><span class="secno">7.2. </span><span class="content">Presentation API</span><a class="self-link" href="#presentation-api"></a></h3>
-   <p>This section defines how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§7.1 Presentation Protocol</a>.</p>
+   <p>This section defines how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§ 7.1 Presentation Protocol</a>.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "This list of presentation displays ... is populated based on an
 implementation specific discovery mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent③">controlling user agent</a> may
@@ -2180,7 +2240,7 @@ browsing contexts using an implementation specific mechanism.", the <a data-link
 user agent</a>, must send a presentation-connection-open-response message.</p>
    <h3 class="heading settled" data-level="7.3" id="remote-playback-protocol"><span class="secno">7.3. </span><span class="content">Remote Playback Protocol</span><a class="self-link" href="#remote-playback-protocol"></a></h3>
    <p>This section defines the use of the Open Screen Protocol for starting, terminating,
-and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§7.5 Remote Playback API</a> defines how
+and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 7.5 Remote Playback API</a> defines how
 APIs in <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> map to the protocol messages
 defined in this section.</p>
    <p>For all messages defined in this section, see Appendix A for the full
@@ -2268,7 +2328,7 @@ receiver.</p>
     <dt data-md>controls
     <dd data-md>
      <p>Initial controls for modifying the initial state of the remote playback, as
-defined in <a href="#remote-playback-state-and-controls">§7.4 Remote Playback State and Controls</a>.  The controller may send
+defined in <a href="#remote-playback-state-and-controls">§ 7.4 Remote Playback State and Controls</a>.  The controller may send
 controls that are optional for the receiver to support before it knows the
 receiver supports them.  If the receiver does not support them, it will
 ignore them and the controller will learn that it does not support them from
@@ -2285,7 +2345,7 @@ invalid-url).  Additionally, the response must include the following:</p>
    <dl>
     <dt data-md>state
     <dd data-md>
-     <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§7.4 Remote Playback State and Controls</a>.</p>
+     <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 7.4 Remote Playback State and Controls</a>.</p>
    </dl>
    <p>If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -2303,7 +2363,7 @@ remote-playback-modify-response message in reply with the following values:</p>
    <dl>
     <dt data-md>state
     <dd data-md>
-     <p>The updated state of the remote playback as defined in <a href="#remote-playback-state-and-controls">§7.4 Remote Playback State and Controls</a>.</p>
+     <p>The updated state of the remote playback as defined in <a href="#remote-playback-state-and-controls">§ 7.4 Remote Playback State and Controls</a>.</p>
    </dl>
    <p>When the state of remote playback changes without request for modification from
 the controller (such as when the skips or pauses due to user user interaction on
@@ -2315,7 +2375,7 @@ controller.</p>
      <p>The ID of the remote playback whose state has changed.</p>
     <dt data-md>state
     <dd data-md>
-     <p>The updated state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§7.4 Remote Playback State and Controls</a>.</p>
+     <p>The updated state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 7.4 Remote Playback State and Controls</a>.</p>
    </dl>
    <p>To terminate the remote playback, the controller may send a
 remote-playback-termination-request message with the following values:</p>
@@ -2536,7 +2596,7 @@ time scales to be expressed without loss of precision.  The scale is represented
 in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
    <h3 class="heading settled" data-level="7.5" id="remote-playback-api"><span class="secno">7.5. </span><span class="content">Remote Playback API</span><a class="self-link" href="#remote-playback-api"></a></h3>
    <p>This section defines how the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> uses the
-messages defined in <a href="#remote-playback-protocol">§7.3 Remote Playback Protocol</a>.</p>
+messages defined in <a href="#remote-playback-protocol">§ 7.3 Remote Playback Protocol</a>.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
 6.2.1.2</a> says "This list contains remote playback devices and is populated
 based on an implementation specific discovery mechanism" and <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
@@ -2934,7 +2994,7 @@ This prevents Open Screen agents from correlating activity among profiles
 belonging to the same user (both normal and incognito).</p>
    <h4 class="heading settled" data-level="9.2.5" id="persistent-state"><span class="secno">9.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
    <p>An agent is likely to persist the identity of agents that have successfully
-completed <a href="#authentication">§6 Authentication</a>.  This may include the public key fingerprints,
+completed <a href="#authentication">§ 6 Authentication</a>.  This may include the public key fingerprints,
 metadata versions, and metadata for those parties.</p>
    <p>However, this data is not normally exposed to the Web, only through the native
 UI of the user agent during the display selection or display authentication
@@ -3003,7 +3063,7 @@ cryptographic parameters of the TLS 1.3 QUIC connection.</p>
    <p class="issue" id="issue-84520e29"><a class="self-link" href="#issue-84520e29"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
    <h4 class="heading settled" data-level="9.5.2" id="local-active-mitigations"><span class="secno">9.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
    <p>Local active attackers may attempt to impersonate a presentation display the
-user would normally trust.  The <a href="#authentication">§6 Authentication</a> step of the Open Screen
+user would normally trust.  The <a href="#authentication">§ 6 Authentication</a> step of the Open Screen
 Protocol prevents a man-in-the-middle from impersonating an agent, without
 knowledge of a shared secret.  However, it is possible for an attacker to
 impersonate an existing, trusted display or a newly discovered display that is
@@ -3053,7 +3113,10 @@ by a correct implementation of TLS 1.3.</p>
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.</p>
-   <p class="issue" id="issue-7e863472"><a class="self-link" href="#issue-7e863472"></a> Mitigations for remote network attackers. <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a></p>
+   <p>Advertising agents should set the <code>pw</code> field in their mDNS TXT record to protect
+themselves from off-LAN attempts to initiate <a href="#authentication">§ 6 Authentication</a>, which result
+in user annoyance (display or input of PSK) and potential brute force attacks
+against the PSK.</p>
    <h4 class="heading settled" data-level="9.5.4" id="denial-of-service-mitigations"><span class="secno">9.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
    <p>It will be difficult to completely prevent denial service of attacks that
 originate on the user’s local area network.  Open Screen Protocol agents can
@@ -3095,11 +3158,24 @@ because smaller type keys encode on the wire smaller.</p>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span></p>
 
+<p><span class="nx">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">receive-audio</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span></p>
+
+<p><span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">3</span></p>
+
+<p><span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">5</span></p>
+
+<p><span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">6</span>
+  <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">7</span>
+<span class="p">)</span></p>
+
 <p><span class="nx">agent-info </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-audio</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-video</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">agent-capabilitiy</span><span class="p">]</span> <span class="c1">; capabilities</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 12</span>
@@ -3139,13 +3215,19 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">)</span></p>
 
+<p><span class="nx">auth-initiation-password </span><span class="p">=</span> <span class="p">(</span>
+  <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">password </span><span class="c1">; text</span>
+<span class="p">)</span></p>
+
 <p><span class="c1">; type key 1002</span>
 <span class="nx">auth-spake2-need-psk </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">auth-initiation-password</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1003</span>
 <span class="nx">auth-spake2-message </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
+  <span class="nx">auth-initation-password</span>
+<span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1004</span>
@@ -3898,6 +3980,18 @@ because smaller type keys encode on the wire smaller.</p>
     <li><a href="#ref-for-dfn-remote-playback-source">7.5. Remote Playback API</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-4">
+   <a href="https://tools.ietf.org/html/rfc4648#section-4">https://tools.ietf.org/html/rfc4648#section-4</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-4">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-section-5.3">
+   <a href="https://tools.ietf.org/html/rfc8445#section-5.3">https://tools.ietf.org/html/rfc8445#section-5.3</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-5.3">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
@@ -3931,6 +4025,16 @@ because smaller type keys encode on the wire smaller.</p>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-devices" style="color:initial">remote playback devices</span>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-source" style="color:initial">remote playback source</span>
     </ul>
+   <li>
+    <a data-link-type="biblio">[rfc4648]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-4" style="color:initial">base64</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[rfc8445]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-5.3" style="color:initial">ice password</span>
+    </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
@@ -3943,6 +4047,8 @@ because smaller type keys encode on the wire smaller.</p>
    <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/">Remote Playback API</a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-rfc4648">[RFC4648]
+   <dd>S. Josefsson. <a href="https://tools.ietf.org/html/rfc4648">The Base16, Base32, and Base64 Data Encodings</a>. October 2006. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc4648">https://tools.ietf.org/html/rfc4648</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -3956,8 +4062,10 @@ because smaller type keys encode on the wire smaller.</p>
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
+   <dt id="biblio-rfc8445">[RFC8445]
+   <dd>A. Keranen; C. Holmberg; J. Rosenberg. <a href="https://tools.ietf.org/html/rfc8445">Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal</a>. July 2018. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8445">https://tools.ietf.org/html/rfc8445</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
-   <dd>Mike West. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 10 December 2015. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
+   <dd>Lukasz Olejnik; Jason Novak. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 23 May 2019. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
@@ -3988,7 +4096,6 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29"> ↵ </a></div>
    <div class="issue"> UI guidelines for pairing and trusted/untrusted data. <a href="https://github.com/webscreens/openscreenprotocol/issues/118">&lt;https://github.com/webscreens/openscreenprotocol/issues/118></a><a href="#issue-d435d3a9"> ↵ </a></div>
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29①"> ↵ </a></div>
-   <div class="issue"> Mitigations for remote network attackers. <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a><a href="#issue-7e863472"> ↵ </a></div>
   </div>
 <script>/* script-dfn-panel */
 
