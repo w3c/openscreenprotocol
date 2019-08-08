@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="db6056d9460cfd0e00d68d315ce6b720964522ff" name="document-revision">
+  <meta content="e1e6f7c794f84a00ee3e9143d08271b34c5d768d" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1568,6 +1568,7 @@ pre .property::before, pre .property::after {
        </ol>
      </ol>
     <li><a href="#appendix-a"><span class="secno"></span> <span class="content">Appendix A: Messages</span></a>
+    <li><a href="#appendix-b"><span class="secno"></span> <span class="content">Appendix B: Message Type Key Ranges</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -2875,7 +2876,7 @@ must register a capability ID and a range of message type keys in a public
 registry, whose location will be determined later.  Agents that accept the
 extension messages should include the corresponding capability ID in the <code>capabilities</code> field of its <code>agent-info</code> message.</p>
    <p>Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
-Capability IDs 1000 and above are available for extensions.</p>
+Capability IDs 1000 and above are available for extensions.  See <a href="#appendix-b">Appendix B: Message Type Key Ranges</a> for legal ranges for extension message type keys.</p>
    <p class="note" role="note"><span>Note:</span> This will prevent conflicts between multiple extension authors' capability
 IDs and message type keys.</p>
    <p>Agents must not send extension messages to another agent that has not advertised
@@ -2885,7 +2886,6 @@ simplify implementations and provide an easier path to standardization of
 extension protocols.  However, this is not required; agents that support
 non-CBOR extensions must be able to decode QUIC streams that contain a mix of
 CBOR messages and non-CBOR extension messages.</p>
-   <p>TODO: Define extension message type key ranges.</p>
    <h2 class="heading settled" data-level="10" id="security-privacy"><span class="secno">10. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
@@ -3684,6 +3684,48 @@ because smaller type keys encode on the wire smaller.</p>
 <span class="p">}</span></p>
 </pre>
    </div>
+   <h2 class="heading settled" id="appendix-b"><span class="content">Appendix B: Message Type Key Ranges</span><a class="self-link" href="#appendix-b"></a></h2>
+   <p>The following appendix describes how the range of message type keys is divided.
+Legal values are 1 to 2<sup>64</sup>.</p>
+   <p>Each type key is encoded as a variable-length integer on the wire of 1, 2, 4 or
+8 bytes.  For each wire byte size, 1/4 to 1/2 of the keys are available for
+extensions.</p>
+   <table>
+    <thead>
+     <tr>
+      <th>Bytes
+      <th>Range
+      <th>Purpose
+    <tbody>
+     <tr>
+      <td>1
+      <td>1 - 48
+      <td>Open Screen Protocol
+     <tr>
+      <td>1
+      <td>49 - 63
+      <td>Available for extensions
+     <tr>
+      <td>2
+      <td>64 - 8,192
+      <td>Open Screen Protocol
+     <tr>
+      <td>2
+      <td>8,193 - 16,383
+      <td>Available for extensions
+     <tr>
+      <td>4
+      <td>16,384 - 2<sup>29</sup>
+      <td>Reserved for future use
+     <tr>
+      <td>4
+      <td>2<sup>29</sup>+1 - 2<sup>30</sup>-1
+      <td>Available for extensions
+     <tr>
+      <td>8
+      <td>>= 2<sup>30</sup>
+      <td>Reserved for future use
+   </table>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
