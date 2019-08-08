@@ -26,7 +26,8 @@ agent-capability = &(
 agent-info = {
   0: text ; display-name
   1: text ; model-name
-  2: [* agent-capabilitiy] ; capabilities
+  2: [* agent-capability] ; capabilities
+  3: text ; state-token
 }
 
 ; type key 102
@@ -106,12 +107,14 @@ psk-input-method = &(
   qr-code: 2
 )
 
+watch-id = uint
+
 ; type key 108
 presentation-url-availability-request = {
   request
   1: [1* text] ; urls
   2: microseconds ; watch-duration
-  3: uint ; watch-id
+  3: watch-id ; watch-id
 }
 
 ; type key 109
@@ -122,7 +125,7 @@ presentation-url-availability-response = {
 
 ; type key 110
 presentation-url-availability-event = {
-  1: uint ; watch-id
+  1: watch-id ; watch-id
   2: [1* url-availability] ; url-availabilities
 }
 
@@ -246,7 +249,7 @@ remote-playback-availability-request = {
   request
   1: [* text] ; urls
   2: microseconds ; watch-duration
-  3: int ; watch-id
+  3: watch-id ; watch-id
 }
 
 ; type key 122
@@ -257,7 +260,7 @@ remote-playback-availability-response = {
 
 ; type key 123
 remote-playback-availability-event = {
-  1: int ; watch-id
+  1: watch-id ; watch-id
   2: [* url-availability] ; url-availabilities
 }
 

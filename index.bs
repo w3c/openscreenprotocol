@@ -373,12 +373,13 @@ restricted from changing IP or port without establishing a new QUIC
 connection.  In such cases, clients and servers must establish a new
 QUIC connection in order to change IP or port.
 
-To learn further metadata, an agent may send an agent-info-request
-message (see [[#appendix-a]]) and receive back an agent-info-response message.
-Any agent may send this request to learn about the capabilities of
-another device.
+To learn further metadata, an agent may send an agent-info-request message (see
+[[#appendix-a]]) and receive back an agent-info-response message.  Any agent may
+send this request at any time to learn about the state and capabilities of
+another device, which are described by the `agent-info` message in the
+`agent-info-response`.
 
-The agent-info-response message contains the following properties:
+The `agent-info` message contains the following properties:
 
 : display-name (required)
 :: The display name of the agent, intended to be displayed to a user by the
@@ -396,6 +397,12 @@ The agent-info-response message contains the following properties:
     capability.  Capabilities should should affect how an agent is
     presented to a user, such as drawing a different icon depending on
     the media types it supports.
+
+: state-token (required)
+:: A random alphanumeric value consisting of 8 characters in the range
+    [0-9A-Za-z].  This value is set before the agent makes its first connection
+    and must be set to a new value when the agent is reset or otherwise lost all
+    of its state related to this protocol.
 
 The various capabilities have the following meanings:
 
@@ -617,10 +624,7 @@ presentation-url-availability-request message with the following values:
 : watch-id
 :: An identifier the receiver must use when sending updates about URL
     availability so that the controller knows which URLs the receiver is referring
-    to.  The controller must choose a value that is unique across all
-    presentation URL availability watches to the same receiver.
-
-Issue(145): Watch ID Uniqueness.
+    to.
 
 In response, the receiver should send one presentation-url-availability-response
 message with the following values:
@@ -650,11 +654,7 @@ availability request.
 To save power, the controller may disconnect the QUIC connection and
 later reconnect to send availability requests and receive availability
 responses and updates.  The QUIC connection ID may or may not be the same
-when reconnecting.  Note that the lifetime of a watch-id is not limited
-to one QUIC connection.  The receiver must continue sending updates for watches
-even if the QUIC connection changes, and thus controller need not send
-new URL availability requests if the QUIC connection changes.
-
+when reconnecting.
 
 To start a presentation, the controller may send a
 presentation-start-request message to the receiver with the following
@@ -884,8 +884,7 @@ Issue(146): Remote Playback HTTP headers.
 : watch-id
 :: An identifier the receiver must use when sending updates about URL
     availability so that the controller knows which URLs the receiver is referring
-    to. The controller must choose a value that is unique across all
-    remote playback availability watches to the same receiver.
+    to.
 
 In response, the receiver should send a remote-playback-availability-response
 message with the following values:
@@ -915,11 +914,7 @@ availability request.
 To save power, the controller may disconnect the QUIC connection and
 later reconnect to send availability requests and receive availability
 responses and updates. The QUIC connection ID may or may not be the same
-when reconnecting.  Note that the lifetime of a watch-id is not limited
-to one QUIC connection.  The receiver must continue sending updates for watches
-even if the QUIC connection changes, and thus controller need not send
-new URL availability requests if the QUIC connection changes.
-
+when reconnecting.
 
 To start remote playback, the controller may send a
 remote-playback-start-request message to the receiver with the following
@@ -1783,7 +1778,6 @@ Video encoding receiver stats include the following properties:
 :: The sum of the time spent decoding frames received.
 
 
-
 Protocol Extensions {#protocol-extensions}
 ===================
 
@@ -1814,6 +1808,33 @@ non-CBOR extensions must be able to decode QUIC streams that contain a mix of
 CBOR messages and non-CBOR extension messages.
 
 TODO: Document how extensions should add fields to standard CBOR messages.
+=======
+Requests, Responses, and Watches {#requests-responses--watches}
+===============================================================
+
+Multiple sub-protocols in OSP have messages that act as requests, responses,
+watches, and events. Most requests have a `request-id`, and the agent that
+receives the request must send exactly one reponse message in return with the
+same `request-id`.  A watch request has a `watch-id`, and the agent that
+receives the request may send any number of event messages in response with
+the same `watch-id`, until the watch request expires.
+
+`request-id` and `watch-id` values are unsigned integer IDs that are assigned
+from a counter kept by each agent that starts at 1 and increments by 1 for each
+ID.  Whenever an agent changes its `state-token`, it must reset its counter to 1.
+
+When an agent sees that another agent has reset its state (by virtue of
+advertising a new `state-token`), it should discard any requests, responses,
+watches and events for that agent.
+
+Note: Request and watch IDs are not tied to any particular QUIC connection
+between agents.  If a QUIC connection is closed, an agent should not discard
+requests, responses, watches, or events related to the other party.  This allows
+agents to save power by closing unused connections.
+
+Note: Request and watch IDs are not unique across agents.  An agent can combine
+a request ID with a unique identifier for the agent that sent it (like its
+certificate fingerprint) to track requests across multiple agents.
 
 Security and Privacy {#security-privacy}
 ====================
