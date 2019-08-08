@@ -67,7 +67,7 @@ psk-input-method = &(
 )
 
 auth-initiation-password = (
-  ? 0 : password ; text
+  ? 0 : text .size 24 ; password
 )
 
 ; type key 1002
