@@ -204,19 +204,7 @@ presentation-connection-open-response = {
   2: uint; connection-id
 }
 
-; type key 118
-presentation-connection-close-request = {
-  request
-  1: uint ; connection-id
-}
-
-; type key 119
-presentation-connection-close-response = {
-  response
-  1: &result ; result
-}
-
-; type key 120
+; type key 113
 presentation-connection-close-event = {
   1: uint; connection-id
   2: &(

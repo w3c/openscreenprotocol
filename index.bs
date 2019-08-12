@@ -590,11 +590,8 @@ When either agent has received both auth-spake2-message and
 auth-spake2-confirmation messages, the agent validates the confirmation message
 and sends the auth-status authenticated message.
 
-Control Protocols {#control-protocols}
-============================
-
 Presentation Protocol {#presentation-protocol}
----------------------------------------------
+=====================
 
 This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by
@@ -725,9 +722,9 @@ message contains the following values:
 : reason
 :: The reason the presentation was terminated.
 
-To accept incoming connections requests from controller, a receiver
-must receive and process the presentation-connection-open-request
-message which contains the following values:
+To accept incoming connection requests from controller, a receiver must receive
+and process the presentation-connection-open-request message which contains the
+following values:
 
 : presentation-id
 :: The ID of the presentation to connect to.
@@ -749,39 +746,29 @@ following values:
     the message receiver chooses the connection-id, it may keep the ID unique
     across connections, thus making message demuxing/routing easier).
 
-
-A controller may terminate a connection without terminating the presentation by
-sending a presentation-connection-close-request message with the following
-values:
-
-: connection-id
-:: The ID of the connection to close.
-
-Issue(124): Is a Presentation close/terminate from a controller a request/response or event?
-
-The receiver should, upon receipt of a presentation-connection-close-request,
-send back a presentation-connection-close-response message with the following
-values:
-
-: result
-:: If the close succeed or failed, and if it failed why it failed.
-
-Issue(138): Remove presentation-connection-close-response message.
-
-The receiver may also close a connection without a request from the controller
-to do so and without terminating a presentation.  If it does so, it should send
-a presentation-connection-close-event to the controller with the following
-values:
+A controller may close a connection without terminating the presentation by
+sending a `presentation-connection-close-event` message to the receiver with the
+following values:
 
 : connection-id
-:: The ID of the connection that was closed
+:: The ID of the connection that was closed.
 
 : reason
-:: The reason the connection was closed
+:: Set to `close-method-called` or `connection-object-discarded`.
 
-: error-message
-:: A debug message suitable for a log or perhaps presented to
-    the user with more explanation as to why it was closed.
+The receiver may also close a connection without terminating a presentation.  If
+it does so, it should send a `presentation-connection-close-event` message to the
+controller with the following values:
+
+: connection-id
+:: The ID of the connection that was closed.
+
+: reason
+:: Set to `close-method-called` or `connection-object-discarded`.
+
+Note: When an agent closes a presentation connection, it is always successful,
+so request and response messages are not needed.  A request to terminate a
+presentation may succeed or fail, so a response message is required.
 
 
 Presentation API {#presentation-api}
@@ -821,6 +808,12 @@ messageOrData for the presentation message data.  Note that the messageType is
 embedded in the encoded CBOR type and does not need an additional value in the
 message.
 
+When [[PRESENTATION-API#closing-a-presentationconnection|section 6.5.5]] says
+"Start to signal to the destination browsing context the intention to close the
+corresponding PresentationConnection", the [=user agent=] may send a
+`presentation-connection-close-event` message to the user agent with the
+destination browsing context.
+
 When
 [[PRESENTATION-API#terminating-a-presentation-in-a-controlling-browsing-context|section
 6.5.6]] says "Send a termination request for the presentation to its receiving
@@ -841,7 +834,7 @@ user agent=], must send a presentation-connection-open-response message.
 
 
 Remote Playback Protocol {#remote-playback-protocol}
-----------------------------------------------------
+========================
 
 This section defines the use of the Open Screen Protocol for starting, terminating,
 and controlling remote playback of media as defined by the
