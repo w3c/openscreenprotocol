@@ -9,11 +9,25 @@
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span>
 
+<span class="nx">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">receive-audio</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span>
+
+  <span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">3</span>
+
+  <span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">5</span>
+
+  <span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">6</span>
+  <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">7</span>
+<span class="p">)</span>
+
 <span class="nx">agent-info </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-audio</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-video</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">agent-capability</span><span class="p">]</span> <span class="c1">; capabilities</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; state-token</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 12</span>
@@ -81,12 +95,14 @@
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
 <span class="p">)</span>
 
+<span class="nx">watch-id </span><span class="p">=</span> <span class="kt">uint</span>
+
 <span class="c1">; type key 14</span>
 <span class="nx">presentation-url-availability-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 15</span>
@@ -97,7 +113,7 @@
 
 <span class="c1">; type key 103</span>
 <span class="nx">presentation-url-availability-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span>
 
@@ -221,7 +237,7 @@
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 18</span>
@@ -232,7 +248,7 @@
 
 <span class="c1">; type key 114</span>
 <span class="nx">remote-playback-availability-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span>
 
