@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="2539839187de051bff22468fb9cc4b1f73a48285" name="document-revision">
+  <meta content="2658d98aa125035083bb7d428bea462060da5c48" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1536,7 +1536,11 @@ pre .property::before, pre .property::after {
       <li><a href="#streaming-stats"><span class="secno">9.7</span> <span class="content">Stats</span></a>
      </ol>
     <li><a href="#requests-responses--watches"><span class="secno">10</span> <span class="content">Requests, Responses, and Watches</span></a>
-    <li><a href="#protocol-extensions"><span class="secno">11</span> <span class="content">Protocol Extensions</span></a>
+    <li>
+     <a href="#protocol-extensions"><span class="secno">11</span> <span class="content">Protocol Extensions</span></a>
+     <ol class="toc">
+      <li><a href="#protocol-extension-fields"><span class="secno">11.1</span> <span class="content">Protocol Extension Fields</span></a>
+     </ol>
     <li>
      <a href="#security-privacy"><span class="secno">12</span> <span class="content">Security and Privacy</span></a>
      <ol class="toc">
@@ -2900,11 +2904,7 @@ purposes.</p>
    <p>To add new extension messages, extension authors must register a capability ID
 with a range of message type keys in a public registry (location to be
 determined).  Agents may then indicate that they accept an extension by
-including the corresponding capability ID in the capabilities field of its <code>agent-info</code> message.</p>
-   <p>If an agent wishes to support extension messages, the author of the extension
-must register a capability ID and a range of message type keys in a public
-registry, whose location will be determined later.  Agents that accept the
-extension messages should include the corresponding capability ID in the <code>capabilities</code> field of its <code>agent-info</code> message.</p>
+including the corresponding capability ID in the <code>capabilities</code> field of its <code>agent-info</code> message.</p>
    <p>Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
 Capability IDs 1000 and above are available for extensions.  See <a href="#appendix-b">Appendix B: Message Type Key Ranges</a> for legal ranges for extension message type keys.</p>
    <p class="note" role="note"><span>Note:</span> The purpose of the public registry is to prevent conflicts between
@@ -2912,12 +2912,21 @@ multiple extension authors' capability IDs and message type keys.</p>
    <p>Agents must not send extension messages to another agent that has not advertised
 the corresponding extension capability ID.</p>
    <p class="note" role="note"><span>Note:</span> See <a href="#messages">§ 5 Messages delivery using CBOR and QUIC streams</a> for how agents handle unknown message type keys.</p>
-   <p>It is recommended that the extension messages are also encoded in CBOR, to
-simplify implementations and provide an easier path to standardization of
-extension protocols.  However, this is not required; agents that support
-non-CBOR extensions must be able to decode QUIC streams that contain a mix of
-CBOR messages and non-CBOR extension messages.</p>
-   <p class="issue" id="issue-38fd9e7e"><a class="self-link" href="#issue-38fd9e7e"></a> Document how extensions should add fields to standard CBOR messages. <a href="https://github.com/webscreens/openscreenprotocol/issues/175">&lt;https://github.com/webscreens/openscreenprotocol/issues/175></a></p>
+   <p>It is recommended that extension messages are also encoded in CBOR, to simplify
+implementations and provide an easier path to standardization of extension
+protocols.  However, this is not required; agents that support non-CBOR
+extensions must be able to decode QUIC streams that contain a mix of CBOR
+messages and non-CBOR extension messages.</p>
+   <h3 class="heading settled" data-level="11.1" id="protocol-extension-fields"><span class="secno">11.1. </span><span class="content">Protocol Extension Fields</span><a class="self-link" href="#protocol-extension-fields"></a></h3>
+   <p>It is legal for an agent to add additional, extension fields to a map-valued
+CBOR message type defined by the Open Screen Protocol.  Extension fields must be
+optional, and the Open Screen Protocol message must make sense both with and
+without the field set.</p>
+   <p>Agents must not add extended fields to the <code>audio-frame</code> message directly.
+Instead, they may add them to its nested <code>optional</code> value.</p>
+   <p>Extension fields should use string keys to avoid conflicts with integer keys in
+Open Screen Protocol messages.  An agent should not send extension fields to
+another agent unless that agent advertises an extension capability ID in its <code>agent-info</code> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
@@ -3164,19 +3173,18 @@ like <a href="https://en.wikipedia.org/wiki/Fuzzing">fuzz testing</a>.</p>
 components) should use defense-in-depth techniques like <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a> to prevent vulnerabilities from gaining access to user data or leading to
 persistent exploits.</p>
    <h2 class="heading settled" id="appendix-a"><span class="content">Appendix A: Messages</span><a class="self-link" href="#appendix-a"></a></h2>
-   <p>The following messages are defined with <a data-link-type="biblio" href="#biblio-cddl">[CDDL]</a>. When
-integer keys are used, a comment is appended to the line to indicate
-the name of the field. Object definitions in this specification have this
-unusual syntax to reduce the number of bytes-on-the-wire, while maintaining a
-human-readable name for each key. Integer keys are used instead of object arrays
-to allow for easy indexing of optional fields.</p>
-   <p>Each root message (one that can be put into a
-QUIC stream without being enclosed by another message) has a comment
-indicating the message type key.</p>
-   <p>Smaller numbers should be reserved for message that will be sent more
-frequently or are very small or both and larger numbers should be
-reserved for messages that are infrequently sent or large or both
-because smaller type keys encode on the wire smaller.</p>
+   <p>The following messages are defined with <a data-link-type="biblio" href="#biblio-cddl">[CDDL]</a>. When integer keys are used, a
+comment is appended to the line to indicate the name of the field. Object
+definitions in this specification have this unusual syntax to reduce the number
+of bytes-on-the-wire, while maintaining a human-readable name for each
+key. Integer keys are used instead of object arrays to allow for easy indexing
+of optional fields.</p>
+   <p>Each root message (one that can be put into a QUIC stream without being enclosed
+by another message) has a comment indicating the message type key.</p>
+   <p>Smaller numbers should be reserved for message that will be sent more frequently
+or are very small or both and larger numbers should be reserved for messages
+that are infrequently sent or large or both because smaller type keys encode on
+the wire smaller.</p>
    <div class="highlight">
 <pre><span></span><span class="c1">; type key 10</span>
 <span class="nx">agent-info-request </span><span class="p">=</span> <span class="p">{</span>
@@ -4158,7 +4166,6 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Remote playback ID uniqueness. <a href="https://github.com/webscreens/openscreenprotocol/issues/147">&lt;https://github.com/webscreens/openscreenprotocol/issues/147></a><a href="#issue-edcdffff"> ↵ </a></div>
    <div class="issue"> Add a table for whether it’s required and what the default is.<a href="#issue-6098c204"> ↵ </a></div>
    <div class="issue"> Algorithm for what messages to send when local/remote media element changes. <a href="https://github.com/webscreens/openscreenprotocol/issues/158">&lt;https://github.com/webscreens/openscreenprotocol/issues/158></a><a href="#issue-156f1d74"> ↵ </a></div>
-   <div class="issue"> Document how extensions should add fields to standard CBOR messages. <a href="https://github.com/webscreens/openscreenprotocol/issues/175">&lt;https://github.com/webscreens/openscreenprotocol/issues/175></a><a href="#issue-38fd9e7e"> ↵ </a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
    <div class="issue"> Notify endpoints when new connection is created. <a href="https://github.com/webscreens/openscreenprotocol/issues/143">&lt;https://github.com/webscreens/openscreenprotocol/issues/143></a><a href="#issue-edc1d8c1"> ↵ </a></div>
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29"> ↵ </a></div>
