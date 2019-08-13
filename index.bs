@@ -1780,6 +1780,12 @@ Open Screen agents may exchange extension messages that are not defined by this
 specification.  This could be used for experimentation, customization or other
 purposes.
 
+To add new extension messages, extension authors must register a capability ID
+with a range of message type keys in a public registry (location to be
+determined).  Agents may then indicate that they accept an extension by
+including the corresponding capability ID in the capabilities field of its
+`agent-info` message.
+
 If an agent wishes to support extension messages, the author of the extension
 must register a capability ID and a range of message type keys in a public
 registry, whose location will be determined later.  Agents that accept the
@@ -1790,11 +1796,13 @@ Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
 Capability IDs 1000 and above are available for extensions.  See [[#appendix-b]]
 for legal ranges for extension message type keys.
 
-Note: This will prevent conflicts between multiple extension authors' capability
-IDs and message type keys.
+Note: The purpose of the public registry is to prevent conflicts between
+multiple extension authors' capability IDs and message type keys.
 
 Agents must not send extension messages to another agent that has not advertised
 the corresponding extension capability ID.
+
+Note: See [[#messages]] for how agents handle unknown message type keys.
 
 It is recommended that the extension messages are also encoded in CBOR, to
 simplify implementations and provide an easier path to standardization of
@@ -1802,8 +1810,6 @@ extension protocols.  However, this is not required; agents that support
 non-CBOR extensions must be able to decode QUIC streams that contain a mix of
 CBOR messages and non-CBOR extension messages.
 
-TODO: Document how extensions should add fields to standard CBOR messages.
-=======
 Requests, Responses, and Watches {#requests-responses--watches}
 ===============================================================
 
