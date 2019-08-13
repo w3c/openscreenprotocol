@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="3f2f15676d8b81c652da6f342a3b7f09202103d4" name="document-revision">
+  <meta content="2539839187de051bff22468fb9cc4b1f73a48285" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -2897,22 +2897,27 @@ certificate fingerprint) to track requests across multiple agents.</p>
    <p>Open Screen agents may exchange extension messages that are not defined by this
 specification.  This could be used for experimentation, customization or other
 purposes.</p>
+   <p>To add new extension messages, extension authors must register a capability ID
+with a range of message type keys in a public registry (location to be
+determined).  Agents may then indicate that they accept an extension by
+including the corresponding capability ID in the capabilities field of its <code>agent-info</code> message.</p>
    <p>If an agent wishes to support extension messages, the author of the extension
 must register a capability ID and a range of message type keys in a public
 registry, whose location will be determined later.  Agents that accept the
 extension messages should include the corresponding capability ID in the <code>capabilities</code> field of its <code>agent-info</code> message.</p>
    <p>Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
 Capability IDs 1000 and above are available for extensions.  See <a href="#appendix-b">Appendix B: Message Type Key Ranges</a> for legal ranges for extension message type keys.</p>
-   <p class="note" role="note"><span>Note:</span> This will prevent conflicts between multiple extension authors' capability
-IDs and message type keys.</p>
+   <p class="note" role="note"><span>Note:</span> The purpose of the public registry is to prevent conflicts between
+multiple extension authors' capability IDs and message type keys.</p>
    <p>Agents must not send extension messages to another agent that has not advertised
 the corresponding extension capability ID.</p>
+   <p class="note" role="note"><span>Note:</span> See <a href="#messages">§ 5 Messages delivery using CBOR and QUIC streams</a> for how agents handle unknown message type keys.</p>
    <p>It is recommended that the extension messages are also encoded in CBOR, to
 simplify implementations and provide an easier path to standardization of
 extension protocols.  However, this is not required; agents that support
 non-CBOR extensions must be able to decode QUIC streams that contain a mix of
 CBOR messages and non-CBOR extension messages.</p>
-   <p>TODO: Document how extensions should add fields to standard CBOR messages.</p>
+   <p class="issue" id="issue-38fd9e7e"><a class="self-link" href="#issue-38fd9e7e"></a> Document how extensions should add fields to standard CBOR messages. <a href="https://github.com/webscreens/openscreenprotocol/issues/175">&lt;https://github.com/webscreens/openscreenprotocol/issues/175></a></p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
@@ -4153,6 +4158,7 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Remote playback ID uniqueness. <a href="https://github.com/webscreens/openscreenprotocol/issues/147">&lt;https://github.com/webscreens/openscreenprotocol/issues/147></a><a href="#issue-edcdffff"> ↵ </a></div>
    <div class="issue"> Add a table for whether it’s required and what the default is.<a href="#issue-6098c204"> ↵ </a></div>
    <div class="issue"> Algorithm for what messages to send when local/remote media element changes. <a href="https://github.com/webscreens/openscreenprotocol/issues/158">&lt;https://github.com/webscreens/openscreenprotocol/issues/158></a><a href="#issue-156f1d74"> ↵ </a></div>
+   <div class="issue"> Document how extensions should add fields to standard CBOR messages. <a href="https://github.com/webscreens/openscreenprotocol/issues/175">&lt;https://github.com/webscreens/openscreenprotocol/issues/175></a><a href="#issue-38fd9e7e"> ↵ </a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
    <div class="issue"> Notify endpoints when new connection is created. <a href="https://github.com/webscreens/openscreenprotocol/issues/143">&lt;https://github.com/webscreens/openscreenprotocol/issues/143></a><a href="#issue-edc1d8c1"> ↵ </a></div>
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29"> ↵ </a></div>
