@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="7dca5e2b2ac08a8c9ea4be8bbfcb63d797d0b1b2" name="document-revision">
+  <meta content="b27ce3d360b6768cd685fe11534bd9f6554d6ee1" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-12">12 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-13">13 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1574,6 +1574,7 @@ pre .property::before, pre .property::after {
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
       <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
      </ol>
     <li>
@@ -1647,7 +1648,7 @@ presentation display connected to the same IPv4 or IPv6 subnet and reachable
 by IP multicast.</p>
     <li data-md>
      <p>A controlling user agent must be able to obtain the IPv4 or IPv6 address of
-the display, a friendly name for the display, and an IP port number for
+the display, a display name for the display, and an IP port number for
 establishing a network transport to the display.</p>
     <li data-md>
      <p>A controlling user agent must be able to determine if the receiver is
@@ -1766,22 +1767,34 @@ specification, to facilitate experimentation and enhancement of the base
 APIs.</p>
    </ol>
    <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Discovery with mDNS</span><a class="self-link" href="#discovery"></a></h2>
-   <p>Agents may discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.
-To do so, agents must use the service name "_openscreen._udp.local".</p>
+   <p>Agents must discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.
+To do so, agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
    <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a></p>
-   <p>Advertising Agents must use an instance name that is a prefix of the agent’s
-display name. If the instance name is not the complete display name (if it has
-been truncated), it must be terminated by a null character.  It is prefix so
-that the name displayed to the user pre-verification can be verified later.  It
-is terminated by a null character in the case of truncation so that the
-listening agent knows it has been truncated.  This complexity is necessary to
-all for display names that exceed the size allowed in an instance name and for
-such (possibly  truncated) display names to be visible to the user sooner
-(before a QUIC connection is made).  Listening agents must treat instance names
-as unverified and must verify that the instance name is a prefix of the verified
-display name before showing the user a verified display name.</p>
-   <p>Agents should use the complete display name to the user rather than a
-truncated display name.</p>
+   <p>An <dfn data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent<a class="self-link" href="#advertising-agent"></a></dfn> is one that responds to mDNS queries
+for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
+name<a class="self-link" href="#display-name"></a></dfn> (a non-empty string) that is a human readable description of the
+presentation display, e.g. "Living Room TV."</p>
+   <p>A <dfn data-dfn-type="dfn" data-noexport id="listening-agent">listening agent<a class="self-link" href="#listening-agent"></a></dfn> is one that sends mDNS queries for <code>_openscreen._udp.local</code>.  Listening agents may have a display name.</p>
+   <p>Advertising agents must use a DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-4.1.1" id="ref-for-section-4.1.1">Instance Name</a> that is a prefix of the
+agent’s display name.  If the Instance Name is not the complete display name, it
+must be terminated by a null (<code>\000</code>) character, so that a listening agent knows
+it has been truncated.</p>
+   <p>Agents must treat Instance Names as unverified information, and should check
+that the Instance Name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an agent has done
+this check, it can show the name as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="verified-display-name">verified display name</dfn>.</p>
+   <p>Agents should show only complete display names to the user, instead of truncated
+display names from DNS-SD.  A truncated display name should be verified as above
+before being shown in full as a <a data-link-type="dfn" href="#verified-display-name" id="ref-for-verified-display-name">verified display name</a>.</p>
+   <div class="note" role="note">
+     This means there are three categories of display names that agents should be
+capable of handling: 
+    <ol>
+     <li>Truncated and unverified DNS-SD Instance Names, which should not be shown to the user.
+     <li>Complete but unverified DNS-SD Instance Names, which can be shown as
+     unverified prior to <a href="#authentication">§ 6 Authentication</a>.
+     <li>Verified display names.
+    </ol>
+   </div>
    <p>Advertising agents must include DNS TXT records with the following
 keys and values:</p>
    <dl>
@@ -2952,7 +2965,7 @@ and/or high value data:</p>
    </ol>
    <p>Presentation IDs are considered high value data because they can be used in
 conjunction with a Presentation URL to connect to a running presentation.</p>
-   <p>Presentation display friendly names, model names, and capabilities, while not
+   <p>Presentation display names, model names, and capabilities, while not
 considered personally identifiable, are important to protect to prevent an
 attacker from changing them or substituting other values during the discovery
 and authentication process.</p>
@@ -3070,12 +3083,12 @@ should be flagged include:</p>
      <p>Untrusted agents whose public key fingerprint collides with that from an
 already-trusted agent that is concurrently being advertised.</p>
     <li data-md>
-     <p>Untrusted agents whose friendly name differs from the one previously
+     <p>Untrusted agents whose display name differs from the one previously
 advertised under a given public key fingerprint.</p>
     <li data-md>
      <p>Untrusted agents that fail the authentication challenge a certain number of times.</p>
     <li data-md>
-     <p>Untrusted agents that advertise a friendly name that is similar to that from an
+     <p>Untrusted agents that advertise a display name that is similar to that from an
 already-trusted agent.</p>
     <li data-md>
      <p>Already-trusted agents whose metadata provided through the <code>agent-info</code> message has changed.</p>
@@ -3149,11 +3162,25 @@ because smaller type keys encode on the wire smaller.</p>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span></p>
 
+<p><span class="nx">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">receive-audio</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span></p>
+
+<p><span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">3</span></p>
+
+<p><span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">5</span></p>
+
+<p><span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">6</span>
+  <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">7</span>
+<span class="p">)</span></p>
+
 <p><span class="nx">agent-info </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-audio</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-video</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">agent-capability</span><span class="p">]</span> <span class="c1">; capabilities</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; state-token</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 12</span>
@@ -3221,12 +3248,14 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
 <span class="p">)</span></p>
 
+<p><span class="nx">watch-id </span><span class="p">=</span> <span class="kt">uint</span></p>
+
 <p><span class="c1">; type key 14</span>
 <span class="nx">presentation-url-availability-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 15</span>
@@ -3237,7 +3266,7 @@ because smaller type keys encode on the wire smaller.</p>
 
 <p><span class="c1">; type key 103</span>
 <span class="nx">presentation-url-availability-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span></p>
 
@@ -3316,18 +3345,6 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 111</span>
-<span class="nx">presentation-connection-close-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 112</span>
-<span class="nx">presentation-connection-close-response </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
-<span class="p">}</span></p>
-
 <p><span class="c1">; type key 113</span>
 <span class="nx">presentation-connection-close-event </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
@@ -3361,7 +3378,7 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 18</span>
@@ -3372,7 +3389,7 @@ because smaller type keys encode on the wire smaller.</p>
 
 <p><span class="c1">; type key 114</span>
 <span class="nx">remote-playback-availability-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span></p>
 
@@ -3824,6 +3841,13 @@ because smaller type keys encode on the wire smaller.</p>
 })();
 </script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li><a href="#advertising-agent">advertising agent</a><span>, in §3</span>
+   <li><a href="#display-name">display name</a><span>, in §3</span>
+   <li><a href="#listening-agent">listening agent</a><span>, in §3</span>
+   <li><a href="#verified-display-name">verified display name</a><span>, in §3</span>
+  </ul>
   <aside class="dfn-panel" data-for="term-for-htmlmediaelement">
    <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement</a><b>Referenced in:</b>
    <ul>
@@ -3958,6 +3982,18 @@ because smaller type keys encode on the wire smaller.</p>
     <li><a href="#ref-for-report-user-agent">7.1. Presentation API</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-4.1.1">
+   <a href="https://tools.ietf.org/html/rfc6763#section-4.1.1">https://tools.ietf.org/html/rfc6763#section-4.1.1</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-4.1.1">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-section-7">
+   <a href="https://tools.ietf.org/html/rfc6763#section-7">https://tools.ietf.org/html/rfc6763#section-7</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-7">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
@@ -3996,6 +4032,12 @@ because smaller type keys encode on the wire smaller.</p>
     <ul>
      <li><span class="dfn-paneled" id="term-for-report-user-agent" style="color:initial">user agent</span>
     </ul>
+   <li>
+    <a data-link-type="biblio">[RFC6763]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-4.1.1" style="color:initial">instance name</span>
+     <li><span class="dfn-paneled" id="term-for-section-7" style="color:initial">service name</span>
+    </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
@@ -4010,6 +4052,8 @@ because smaller type keys encode on the wire smaller.</p>
    <dd>Douglas Creager; et al. <a href="https://www.w3.org/TR/reporting-1/">Reporting API</a>. 25 September 2018. WD. URL: <a href="https://www.w3.org/TR/reporting-1/">https://www.w3.org/TR/reporting-1/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-rfc6763">[RFC6763]
+   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -4019,8 +4063,6 @@ because smaller type keys encode on the wire smaller.</p>
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
    <dt id="biblio-rfc6762">[RFC6762]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
-   <dt id="biblio-rfc6763">[RFC6763]
-   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
@@ -4054,6 +4096,12 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29①"> ↵ </a></div>
    <div class="issue"> Mitigations for remote network attackers. <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a><a href="#issue-7e863472"> ↵ </a></div>
   </div>
+  <aside class="dfn-panel" data-for="verified-display-name">
+   <b><a href="#verified-display-name">#verified-display-name</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-verified-display-name">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
 <script>/* script-dfn-panel */
 
 document.body.addEventListener("click", function(e) {
