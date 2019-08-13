@@ -66,8 +66,8 @@ psk-input-method = &(
   qr-code: 1
 )
 
-auth-initiation-password = (
-  ? 0 : text .size 24 ; password
+auth-initiation-token = (
+  ? 0 : text ; token
 )
 
 ; type key 1002

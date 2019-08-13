@@ -61,8 +61,6 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: remote playback source
 urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML51
     text: media element
-url: https://tools.ietf.org/html/rfc4648#section-4; type: dfn; spec: RFC4648; text: Base64
-url: https://tools.ietf.org/html/rfc8445#section-5.3; type: dfn; spec: RFC8445; text: ICE password
 </pre>
 
 <h2 class='no-num no-toc no-ref' id='status'>Status of this document</h2>
@@ -322,13 +320,15 @@ Issue: Include cross references to the specs for these hash functions.
     value.  This signals to the listening agent that it should connect to the
     advertising agent to discover updated metadata.
 
-The advertising agent may add an additional field to the TXT record:
+The advertising agent should add an additional field to the TXT record:
 
 : pw
-:: An alphanumeric, unguessable token consisting of a [=Base64=] encoded 128-bit
-    random value (24 characters in length).
+:: An alphanumeric, unguessable token consisting of characters from the set
+    `[A-Za-z0-9+/]`.
 
-Note: The requirements for `pw` are the same as for an [=ICE password=].
+Note: `pw` prevents off-LAN parties from attempting authentication; see
+[[#remote-active-mitigations]].  `pw` should have at least 32 bits of true
+entropy to make brute force attacks impractical.
 
 Issue: Add examples of sample mDNS records.
 
@@ -499,12 +499,12 @@ that it's easy for the user to input PSK on the device.  Supported PSK input met
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.
 
-Any authentication method may require an `auth-initiation-password` before
+Any authentication method may require an `auth-initation-token` before
 showing a PSK to the user or requesting PSK input from the user.  If an
 advertising agent has the `pw` field in its mDNS TXT record, it must be used as
-the `auth-initiation-password` in the the first authentication message sent to
+the `auth-initation-token` in the the first authentication message sent to
 or from that agent.  Agents should discard any authentication message whose
-`auth-initiation-password` is set and does not match the `pw` provided by the
+`auth-initation-token` is set and does not match the `pw` provided by the
 advertising agent.
 
 TODO: Autolink advertising agent when PR #180 lands.

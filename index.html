@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="76d527bbc1bde81d3f7986a0c783300c2826f309" name="document-revision">
+  <meta content="122b79bb610c40d37e47c2b516e3b5eeadfc777c" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-08">8 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-13">13 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1805,14 +1805,14 @@ metadata has changed.   The advertising agent must update it to a greater
 value.  This signals to the listening agent that it should connect to the
 advertising agent to discover updated metadata.</p>
    </dl>
-   <p>The advertising agent may add an additional field to the TXT record:</p>
+   <p>The advertising agent should add an additional field to the TXT record:</p>
    <dl>
     <dt data-md>pw
     <dd data-md>
-     <p>An alphanumeric, unguessable token consisting of a <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc4648#section-4" id="ref-for-section-4">Base64</a> encoded 128-bit
-random value (24 characters in length).</p>
+     <p>An alphanumeric, unguessable token consisting of characters from the set <code>[A-Za-z0-9+/]</code>.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> The requirements for <code>pw</code> are the same as for an <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8445#section-5.3" id="ref-for-section-5.3">ICE password</a>.</p>
+   <p class="note" role="note"><span>Note:</span> <code>pw</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 9.5.3 Remote active network attackers</a>. <code>pw</code> should have at least 32 bits of true
+entropy to make brute force attacks impractical.</p>
    <p class="issue" id="issue-49bdd4e6"><a class="self-link" href="#issue-49bdd4e6"></a> Add examples of sample mDNS records.</p>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
@@ -1957,11 +1957,11 @@ it is not possible for the user to input PSK on this device and 100 means
 that it’s easy for the user to input PSK on the device.  Supported PSK input methods
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
-   <p>Any authentication method may require an <code>auth-initiation-password</code> before
+   <p>Any authentication method may require an <code>auth-initation-token</code> before
 showing a PSK to the user or requesting PSK input from the user.  If an
 advertising agent has the <code>pw</code> field in its mDNS TXT record, it must be used as
-the <code>auth-initiation-password</code> in the the first authentication message sent to
-or from that agent.  Agents should discard any authentication message whose <code>auth-initiation-password</code> is set and does not match the <code>pw</code> provided by the
+the <code>auth-initation-token</code> in the the first authentication message sent to
+or from that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>pw</code> provided by the
 advertising agent.</p>
    <p>TODO: Autolink advertising agent when PR #180 lands.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
@@ -3215,8 +3215,8 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">)</span></p>
 
-<p><span class="nx">auth-initiation-password </span><span class="p">=</span> <span class="p">(</span>
-  <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">text .size 24 </span><span class="c1">; password</span>
+<p><span class="nx">auth-initiation-token </span><span class="p">=</span> <span class="p">(</span>
+  <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; token</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 1002</span>
@@ -3980,18 +3980,6 @@ because smaller type keys encode on the wire smaller.</p>
     <li><a href="#ref-for-dfn-remote-playback-source">7.5. Remote Playback API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-4">
-   <a href="https://tools.ietf.org/html/rfc4648#section-4">https://tools.ietf.org/html/rfc4648#section-4</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-section-4">3. Discovery with mDNS</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-section-5.3">
-   <a href="https://tools.ietf.org/html/rfc8445#section-5.3">https://tools.ietf.org/html/rfc8445#section-5.3</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-section-5.3">3. Discovery with mDNS</a>
-   </ul>
-  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
@@ -4025,16 +4013,6 @@ because smaller type keys encode on the wire smaller.</p>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-devices" style="color:initial">remote playback devices</span>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-source" style="color:initial">remote playback source</span>
     </ul>
-   <li>
-    <a data-link-type="biblio">[rfc4648]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="term-for-section-4" style="color:initial">base64</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[rfc8445]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="term-for-section-5.3" style="color:initial">ice password</span>
-    </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
@@ -4047,8 +4025,6 @@ because smaller type keys encode on the wire smaller.</p>
    <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/">Remote Playback API</a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
-   <dt id="biblio-rfc4648">[RFC4648]
-   <dd>S. Josefsson. <a href="https://tools.ietf.org/html/rfc4648">The Base16, Base32, and Base64 Data Encodings</a>. October 2006. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc4648">https://tools.ietf.org/html/rfc4648</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -4062,8 +4038,6 @@ because smaller type keys encode on the wire smaller.</p>
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
-   <dt id="biblio-rfc8445">[RFC8445]
-   <dd>A. Keranen; C. Holmberg; J. Rosenberg. <a href="https://tools.ietf.org/html/rfc8445">Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal</a>. July 2018. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8445">https://tools.ietf.org/html/rfc8445</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
    <dd>Lukasz Olejnik; Jason Novak. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 23 May 2019. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
   </dl>
