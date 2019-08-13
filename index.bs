@@ -61,6 +61,8 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: remote playback source
 urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML51
     text: media element
+url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
+url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
 </pre>
 
 <h2 class='no-num no-toc no-ref' id='status'>Status of this document</h2>
@@ -150,7 +152,7 @@ Presentation API Requirements {#requirements-presentation-api}
     by IP multicast.
 
 2.  A controlling user agent must be able to obtain the IPv4 or IPv6 address of
-    the display, a friendly name for the display, and an IP port number for
+    the display, a display name for the display, and an IP port number for
     establishing a network transport to the display.
 
 3.  A controlling user agent must be able to determine if the receiver is
@@ -280,25 +282,43 @@ Non-Functional Requirements {#requirements-non-functional}
 Discovery with mDNS {#discovery}
 ===============================
 
-Agents may discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
-To do so, agents must use the service name "_openscreen._udp.local".
+Agents must discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
+To do so, agents must use the [=Service Name=] `_openscreen._udp.local`.
 
 Issue(107): Define suspend and resume behavior for discovery protocol.
 
-Advertising Agents must use an instance name that is a prefix of the agent's
-display name. If the instance name is not the complete display name (if it has
-been truncated), it must be terminated by a null character.  It is prefix so
-that the name displayed to the user pre-verification can be verified later.  It
-is terminated by a null character in the case of truncation so that the
-listening agent knows it has been truncated.  This complexity is necessary to
-all for display names that exceed the size allowed in an instance name and for
-such (possibly  truncated) display names to be visible to the user sooner
-(before a QUIC connection is made).  Listening agents must treat instance names
-as unverified and must verify that the instance name is a prefix of the verified
-display name before showing the user a verified display name.
+An <dfn noexport>advertising agent</dfn> is one that responds to mDNS queries
+for `_openscreen._udp.local`.  Such an agent should have a <dfn noexport>display
+name</dfn> (a non-empty string) that is a human readable description of the
+presentation display, e.g. "Living Room TV."
 
-Agents should use the complete display name to the user rather than a
-truncated display name.
+A <dfn noexport>listening agent</dfn> is one that sends mDNS queries for
+`_openscreen._udp.local`.  Listening agents may have a display name.
+
+Advertising agents must use a DNS-SD [=Instance Name=] that is a prefix of the
+agent's display name.  If the Instance Name is not the complete display name, it
+must be terminated by a null (`\000`) character, so that a listening agent knows
+it has been truncated.
+
+Agents must treat Instance Names as unverified information, and should check
+that the Instance Name is a prefix of the display name received through the
+`agent-info` message after a successful QUIC connection.  Once an agent has done
+this check, it can show the name as a <dfn noexport>verified display name</dfn>.
+
+Agents should show only complete display names to the user, instead of truncated
+display names from DNS-SD.  A truncated display name should be verified as above
+before being shown in full as a [=verified display name=].
+
+<div class="note">
+This means there are three categories of display names that agents should be
+capable of handling:
+<ol>
+  <li>Truncated and unverified DNS-SD Instance Names, which should not be shown to the user.</li>
+  <li>Complete but unverified DNS-SD Instance Names, which can be shown as
+     unverified prior to [[#authentication]].</li>
+  <li>Verified display names.</li>
+</ol>
+</div>
 
 Advertising agents must include DNS TXT records with the following
 keys and values:
@@ -355,12 +375,13 @@ restricted from changing IP or port without establishing a new QUIC
 connection.  In such cases, clients and servers must establish a new
 QUIC connection in order to change IP or port.
 
-To learn further metadata, an agent may send an agent-info-request
-message (see [[#appendix-a]]) and receive back an agent-info-response message.
-Any agent may send this request to learn about the capabilities of
-another device.
+To learn further metadata, an agent may send an agent-info-request message (see
+[[#appendix-a]]) and receive back an agent-info-response message.  Any agent may
+send this request at any time to learn about the state and capabilities of
+another device, which are described by the `agent-info` message in the
+`agent-info-response`.
 
-The agent-info-response message contains the following properties:
+The `agent-info` message contains the following properties:
 
 : display-name (required)
 :: The display name of the agent, intended to be displayed to a user by the
@@ -378,6 +399,12 @@ The agent-info-response message contains the following properties:
     capability.  Capabilities should should affect how an agent is
     presented to a user, such as drawing a different icon depending on
     the media types it supports.
+
+: state-token (required)
+:: A random alphanumeric value consisting of 8 characters in the range
+    [0-9A-Za-z].  This value is set before the agent makes its first connection
+    and must be set to a new value when the agent is reset or otherwise lost all
+    of its state related to this protocol.
 
 The various capabilities have the following meanings:
 
@@ -565,11 +592,8 @@ When either agent has received both auth-spake2-message and
 auth-spake2-confirmation messages, the agent validates the confirmation message
 and sends the auth-status authenticated message.
 
-Control Protocols {#control-protocols}
-============================
-
 Presentation Protocol {#presentation-protocol}
----------------------------------------------
+=====================
 
 This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by
@@ -599,10 +623,7 @@ presentation-url-availability-request message with the following values:
 : watch-id
 :: An identifier the receiver must use when sending updates about URL
     availability so that the controller knows which URLs the receiver is referring
-    to.  The controller must choose a value that is unique across all
-    presentation URL availability watches to the same receiver.
-
-Issue(145): Watch ID Uniqueness.
+    to.
 
 In response, the receiver should send one presentation-url-availability-response
 message with the following values:
@@ -632,11 +653,7 @@ availability request.
 To save power, the controller may disconnect the QUIC connection and
 later reconnect to send availability requests and receive availability
 responses and updates.  The QUIC connection ID may or may not be the same
-when reconnecting.  Note that the lifetime of a watch-id is not limited
-to one QUIC connection.  The receiver must continue sending updates for watches
-even if the QUIC connection changes, and thus controller need not send
-new URL availability requests if the QUIC connection changes.
-
+when reconnecting.
 
 To start a presentation, the controller may send a
 presentation-start-request message to the receiver with the following
@@ -707,9 +724,9 @@ message contains the following values:
 : reason
 :: The reason the presentation was terminated.
 
-To accept incoming connections requests from controller, a receiver
-must receive and process the presentation-connection-open-request
-message which contains the following values:
+To accept incoming connection requests from controller, a receiver must receive
+and process the presentation-connection-open-request message which contains the
+following values:
 
 : presentation-id
 :: The ID of the presentation to connect to.
@@ -731,39 +748,29 @@ following values:
     the message receiver chooses the connection-id, it may keep the ID unique
     across connections, thus making message demuxing/routing easier).
 
-
-A controller may terminate a connection without terminating the presentation by
-sending a presentation-connection-close-request message with the following
-values:
-
-: connection-id
-:: The ID of the connection to close.
-
-Issue(124): Is a Presentation close/terminate from a controller a request/response or event?
-
-The receiver should, upon receipt of a presentation-connection-close-request,
-send back a presentation-connection-close-response message with the following
-values:
-
-: result
-:: If the close succeed or failed, and if it failed why it failed.
-
-Issue(138): Remove presentation-connection-close-response message.
-
-The receiver may also close a connection without a request from the controller
-to do so and without terminating a presentation.  If it does so, it should send
-a presentation-connection-close-event to the controller with the following
-values:
+A controller may close a connection without terminating the presentation by
+sending a `presentation-connection-close-event` message to the receiver with the
+following values:
 
 : connection-id
-:: The ID of the connection that was closed
+:: The ID of the connection that was closed.
 
 : reason
-:: The reason the connection was closed
+:: Set to `close-method-called` or `connection-object-discarded`.
 
-: error-message
-:: A debug message suitable for a log or perhaps presented to
-    the user with more explanation as to why it was closed.
+The receiver may also close a connection without terminating a presentation.  If
+it does so, it should send a `presentation-connection-close-event` message to the
+controller with the following values:
+
+: connection-id
+:: The ID of the connection that was closed.
+
+: reason
+:: Set to `close-method-called` or `connection-object-discarded`.
+
+Note: When an agent closes a presentation connection, it is always successful,
+so request and response messages are not needed.  A request to terminate a
+presentation may succeed or fail, so a response message is required.
 
 
 Presentation API {#presentation-api}
@@ -803,6 +810,12 @@ messageOrData for the presentation message data.  Note that the messageType is
 embedded in the encoded CBOR type and does not need an additional value in the
 message.
 
+When [[PRESENTATION-API#closing-a-presentationconnection|section 6.5.5]] says
+"Start to signal to the destination browsing context the intention to close the
+corresponding PresentationConnection", the [=user agent=] may send a
+`presentation-connection-close-event` message to the user agent with the
+destination browsing context.
+
 When
 [[PRESENTATION-API#terminating-a-presentation-in-a-controlling-browsing-context|section
 6.5.6]] says "Send a termination request for the presentation to its receiving
@@ -823,7 +836,7 @@ user agent=], must send a presentation-connection-open-response message.
 
 
 Remote Playback Protocol {#remote-playback-protocol}
-----------------------------------------------------
+========================
 
 This section defines the use of the Open Screen Protocol for starting, terminating,
 and controlling remote playback of media as defined by the
@@ -866,8 +879,7 @@ Issue(146): Remote Playback HTTP headers.
 : watch-id
 :: An identifier the receiver must use when sending updates about URL
     availability so that the controller knows which URLs the receiver is referring
-    to. The controller must choose a value that is unique across all
-    remote playback availability watches to the same receiver.
+    to.
 
 In response, the receiver should send a remote-playback-availability-response
 message with the following values:
@@ -897,11 +909,7 @@ availability request.
 To save power, the controller may disconnect the QUIC connection and
 later reconnect to send availability requests and receive availability
 responses and updates. The QUIC connection ID may or may not be the same
-when reconnecting.  Note that the lifetime of a watch-id is not limited
-to one QUIC connection.  The receiver must continue sending updates for watches
-even if the QUIC connection changes, and thus controller need not send
-new URL availability requests if the QUIC connection changes.
-
+when reconnecting.
 
 To start remote playback, the controller may send a
 remote-playback-start-request message to the receiver with the following
@@ -1584,6 +1592,32 @@ Stats {#streaming-stats}
 
 TODO
 
+Requests, Responses, and Watches {#requests-responses--watches}
+===============================================================
+
+Multiple sub-protocols in OSP have messages that act as requests, responses,
+watches, and events. Most requests have a `request-id`, and the agent that
+receives the request must send exactly one reponse message in return with the
+same `request-id`.  A watch request has a `watch-id`, and the agent that
+receives the request may send any number of event messages in response with
+the same `watch-id`, until the watch request expires.
+
+`request-id` and `watch-id` values are unsigned integer IDs that are assigned
+from a counter kept by each agent that starts at 1 and increments by 1 for each
+ID.  Whenever an agent changes its `state-token`, it must reset its counter to 1.
+
+When an agent sees that another agent has reset its state (by virtue of
+advertising a new `state-token`), it should discard any requests, responses,
+watches and events for that agent.
+
+Note: Request and watch IDs are not tied to any particular QUIC connection
+between agents.  If a QUIC connection is closed, an agent should not discard
+requests, responses, watches, or events related to the other party.  This allows
+agents to save power by closing unused connections.
+
+Note: Request and watch IDs are not unique across agents.  An agent can combine
+a request ID with a unique identifier for the agent that sent it (like its
+certificate fingerprint) to track requests across multiple agents.
 
 Security and Privacy {#security-privacy}
 ====================
@@ -1674,7 +1708,7 @@ and/or high value data:
 Presentation IDs are considered high value data because they can be used in
 conjunction with a Presentation URL to connect to a running presentation.
 
-Presentation display friendly names, model names, and capabilities, while not
+Presentation display names, model names, and capabilities, while not
 considered personally identifiable, are important to protect to prevent an
 attacker from changing them or substituting other values during the discovery
 and authentication process.
@@ -1811,10 +1845,10 @@ should be flagged include:
 
 * Untrusted agents whose public key fingerprint collides with that from an
     already-trusted agent that is concurrently being advertised.
-* Untrusted agents whose friendly name differs from the one previously
+* Untrusted agents whose display name differs from the one previously
     advertised under a given public key fingerprint.
 * Untrusted agents that fail the authentication challenge a certain number of times.
-* Untrusted agents that advertise a friendly name that is similar to that from an
+* Untrusted agents that advertise a display name that is similar to that from an
     already-trusted agent.
 * Already-trusted agents whose metadata provided through the `agent-info`
     message has changed.

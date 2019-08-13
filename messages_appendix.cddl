@@ -26,7 +26,8 @@ agent-capability = &(
 agent-info = {
   0: text ; display-name
   1: text ; model-name
-  2: [* agent-capabilitiy] ; capabilities
+  2: [* agent-capability] ; capabilities
+  3: text ; state-token
 }
 
 ; type key 12
@@ -100,12 +101,14 @@ auth-status-result = &(
   proof-invalid: 5
 )
 
+watch-id = uint
+
 ; type key 14
 presentation-url-availability-request = {
   request
   1: [1* text] ; urls
   2: microseconds ; watch-duration
-  3: uint ; watch-id
+  3: watch-id ; watch-id
 }
 
 ; type key 15
@@ -116,7 +119,7 @@ presentation-url-availability-response = {
 
 ; type key 103
 presentation-url-availability-event = {
-  1: uint ; watch-id
+  1: watch-id ; watch-id
   2: [1* url-availability] ; url-availabilities
 }
 
@@ -195,18 +198,6 @@ presentation-connection-open-response = {
   2: uint; connection-id
 }
 
-; type key 111
-presentation-connection-close-request = {
-  request
-  1: uint ; connection-id
-}
-
-; type key 112
-presentation-connection-close-response = {
-  response
-  1: &result ; result
-}
-
 ; type key 113
 presentation-connection-close-event = {
   1: uint; connection-id
@@ -240,7 +231,7 @@ remote-playback-availability-request = {
   request
   1: [* text] ; urls
   2: microseconds ; watch-duration
-  3: int ; watch-id
+  3: watch-id ; watch-id
 }
 
 ; type key 18
@@ -251,7 +242,7 @@ remote-playback-availability-response = {
 
 ; type key 114
 remote-playback-availability-event = {
-  1: int ; watch-id
+  1: watch-id ; watch-id
   2: [* url-availability] ; url-availabilities
 }
 
