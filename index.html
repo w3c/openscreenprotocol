@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="88a4a59183c8b01ec798804e68c68aca9a41b72c" name="document-revision">
+  <meta content="3f2f15676d8b81c652da6f342a3b7f09202103d4" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-12">12 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-13">13 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1514,58 +1514,60 @@ pre .property::before, pre .property::after {
     <li><a href="#messages"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
     <li><a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
     <li>
-     <a href="#control-protocols"><span class="secno">7</span> <span class="content">Control Protocols</span></a>
+     <a href="#presentation-protocol"><span class="secno">7</span> <span class="content">Presentation Protocol</span></a>
      <ol class="toc">
-      <li><a href="#presentation-protocol"><span class="secno">7.1</span> <span class="content">Presentation Protocol</span></a>
-      <li><a href="#presentation-api"><span class="secno">7.2</span> <span class="content">Presentation API</span></a>
-      <li><a href="#remote-playback-protocol"><span class="secno">7.3</span> <span class="content">Remote Playback Protocol</span></a>
-      <li><a href="#remote-playback-state-and-controls"><span class="secno">7.4</span> <span class="content">Remote Playback State and Controls</span></a>
-      <li><a href="#remote-playback-api"><span class="secno">7.5</span> <span class="content">Remote Playback API</span></a>
+      <li><a href="#presentation-api"><span class="secno">7.1</span> <span class="content">Presentation API</span></a>
      </ol>
     <li>
-     <a href="#streaming-protocol"><span class="secno">8</span> <span class="content">Streaming Protocol</span></a>
+     <a href="#remote-playback-protocol"><span class="secno">8</span> <span class="content">Remote Playback Protocol</span></a>
      <ol class="toc">
-      <li><a href="#streaming-capabilities"><span class="secno">8.1</span> <span class="content">Capabilities</span></a>
-      <li><a href="#streaming-sessions"><span class="secno">8.2</span> <span class="content">Sessions</span></a>
-      <li><a href="#streaming-audio"><span class="secno">8.3</span> <span class="content">Audio</span></a>
-      <li><a href="#streaming-video"><span class="secno">8.4</span> <span class="content">Video</span></a>
-      <li><a href="#media-streaming-data"><span class="secno">8.5</span> <span class="content">Data</span></a>
-      <li><a href="#streaming-feedback"><span class="secno">8.6</span> <span class="content">Feedback</span></a>
-      <li><a href="#streaming-stats"><span class="secno">8.7</span> <span class="content">Stats</span></a>
+      <li><a href="#remote-playback-state-and-controls"><span class="secno">8.1</span> <span class="content">Remote Playback State and Controls</span></a>
+      <li><a href="#remote-playback-api"><span class="secno">8.2</span> <span class="content">Remote Playback API</span></a>
      </ol>
-    <li><a href="#requests-responses--watches"><span class="secno">9</span> <span class="content">Requests, Responses, and Watches</span></a>
-    <li><a href="#protocol-extensions"><span class="secno">10</span> <span class="content">Protocol Extensions</span></a>
     <li>
-     <a href="#security-privacy"><span class="secno">11</span> <span class="content">Security and Privacy</span></a>
+     <a href="#streaming-protocol"><span class="secno">9</span> <span class="content">Streaming Protocol</span></a>
+     <ol class="toc">
+      <li><a href="#streaming-capabilities"><span class="secno">9.1</span> <span class="content">Capabilities</span></a>
+      <li><a href="#streaming-sessions"><span class="secno">9.2</span> <span class="content">Sessions</span></a>
+      <li><a href="#streaming-audio"><span class="secno">9.3</span> <span class="content">Audio</span></a>
+      <li><a href="#streaming-video"><span class="secno">9.4</span> <span class="content">Video</span></a>
+      <li><a href="#media-streaming-data"><span class="secno">9.5</span> <span class="content">Data</span></a>
+      <li><a href="#streaming-feedback"><span class="secno">9.6</span> <span class="content">Feedback</span></a>
+      <li><a href="#streaming-stats"><span class="secno">9.7</span> <span class="content">Stats</span></a>
+     </ol>
+    <li><a href="#requests-responses--watches"><span class="secno">10</span> <span class="content">Requests, Responses, and Watches</span></a>
+    <li><a href="#protocol-extensions"><span class="secno">11</span> <span class="content">Protocol Extensions</span></a>
+    <li>
+     <a href="#security-privacy"><span class="secno">12</span> <span class="content">Security and Privacy</span></a>
      <ol class="toc">
       <li>
-       <a href="#threat-models"><span class="secno">11.1</span> <span class="content">Threat Models</span></a>
+       <a href="#threat-models"><span class="secno">12.1</span> <span class="content">Threat Models</span></a>
        <ol class="toc">
-        <li><a href="#passive-network-attackers"><span class="secno">11.1.1</span> <span class="content">Passive Network Attackers</span></a>
-        <li><a href="#active-network-attackers"><span class="secno">11.1.2</span> <span class="content">Active Network Attackers</span></a>
-        <li><a href="#denial-of-service"><span class="secno">11.1.3</span> <span class="content">Denial of Service</span></a>
-        <li><a href="#same-origin-policy-violations"><span class="secno">11.1.4</span> <span class="content">Same-Origin Policy Violations</span></a>
+        <li><a href="#passive-network-attackers"><span class="secno">12.1.1</span> <span class="content">Passive Network Attackers</span></a>
+        <li><a href="#active-network-attackers"><span class="secno">12.1.2</span> <span class="content">Active Network Attackers</span></a>
+        <li><a href="#denial-of-service"><span class="secno">12.1.3</span> <span class="content">Denial of Service</span></a>
+        <li><a href="#same-origin-policy-violations"><span class="secno">12.1.4</span> <span class="content">Same-Origin Policy Violations</span></a>
        </ol>
       <li>
-       <a href="#security-privacy-questions"><span class="secno">11.2</span> <span class="content">Open Screen Protocol Security and Privacy Considerations</span></a>
+       <a href="#security-privacy-questions"><span class="secno">12.2</span> <span class="content">Open Screen Protocol Security and Privacy Considerations</span></a>
        <ol class="toc">
-        <li><a href="#personally-identifiable-information"><span class="secno">11.2.1</span> <span class="content">Personally Identifiable Information &amp; High-Value Data</span></a>
-        <li><a href="#cross-origin-state"><span class="secno">11.2.2</span> <span class="content">Cross Origin State Considerations</span></a>
-        <li><a href="#origin-access-devices"><span class="secno">11.2.3</span> <span class="content">Origin Access to Other Devices</span></a>
-        <li><a href="#incognito-mode"><span class="secno">11.2.4</span> <span class="content">Incognito Mode</span></a>
-        <li><a href="#persistent-state"><span class="secno">11.2.5</span> <span class="content">Persistent State</span></a>
-        <li><a href="#other-considerations"><span class="secno">11.2.6</span> <span class="content">Other Considerations</span></a>
+        <li><a href="#personally-identifiable-information"><span class="secno">12.2.1</span> <span class="content">Personally Identifiable Information &amp; High-Value Data</span></a>
+        <li><a href="#cross-origin-state"><span class="secno">12.2.2</span> <span class="content">Cross Origin State Considerations</span></a>
+        <li><a href="#origin-access-devices"><span class="secno">12.2.3</span> <span class="content">Origin Access to Other Devices</span></a>
+        <li><a href="#incognito-mode"><span class="secno">12.2.4</span> <span class="content">Incognito Mode</span></a>
+        <li><a href="#persistent-state"><span class="secno">12.2.5</span> <span class="content">Persistent State</span></a>
+        <li><a href="#other-considerations"><span class="secno">12.2.6</span> <span class="content">Other Considerations</span></a>
        </ol>
-      <li><a href="#presentation-api-considerations"><span class="secno">11.3</span> <span class="content">Presentation API Considerations</span></a>
-      <li><a href="#remote-playback-considerations"><span class="secno">11.4</span> <span class="content">Remote Playback API Considerations</span></a>
+      <li><a href="#presentation-api-considerations"><span class="secno">12.3</span> <span class="content">Presentation API Considerations</span></a>
+      <li><a href="#remote-playback-considerations"><span class="secno">12.4</span> <span class="content">Remote Playback API Considerations</span></a>
       <li>
-       <a href="#security-mitigations"><span class="secno">11.5</span> <span class="content">Mitigation Strategies</span></a>
+       <a href="#security-mitigations"><span class="secno">12.5</span> <span class="content">Mitigation Strategies</span></a>
        <ol class="toc">
-        <li><a href="#local-passive-mitigations"><span class="secno">11.5.1</span> <span class="content">Local passive network attackers</span></a>
-        <li><a href="#local-active-mitigations"><span class="secno">11.5.2</span> <span class="content">Local active network attackers</span></a>
-        <li><a href="#remote-active-mitigations"><span class="secno">11.5.3</span> <span class="content">Remote active network attackers</span></a>
-        <li><a href="#denial-of-service-mitigations"><span class="secno">11.5.4</span> <span class="content">Denial of service</span></a>
-        <li><a href="#malicious-input-mitigations"><span class="secno">11.5.5</span> <span class="content">Malicious input</span></a>
+        <li><a href="#local-passive-mitigations"><span class="secno">12.5.1</span> <span class="content">Local passive network attackers</span></a>
+        <li><a href="#local-active-mitigations"><span class="secno">12.5.2</span> <span class="content">Local active network attackers</span></a>
+        <li><a href="#remote-active-mitigations"><span class="secno">12.5.3</span> <span class="content">Remote active network attackers</span></a>
+        <li><a href="#denial-of-service-mitigations"><span class="secno">12.5.4</span> <span class="content">Denial of service</span></a>
+        <li><a href="#malicious-input-mitigations"><span class="secno">12.5.5</span> <span class="content">Malicious input</span></a>
        </ol>
      </ol>
     <li><a href="#appendix-a"><span class="secno"></span> <span class="content">Appendix A: Messages</span></a>
@@ -1574,6 +1576,7 @@ pre .property::before, pre .property::after {
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
       <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
      </ol>
     <li>
@@ -1647,7 +1650,7 @@ presentation display connected to the same IPv4 or IPv6 subnet and reachable
 by IP multicast.</p>
     <li data-md>
      <p>A controlling user agent must be able to obtain the IPv4 or IPv6 address of
-the display, a friendly name for the display, and an IP port number for
+the display, a display name for the display, and an IP port number for
 establishing a network transport to the display.</p>
     <li data-md>
      <p>A controlling user agent must be able to determine if the receiver is
@@ -1766,22 +1769,34 @@ specification, to facilitate experimentation and enhancement of the base
 APIs.</p>
    </ol>
    <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Discovery with mDNS</span><a class="self-link" href="#discovery"></a></h2>
-   <p>Agents may discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.
-To do so, agents must use the service name "_openscreen._udp.local".</p>
+   <p>Agents must discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.
+To do so, agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
    <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a></p>
-   <p>Advertising Agents must use an instance name that is a prefix of the agent’s
-display name. If the instance name is not the complete display name (if it has
-been truncated), it must be terminated by a null character.  It is prefix so
-that the name displayed to the user pre-verification can be verified later.  It
-is terminated by a null character in the case of truncation so that the
-listening agent knows it has been truncated.  This complexity is necessary to
-all for display names that exceed the size allowed in an instance name and for
-such (possibly  truncated) display names to be visible to the user sooner
-(before a QUIC connection is made).  Listening agents must treat instance names
-as unverified and must verify that the instance name is a prefix of the verified
-display name before showing the user a verified display name.</p>
-   <p>Agents should use the complete display name to the user rather than a
-truncated display name.</p>
+   <p>An <dfn data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent<a class="self-link" href="#advertising-agent"></a></dfn> is one that responds to mDNS queries
+for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
+name<a class="self-link" href="#display-name"></a></dfn> (a non-empty string) that is a human readable description of the
+presentation display, e.g. "Living Room TV."</p>
+   <p>A <dfn data-dfn-type="dfn" data-noexport id="listening-agent">listening agent<a class="self-link" href="#listening-agent"></a></dfn> is one that sends mDNS queries for <code>_openscreen._udp.local</code>.  Listening agents may have a display name.</p>
+   <p>Advertising agents must use a DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-4.1.1" id="ref-for-section-4.1.1">Instance Name</a> that is a prefix of the
+agent’s display name.  If the Instance Name is not the complete display name, it
+must be terminated by a null (<code>\000</code>) character, so that a listening agent knows
+it has been truncated.</p>
+   <p>Agents must treat Instance Names as unverified information, and should check
+that the Instance Name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an agent has done
+this check, it can show the name as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="verified-display-name">verified display name</dfn>.</p>
+   <p>Agents should show only complete display names to the user, instead of truncated
+display names from DNS-SD.  A truncated display name should be verified as above
+before being shown in full as a <a data-link-type="dfn" href="#verified-display-name" id="ref-for-verified-display-name">verified display name</a>.</p>
+   <div class="note" role="note">
+     This means there are three categories of display names that agents should be
+capable of handling: 
+    <ol>
+     <li>Truncated and unverified DNS-SD Instance Names, which should not be shown to the user.
+     <li>Complete but unverified DNS-SD Instance Names, which can be shown as
+     unverified prior to <a href="#authentication">§ 6 Authentication</a>.
+     <li>Verified display names.
+    </ol>
+   </div>
    <p>Advertising agents must include DNS TXT records with the following
 keys and values:</p>
    <dl>
@@ -2000,10 +2015,9 @@ message, the agent computes and sends a auth-spake2-confirmation message.</p>
    <p>When either agent has received both auth-spake2-message and
 auth-spake2-confirmation messages, the agent validates the confirmation message
 and sends the auth-status authenticated message.</p>
-   <h2 class="heading settled" data-level="7" id="control-protocols"><span class="secno">7. </span><span class="content">Control Protocols</span><a class="self-link" href="#control-protocols"></a></h2>
-   <h3 class="heading settled" data-level="7.1" id="presentation-protocol"><span class="secno">7.1. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h3>
+   <h2 class="heading settled" data-level="7" id="presentation-protocol"><span class="secno">7. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting,
-terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§ 7.2 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
+terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§ 7.1 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
 protocol messages defined in this section.</p>
    <p>For all messages defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for the full
 CDDL definitions.</p>
@@ -2123,9 +2137,9 @@ message contains the following values:</p>
     <dd data-md>
      <p>The reason the presentation was terminated.</p>
    </dl>
-   <p>To accept incoming connections requests from controller, a receiver
-must receive and process the presentation-connection-open-request
-message which contains the following values:</p>
+   <p>To accept incoming connection requests from controller, a receiver must receive
+and process the presentation-connection-open-request message which contains the
+following values:</p>
    <dl>
     <dt data-md>presentation-id
     <dd data-md>
@@ -2149,42 +2163,33 @@ to each other.  It is chosen by the receiver for ease of implementation (if
 the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier).</p>
    </dl>
-   <p>A controller may terminate a connection without terminating the presentation by
-sending a presentation-connection-close-request message with the following
-values:</p>
+   <p>A controller may close a connection without terminating the presentation by
+sending a <code>presentation-connection-close-event</code> message to the receiver with the
+following values:</p>
    <dl>
     <dt data-md>connection-id
     <dd data-md>
-     <p>The ID of the connection to close.</p>
-   </dl>
-   <p class="issue" id="issue-b4b59633"><a class="self-link" href="#issue-b4b59633"></a> Is a Presentation close/terminate from a controller a request/response or event? <a href="https://github.com/webscreens/openscreenprotocol/issues/124">&lt;https://github.com/webscreens/openscreenprotocol/issues/124></a></p>
-   <p>The receiver should, upon receipt of a presentation-connection-close-request,
-send back a presentation-connection-close-response message with the following
-values:</p>
-   <dl>
-    <dt data-md>result
-    <dd data-md>
-     <p>If the close succeed or failed, and if it failed why it failed.</p>
-   </dl>
-   <p class="issue" id="issue-1a6da4e3"><a class="self-link" href="#issue-1a6da4e3"></a> Remove presentation-connection-close-response message. <a href="https://github.com/webscreens/openscreenprotocol/issues/138">&lt;https://github.com/webscreens/openscreenprotocol/issues/138></a></p>
-   <p>The receiver may also close a connection without a request from the controller
-to do so and without terminating a presentation.  If it does so, it should send
-a presentation-connection-close-event to the controller with the following
-values:</p>
-   <dl>
-    <dt data-md>connection-id
-    <dd data-md>
-     <p>The ID of the connection that was closed</p>
+     <p>The ID of the connection that was closed.</p>
     <dt data-md>reason
     <dd data-md>
-     <p>The reason the connection was closed</p>
-    <dt data-md>error-message
-    <dd data-md>
-     <p>A debug message suitable for a log or perhaps presented to
-the user with more explanation as to why it was closed.</p>
+     <p>Set to <code>close-method-called</code> or <code>connection-object-discarded</code>.</p>
    </dl>
-   <h3 class="heading settled" data-level="7.2" id="presentation-api"><span class="secno">7.2. </span><span class="content">Presentation API</span><a class="self-link" href="#presentation-api"></a></h3>
-   <p>This section defines how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§ 7.1 Presentation Protocol</a>.</p>
+   <p>The receiver may also close a connection without terminating a presentation.  If
+it does so, it should send a <code>presentation-connection-close-event</code> message to the
+controller with the following values:</p>
+   <dl>
+    <dt data-md>connection-id
+    <dd data-md>
+     <p>The ID of the connection that was closed.</p>
+    <dt data-md>reason
+    <dd data-md>
+     <p>Set to <code>close-method-called</code> or <code>connection-object-discarded</code>.</p>
+   </dl>
+   <p class="note" role="note"><span>Note:</span> When an agent closes a presentation connection, it is always successful,
+so request and response messages are not needed.  A request to terminate a
+presentation may succeed or fail, so a response message is required.</p>
+   <h3 class="heading settled" data-level="7.1" id="presentation-api"><span class="secno">7.1. </span><span class="content">Presentation API</span><a class="self-link" href="#presentation-api"></a></h3>
+   <p>This section defines how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§ 7 Presentation Protocol</a>.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "This list of presentation displays ... is populated based on an
 implementation specific discovery mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent③">controlling user agent</a> may
@@ -2209,6 +2214,10 @@ presentation message type to the destination browsing context", the <a data-link
 messageOrData for the presentation message data.  Note that the messageType is
 embedded in the encoded CBOR type and does not need an additional value in the
 message.</p>
+   <p>When <a href="https://www.w3.org/TR/presentation-api/#closing-a-presentationconnection">section 6.5.5</a> says
+"Start to signal to the destination browsing context the intention to close the
+corresponding PresentationConnection", the <a data-link-type="dfn" href="https://w3c.github.io/reporting/#report-user-agent" id="ref-for-report-user-agent">user agent</a> may send a <code>presentation-connection-close-event</code> message to the user agent with the
+destination browsing context.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
@@ -2222,9 +2231,9 @@ presentation-connection-open-request.</p>
 6.7.1</a> says "Establish the connection between the controlling and receiving
 browsing contexts using an implementation specific mechanism.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving
 user agent</a>, must send a presentation-connection-open-response message.</p>
-   <h3 class="heading settled" data-level="7.3" id="remote-playback-protocol"><span class="secno">7.3. </span><span class="content">Remote Playback Protocol</span><a class="self-link" href="#remote-playback-protocol"></a></h3>
+   <h2 class="heading settled" data-level="8" id="remote-playback-protocol"><span class="secno">8. </span><span class="content">Remote Playback Protocol</span><a class="self-link" href="#remote-playback-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting, terminating,
-and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 7.5 Remote Playback API</a> defines how
+and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 8.2 Remote Playback API</a> defines how
 APIs in <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> map to the protocol messages
 defined in this section.</p>
    <p>For all messages defined in this section, see Appendix A for the full
@@ -2308,7 +2317,7 @@ receiver.</p>
     <dt data-md>controls
     <dd data-md>
      <p>Initial controls for modifying the initial state of the remote playback, as
-defined in <a href="#remote-playback-state-and-controls">§ 7.4 Remote Playback State and Controls</a>.  The controller may send
+defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.  The controller may send
 controls that are optional for the receiver to support before it knows the
 receiver supports them.  If the receiver does not support them, it will
 ignore them and the controller will learn that it does not support them from
@@ -2325,7 +2334,7 @@ invalid-url).  Additionally, the response must include the following:</p>
    <dl>
     <dt data-md>state
     <dd data-md>
-     <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 7.4 Remote Playback State and Controls</a>.</p>
+     <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
    </dl>
    <p>If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -2343,7 +2352,7 @@ remote-playback-modify-response message in reply with the following values:</p>
    <dl>
     <dt data-md>state
     <dd data-md>
-     <p>The updated state of the remote playback as defined in <a href="#remote-playback-state-and-controls">§ 7.4 Remote Playback State and Controls</a>.</p>
+     <p>The updated state of the remote playback as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
    </dl>
    <p>When the state of remote playback changes without request for modification from
 the controller (such as when the skips or pauses due to user user interaction on
@@ -2355,7 +2364,7 @@ controller.</p>
      <p>The ID of the remote playback whose state has changed.</p>
     <dt data-md>state
     <dd data-md>
-     <p>The updated state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 7.4 Remote Playback State and Controls</a>.</p>
+     <p>The updated state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
    </dl>
    <p>To terminate the remote playback, the controller may send a
 remote-playback-termination-request message with the following values:</p>
@@ -2385,7 +2394,7 @@ API section 6.2.7</a>, terminating the remote playback means the controller is n
 longer controlling the remote playback and does not necessarily stop media from
 rendering on the receiver.  Whether or not the receiver stops rendering media depends
 upon the implementation of the receiver.</p>
-   <h3 class="heading settled" data-level="7.4" id="remote-playback-state-and-controls"><span class="secno">7.4. </span><span class="content">Remote Playback State and Controls</span><a class="self-link" href="#remote-playback-state-and-controls"></a></h3>
+   <h3 class="heading settled" data-level="8.1" id="remote-playback-state-and-controls"><span class="secno">8.1. </span><span class="content">Remote Playback State and Controls</span><a class="self-link" href="#remote-playback-state-and-controls"></a></h3>
    <p>In order for the controller and receiver to stay in sync with regards to the
 state of the remote playback, the controller may send controls to modify the state
 (for example, via the remote-playback-modify-request message) and the receiver
@@ -2574,9 +2583,9 @@ seekable-time-ranges) used above use a common media-time value (see Appendix A)
 which includes a time scale.  This allows time values which work on different
 time scales to be expressed without loss of precision.  The scale is represented
 in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
-   <h3 class="heading settled" data-level="7.5" id="remote-playback-api"><span class="secno">7.5. </span><span class="content">Remote Playback API</span><a class="self-link" href="#remote-playback-api"></a></h3>
+   <h3 class="heading settled" data-level="8.2" id="remote-playback-api"><span class="secno">8.2. </span><span class="content">Remote Playback API</span><a class="self-link" href="#remote-playback-api"></a></h3>
    <p>This section defines how the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> uses the
-messages defined in <a href="#remote-playback-protocol">§ 7.3 Remote Playback Protocol</a>.</p>
+messages defined in <a href="#remote-playback-protocol">§ 8 Remote Playback Protocol</a>.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
 6.2.1.2</a> says "This list contains remote playback devices and is populated
 based on an implementation specific discovery mechanism" and <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
@@ -2609,10 +2618,10 @@ change the local media element based on changes to the remote playback state.</p
 6.2.7</a> says "Request disconnection of remote from the device. The
 implementation of this step is specific to the user agent.", the controlling
 user agent may send the remote-playback-termination-request message.</p>
-   <h2 class="heading settled" data-level="8" id="streaming-protocol"><span class="secno">8. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
+   <h2 class="heading settled" data-level="9" id="streaming-protocol"><span class="secno">9. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for streaming
 media from a media sender to a media receiver.</p>
-   <h3 class="heading settled" data-level="8.1" id="streaming-capabilities"><span class="secno">8.1. </span><span class="content">Capabilities</span><a class="self-link" href="#streaming-capabilities"></a></h3>
+   <h3 class="heading settled" data-level="9.1" id="streaming-capabilities"><span class="secno">9.1. </span><span class="content">Capabilities</span><a class="self-link" href="#streaming-capabilities"></a></h3>
     If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an streaming-capabilities-request
 message, and receive back a streaming-capabilities-response message with the
@@ -2694,9 +2703,9 @@ The default value is none.</p>
 provided in a video-resolution not listed in the native-resolutions list
 (if provided) or of a different aspect ratio. The default value is true.</p>
    </dl>
-   <h3 class="heading settled" data-level="8.2" id="streaming-sessions"><span class="secno">8.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
+   <h3 class="heading settled" data-level="9.2" id="streaming-sessions"><span class="secno">9.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
    <p>TODO</p>
-   <h3 class="heading settled" data-level="8.3" id="streaming-audio"><span class="secno">8.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
+   <h3 class="heading settled" data-level="9.3" id="streaming-audio"><span class="secno">9.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
    <p>Senders may send audio to receivers by sending audio-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  An audio frame message
 contains a set of encoded audio samples for a range of time. A series of
 encoded audio frames that share a codec, codec parameters and a timeline form an
@@ -2742,7 +2751,7 @@ be; it can be any clock chosen by the sender.</p>
     <dd data-md>
      <p>The data.  The type of data is inferred from the properties of the encoding.</p>
    </dl>
-   <h3 class="heading settled" data-level="8.4" id="streaming-video"><span class="secno">8.4. </span><span class="content">Video</span><a class="self-link" href="#streaming-video"></a></h3>
+   <h3 class="heading settled" data-level="9.4" id="streaming-video"><span class="secno">9.4. </span><span class="content">Video</span><a class="self-link" href="#streaming-video"></a></h3>
    <p>Senders may send video to receivers by sending video-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video frame message
 contains an encoded video frame (an encoded image) at a specific point in time
 or over a specfic time range (if the duration is known).  A series of encoded
@@ -2799,7 +2808,7 @@ The default is 0 (no rotation).</p>
      <p>The encoded video frame (encoded image).  The codec and codec parameters are
 inferred from the properties of the encoding.</p>
    </dl>
-   <h3 class="heading settled" data-level="8.5" id="media-streaming-data"><span class="secno">8.5. </span><span class="content">Data</span><a class="self-link" href="#media-streaming-data"></a></h3>
+   <h3 class="heading settled" data-level="9.5" id="media-streaming-data"><span class="secno">9.5. </span><span class="content">Data</span><a class="self-link" href="#media-streaming-data"></a></h3>
    <p>Senders may send timed data to receivers by sending data-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
 contains an arbitrary payload that can be synchronized with and video, such as
 text track data.  A series of data frames that share a data type and timeline
@@ -2841,7 +2850,7 @@ timelines.</p>
      <p>The data.  The format and parameters are inferred from
 the properties of the encoding.</p>
    </dl>
-   <h3 class="heading settled" data-level="8.6" id="streaming-feedback"><span class="secno">8.6. </span><span class="content">Feedback</span><a class="self-link" href="#streaming-feedback"></a></h3>
+   <h3 class="heading settled" data-level="9.6" id="streaming-feedback"><span class="secno">9.6. </span><span class="content">Feedback</span><a class="self-link" href="#streaming-feedback"></a></h3>
    <p>The receiver can send feedback to the sender, such as key frame requests.</p>
    <p>A video key frame is requested by sending a video-request message with
 the following keys and values.</p>
@@ -2862,9 +2871,9 @@ This it to prevent out-of-order requests from generating more key frames than ne
      <p>If set, the sender may generate a video frame dependent on the last decoded
 frame.  If not set, the sender must generate an indepdendent (key) frame.</p>
    </dl>
-   <h3 class="heading settled" data-level="8.7" id="streaming-stats"><span class="secno">8.7. </span><span class="content">Stats</span><a class="self-link" href="#streaming-stats"></a></h3>
+   <h3 class="heading settled" data-level="9.7" id="streaming-stats"><span class="secno">9.7. </span><span class="content">Stats</span><a class="self-link" href="#streaming-stats"></a></h3>
    <p>TODO</p>
-   <h2 class="heading settled" data-level="9" id="requests-responses--watches"><span class="secno">9. </span><span class="content">Requests, Responses, and Watches</span><a class="self-link" href="#requests-responses--watches"></a></h2>
+   <h2 class="heading settled" data-level="10" id="requests-responses--watches"><span class="secno">10. </span><span class="content">Requests, Responses, and Watches</span><a class="self-link" href="#requests-responses--watches"></a></h2>
    <p>Multiple sub-protocols in OSP have messages that act as requests, responses,
 watches, and events. Most requests have a <code>request-id</code>, and the agent that
 receives the request must send exactly one reponse message in return with the
@@ -2884,7 +2893,7 @@ agents to save power by closing unused connections.</p>
    <p class="note" role="note"><span>Note:</span> Request and watch IDs are not unique across agents.  An agent can combine
 a request ID with a unique identifier for the agent that sent it (like its
 certificate fingerprint) to track requests across multiple agents.</p>
-   <h2 class="heading settled" data-level="10" id="protocol-extensions"><span class="secno">10. </span><span class="content">Protocol Extensions</span><a class="self-link" href="#protocol-extensions"></a></h2>
+   <h2 class="heading settled" data-level="11" id="protocol-extensions"><span class="secno">11. </span><span class="content">Protocol Extensions</span><a class="self-link" href="#protocol-extensions"></a></h2>
    <p>Open Screen agents may exchange extension messages that are not defined by this
 specification.  This could be used for experimentation, customization or other
 purposes.</p>
@@ -2904,7 +2913,7 @@ extension protocols.  However, this is not required; agents that support
 non-CBOR extensions must be able to decode QUIC streams that contain a mix of
 CBOR messages and non-CBOR extension messages.</p>
    <p>TODO: Document how extensions should add fields to standard CBOR messages.</p>
-   <h2 class="heading settled" data-level="11" id="security-privacy"><span class="secno">11. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
+   <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
 considerations should be closely examined.  We first evaluate the protocol
@@ -2913,8 +2922,8 @@ Questionnaire</a>.  We then examine whether the security and privacy guidelines
 recommended by the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> are met.  Finally we discuss recommended
 mitigations that agents can use to meet these security and privacy
 requirements.</p>
-   <h3 class="heading settled" data-level="11.1" id="threat-models"><span class="secno">11.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
-   <h4 class="heading settled" data-level="11.1.1" id="passive-network-attackers"><span class="secno">11.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
+   <h3 class="heading settled" data-level="12.1" id="threat-models"><span class="secno">12.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
+   <h4 class="heading settled" data-level="12.1.1" id="passive-network-attackers"><span class="secno">12.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
    <p>The Open Screen Protocol should assume that all parties that are connected to
 the same LAN, either through a wired connection or through WiFi, are able to
 observe all data flowing between Open Screen Protocol agents.</p>
@@ -2922,7 +2931,7 @@ observe all data flowing between Open Screen Protocol agents.</p>
 messages, such as mDNS records and the QUIC handshakes.</p>
    <p>These parties may attempt to learn cryptographic parameters by observing data
 flows on the QUIC connection, or by observing cryptographic timing.</p>
-   <h4 class="heading settled" data-level="11.1.2" id="active-network-attackers"><span class="secno">11.1.2. </span><span class="content">Active Network Attackers</span><a class="self-link" href="#active-network-attackers"></a></h4>
+   <h4 class="heading settled" data-level="12.1.2" id="active-network-attackers"><span class="secno">12.1.2. </span><span class="content">Active Network Attackers</span><a class="self-link" href="#active-network-attackers"></a></h4>
    <p>Active attackers, such as compromised routers, will be able to manipulate data
 exchanged between agents.  They can inject traffic into existing QUIC
 connections and attempt to initiate new QUIC connections.  These abilities can
@@ -2942,7 +2951,7 @@ expose local network devices (such as Open Screen Protocol agents) to the
 Internet.  This vector of attack has been used by malicious parties to take
 control of printers and smart TVs by connecting to local network services that
 would normally be inaccessible from the Internet.</p>
-   <h4 class="heading settled" data-level="11.1.3" id="denial-of-service"><span class="secno">11.1.3. </span><span class="content">Denial of Service</span><a class="self-link" href="#denial-of-service"></a></h4>
+   <h4 class="heading settled" data-level="12.1.3" id="denial-of-service"><span class="secno">12.1.3. </span><span class="content">Denial of Service</span><a class="self-link" href="#denial-of-service"></a></h4>
    <p>Parties with connected to the LAN may attempt to deny access to Open Screen
 Protocol agents.  For example, an attacker my attempt to open
 a large number of QUIC connections to an agent in an attempt to block
@@ -2950,7 +2959,7 @@ legitimate connections or exhaust the agent’s system resources.  They may
 also multicast spurious DNS-SD records in an attempt to exhaust the cache
 capacity for mDNS listeners, or to get listeners to open a large number of bogus
 QUIC connections.</p>
-   <h4 class="heading settled" data-level="11.1.4" id="same-origin-policy-violations"><span class="secno">11.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
+   <h4 class="heading settled" data-level="12.1.4" id="same-origin-policy-violations"><span class="secno">12.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
    <p>The Presentation API allows cross-origin communication between controlling pages
 and presentations with the consent of each origin (through their use of the
 API).  This is similar to cross-origin communication via <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage" id="ref-for-dom-window-postmessage">postMessage()</a></code> with a <code>targetOrigin</code> of <code>*</code>.  However, the Presentation API does not convey source
@@ -2958,8 +2967,8 @@ origin information with each message.  Therefore, the Open Screen Protocol does
 not convey origin information between its agents.</p>
    <p>The <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id③">presentation ID</a> carries some protection against unrestricted
 cross-origin access; but, rigorous authentication of the parties connected by a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection②">PresentationConnection</a></code> must be done at the application level.</p>
-   <h3 class="heading settled" data-level="11.2" id="security-privacy-questions"><span class="secno">11.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
-   <h4 class="heading settled" data-level="11.2.1" id="personally-identifiable-information"><span class="secno">11.2.1. </span><span class="content">Personally Identifiable Information &amp; High-Value Data</span><a class="self-link" href="#personally-identifiable-information"></a></h4>
+   <h3 class="heading settled" data-level="12.2" id="security-privacy-questions"><span class="secno">12.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
+   <h4 class="heading settled" data-level="12.2.1" id="personally-identifiable-information"><span class="secno">12.2.1. </span><span class="content">Personally Identifiable Information &amp; High-Value Data</span><a class="self-link" href="#personally-identifiable-information"></a></h4>
    <p>The following data exchanged by the protocol can be personally identifiable
 and/or high value data:</p>
    <ol>
@@ -2978,7 +2987,7 @@ and/or high value data:</p>
    </ol>
    <p>Presentation IDs are considered high value data because they can be used in
 conjunction with a Presentation URL to connect to a running presentation.</p>
-   <p>Presentation display friendly names, model names, and capabilities, while not
+   <p>Presentation display names, model names, and capabilities, while not
 considered personally identifiable, are important to protect to prevent an
 attacker from changing them or substituting other values during the discovery
 and authentication process.</p>
@@ -2991,20 +3000,20 @@ considered public and untrusted data:</p>
      <p>Data advertised through mDNS, including the display name prefix, the
 certificate fingerprint, and the metadata version.</p>
    </ol>
-   <h4 class="heading settled" data-level="11.2.2" id="cross-origin-state"><span class="secno">11.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
+   <h4 class="heading settled" data-level="12.2.2" id="cross-origin-state"><span class="secno">12.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
    <p>Access to origin state across browsing sessions is possible through the
 Presentation API by reconnecting to a presentation that was started by a
 previous session. This scenario is addressed in <a href="https://www.w3.org/TR/presentation-api/#cross-origin-access">Presentation API §cross-origin-access</a>.</p>
    <p>Presentation display availability and remote playback device availability are
 states that are available cross-origin depending on the user’s network
 context.  Exposure of this data to the Web is also discussed in <a href="https://www.w3.org/TR/presentation-api/#personally-identifiable-information">Presentation API §personally-identifiable-information</a> and <a href="https://www.w3.org/TR/remote-playback/#personally-identifiable-information">Remote Playback API §personally-identifiable-information</a>.</p>
-   <h4 class="heading settled" data-level="11.2.3" id="origin-access-devices"><span class="secno">11.2.3. </span><span class="content">Origin Access to Other Devices</span><a class="self-link" href="#origin-access-devices"></a></h4>
+   <h4 class="heading settled" data-level="12.2.3" id="origin-access-devices"><span class="secno">12.2.3. </span><span class="content">Origin Access to Other Devices</span><a class="self-link" href="#origin-access-devices"></a></h4>
    <p>By design, the Open Screen Protocol allows access to presentation displays and
 remote playback devices from the Web.  By implementing the protocol, these
 devices are knowingly making themselves available to the Web and should be
 designed accordingly.</p>
    <p>Below, we discuss mitigation steps to prevent malicious use of these devices.</p>
-   <h4 class="heading settled" data-level="11.2.4" id="incognito-mode"><span class="secno">11.2.4. </span><span class="content">Incognito Mode</span><a class="self-link" href="#incognito-mode"></a></h4>
+   <h4 class="heading settled" data-level="12.2.4" id="incognito-mode"><span class="secno">12.2.4. </span><span class="content">Incognito Mode</span><a class="self-link" href="#incognito-mode"></a></h4>
    <p>The Open Screen Protocol does not distinguish between the user agent’s normal
 browsing and incognito modes, and agents that follow the specification
 behave identically regardless of which mode is in use.</p>
@@ -3012,7 +3021,7 @@ behave identically regardless of which mode is in use.</p>
 connections for normal and incognito profiles from the same user agent instance.
 This prevents Open Screen agents from correlating activity among profiles
 belonging to the same user (both normal and incognito).</p>
-   <h4 class="heading settled" data-level="11.2.5" id="persistent-state"><span class="secno">11.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
+   <h4 class="heading settled" data-level="12.2.5" id="persistent-state"><span class="secno">12.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
    <p>An agent is likely to persist the identity of agents that have successfully
 completed <a href="#authentication">§ 6 Authentication</a>.  This may include the public key fingerprints,
 metadata versions, and metadata for those parties.</p>
@@ -3021,7 +3030,7 @@ UI of the user agent during the display selection or display authentication
 process.  It can be an implementation choice whether the user agent clears or
 retains this data when the user clears browsing data.</p>
    <p class="issue" id="issue-8bf4aa9f"><a class="self-link" href="#issue-8bf4aa9f"></a> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a></p>
-   <h4 class="heading settled" data-level="11.2.6" id="other-considerations"><span class="secno">11.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
+   <h4 class="heading settled" data-level="12.2.6" id="other-considerations"><span class="secno">12.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
    <p>The Open Screen Protocol does not grant to the Web additional access to the
 following:</p>
    <ul>
@@ -3038,7 +3047,7 @@ following:</p>
     <li data-md>
      <p>Security characteristics of the user agent</p>
    </ul>
-   <h3 class="heading settled" data-level="11.3" id="presentation-api-considerations"><span class="secno">11.3. </span><span class="content">Presentation API Considerations</span><a class="self-link" href="#presentation-api-considerations"></a></h3>
+   <h3 class="heading settled" data-level="12.3" id="presentation-api-considerations"><span class="secno">12.3. </span><span class="content">Presentation API Considerations</span><a class="self-link" href="#presentation-api-considerations"></a></h3>
    <p><a href="https://www.w3.org/TR/presentation-api/#security-and-privacy-considerations">Presentation API §security-and-privacy-considerations</a> place these
 requirements on the Open Screen Protocol:</p>
    <ol>
@@ -3065,15 +3074,15 @@ connections.</p>
  the number of active connections.</p>
    </ol>
    <p class="issue" id="issue-edc1d8c1"><a class="self-link" href="#issue-edc1d8c1"></a> Notify endpoints when new connection is created. <a href="https://github.com/webscreens/openscreenprotocol/issues/143">&lt;https://github.com/webscreens/openscreenprotocol/issues/143></a></p>
-   <h3 class="heading settled" data-level="11.4" id="remote-playback-considerations"><span class="secno">11.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
+   <h3 class="heading settled" data-level="12.4" id="remote-playback-considerations"><span class="secno">12.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
    <p>The <a href="https://www.w3.org/TR/remote-playback/#security-and-privacy-considerations">Remote Playback API §security-and-privacy-considerations</a> also state that
 messaging between local and remote playback devices should also be authenticated
 and confidential.</p>
    <p>This consideration is handled by requiring mutual authentication and a
 TLS-secured QUIC connection before any remote playback related messages are
 exchanged.</p>
-   <h3 class="heading settled" data-level="11.5" id="security-mitigations"><span class="secno">11.5. </span><span class="content">Mitigation Strategies</span><a class="self-link" href="#security-mitigations"></a></h3>
-   <h4 class="heading settled" data-level="11.5.1" id="local-passive-mitigations"><span class="secno">11.5.1. </span><span class="content">Local passive network attackers</span><a class="self-link" href="#local-passive-mitigations"></a></h4>
+   <h3 class="heading settled" data-level="12.5" id="security-mitigations"><span class="secno">12.5. </span><span class="content">Mitigation Strategies</span><a class="self-link" href="#security-mitigations"></a></h3>
+   <h4 class="heading settled" data-level="12.5.1" id="local-passive-mitigations"><span class="secno">12.5.1. </span><span class="content">Local passive network attackers</span><a class="self-link" href="#local-passive-mitigations"></a></h4>
    <p>Local passive attackers may attempt to harvest data about user activities and
 device capabilities using the Open Screen Protocol.  The main strategy to address
 this is data minimization, by only exposing opaque public key fingerprints
@@ -3081,7 +3090,7 @@ before user-mediated authentication takes place.</p>
    <p>Passive attackers may also attempt timing attacks to learn the
 cryptographic parameters of the TLS 1.3 QUIC connection.</p>
    <p class="issue" id="issue-84520e29"><a class="self-link" href="#issue-84520e29"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
-   <h4 class="heading settled" data-level="11.5.2" id="local-active-mitigations"><span class="secno">11.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="12.5.2" id="local-active-mitigations"><span class="secno">12.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
    <p>Local active attackers may attempt to impersonate a presentation display the
 user would normally trust.  The <a href="#authentication">§ 6 Authentication</a> step of the Open Screen
 Protocol prevents a man-in-the-middle from impersonating an agent, without
@@ -3096,12 +3105,12 @@ should be flagged include:</p>
      <p>Untrusted agents whose public key fingerprint collides with that from an
 already-trusted agent that is concurrently being advertised.</p>
     <li data-md>
-     <p>Untrusted agents whose friendly name differs from the one previously
+     <p>Untrusted agents whose display name differs from the one previously
 advertised under a given public key fingerprint.</p>
     <li data-md>
      <p>Untrusted agents that fail the authentication challenge a certain number of times.</p>
     <li data-md>
-     <p>Untrusted agents that advertise a friendly name that is similar to that from an
+     <p>Untrusted agents that advertise a display name that is similar to that from an
 already-trusted agent.</p>
     <li data-md>
      <p>Already-trusted agents whose metadata provided through the <code>agent-info</code> message has changed.</p>
@@ -3128,19 +3137,19 @@ display - to prevent the user from blindly clicking through this step.</p>
 connection by injecting or modifying traffic.  These attacks should be mitigated
 by a correct implementation of TLS 1.3.</p>
    <p class="issue" id="issue-84520e29①"><a class="self-link" href="#issue-84520e29①"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
-   <h4 class="heading settled" data-level="11.5.3" id="remote-active-mitigations"><span class="secno">11.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="12.5.3" id="remote-active-mitigations"><span class="secno">12.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
    <p>Unfortunately, we cannot rely on network devices to fully protect Open Screen
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.</p>
    <p class="issue" id="issue-7e863472"><a class="self-link" href="#issue-7e863472"></a> Mitigations for remote network attackers. <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a></p>
-   <h4 class="heading settled" data-level="11.5.4" id="denial-of-service-mitigations"><span class="secno">11.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="12.5.4" id="denial-of-service-mitigations"><span class="secno">12.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
    <p>It will be difficult to completely prevent denial service of attacks that
 originate on the user’s local area network.  Open Screen Protocol agents can
 refuse new connections, close connections that receive too many messages, or
 limit the number of mDNS records cached from a specific responder in an attempt
 to allow existing activities to continue in spite of such an attack.</p>
-   <h4 class="heading settled" data-level="11.5.5" id="malicious-input-mitigations"><span class="secno">11.5.5. </span><span class="content">Malicious input</span><a class="self-link" href="#malicious-input-mitigations"></a></h4>
+   <h4 class="heading settled" data-level="12.5.5" id="malicious-input-mitigations"><span class="secno">12.5.5. </span><span class="content">Malicious input</span><a class="self-link" href="#malicious-input-mitigations"></a></h4>
    <p>Open Screen Protocol agents should be robust against malicious input that
 attempts to compromise the target device by exploiting parsing vulnerabilities.</p>
    <p>CBOR is intended to be less vulnerable to such attacks relative to alternatives
@@ -3356,18 +3365,6 @@ because smaller type keys encode on the wire smaller.</p>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 111</span>
-<span class="nx">presentation-connection-close-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 112</span>
-<span class="nx">presentation-connection-close-response </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 113</span>
@@ -3908,31 +3905,38 @@ extensions.</p>
 })();
 </script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li><a href="#advertising-agent">advertising agent</a><span>, in §3</span>
+   <li><a href="#display-name">display name</a><span>, in §3</span>
+   <li><a href="#listening-agent">listening agent</a><span>, in §3</span>
+   <li><a href="#verified-display-name">verified display name</a><span>, in §3</span>
+  </ul>
   <aside class="dfn-panel" data-for="term-for-htmlmediaelement">
    <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-htmlmediaelement">2.2. Remote Playback API Requirements</a> <a href="#ref-for-htmlmediaelement①">(2)</a> <a href="#ref-for-htmlmediaelement②">(3)</a> <a href="#ref-for-htmlmediaelement③">(4)</a>
-    <li><a href="#termref-for-">7.4. Remote Playback State and Controls</a>
+    <li><a href="#termref-for-">8.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-window-postmessage">
    <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-window-postmessage">11.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-dom-window-postmessage">12.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-presentationconnection">
    <a href="https://w3c.github.io/presentation-api/#presentationconnection">https://w3c.github.io/presentation-api/#presentationconnection</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentationconnection">2.1. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
-    <li><a href="#ref-for-presentationconnection②">11.1.4. Same-Origin Policy Violations</a>
-    <li><a href="#ref-for-presentationconnection③">11.3. Presentation API Considerations</a>
+    <li><a href="#ref-for-presentationconnection②">12.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-presentationconnection③">12.3. Presentation API Considerations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-available-presentation-display">
    <a href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display">https://w3c.github.io/presentation-api/#dfn-available-presentation-display</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-available-presentation-display">7.1. Presentation Protocol</a>
+    <li><a href="#ref-for-dfn-available-presentation-display">7. Presentation Protocol</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-controller">
@@ -3947,7 +3951,7 @@ extensions.</p>
     <li><a href="#ref-for-dfn-controlling-user-agent">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-controlling-user-agent①">2.1. Presentation API Requirements</a>
     <li><a href="#ref-for-dfn-controlling-user-agent②">2.2. Remote Playback API Requirements</a>
-    <li><a href="#ref-for-dfn-controlling-user-agent③">7.2. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent④">(2)</a> <a href="#ref-for-dfn-controlling-user-agent⑤">(3)</a> <a href="#ref-for-dfn-controlling-user-agent⑥">(4)</a> <a href="#ref-for-dfn-controlling-user-agent⑦">(5)</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent③">7.1. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent④">(2)</a> <a href="#ref-for-dfn-controlling-user-agent⑤">(3)</a> <a href="#ref-for-dfn-controlling-user-agent⑥">(4)</a> <a href="#ref-for-dfn-controlling-user-agent⑦">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-display">
@@ -3966,7 +3970,7 @@ extensions.</p>
    <a href="https://w3c.github.io/presentation-api/#dfn-presentation-id">https://w3c.github.io/presentation-api/#dfn-presentation-id</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-presentation-id">2.1. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
-    <li><a href="#ref-for-dfn-presentation-id③">11.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-dfn-presentation-id③">12.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
@@ -3980,26 +3984,26 @@ extensions.</p>
    <a href="https://w3c.github.io/presentation-api/#dfn-receiver">https://w3c.github.io/presentation-api/#dfn-receiver</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-receiver">1.1. Terminology</a> <a href="#ref-for-dfn-receiver①">(2)</a>
-    <li><a href="#ref-for-dfn-receiver②">7.1. Presentation Protocol</a>
+    <li><a href="#ref-for-dfn-receiver②">7. Presentation Protocol</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiving-user-agent">
    <a href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent">https://w3c.github.io/presentation-api/#dfn-receiving-user-agent</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-receiving-user-agent">1.1. Terminology</a>
-    <li><a href="#ref-for-dfn-receiving-user-agent①">7.2. Presentation API</a> <a href="#ref-for-dfn-receiving-user-agent②">(2)</a>
+    <li><a href="#ref-for-dfn-receiving-user-agent①">7.1. Presentation API</a> <a href="#ref-for-dfn-receiving-user-agent②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-availability-sources-set">
    <a href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set">https://w3c.github.io/remote-playback/#dfn-availability-sources-set</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-availability-sources-set">7.5. Remote Playback API</a>
+    <li><a href="#ref-for-dfn-availability-sources-set">8.2. Remote Playback API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-compatible-remote-playback-device">
    <a href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device">https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-compatible-remote-playback-device">7.3. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dfn-compatible-remote-playback-device">8. Remote Playback Protocol</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-initiate-remote-playback">
@@ -4017,8 +4021,8 @@ extensions.</p>
   <aside class="dfn-panel" data-for="term-for-dfn-media-resources">
    <a href="https://w3c.github.io/remote-playback/#dfn-media-resources">https://w3c.github.io/remote-playback/#dfn-media-resources</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-media-resources">7.3. Remote Playback Protocol</a> <a href="#ref-for-dfn-media-resources①">(2)</a> <a href="#ref-for-dfn-media-resources②">(3)</a> <a href="#ref-for-dfn-media-resources③">(4)</a>
-    <li><a href="#ref-for-dfn-media-resources④">7.4. Remote Playback State and Controls</a> <a href="#ref-for-dfn-media-resources⑤">(2)</a> <a href="#ref-for-dfn-media-resources⑥">(3)</a> <a href="#ref-for-dfn-media-resources⑦">(4)</a> <a href="#ref-for-dfn-media-resources⑧">(5)</a>
+    <li><a href="#ref-for-dfn-media-resources">8. Remote Playback Protocol</a> <a href="#ref-for-dfn-media-resources①">(2)</a> <a href="#ref-for-dfn-media-resources②">(3)</a> <a href="#ref-for-dfn-media-resources③">(4)</a>
+    <li><a href="#ref-for-dfn-media-resources④">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dfn-media-resources⑤">(2)</a> <a href="#ref-for-dfn-media-resources⑥">(3)</a> <a href="#ref-for-dfn-media-resources⑦">(4)</a> <a href="#ref-for-dfn-media-resources⑧">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-devices">
@@ -4026,14 +4030,32 @@ extensions.</p>
    <ul>
     <li><a href="#ref-for-dfn-remote-playback-devices">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-remote-playback-devices①">2.2. Remote Playback API Requirements</a>
-    <li><a href="#ref-for-dfn-remote-playback-devices②">7.3. Remote Playback Protocol</a>
-    <li><a href="#ref-for-dfn-remote-playback-devices③">7.5. Remote Playback API</a>
+    <li><a href="#ref-for-dfn-remote-playback-devices②">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dfn-remote-playback-devices③">8.2. Remote Playback API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-source">
    <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source">https://w3c.github.io/remote-playback/#dfn-remote-playback-source</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-remote-playback-source">7.5. Remote Playback API</a>
+    <li><a href="#ref-for-dfn-remote-playback-source">8.2. Remote Playback API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-report-user-agent">
+   <a href="https://w3c.github.io/reporting/#report-user-agent">https://w3c.github.io/reporting/#report-user-agent</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-report-user-agent">7.1. Presentation API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-section-4.1.1">
+   <a href="https://tools.ietf.org/html/rfc6763#section-4.1.1">https://tools.ietf.org/html/rfc6763#section-4.1.1</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-4.1.1">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-section-7">
+   <a href="https://tools.ietf.org/html/rfc6763#section-7">https://tools.ietf.org/html/rfc6763#section-7</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-7">3. Discovery with mDNS</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -4069,6 +4091,17 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-devices" style="color:initial">remote playback devices</span>
      <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-source" style="color:initial">remote playback source</span>
     </ul>
+   <li>
+    <a data-link-type="biblio">[reporting-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-report-user-agent" style="color:initial">user agent</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[RFC6763]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-4.1.1" style="color:initial">instance name</span>
+     <li><span class="dfn-paneled" id="term-for-section-7" style="color:initial">service name</span>
+    </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
@@ -4079,8 +4112,12 @@ extensions.</p>
    <dd>Mark Foltz; Dominik Röttsches. <a href="https://www.w3.org/TR/presentation-api/">Presentation API</a>. 1 June 2017. CR. URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
    <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/">Remote Playback API</a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
+   <dt id="biblio-reporting-1">[REPORTING-1]
+   <dd>Douglas Creager; et al. <a href="https://www.w3.org/TR/reporting-1/">Reporting API</a>. 25 September 2018. WD. URL: <a href="https://www.w3.org/TR/reporting-1/">https://www.w3.org/TR/reporting-1/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-rfc6763">[RFC6763]
+   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -4090,8 +4127,6 @@ extensions.</p>
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
    <dt id="biblio-rfc6762">[RFC6762]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
-   <dt id="biblio-rfc6763">[RFC6763]
-   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
@@ -4109,8 +4144,6 @@ extensions.</p>
    <div class="issue"> Clarify scoping/uniqueness of request IDs. <a href="https://github.com/webscreens/openscreenprotocol/issues/139">&lt;https://github.com/webscreens/openscreenprotocol/issues/139></a><a href="#issue-7a02cf11"> ↵ </a></div>
    <div class="issue"> Add a capability that indicates support for the presentation protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/123">&lt;https://github.com/webscreens/openscreenprotocol/issues/123></a><a href="#issue-4f0d9dbd"> ↵ </a></div>
    <div class="issue"> Refinements to Presentation API protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/160">&lt;https://github.com/webscreens/openscreenprotocol/issues/160></a><a href="#issue-905f29c0"> ↵ </a></div>
-   <div class="issue"> Is a Presentation close/terminate from a controller a request/response or event? <a href="https://github.com/webscreens/openscreenprotocol/issues/124">&lt;https://github.com/webscreens/openscreenprotocol/issues/124></a><a href="#issue-b4b59633"> ↵ </a></div>
-   <div class="issue"> Remove presentation-connection-close-response message. <a href="https://github.com/webscreens/openscreenprotocol/issues/138">&lt;https://github.com/webscreens/openscreenprotocol/issues/138></a><a href="#issue-1a6da4e3"> ↵ </a></div>
    <div class="issue"> Once the Presentation API has text about reconnecting via an
 implementation specific mechanism, quote that here and map it to a message.<a href="#issue-733afe74"> ↵ </a></div>
    <div class="issue"> Add a capability that indicates support for the remote playback protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/123">&lt;https://github.com/webscreens/openscreenprotocol/issues/123></a><a href="#issue-74ff7a9d"> ↵ </a></div>
@@ -4127,6 +4160,12 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29①"> ↵ </a></div>
    <div class="issue"> Mitigations for remote network attackers. <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a><a href="#issue-7e863472"> ↵ </a></div>
   </div>
+  <aside class="dfn-panel" data-for="verified-display-name">
+   <b><a href="#verified-display-name">#verified-display-name</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-verified-display-name">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
 <script>/* script-dfn-panel */
 
 document.body.addEventListener("click", function(e) {
