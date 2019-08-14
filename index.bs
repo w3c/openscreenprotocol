@@ -526,15 +526,13 @@ that it's easy for the user to input PSK on the device.  Supported PSK input met
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.
 
-Any authentication method may require an `auth-initation-token` before
-showing a PSK to the user or requesting PSK input from the user.  If an
-advertising agent has the `pw` field in its mDNS TXT record, it must be used as
-the `auth-initation-token` in the the first authentication message sent to
-or from that agent.  Agents should discard any authentication message whose
+Any authentication method may require an `auth-initation-token` before showing a
+PSK to the user or requesting PSK input from the user.  If an [=advertising
+agent=] has the `pw` field in its mDNS TXT record, it must be used as the
+`auth-initation-token` in the the first authentication message sent to or from
+that agent.  Agents should discard any authentication message whose
 `auth-initation-token` is set and does not match the `pw` provided by the
 advertising agent.
-
-TODO: Autolink advertising agent when PR #180 lands.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
@@ -570,13 +568,13 @@ auth-spake2-message, auth-spake2-confirmation and auth-status.
 SPAKE2 describes in detail how auth-spake2-message and auth-spake2-confirmation
 are computed.
 
-If the PSK presenter wants to perform authentication, the PSK presenter starts
-the authentication process by presenting the PSK to the user and sending a
+If the PSK presenter wants to authenticate, the PSK presenter starts the
+authentication process by presenting the PSK to the user and sending a
 auth-spake2-message message. When the PSK consumer receives the
 auth-spake2-message message, the PSK consumer prompts the user for the PSK input
 if it has not done so yet.
 
-If the PSK consumer wants to perform authentication, the PSK consumer sends a
+If the PSK consumer wants to authenticate, the PSK consumer sends a
 auth-spake2-need-psk message to the PSK presenter to start the authentication
 process and prompts the user to input the PSK. If the PSK presenter receives a
 auth-spake2-need-psk message after starting authentication from their side, the
