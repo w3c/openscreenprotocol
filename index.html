@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="63cba260021c4d50c3cd3c9fd6a8b4d220ba480a" name="document-revision">
+  <meta content="3816e6974641cee7f81f79284fce248276a54c54" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-14">14 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-19">19 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -3246,12 +3246,12 @@ because smaller type keys encode on the wire smaller.</p>
 
 <p><span class="c1">; type key 1002</span>
 <span class="nx">auth-spake2-need-psk </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">auth-initiation-password</span>
+  <span class="nx">auth-initiation-token</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1003</span>
 <span class="nx">auth-spake2-message </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">auth-initation-password</span>
+  <span class="nx">auth-initation-token</span>
 <span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
 <span class="p">}</span></p>
 
