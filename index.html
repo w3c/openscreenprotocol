@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="7dff2d7c8fff7ebcc94aecdb94f08b132d231203" name="document-revision">
+  <meta content="cb943811fc0b053b8fd07759438e94585c5d6f6b" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -2183,6 +2183,23 @@ following values:</p>
 to each other.  It is chosen by the receiver for ease of implementation (if
 the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier).</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The new total number of connections open to the presentation that received
+the incoming connection request.</p>
+   </dl>
+   <p>If the <code>presentation-connection-open-response</code> message indicates success, the
+receiver should also send a <code>presentation-change-event</code> to all other endpoints
+that have an active presentation connection to that presentation with the
+values:</p>
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>The ID of the presentation that just received a new connection.</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The new total number of connections open to the presentation that received
+the incoming connection request.</p>
    </dl>
    <p>A controller may close a connection without terminating the presentation by
 sending a <code>presentation-connection-close-event</code> message to the receiver with the
@@ -2250,8 +2267,8 @@ mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation
 presentation-connection-open-request.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "Establish the connection between the controlling and receiving
-browsing contexts using an implementation specific mechanism.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving
-user agent</a>, must send a presentation-connection-open-response message.</p>
+browsing contexts using an implementation specific mechanism," the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving
+user agent</a> must send a presentation-connection-open-response message and <code>presentation-change-event</code> messages when required.</p>
    <h2 class="heading settled" data-level="8" id="remote-playback-protocol"><span class="secno">8. </span><span class="content">Remote Playback Protocol</span><a class="self-link" href="#remote-playback-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting, terminating,
 and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 8.2 Remote Playback API</a> defines how
