@@ -1617,6 +1617,53 @@ Note: Request and watch IDs are not unique across agents.  An agent can combine
 a request ID with a unique identifier for the agent that sent it (like its
 certificate fingerprint) to track requests across multiple agents.
 
+Protocol Extensions {#protocol-extensions}
+===================
+
+Open Screen agents may exchange extension messages that are not defined by this
+specification.  This could be used for experimentation, customization or other
+purposes.
+
+To add new extension messages, extension authors must register a capability ID
+with a range of message type keys in a public registry (location to be
+determined).  Agents may then indicate that they accept an extension by
+including the corresponding capability ID in the `capabilities` field of its
+`agent-info` message.
+
+Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
+Capability IDs 1000 and above are available for extensions.  See [[#appendix-b]]
+for legal ranges for extension message type keys.
+
+Note: The purpose of the public registry is to prevent conflicts between
+multiple extension authors' capability IDs and message type keys.
+
+Agents must not send extension messages to another agent that has not advertised
+the corresponding extension capability ID.
+
+Note: See [[#messages]] for how agents handle unknown message type keys.
+
+It is recommended that extension messages are also encoded in CBOR, to simplify
+implementations and provide an easier path to standardization of extension
+protocols.  However, this is not required; agents that support non-CBOR
+extensions must be able to decode QUIC streams that contain a mix of CBOR
+messages and non-CBOR extension messages.
+
+Protocol Extension Fields {#protocol-extension-fields}
+-------------------------
+
+It is legal for an agent to add additional, extension fields to a map-valued
+CBOR message type defined by the Open Screen Protocol.  Extension fields must be
+optional, and the Open Screen Protocol message must make sense both with and
+without the field set.
+
+Agents must not add extended fields to the `audio-frame` message directly.
+Instead, they may add them to its nested `optional` value.
+
+Extension fields should use string keys to avoid conflicts with integer keys in
+Open Screen Protocol messages.  An agent should not send extension fields to
+another agent unless that agent advertises an extension capability ID in its
+`agent-info` that indicates that it understands the extension fields.
+
 Security and Privacy {#security-privacy}
 ====================
 
@@ -1911,21 +1958,20 @@ persistent exploits.
 Appendix A: Messages {#appendix-a}
 ====================
 
-The following messages are defined with [[CDDL]]. When
-integer keys are used, a comment is appended to the line to indicate
-the name of the field. Object definitions in this specification have this
-unusual syntax to reduce the number of bytes-on-the-wire, while maintaining a
-human-readable name for each key. Integer keys are used instead of object arrays
-to allow for easy indexing of optional fields.
+The following messages are defined with [[CDDL]]. When integer keys are used, a
+comment is appended to the line to indicate the name of the field. Object
+definitions in this specification have this unusual syntax to reduce the number
+of bytes-on-the-wire, while maintaining a human-readable name for each
+key. Integer keys are used instead of object arrays to allow for easy indexing
+of optional fields.
 
-Each root message (one that can be put into a
-QUIC stream without being enclosed by another message) has a comment
-indicating the message type key.
+Each root message (one that can be put into a QUIC stream without being enclosed
+by another message) has a comment indicating the message type key.
 
-Smaller numbers should be reserved for message that will be sent more
-frequently or are very small or both and larger numbers should be
-reserved for messages that are infrequently sent or large or both
-because smaller type keys encode on the wire smaller.
+Smaller numbers should be reserved for message that will be sent more frequently
+or are very small or both and larger numbers should be reserved for messages
+that are infrequently sent or large or both because smaller type keys encode on
+the wire smaller.
 
 <pre class=include>
 path: messages_appendix.html
@@ -1934,3 +1980,77 @@ path: messages_appendix.html
 <pre class=include>
 path: code-style.html
 </pre>
+
+Appendix B: Message Type Key Ranges {#appendix-b}
+===================================
+
+The following appendix describes how the range of message type keys is divided.
+Legal values are 1 to 2<sup>64</sup>.
+
+Each type key is encoded as a variable-length integer on the wire of 1, 2, 4 or
+8 bytes.  For each wire byte size, 1/4 to 1/2 of the keys are available for
+extensions.
+
+<!--
+ASCII-art equivalent:
+
+| Bytes | Range           | Purpose                      |
+|-------|-----------------|------------------------------|
+| 1     | 1 - 48          | Open Screen Protocol         |
+| 1     | 49 - 63         | Available for extensions     |
+| 2     | 64 - 8,192      | Open Screen Protocol         |
+| 2     | 8,193 - 16,383  | Available for extensions     |
+| 4     | 16,384 - 2^29   | Reserved for future use      |
+| 4     | 2^29+1 - 2^30-1 | Available for extensions     |
+| 8     | >= 2^30         | Reserved for future use      |
+
+because @tabatkins doesn't like markdown tables:
+https://github.com/tabatkins/bikeshed/issues/1128
+-->
+
+<table>
+<thead>
+<tr>
+<th>Bytes</th>
+<th>Range</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1 - 48</td>
+<td>Open Screen Protocol</td>
+</tr>
+<tr>
+<td>1</td>
+<td>49 - 63</td>
+<td>Available for extensions</td>
+</tr>
+<tr>
+<td>2</td>
+<td>64 - 8,192</td>
+<td>Open Screen Protocol</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8,193 - 16,383</td>
+<td>Available for extensions</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16,384 - 2<sup>29</sup></td>
+<td>Reserved for future use</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2<sup>29</sup>+1 - 2<sup>30</sup>-1</td>
+<td>Available for extensions</td>
+</tr>
+<tr>
+<td>8</td>
+<td>&gt;= 2<sup>30</sup></td>
+<td>Reserved for future use</td>
+</tr>
+</tbody>
+</table>
