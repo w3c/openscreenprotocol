@@ -67,12 +67,18 @@ psk-input-method = &(
   qr-code: 1
 )
 
+auth-initiation-token = (
+  ? 0 : text ; token
+)
+
 ; type key 1002
 auth-spake2-need-psk = {
+  auth-initiation-password
 }
 
 ; type key 1003
 auth-spake2-message = {
+  auth-initation-password
   1 : bytes .size 32 ; message
 }
 
