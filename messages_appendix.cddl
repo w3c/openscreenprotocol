@@ -73,12 +73,12 @@ auth-initiation-token = (
 
 ; type key 1002
 auth-spake2-need-psk = {
-  auth-initiation-password
+  auth-initiation-token
 }
 
 ; type key 1003
 auth-spake2-message = {
-  auth-initation-password
+  auth-initation-token
   1 : bytes .size 32 ; message
 }
 
