@@ -61,6 +61,7 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: remote playback source
 urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML51
     text: media element
+url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
 </pre>
@@ -299,6 +300,9 @@ Advertising agents must use a DNS-SD [=Instance Name=] that is a prefix of the
 agent's display name.  If the Instance Name is not the complete display name, it
 must be terminated by a null (`\000`) character, so that a listening agent knows
 it has been truncated.
+
+Advertising agents must follow the mDNS [=conflict resolution=] procedure, to
+prevent multiple advertising agents from using the same DNS-SD Instance Name.
 
 Agents must treat Instance Names as unverified information, and should check
 that the Instance Name is a prefix of the display name received through the
