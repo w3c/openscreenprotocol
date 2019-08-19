@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="2658d98aa125035083bb7d428bea462060da5c48" name="document-revision">
+  <meta content="7dff2d7c8fff7ebcc94aecdb94f08b132d231203" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-13">13 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-19">19 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1512,7 +1512,11 @@ pre .property::before, pre .property::after {
     <li><a href="#discovery"><span class="secno">3</span> <span class="content">Discovery with mDNS</span></a>
     <li><a href="#transport"><span class="secno">4</span> <span class="content">Transport and metadata discovery with QUIC</span></a>
     <li><a href="#messages"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
-    <li><a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
+    <li>
+     <a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
+     <ol class="toc">
+      <li><a href="#authentication-with-spake2"><span class="secno">6.1</span> <span class="content">Authentication with SPAKE2</span></a>
+     </ol>
     <li>
      <a href="#presentation-protocol"><span class="secno">7</span> <span class="content">Presentation Protocol</span></a>
      <ol class="toc">
@@ -1776,7 +1780,7 @@ APIs.</p>
    <p>Agents must discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.
 To do so, agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
    <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a></p>
-   <p>An <dfn data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent<a class="self-link" href="#advertising-agent"></a></dfn> is one that responds to mDNS queries
+   <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent</dfn> is one that responds to mDNS queries
 for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
 name<a class="self-link" href="#display-name"></a></dfn> (a non-empty string) that is a human readable description of the
 presentation display, e.g. "Living Room TV."</p>
@@ -1823,6 +1827,14 @@ metadata has changed.   The advertising agent must update it to a greater
 value.  This signals to the listening agent that it should connect to the
 advertising agent to discover updated metadata.</p>
    </dl>
+   <p>The advertising agent should add an additional field to the TXT record:</p>
+   <dl>
+    <dt data-md>pw
+    <dd data-md>
+     <p>An alphanumeric, unguessable token consisting of characters from the set <code>[A-Za-z0-9+/]</code>.</p>
+   </dl>
+   <p class="note" role="note"><span>Note:</span> <code>pw</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 12.5.3 Remote active network attackers</a>. <code>pw</code> should have at least 32 bits of true
+entropy to make brute force attacks impractical.</p>
    <p class="issue" id="issue-49bdd4e6"><a class="self-link" href="#issue-49bdd4e6"></a> Add examples of sample mDNS records.</p>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
@@ -1958,9 +1970,8 @@ request they are associated with.</p>
    <p>Each supported authentication method is implemeted via authentication messages
 specific to that method.  The authentication method is explicitly specified by
 the message itself.  The authentication status message is common for all authentication
-methods.  Any new authentication method added must define new authentication messages.
-The default authentication method is a challenge-response authentication with
-auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.</p>
+methods.  Any new authentication method added must define new authentication messages.</p>
+   <p>Open Screen Agents must implement <a href="#authentication-with-spake2">§ 6.1 Authentication with SPAKE2</a> with pre-shared keys.</p>
    <p>Prior to authentication, agents exchange auth-capabilities messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
@@ -1973,6 +1984,12 @@ it is not possible for the user to input PSK on this device and 100 means
 that it’s easy for the user to input PSK on the device.  Supported PSK input methods
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
+   <p>Any authentication method may require an <code>auth-initation-token</code> before showing a
+PSK to the user or requesting PSK input from the user.  If an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
+agent</a> has the <code>pw</code> field in its mDNS TXT record, it must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
+that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>pw</code> provided by the
+advertising agent.</p>
+   <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
    <p>For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.</p>
    <p>The default authentication method is <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08">SPAKE2</a> with
@@ -2002,16 +2019,16 @@ The client acts as Alice, the server acts as Bob.</p>
 auth-spake2-message, auth-spake2-confirmation and auth-status.
 SPAKE2 describes in detail how auth-spake2-message and auth-spake2-confirmation
 are computed.</p>
-   <p>If the PSK presenter wants to perform authentication, the PSK presenter
-starts the authentication process by presenting the PSK to the user and sending
-a auth-spake2-message message. When the PSK consumer receives
-the auth-spake2-message message, the PSK consumer prompts the user for the PSK
-input if it has not done so yet.</p>
-   <p>If the PSK consumer wants to perform authentication, the PSK consumer
-sends a auth-spake2-need-psk message to the PSK presenter to start authentication
-process and prompts the user to input the PSK. If the PSK presenter receives
-a auth-spake2-need-psk message after starting authentication from their side,
-the PSK presenter ignores the auth-spake2-need-psk message.</p>
+   <p>If the PSK presenter wants to authenticate, the PSK presenter starts the
+authentication process by presenting the PSK to the user and sending a
+auth-spake2-message message. When the PSK consumer receives the
+auth-spake2-message message, the PSK consumer prompts the user for the PSK input
+if it has not done so yet.</p>
+   <p>If the PSK consumer wants to authenticate, the PSK consumer sends a
+auth-spake2-need-psk message to the PSK presenter to start the authentication
+process and prompts the user to input the PSK. If the PSK presenter receives a
+auth-spake2-need-psk message after starting authentication from their side, the
+PSK presenter ignores the auth-spake2-need-psk message.</p>
    <p>After the user inputs the PSK into the PSK consumer, the PSK consumer computes
 and sends a auth-spake2-message.</p>
    <p>When either agent both knows the PSK and has received a auth-spake2-message
@@ -3156,7 +3173,10 @@ by a correct implementation of TLS 1.3.</p>
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.</p>
-   <p class="issue" id="issue-7e863472"><a class="self-link" href="#issue-7e863472"></a> Mitigations for remote network attackers. <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a></p>
+   <p>Advertising agents should set the <code>pw</code> field in their mDNS TXT record to protect
+themselves from off-LAN attempts to initiate <a href="#authentication">§ 6 Authentication</a>, which result
+in user annoyance (display or input of PSK) and potential brute force attacks
+against the PSK.</p>
    <h4 class="heading settled" data-level="12.5.4" id="denial-of-service-mitigations"><span class="secno">12.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
    <p>It will be difficult to completely prevent denial service of attacks that
 originate on the user’s local area network.  Open Screen Protocol agents can
@@ -3255,13 +3275,19 @@ the wire smaller.</p>
   <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">)</span></p>
 
+<p><span class="nx">auth-initiation-token </span><span class="p">=</span> <span class="p">(</span>
+  <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; token</span>
+<span class="p">)</span></p>
+
 <p><span class="c1">; type key 1002</span>
 <span class="nx">auth-spake2-need-psk </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">auth-initiation-token</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1003</span>
 <span class="nx">auth-spake2-message </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
+  <span class="nx">auth-initation-token</span>
+<span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1004</span>
@@ -4171,8 +4197,13 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29"> ↵ </a></div>
    <div class="issue"> UI guidelines for pairing and trusted/untrusted data. <a href="https://github.com/webscreens/openscreenprotocol/issues/118">&lt;https://github.com/webscreens/openscreenprotocol/issues/118></a><a href="#issue-d435d3a9"> ↵ </a></div>
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29①"> ↵ </a></div>
-   <div class="issue"> Mitigations for remote network attackers. <a href="https://github.com/webscreens/openscreenprotocol/issues/131">&lt;https://github.com/webscreens/openscreenprotocol/issues/131></a><a href="#issue-7e863472"> ↵ </a></div>
   </div>
+  <aside class="dfn-panel" data-for="advertising-agent">
+   <b><a href="#advertising-agent">#advertising-agent</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-advertising-agent">6. Authentication</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="verified-display-name">
    <b><a href="#verified-display-name">#verified-display-name</a></b><b>Referenced in:</b>
    <ul>
