@@ -202,6 +202,7 @@ presentation-connection-open-response = {
   response
   1: &result ; result
   2: uint; connection-id
+  3: uint; connection-count
 }
 
 ; type key 113
@@ -215,7 +216,13 @@ presentation-connection-close-event = {
   ? 3: text ; error-message
 }
 
-; type key 12
+; type key 121
+presentation-change-event = {
+  1: text ; presentation-id
+  2: uint ; connection-count
+}
+
+; type key 16
 presentation-connection-message = {
   1: uint ; connection-id
   2: bytes / text ; message

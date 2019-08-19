@@ -750,6 +750,22 @@ following values:
     the message receiver chooses the connection-id, it may keep the ID unique
     across connections, thus making message demuxing/routing easier).
 
+: connection-count
+:: The new total number of connections open to the presentation that received
+    the incoming connection request.
+
+If the `presentation-connection-open-response` message indicates success, the
+receiver should also send a `presentation-change-event` to all other endpoints
+that have an active presentation connection to that presentation with the
+values:
+
+: presentation-id
+:: The ID of the presentation that just received a new connection.
+
+: connection-count
+:: The new total number of connections open to the presentation that received
+    the incoming connection request.
+
 A controller may close a connection without terminating the presentation by
 sending a `presentation-connection-close-event` message to the receiver with the
 following values:
@@ -833,8 +849,9 @@ presentation-connection-open-request.
 
 When [[PRESENTATION-API#monitoring-incoming-presentation-connections|section
 6.7.1]] says "Establish the connection between the controlling and receiving
-browsing contexts using an implementation specific mechanism.", the [=receiving
-user agent=], must send a presentation-connection-open-response message.
+browsing contexts using an implementation specific mechanism," the [=receiving
+user agent=] must send a presentation-connection-open-response message and
+`presentation-change-event` messages when required.
 
 
 Remote Playback Protocol {#remote-playback-protocol}
