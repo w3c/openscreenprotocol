@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="e95b284b02bd76f633896a31cf4a499d79f04551" name="document-revision">
+  <meta content="73690d2625324e311c10965337ec08e6fc6a81cd" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1789,6 +1789,8 @@ presentation display, e.g. "Living Room TV."</p>
 agent’s display name.  If the Instance Name is not the complete display name, it
 must be terminated by a null (<code>\000</code>) character, so that a listening agent knows
 it has been truncated.</p>
+   <p>Advertising agents must follow the mDNS <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6762#section-9" id="ref-for-section-9">conflict resolution</a> procedure, to
+prevent multiple advertising agents from using the same DNS-SD Instance Name.</p>
    <p>Agents must treat Instance Names as unverified information, and should check
 that the Instance Name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an agent has done
 this check, it can show the name as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="verified-display-name">verified display name</dfn>.</p>
@@ -4123,6 +4125,12 @@ extensions.</p>
     <li><a href="#ref-for-report-user-agent">7.1. Presentation API</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-9">
+   <a href="https://tools.ietf.org/html/rfc6762#section-9">https://tools.ietf.org/html/rfc6762#section-9</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-9">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-section-4.1.1">
    <a href="https://tools.ietf.org/html/rfc6763#section-4.1.1">https://tools.ietf.org/html/rfc6763#section-4.1.1</a><b>Referenced in:</b>
    <ul>
@@ -4174,6 +4182,11 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-report-user-agent" style="color:initial">user agent</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[RFC6762]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-9" style="color:initial">conflict resolution</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[RFC6763]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-section-4.1.1" style="color:initial">instance name</span>
@@ -4193,6 +4206,8 @@ extensions.</p>
    <dd>Douglas Creager; et al. <a href="https://www.w3.org/TR/reporting-1/">Reporting API</a>. 25 September 2018. WD. URL: <a href="https://www.w3.org/TR/reporting-1/">https://www.w3.org/TR/reporting-1/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-rfc6762">[RFC6762]
+   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
   </dl>
@@ -4202,8 +4217,6 @@ extensions.</p>
    <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. Internet Draft. URL: <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/</a>
    <dt id="biblio-quic">[QUIC]
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
-   <dt id="biblio-rfc6762">[RFC6762]
-   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
