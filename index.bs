@@ -840,7 +840,7 @@ When [[PRESENTATION-API#closing-a-presentationconnection|section 6.5.5]] says
 "Start to signal to the destination browsing context the intention to close the
 corresponding PresentationConnection", the [=user agent=] may send a
 `presentation-connection-close-event` message to the user agent with the
-destination browsing context.
+destination browsing context and a `presentation-change-event` when required.
 
 When
 [[PRESENTATION-API#terminating-a-presentation-in-a-controlling-browsing-context|section

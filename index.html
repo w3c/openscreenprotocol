@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="6fc056274a9705b4e1d5bad14e25510d3b424c58" name="document-revision">
+  <meta content="e95b284b02bd76f633896a31cf4a499d79f04551" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -2268,7 +2268,7 @@ message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#closing-a-presentationconnection">section 6.5.5</a> says
 "Start to signal to the destination browsing context the intention to close the
 corresponding PresentationConnection", the <a data-link-type="dfn" href="https://w3c.github.io/reporting/#report-user-agent" id="ref-for-report-user-agent">user agent</a> may send a <code>presentation-connection-close-event</code> message to the user agent with the
-destination browsing context.</p>
+destination browsing context and a <code>presentation-change-event</code> when required.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
@@ -3434,6 +3434,7 @@ the wire smaller.</p>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 113</span>
@@ -3445,6 +3446,13 @@ the wire smaller.</p>
     <span class="nx">unrecoverable-error-while-sending-or-receiving-message</span><span class="p">:</span> <span class="mi">100</span>
   <span class="p">)</span> <span class="c1">; reason</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; error-message</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 121</span>
+<span class="nx">presentation-change-event </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-count</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 16</span>
