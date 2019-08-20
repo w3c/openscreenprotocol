@@ -751,7 +751,7 @@ following values:
     across connections, thus making message demuxing/routing easier).
 
 : connection-count
-:: The new total number of connections open to the presentation that received
+:: The new number of open connections to the presentation that received
     the incoming connection request.
 
 If the `presentation-connection-open-response` message indicates success, the
@@ -760,11 +760,10 @@ that have an active presentation connection to that presentation with the
 values:
 
 : presentation-id
-:: The ID of the presentation that just received a new connection.
+:: The ID of the presentation that just received a new presentation connection.
 
 : connection-count
-:: The new total number of connections open to the presentation that received
-    the incoming connection request.
+:: The new total number of open connections to that presentation.
 
 A controller may close a connection without terminating the presentation by
 sending a `presentation-connection-close-event` message to the receiver with the
@@ -785,6 +784,19 @@ controller with the following values:
 
 : reason
 :: Set to `close-method-called` or `connection-object-discarded`.
+
+: connection-count
+:: The number of open presentation connections that remain.
+
+If a receiver closes a presentation connection (for any reason), it should send
+a `presentation-change-event` to all other controllers with an open connection
+to that presentation with the values:
+
+: presentation-id
+:: The ID of the presentation that just closed a connection.
+
+: connection-count
+:: The number of open presentation connections that remain.
 
 Note: When an agent closes a presentation connection, it is always successful,
 so request and response messages are not needed.  A request to terminate a
