@@ -344,8 +344,6 @@ Issue: Include cross references to the specs for these hash functions.
     value.  This signals to the listening agent that it should connect to the
     advertising agent to discover updated metadata.
 
-The advertising agent should add an additional field to the TXT record:
-
 : at
 :: An alphanumeric, unguessable token consisting of characters from the set
     `[A-Za-z0-9+/]`.
@@ -531,8 +529,8 @@ are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input mus
 support the numeric PSK input method.
 
 Any authentication method may require an `auth-initation-token` before showing a
-PSK to the user or requesting PSK input from the user.  If an [=advertising
-agent=] has the `at` field in its mDNS TXT record, it must be used as the
+PSK to the user or requesting PSK input from the user.  For an [=advertising
+agent=], the `at` field in its mDNS TXT record must be used as the
 `auth-initation-token` in the the first authentication message sent to or from
 that agent.  Agents should discard any authentication message whose
 `auth-initation-token` is set and does not match the `at` provided by the
@@ -1931,7 +1929,7 @@ Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.
 
-Advertising agents should set the `at` field in their mDNS TXT record to protect
+Advertising agents must set the `at` field in their mDNS TXT record to protect
 themselves from off-LAN attempts to initiate [[#authentication]], which result
 in user annoyance (display or input of PSK) and potential brute force attacks
 against the PSK.
