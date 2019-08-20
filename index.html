@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="cb943811fc0b053b8fd07759438e94585c5d6f6b" name="document-revision">
+  <meta content="6fc056274a9705b4e1d5bad14e25510d3b424c58" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-19">19 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-20">20 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2185,7 +2185,7 @@ the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier).</p>
     <dt data-md>connection-count
     <dd data-md>
-     <p>The new total number of connections open to the presentation that received
+     <p>The new number of open connections to the presentation that received
 the incoming connection request.</p>
    </dl>
    <p>If the <code>presentation-connection-open-response</code> message indicates success, the
@@ -2195,11 +2195,10 @@ values:</p>
    <dl>
     <dt data-md>presentation-id
     <dd data-md>
-     <p>The ID of the presentation that just received a new connection.</p>
+     <p>The ID of the presentation that just received a new presentation connection.</p>
     <dt data-md>connection-count
     <dd data-md>
-     <p>The new total number of connections open to the presentation that received
-the incoming connection request.</p>
+     <p>The new total number of open connections to that presentation.</p>
    </dl>
    <p>A controller may close a connection without terminating the presentation by
 sending a <code>presentation-connection-close-event</code> message to the receiver with the
@@ -2222,6 +2221,20 @@ controller with the following values:</p>
     <dt data-md>reason
     <dd data-md>
      <p>Set to <code>close-method-called</code> or <code>connection-object-discarded</code>.</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The number of open presentation connections that remain.</p>
+   </dl>
+   <p>If a receiver closes a presentation connection (for any reason), it should send
+a <code>presentation-change-event</code> to all other controllers with an open connection
+to that presentation with the values:</p>
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>The ID of the presentation that just closed a connection.</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The number of open presentation connections that remain.</p>
    </dl>
    <p class="note" role="note"><span>Note:</span> When an agent closes a presentation connection, it is always successful,
 so request and response messages are not needed.  A request to terminate a

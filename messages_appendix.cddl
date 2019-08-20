@@ -208,6 +208,7 @@ presentation-connection-close-event = {
     unrecoverable-error-while-sending-or-receiving-message: 100
   ) ; reason
   ? 3: text ; error-message
+  4: uint; connection-count
 }
 
 ; type key 121
