@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="cb943811fc0b053b8fd07759438e94585c5d6f6b" name="document-revision">
+  <meta content="9ffc015d301e85bf25b6c16879c86ff659a4d6ed" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-19">19 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-20">20 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1509,7 +1509,7 @@ pre .property::before, pre .property::after {
       <li><a href="#requirements-remote-playback"><span class="secno">2.2</span> <span class="content">Remote Playback API Requirements</span></a>
       <li><a href="#requirements-non-functional"><span class="secno">2.3</span> <span class="content">Non-Functional Requirements</span></a>
      </ol>
-    <li><a href="#discovery"><span class="secno">3</span> <span class="content">Discovery with mDNS</span></a>
+    <li><a href="#certificates"><span class="secno">3</span> <span class="content">Agent Certificates</span></a>
     <li><a href="#transport"><span class="secno">4</span> <span class="content">Transport and metadata discovery with QUIC</span></a>
     <li><a href="#messages"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
     <li>
@@ -1776,7 +1776,29 @@ transport levels) with optional features not defined explicitly by the
 specification, to facilitate experimentation and enhancement of the base
 APIs.</p>
    </ol>
-   <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Discovery with mDNS</span><a class="self-link" href="#discovery"></a></h2>
+   <h2 class="heading settled" data-level="3" id="certificates"><span class="secno">3. </span><span class="content">Agent Certificates</span><a class="self-link" href="#certificates"></a></h2>
+   <p>To provide a persistent means of identity and authentication, an Open Screen
+agent must generate at least one X.509v3 Agent Certificate with the following
+parameters:</p>
+   <ul>
+    <li data-md>
+     <p>256-bit ECDSA public key</p>
+    <li data-md>
+     <p>Self-signed</p>
+    <li data-md>
+     <p>Supporting the at least one of the following signature algorithms:</p>
+     <ul>
+      <li data-md>
+       <p>secp256r1_sha256</p>
+      <li data-md>
+       <p>secp384r1_sha384</p>
+      <li data-md>
+       <p>secp521r1_sha512</p>
+     </ul>
+    <li data-md>
+     <p>Valid for signing</p>
+   </ul>
+   <p>Discovery with mDNS {#discovery} ===============================</p>
    <p>Agents must discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.
 To do so, agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
    <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a></p>
@@ -1938,11 +1960,8 @@ agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.</p>
    <p class="issue" id="issue-e0955a17"><a class="self-link" href="#issue-e0955a17"></a> Define suspend and resume behavior for connection protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a></p>
    <p>The agent-info-response message and agent-status-response messages may be
-extended to include additional information not defined in this spec.  If done
-ad-hoc by applications and not in future specs, keys should be chosen to avoid
-collision, such as by choosing large integers or long strings.  Agents must
-ignore keys in the agent-info-message that it does not understand to allow
-agents to easily extend this message.</p>
+extended to include additional information not defined in this spec, as
+described in <a href="#protocol-extension-fields">§ 11.1 Protocol Extension Fields</a>.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
    <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To
 send a group of messages in order, that group of messages must be sent in one
@@ -1967,7 +1986,6 @@ code of 404 and should include the unknown type key in the reason phrase
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.</p>
-   <p class="issue" id="issue-7a02cf11"><a class="self-link" href="#issue-7a02cf11"></a> Clarify scoping/uniqueness of request IDs. <a href="https://github.com/webscreens/openscreenprotocol/issues/139">&lt;https://github.com/webscreens/openscreenprotocol/issues/139></a></p>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p>Each supported authentication method is implemeted via authentication messages
 specific to that method.  The authentication method is explicitly specified by
@@ -3122,7 +3140,6 @@ this is data minimization, by only exposing opaque public key fingerprints
 before user-mediated authentication takes place.</p>
    <p>Passive attackers may also attempt timing attacks to learn the
 cryptographic parameters of the TLS 1.3 QUIC connection.</p>
-   <p class="issue" id="issue-84520e29"><a class="self-link" href="#issue-84520e29"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
    <h4 class="heading settled" data-level="12.5.2" id="local-active-mitigations"><span class="secno">12.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
    <p>Local active attackers may attempt to impersonate a presentation display the
 user would normally trust.  The <a href="#authentication">§ 6 Authentication</a> step of the Open Screen
@@ -3169,7 +3186,21 @@ display - to prevent the user from blindly clicking through this step.</p>
    <p>The active attacker may also attempt to disrupt data exchanged over the QUIC
 connection by injecting or modifying traffic.  These attacks should be mitigated
 by a correct implementation of TLS 1.3.</p>
-   <p class="issue" id="issue-84520e29①"><a class="self-link" href="#issue-84520e29①"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
+   <p>To improve protection against both passive and active attacks, TLS 1.3 must be
+used as follows:</p>
+   <ul>
+    <li data-md>
+     <p>Session resumption with pre-shared-keys is not allowed.</p>
+    <li data-md>
+     <p>Only constant-time AEAD ciphers are allowed.</p>
+    <li data-md>
+     <p>Only TLS 1.3 is supported.  Older revisions of TLS 1.2 and SSL are not allowed
+and Open Screen connections must not be allowed to downgrade to earlier
+versions.</p>
+    <li data-md>
+     <p>0-RTT data is not allowed.</p>
+   </ul>
+   <p class="issue" id="issue-2645a82b"><a class="self-link" href="#issue-2645a82b"></a> Determine if there advantage to session resumption outside of early data.</p>
    <h4 class="heading settled" data-level="12.5.3" id="remote-active-mitigations"><span class="secno">12.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
    <p>Unfortunately, we cannot rely on network devices to fully protect Open Screen
 Protocol agents, because a misconfigured firewall or NAT could expose a
@@ -4090,19 +4121,19 @@ extensions.</p>
   <aside class="dfn-panel" data-for="term-for-section-9">
    <a href="https://tools.ietf.org/html/rfc6762#section-9">https://tools.ietf.org/html/rfc6762#section-9</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-section-9">3. Discovery with mDNS</a>
+    <li><a href="#ref-for-section-9">3. Agent Certificates</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-section-4.1.1">
    <a href="https://tools.ietf.org/html/rfc6763#section-4.1.1">https://tools.ietf.org/html/rfc6763#section-4.1.1</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-section-4.1.1">3. Discovery with mDNS</a>
+    <li><a href="#ref-for-section-4.1.1">3. Agent Certificates</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-section-7">
    <a href="https://tools.ietf.org/html/rfc6763#section-7">https://tools.ietf.org/html/rfc6763#section-7</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-section-7">3. Discovery with mDNS</a>
+    <li><a href="#ref-for-section-7">3. Agent Certificates</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -4193,7 +4224,6 @@ extensions.</p>
    <div class="issue"> Include cross references to the specs for these hash functions.<a href="#issue-ad92979f"> ↵ </a></div>
    <div class="issue"> Add examples of sample mDNS records.<a href="#issue-49bdd4e6"> ↵ </a></div>
    <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a><a href="#issue-e0955a17"> ↵ </a></div>
-   <div class="issue"> Clarify scoping/uniqueness of request IDs. <a href="https://github.com/webscreens/openscreenprotocol/issues/139">&lt;https://github.com/webscreens/openscreenprotocol/issues/139></a><a href="#issue-7a02cf11"> ↵ </a></div>
    <div class="issue"> Add a capability that indicates support for the presentation protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/123">&lt;https://github.com/webscreens/openscreenprotocol/issues/123></a><a href="#issue-4f0d9dbd"> ↵ </a></div>
    <div class="issue"> Refinements to Presentation API protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/160">&lt;https://github.com/webscreens/openscreenprotocol/issues/160></a><a href="#issue-905f29c0"> ↵ </a></div>
    <div class="issue"> Once the Presentation API has text about reconnecting via an
@@ -4207,9 +4237,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Algorithm for what messages to send when local/remote media element changes. <a href="https://github.com/webscreens/openscreenprotocol/issues/158">&lt;https://github.com/webscreens/openscreenprotocol/issues/158></a><a href="#issue-156f1d74"> ↵ </a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
    <div class="issue"> Notify endpoints when new connection is created. <a href="https://github.com/webscreens/openscreenprotocol/issues/143">&lt;https://github.com/webscreens/openscreenprotocol/issues/143></a><a href="#issue-edc1d8c1"> ↵ </a></div>
-   <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29"> ↵ </a></div>
    <div class="issue"> UI guidelines for pairing and trusted/untrusted data. <a href="https://github.com/webscreens/openscreenprotocol/issues/118">&lt;https://github.com/webscreens/openscreenprotocol/issues/118></a><a href="#issue-d435d3a9"> ↵ </a></div>
-   <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29①"> ↵ </a></div>
+   <div class="issue"> Determine if there advantage to session resumption outside of early data.<a href="#issue-2645a82b"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="advertising-agent">
    <b><a href="#advertising-agent">#advertising-agent</a></b><b>Referenced in:</b>
@@ -4220,7 +4249,7 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="verified-display-name">
    <b><a href="#verified-display-name">#verified-display-name</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-verified-display-name">3. Discovery with mDNS</a>
+    <li><a href="#ref-for-verified-display-name">3. Agent Certificates</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
