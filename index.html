@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="73690d2625324e311c10965337ec08e6fc6a81cd" name="document-revision">
+  <meta content="8665d8b7d13273f5a339fd379370513f767ae5d8" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-20">20 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-21">21 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1828,9 +1828,6 @@ Agents must not support the following hash functions: "md2", "md5".</p>
 metadata has changed.   The advertising agent must update it to a greater
 value.  This signals to the listening agent that it should connect to the
 advertising agent to discover updated metadata.</p>
-   </dl>
-   <p>The advertising agent should add an additional field to the TXT record:</p>
-   <dl>
     <dt data-md>at
     <dd data-md>
      <p>An alphanumeric, unguessable token consisting of characters from the set <code>[A-Za-z0-9+/]</code>.</p>
@@ -1987,8 +1984,8 @@ that it’s easy for the user to input PSK on the device.  Supported PSK input m
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
    <p>Any authentication method may require an <code>auth-initation-token</code> before showing a
-PSK to the user or requesting PSK input from the user.  If an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
-agent</a> has the <code>at</code> field in its mDNS TXT record, it must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
+PSK to the user or requesting PSK input from the user.  For an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
+agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
 that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>at</code> provided by the
 advertising agent.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
@@ -3205,7 +3202,7 @@ by a correct implementation of TLS 1.3.</p>
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.</p>
-   <p>Advertising agents should set the <code>at</code> field in their mDNS TXT record to protect
+   <p>Advertising agents must set the <code>at</code> field in their mDNS TXT record to protect
 themselves from off-LAN attempts to initiate <a href="#authentication">§ 6 Authentication</a>, which result
 in user annoyance (display or input of PSK) and potential brute force attacks
 against the PSK.</p>
