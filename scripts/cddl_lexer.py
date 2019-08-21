@@ -70,7 +70,10 @@ class CustomLexer(RegexLexer):
 
             (r'[|^<>=!?()\[\]{}.,:]', Punctuation),
 
-            # Identifier
+            # Outermost identifier
+            (r'^[a-zA-Z0-9\-\_\@\.\$\s]+', Name.Class),
+
+            # Nested identifier
             (r'[a-zA-Z0-9\-\_\@\.\$\s]+', Name.Other),
         ]
     }

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 from glob import glob
 
 from pygments.formatters.html import HtmlFormatter
@@ -9,6 +10,21 @@ from pygments import highlight
 from cddl_lexer import CustomLexer as CddlLexer
 
 OUTPUT_EXTENSION = ".html"
+
+CDDL_TYPE_KEY_RE = re.compile(r'(<span class="nc">)([A-Za-z-]+)');
+
+class OSPHtmlFormatter(HtmlFormatter):
+  def wrap(self, source, outfile):
+    return self._wrap_code(source)
+
+  def _wrap_code(self, source):
+    yield 0, '<div><pre>'
+    for i, t in source:
+      if i == 1:
+        t = CDDL_TYPE_KEY_RE.sub(r'\g<1><dfn>\g<2></dfn>', t)
+        yield 1, t
+    yield 0, '</pre></div>'
+  
 
 def pygmentize_file(lexer, formatter, filename):
   print("Reading file from: {}".format(filename))
@@ -30,7 +46,8 @@ def pygmentize_dir(lexer, formatter):
       pygmentize_file(lexer, formatter, filename)
 
 if __name__ == "__main__":
-  formatter = HtmlFormatter()
+  formatter = OSPHtmlFormatter()
+#  formatter = HtmlFormatter()
 
   directory, _ = os.path.split(os.path.abspath(__file__))
   lexer = CddlLexer()
