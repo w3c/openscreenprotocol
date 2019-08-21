@@ -8,6 +8,7 @@ from pygments.formatters.html import HtmlFormatter
 from pygments import highlight
 
 from cddl_lexer import CustomLexer as CddlLexer
+import openscreen_cddl_dfns
 
 OUTPUT_EXTENSION = ".html"
 
@@ -21,7 +22,9 @@ class OSPHtmlFormatter(HtmlFormatter):
     yield 0, '<div><pre>'
     for i, t in source:
       if i == 1:
-        t = CDDL_TYPE_KEY_RE.sub(r'\g<1><dfn>\g<2></dfn>', t)
+        m = CDDL_TYPE_KEY_RE.search(t)
+        if m and m.group(2) in openscreen_cddl_dfns.LINKED_TYPES:
+          t = CDDL_TYPE_KEY_RE.sub(r'\g<1><dfn>\g<2></dfn>', t)
         yield 1, t
     yield 0, '</pre></div>'
   

@@ -628,8 +628,8 @@ message with the following values:
 
 
 While the watch is valid (the watch-duration has not expired), the receivers
-should send remote-playback-availability-event messages when URL availabilities change.
-Such events contain the following values:
+should send [=presentation-url-availability-event=] messages when URL
+availabilities change.  Such events contain the following values:
 
 : watch-id
 :: The watch-id given in the [=presentation-url-availability-response=],
