@@ -9,11 +9,25 @@ agent-info-response = {
   1: agent-info ; agent-info
 }
 
+agent-capability = &(
+  receive-audio: 1
+  receive-video: 2
+
+  receive-presentation: 2
+  control-presentation: 3
+
+  receive-remote-playback: 4
+  control-remote-playback: 5
+
+  receive-streaming: 6
+  send-streaming: 7
+)
+
 agent-info = {
   0: text ; display-name
   1: text ; model-name
-  ? 2: bool ; receives-audio
-  ? 3: bool ; receives-video
+  2: [* agent-capability] ; capabilities
+  3: text ; state-token
 }
 
 ; type key 12
@@ -43,30 +57,37 @@ request-id = uint
 microseconds = uint
 
 ; type key 1001
-auth-request-hkdf-scrypt-psk = {
-  request
-  1 : bytes .size 32 ; salt
-  2 : uint ; cost
+auth-capabilities = {
+  0: uint ; psk-ease-of-input
+  1: [* psk-input-method] ; psk-input-methods
 }
 
-; type key 1002
-auth-response-hkdf-scrypt-psk = {
-  response
-  1 : auth-response-hkdf-scrypt-psk-result ; result
-  2 : bytes .size 32 ; proof
-}
-
-auth-response-hkdf-scrypt-psk-result = &(
-  success: 0
-  unknown-error: 1
-  timeout: 2
-  secret-unknown: 3
-  calculation-took-too-long : 4
-  cost-too-low: 5
-  cost-too-high: 6
+psk-input-method = &(
+  numeric: 0
+  qr-code: 1
 )
 
+auth-initiation-token = (
+  ? 0 : text ; token
+)
+
+; type key 1002
+auth-spake2-need-psk = {
+  auth-initiation-token
+}
+
 ; type key 1003
+auth-spake2-message = {
+  auth-initation-token
+  1 : bytes .size 32 ; message
+}
+
+; type key 1004
+auth-spake2-confirmation = {
+  1 : bytes .size 32 ; confirmation
+}
+
+; type key 1005
 auth-status = {
   1 : auth-status-result ; result
 }
@@ -80,24 +101,14 @@ auth-status-result = &(
   proof-invalid: 5
 )
 
-; type key 1004
-auth-capabilities = {
-  0: uint ; psk-ease-of-input
-  1: [* psk-input-method] ; psk-input-methods
-}
-
-psk-input-method = &(
-  numeric: 0
-  alphanumeric: 1
-  qr-code: 2
-)
+watch-id = uint
 
 ; type key 14
 presentation-url-availability-request = {
   request
   1: [1* text] ; urls
   2: microseconds ; watch-duration
-  3: uint ; watch-id
+  3: watch-id ; watch-id
 }
 
 ; type key 15
@@ -108,7 +119,7 @@ presentation-url-availability-response = {
 
 ; type key 103
 presentation-url-availability-event = {
-  1: uint ; watch-id
+  1: watch-id ; watch-id
   2: [1* url-availability] ; url-availabilities
 }
 
@@ -185,18 +196,7 @@ presentation-connection-open-response = {
   response
   1: &result ; result
   2: uint; connection-id
-}
-
-; type key 111
-presentation-connection-close-request = {
-  request
-  1: uint ; connection-id
-}
-
-; type key 112
-presentation-connection-close-response = {
-  response
-  1: &result ; result
+  3: uint; connection-count
 }
 
 ; type key 113
@@ -208,6 +208,13 @@ presentation-connection-close-event = {
     unrecoverable-error-while-sending-or-receiving-message: 100
   ) ; reason
   ? 3: text ; error-message
+  4: uint; connection-count
+}
+
+; type key 121
+presentation-change-event = {
+  1: text ; presentation-id
+  2: uint ; connection-count
 }
 
 ; type key 16
@@ -232,7 +239,7 @@ remote-playback-availability-request = {
   request
   1: [* text] ; urls
   2: microseconds ; watch-duration
-  3: int ; watch-id
+  3: watch-id ; watch-id
 }
 
 ; type key 18
@@ -243,7 +250,7 @@ remote-playback-availability-response = {
 
 ; type key 114
 remote-playback-availability-event = {
-  1: int ; watch-id
+  1: watch-id ; watch-id
   2: [* url-availability] ; url-availabilities
 }
 

@@ -9,11 +9,25 @@
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span>
 
+<span class="nx">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">receive-audio</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span>
+
+  <span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">3</span>
+
+  <span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">5</span>
+
+  <span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">6</span>
+  <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">7</span>
+<span class="p">)</span>
+
 <span class="nx">agent-info </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-audio</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; receives-video</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">agent-capability</span><span class="p">]</span> <span class="c1">; capabilities</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; state-token</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 12</span>
@@ -43,30 +57,37 @@
 <span class="nx">microseconds </span><span class="p">=</span> <span class="kt">uint</span>
 
 <span class="c1">; type key 1001</span>
-<span class="nx">auth-request-hkdf-scrypt-psk </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; salt</span>
-  <span class="mi">2</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cost</span>
+<span class="nx">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
 <span class="p">}</span>
 
-<span class="c1">; type key 1002</span>
-<span class="nx">auth-response-hkdf-scrypt-psk </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="nx">  1 </span><span class="p">:</span> <span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="c1">; result</span>
-  <span class="mi">2</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; proof</span>
-<span class="p">}</span>
-
-<span class="nx">auth-response-hkdf-scrypt-psk-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">success</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">timeout</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
-  <span class="nx">calculation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
-  <span class="nx">cost-too-low</span><span class="p">:</span> <span class="mi">5</span>
-  <span class="nx">cost-too-high</span><span class="p">:</span> <span class="mi">6</span>
+<span class="nx">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">)</span>
 
+<span class="nx">auth-initiation-token </span><span class="p">=</span> <span class="p">(</span>
+  <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; token</span>
+<span class="p">)</span>
+
+<span class="c1">; type key 1002</span>
+<span class="nx">auth-spake2-need-psk </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">auth-initiation-token</span>
+<span class="p">}</span>
+
 <span class="c1">; type key 1003</span>
+<span class="nx">auth-spake2-message </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">auth-initation-token</span>
+<span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 1004</span>
+<span class="nx">auth-spake2-confirmation </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; confirmation</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 1005</span>
 <span class="nx">auth-status </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
 <span class="p">}</span>
@@ -80,24 +101,14 @@
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
 <span class="p">)</span>
 
-<span class="c1">; type key 1004</span>
-<span class="nx">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
-<span class="p">}</span>
-
-<span class="nx">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
-  <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="nx">alphanumeric</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">2</span>
-<span class="p">)</span>
+<span class="nx">watch-id </span><span class="p">=</span> <span class="kt">uint</span>
 
 <span class="c1">; type key 14</span>
 <span class="nx">presentation-url-availability-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 15</span>
@@ -108,7 +119,7 @@
 
 <span class="c1">; type key 103</span>
 <span class="nx">presentation-url-availability-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; watch-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span>
 
@@ -185,18 +196,7 @@
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
-<span class="p">}</span>
-
-<span class="c1">; type key 111</span>
-<span class="nx">presentation-connection-close-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
-<span class="p">}</span>
-
-<span class="c1">; type key 112</span>
-<span class="nx">presentation-connection-close-response </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 113</span>
@@ -208,6 +208,13 @@
     <span class="nx">unrecoverable-error-while-sending-or-receiving-message</span><span class="p">:</span> <span class="mi">100</span>
   <span class="p">)</span> <span class="c1">; reason</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; error-message</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 121</span>
+<span class="nx">presentation-change-event </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-count</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 16</span>
@@ -232,7 +239,7 @@
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 18</span>
@@ -243,7 +250,7 @@
 
 <span class="c1">; type key 114</span>
 <span class="nx">remote-playback-availability-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">int</span> <span class="c1">; watch-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span>
 

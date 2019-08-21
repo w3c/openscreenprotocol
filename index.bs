@@ -52,13 +52,18 @@ urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESEN
 urlPrefix: https://w3c.github.io/presentation-api/; type: interface; spec: PRESENTATION-API
     text: PresentationConnection
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
-    text: remote playback devices
-    text: compatible remote playback device
-    text: media resources
     text: availability sources set
+    text: compatible remote playback device
+    text: initiate remote playback
+    text: media element state
+    text: media resources
+    text: remote playback devices
     text: remote playback source
 urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML51
     text: media element
+url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
+url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
+url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
 </pre>
 
 <h2 class='no-num no-toc no-ref' id='status'>Status of this document</h2>
@@ -148,7 +153,7 @@ Presentation API Requirements {#requirements-presentation-api}
     by IP multicast.
 
 2.  A controlling user agent must be able to obtain the IPv4 or IPv6 address of
-    the display, a friendly name for the display, and an IP port number for
+    the display, a display name for the display, and an IP port number for
     establishing a network transport to the display.
 
 3.  A controlling user agent must be able to determine if the receiver is
@@ -193,7 +198,27 @@ Presentation API Requirements {#requirements-presentation-api}
 Remote Playback API Requirements {#requirements-remote-playback}
 ----------------------------------------------------------------
 
-Issue(3): Requirements for Remote Playback API.
+1.  A [=controlling user agent=] must be able to find out whether there is at
+    least one compatible [=remote playback device=] available for a given
+    {{HTMLMediaElement}}, both instantaneously and continuously.
+
+2.  A controlling user agent must be able to to [=initiate remote playback=] of
+    an {{HTMLMediaElement}} to a compatible remote playback device.
+
+3.  The controlling user agent must be able send media sources as URLs and text
+    tracks from an {{HTMLMediaElement}} to a compatible remote playback device.
+
+4.  During remote playback, the controlling user agent and the remote playback
+    device must be able to synchronize the [=media element state=] of the
+    {{HTMLMediaElement}}.
+
+5.  During remote playback, either the controlling user agent or the
+    remote playback device must be able to disconnect from the other party.
+
+6.  The controlling user agent should be able to pass locale and text
+    direction information to the remote playback device to assist in rendering
+    text during remote playback.
+
 
 Non-Functional Requirements {#requirements-non-functional}
 ----------------------------------------------------------
@@ -258,22 +283,46 @@ Non-Functional Requirements {#requirements-non-functional}
 Discovery with mDNS {#discovery}
 ===============================
 
-Agents may discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
-To do so, agents must use the service name "_openscreen._udp.local".
+Agents must discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
+To do so, agents must use the [=Service Name=] `_openscreen._udp.local`.
 
 Issue(107): Define suspend and resume behavior for discovery protocol.
 
-Advertising Agents must use an instance name that is a prefix of the agent's
-display name. If the instance name is not the complete display name (if it has
-been truncated), it must be terminated by a null character.  It is prefix so
-that the name displayed to the user pre-verification can be verified later.  It
-is terminated by a null character in the case of truncation so that the
-listening agent knows it has been truncated.  This complexity is necessary to
-all for display names that exceed the size allowed in an instance name and for
-such (possibly  truncated) display names to be visible to the user sooner
-(before a QUIC connection is made).  Listening agents must treat instance names
-as unverified and must verify that the instance name is a prefix of the verified
-display name before showing the user a verified display name.
+An <dfn noexport>advertising agent</dfn> is one that responds to mDNS queries
+for `_openscreen._udp.local`.  Such an agent should have a <dfn noexport>display
+name</dfn> (a non-empty string) that is a human readable description of the
+presentation display, e.g. "Living Room TV."
+
+A <dfn noexport>listening agent</dfn> is one that sends mDNS queries for
+`_openscreen._udp.local`.  Listening agents may have a display name.
+
+Advertising agents must use a DNS-SD [=Instance Name=] that is a prefix of the
+agent's display name.  If the Instance Name is not the complete display name, it
+must be terminated by a null (`\000`) character, so that a listening agent knows
+it has been truncated.
+
+Advertising agents must follow the mDNS [=conflict resolution=] procedure, to
+prevent multiple advertising agents from using the same DNS-SD Instance Name.
+
+Agents must treat Instance Names as unverified information, and should check
+that the Instance Name is a prefix of the display name received through the
+`agent-info` message after a successful QUIC connection.  Once an agent has done
+this check, it can show the name as a <dfn noexport>verified display name</dfn>.
+
+Agents should show only complete display names to the user, instead of truncated
+display names from DNS-SD.  A truncated display name should be verified as above
+before being shown in full as a [=verified display name=].
+
+<div class="note">
+This means there are three categories of display names that agents should be
+capable of handling:
+<ol>
+  <li>Truncated and unverified DNS-SD Instance Names, which should not be shown to the user.</li>
+  <li>Complete but unverified DNS-SD Instance Names, which can be shown as
+     unverified prior to [[#authentication]].</li>
+  <li>Verified display names.</li>
+</ol>
+</div>
 
 Advertising agents must include DNS TXT records with the following
 keys and values:
@@ -295,8 +344,15 @@ Issue: Include cross references to the specs for these hash functions.
     value.  This signals to the listening agent that it should connect to the
     advertising agent to discover updated metadata.
 
-Issue: Add examples of sample mDNS records.
+: at
+:: An alphanumeric, unguessable token consisting of characters from the set
+    `[A-Za-z0-9+/]`.
 
+Note: `at` prevents off-LAN parties from attempting authentication; see
+[[#remote-active-mitigations]].  `at` should have at least 32 bits of true
+entropy to make brute force attacks impractical.
+
+Issue: Add examples of sample mDNS records.
 
 Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
@@ -315,12 +371,19 @@ Prior to authentication, a message may be exchanged (such as further metadata),
 but such info should be treated as unverified (such as indicating to a user that
 a display name of an unauthenticated agent is unverified).
 
-To learn further metadata, an agent may send an agent-info-request
-message (see [[#appendix-a]]) and receive back an agent-info-response message.
-Any agent may send this request to learn about the capabilities of
-another device.
+The connection IDs used both by the [[QUIC]] client and server should
+be zero length.  If zero length connection IDs are chosen, agents are
+restricted from changing IP or port without establishing a new QUIC
+connection.  In such cases, clients and servers must establish a new
+QUIC connection in order to change IP or port.
 
-The agent-info-response message contains the following properties:
+To learn further metadata, an agent may send an agent-info-request message (see
+[[#appendix-a]]) and receive back an agent-info-response message.  Any agent may
+send this request at any time to learn about the state and capabilities of
+another device, which are described by the `agent-info` message in the
+`agent-info-response`.
+
+The `agent-info` message contains the following properties:
 
 : display-name (required)
 :: The display name of the agent, intended to be displayed to a user by the
@@ -332,13 +395,52 @@ The agent-info-response message contains the following properties:
     the device.  This is used mainly for debugging purposes, but may be
     displayed to the user of the requesting agent.
 
-: receives-audio (optional)
-:: The agent has to indicate that it supports audio. If false
-    or not included, it is assumed audio content is not supported.
+: capabilities (required)
+:: The control protocols, roles, and media types the agent supports.
+    Presence indicates a capability and absence indicates lack of a
+    capability.  Capabilities should should affect how an agent is
+    presented to a user, such as drawing a different icon depending on
+    the media types it supports.
 
-: receives-video (optional)
-:: The agent has to indicate that it supports video . If false
-    or not included, it is assumed video content is not supported.
+: state-token (required)
+:: A random alphanumeric value consisting of 8 characters in the range
+    [0-9A-Za-z].  This value is set before the agent makes its first connection
+    and must be set to a new value when the agent is reset or otherwise lost all
+    of its state related to this protocol.
+
+The various capabilities have the following meanings:
+
+: receive-audio
+:: The agent can generally receive audio for the control protocols it
+    supports.  Each control protocol can have more specific capability
+    mechanisms, such as support for specific URLs in the presentation
+    protocol.
+
+: receive-video
+:: The agent can generally receive video for the control protocols it
+    supports.  Each control protocol can have more specific capability
+    mechanisms, such as support for specific URLs in the presentation
+    protocol.
+
+: receive-presentation
+:: The agent can receive presentations using the presentation protocol.
+
+: control-presentation
+:: The agent can control presentations using the presentation protocol.
+
+: receive-remote-playback
+:: The agent can receive remote playback using the remote playback
+    protocol.
+
+: control-remote-playback
+:: The agent can control remote playback using the remote playback
+    protocol.
+
+: receive-streaming
+:: The agent can receiving streaming using the streaming protocol.
+
+: send-streaming
+:: The agent can send streaming using the streaming protocol.
 
 
 Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.
@@ -409,15 +511,16 @@ Each supported authentication method is implemeted via authentication messages
 specific to that method.  The authentication method is explicitly specified by
 the message itself.  The authentication status message is common for all authentication
 methods.  Any new authentication method added must define new authentication messages.
-The default authentication method is a challenge-response authentication with
-auth-request-hkdf-scrypt-psk and auth-response-hkdf-scrypt-psk-result.
+
+Open Screen Agents must implement [[#authentication-with-spake2]] with pre-shared keys.
 
 Prior to authentication, agents exchange auth-capabilities messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
 either sends or receives an authentication request.  In case both agents have the same
 PSK ease of input value, the server presents the PSK to the user.  The same pre-shared key
-is used by both agents to issue an authentication request.
+is used by both agents.  The agent presenting the PSK to the user is the PSK presenter,
+the agent requiring the user to input the PSK is the PSK consumer.
 
 PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
 it is not possible for the user to input PSK on this device and 100 means
@@ -425,101 +528,72 @@ that it's easy for the user to input PSK on the device.  Supported PSK input met
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.
 
-In order for one agent (the challenger) to authenticate another (the responder),
-the challenger may send an authentication-request message and expect an
-authentication-response message to be sent back from the responder.  To
-mutually authenticate, this mechanism is used twice, once by each side acting as
-the challenger.  This mechanism assumes the agents share a low-entropy secret,
+Any authentication method may require an `auth-initation-token` before showing a
+PSK to the user or requesting PSK input from the user.  For an [=advertising
+agent=], the `at` field in its mDNS TXT record must be used as the
+`auth-initation-token` in the the first authentication message sent to or from
+that agent.  Agents should discard any authentication message whose
+`auth-initation-token` is set and does not match the `at` provided by the
+advertising agent.
+
+Authentication with SPAKE2 {#authentication-with-spake2}
+--------------------------
+
+For all messages and objects defined in this section, see Appendix A for
+the full CDDL definitions.
+
+The default authentication method is
+\[SPAKE2](https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08) with
+the following cipher suite:
+
+1. Elliptic curve is [Curve25519](https://tools.ietf.org/html/rfc7748#page-4).
+2. Hash function is \[SHA-512](https://tools.ietf.org/html/rfc6234).
+3. Key derivation function is \[HKDF](https://tools.ietf.org/html/rfc5869).
+4. Message authentication code is \[HMAC](https://tools.ietf.org/html/rfc2104).
+5. Password hash function is SHA-512.
+
+Open Screen Protocol does not use a memory-hard hash function to hash PSKs
+with SPAKE2 and uses SHA-512 instead as the PSK is one-time use and
+is not stored in any form.
+
+SPAKE2 provides explicit mutual authentication.
+
+This authentication method assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
-keyboard or TV remote control.
+phone, a keyboard or a TV remote control.
 
-For all messages and objects defined in this section, see Appendix A for the full
-CDDL definitions.
+SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
+The client acts as Alice, the server acts as Bob.
 
-The challenger sends an auth-request-hkdf-scrypt-psk message with the following values:
+The messages used in this authentication method are: auth-spake2-need-psk,
+auth-spake2-message, auth-spake2-confirmation and auth-status.
+SPAKE2 describes in detail how auth-spake2-message and auth-spake2-confirmation
+are computed.
 
--   salt: 32 random bytes.  This salt is used in HKDF, so see
-    https://tools.ietf.org/html/rfc5869#section-3.1 for more details on how this
-    value should be generated.
+If the PSK presenter wants to authenticate, the PSK presenter starts the
+authentication process by presenting the PSK to the user and sending a
+auth-spake2-message message. When the PSK consumer receives the
+auth-spake2-message message, the PSK consumer prompts the user for the PSK input
+if it has not done so yet.
 
--   cost: log base 2 of the cost parameter (N) for scrypt defined in [RFC
-    7914 section 2](https://tools.ietf.org/html/rfc7914#section-2).  It must be
-    greater than or equal to 14 (to avoid being too weak) and less than or equal
-    to 128 (the limit defined by scrypt).  A value of 15 is recommended (an
-    scrypt N of 2^15 or 32768).
+If the PSK consumer wants to authenticate, the PSK consumer sends a
+auth-spake2-need-psk message to the PSK presenter to start the authentication
+process and prompts the user to input the PSK. If the PSK presenter receives a
+auth-spake2-need-psk message after starting authentication from their side, the
+PSK presenter ignores the auth-spake2-need-psk message.
 
-The responder replies with an auth-response-hkdf-scrypt-psk-result message with
-the following values:
+After the user inputs the PSK into the PSK consumer, the PSK consumer computes
+and sends a auth-spake2-message.
 
--   result:  If the responder was able to calculate proof of possession of the
-    shared secret, and if it failed, why it failed.
+When either agent both knows the PSK and has received a auth-spake2-message
+message, the agent computes and sends a auth-spake2-confirmation message.
 
--   proof: The result of running the authentication mechanism.  The steps for
-    hkdf-of-scrypt-of-psk are described below.
-
-The challenger verifies the proof and sends the responder an auth-status message
-with the following values:
-
--   result:  If the challenger was able to authenticate the responder or not,
-    and if not, why not.
-
-The challenger must limit the time the responder has to send a response to 60
-seconds (to avoid the possibility of brute-force attacks.)
-
-
-For hkdf-of-scrypt-of-psk, the proof is calculated using the following steps:
-
-1. Let secret be the pre-shared secret.
-
-2. Let N be 2 to the power of of the cost from the authentication-request
-     message.
-
-3. Let r be 8.
-
-4. Let p be 1.
-
-5. Let keyLength be 32.
-
-6. Let scryptResult be the result of running
-     [scrypt](https://tools.ietf.org/html/rfc7914) on secret with cost parameter N,
-     block size r, parallelization parameter p, and derived key length of
-     keyLength.
-
-7. Let hashFunction be sha-256.
-
-8. Let salt be the salt from the authentication-request message.
-
-9. Let info be a 64-byte array containing certificate fingerprint pair with the following values:
-
--   Bytes 0-31 of the array are the challenger's fingerprint: The result of running
-    sha-256 on the Distinguished Encoding Rules (DER) form (see
-    https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
-    the challenger in the QUIC crypto handshake during connection establishment.
-
--   Bytes 32-63 of the array are the responder's fingerprint: The result of running
-    sha-256 on the Distinguished Encoding Rules (DER) form (see
-    https://tools.ietf.org/html/rfc8122#section-5) of the certificate used by
-    the responder in the QUIC crypto handshake during connection establishment.
-
-9. Let proof be the result of running
-     [\HKDF](https://tools.ietf.org/html/rfc5869) on scryptResult with
-     both the extract and expand steps, hash function hashFunction,
-     application-specific info, and output key length keyLength.
-
-To verify that the responder's proof is correct, the challenger makes the same
-calculation of the proof and compares the result. If the results are the same,
-the challenger considers the responder authenticated, and considers it
-unauthenticated otherwise.
-
-Note: the values of 32 above (for salt length, keyLength) are based on the
-output size of sha-256.  If a different hash mechanism is used in the future,
-these values should be updated as well.
-
-Control Protocols {#control-protocols}
-============================
+When either agent has received both auth-spake2-message and
+auth-spake2-confirmation messages, the agent validates the confirmation message
+and sends the auth-status authenticated message.
 
 Presentation Protocol {#presentation-protocol}
----------------------------------------------
+=====================
 
 This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by
@@ -549,10 +623,7 @@ presentation-url-availability-request message with the following values:
 : watch-id
 :: An identifier the receiver must use when sending updates about URL
     availability so that the controller knows which URLs the receiver is referring
-    to.  The controller must choose a value that is unique across all
-    presentation URL availability watches to the same receiver.
-
-Issue(145): Watch ID Uniqueness.
+    to.
 
 In response, the receiver should send one presentation-url-availability-response
 message with the following values:
@@ -582,11 +653,7 @@ availability request.
 To save power, the controller may disconnect the QUIC connection and
 later reconnect to send availability requests and receive availability
 responses and updates.  The QUIC connection ID may or may not be the same
-when reconnecting.  Note that the lifetime of a watch-id is not limited
-to one QUIC connection.  The receiver must continue sending updates for watches
-even if the QUIC connection changes, and thus controller need not send
-new URL availability requests if the QUIC connection changes.
-
+when reconnecting.
 
 To start a presentation, the controller may send a
 presentation-start-request message to the receiver with the following
@@ -657,9 +724,9 @@ message contains the following values:
 : reason
 :: The reason the presentation was terminated.
 
-To accept incoming connections requests from controller, a receiver
-must receive and process the presentation-connection-open-request
-message which contains the following values:
+To accept incoming connection requests from controller, a receiver must receive
+and process the presentation-connection-open-request message which contains the
+following values:
 
 : presentation-id
 :: The ID of the presentation to connect to.
@@ -681,39 +748,57 @@ following values:
     the message receiver chooses the connection-id, it may keep the ID unique
     across connections, thus making message demuxing/routing easier).
 
+: connection-count
+:: The new number of open connections to the presentation that received
+    the incoming connection request.
 
-A controller may terminate a connection without terminating the presentation by
-sending a presentation-connection-close-request message with the following
+If the `presentation-connection-open-response` message indicates success, the
+receiver should also send a `presentation-change-event` to all other endpoints
+that have an active presentation connection to that presentation with the
 values:
+
+: presentation-id
+:: The ID of the presentation that just received a new presentation connection.
+
+: connection-count
+:: The new total number of open connections to that presentation.
+
+A controller may close a connection without terminating the presentation by
+sending a `presentation-connection-close-event` message to the receiver with the
+following values:
 
 : connection-id
-:: The ID of the connection to close.
-
-Issue(124): Is a Presentation close/terminate from a controller a request/response or event?
-
-The receiver should, upon receipt of a presentation-connection-close-request,
-send back a presentation-connection-close-response message with the following
-values:
-
-: result
-:: If the close succeed or failed, and if it failed why it failed.
-
-Issue(138): Remove presentation-connection-close-response message.
-
-The receiver may also close a connection without a request from the controller
-to do so and without terminating a presentation.  If it does so, it should send
-a presentation-connection-close-event to the controller with the following
-values:
-
-: connection-id
-:: The ID of the connection that was closed
+:: The ID of the connection that was closed.
 
 : reason
-:: The reason the connection was closed
+:: Set to `close-method-called` or `connection-object-discarded`.
 
-: error-message
-:: A debug message suitable for a log or perhaps presented to
-    the user with more explanation as to why it was closed.
+The receiver may also close a connection without terminating a presentation.  If
+it does so, it should send a `presentation-connection-close-event` message to the
+controller with the following values:
+
+: connection-id
+:: The ID of the connection that was closed.
+
+: reason
+:: Set to `close-method-called` or `connection-object-discarded`.
+
+: connection-count
+:: The number of open presentation connections that remain.
+
+If a receiver closes a presentation connection (for any reason), it should send
+a `presentation-change-event` to all other controllers with an open connection
+to that presentation with the values:
+
+: presentation-id
+:: The ID of the presentation that just closed a connection.
+
+: connection-count
+:: The number of open presentation connections that remain.
+
+Note: When an agent closes a presentation connection, it is always successful,
+so request and response messages are not needed.  A request to terminate a
+presentation may succeed or fail, so a response message is required.
 
 
 Presentation API {#presentation-api}
@@ -753,6 +838,12 @@ messageOrData for the presentation message data.  Note that the messageType is
 embedded in the encoded CBOR type and does not need an additional value in the
 message.
 
+When [[PRESENTATION-API#closing-a-presentationconnection|section 6.5.5]] says
+"Start to signal to the destination browsing context the intention to close the
+corresponding PresentationConnection", the [=user agent=] may send a
+`presentation-connection-close-event` message to the user agent with the
+destination browsing context and a `presentation-change-event` when required.
+
 When
 [[PRESENTATION-API#terminating-a-presentation-in-a-controlling-browsing-context|section
 6.5.6]] says "Send a termination request for the presentation to its receiving
@@ -768,12 +859,13 @@ presentation-connection-open-request.
 
 When [[PRESENTATION-API#monitoring-incoming-presentation-connections|section
 6.7.1]] says "Establish the connection between the controlling and receiving
-browsing contexts using an implementation specific mechanism.", the [=receiving
-user agent=], must send a presentation-connection-open-response message.
+browsing contexts using an implementation specific mechanism," the [=receiving
+user agent=] must send a presentation-connection-open-response message and
+`presentation-change-event` messages when required.
 
 
 Remote Playback Protocol {#remote-playback-protocol}
-----------------------------------------------------
+========================
 
 This section defines the use of the Open Screen Protocol for starting, terminating,
 and controlling remote playback of media as defined by the
@@ -816,8 +908,7 @@ Issue(146): Remote Playback HTTP headers.
 : watch-id
 :: An identifier the receiver must use when sending updates about URL
     availability so that the controller knows which URLs the receiver is referring
-    to. The controller must choose a value that is unique across all
-    remote playback availability watches to the same receiver.
+    to.
 
 In response, the receiver should send a remote-playback-availability-response
 message with the following values:
@@ -847,11 +938,7 @@ availability request.
 To save power, the controller may disconnect the QUIC connection and
 later reconnect to send availability requests and receive availability
 responses and updates. The QUIC connection ID may or may not be the same
-when reconnecting.  Note that the lifetime of a watch-id is not limited
-to one QUIC connection.  The receiver must continue sending updates for watches
-even if the QUIC connection changes, and thus controller need not send
-new URL availability requests if the QUIC connection changes.
-
+when reconnecting.
 
 To start remote playback, the controller may send a
 remote-playback-start-request message to the receiver with the following
@@ -1554,6 +1641,79 @@ Stats {#streaming-stats}
 
 TODO
 
+Requests, Responses, and Watches {#requests-responses--watches}
+===============================================================
+
+Multiple sub-protocols in OSP have messages that act as requests, responses,
+watches, and events. Most requests have a `request-id`, and the agent that
+receives the request must send exactly one reponse message in return with the
+same `request-id`.  A watch request has a `watch-id`, and the agent that
+receives the request may send any number of event messages in response with
+the same `watch-id`, until the watch request expires.
+
+`request-id` and `watch-id` values are unsigned integer IDs that are assigned
+from a counter kept by each agent that starts at 1 and increments by 1 for each
+ID.  Whenever an agent changes its `state-token`, it must reset its counter to 1.
+
+When an agent sees that another agent has reset its state (by virtue of
+advertising a new `state-token`), it should discard any requests, responses,
+watches and events for that agent.
+
+Note: Request and watch IDs are not tied to any particular QUIC connection
+between agents.  If a QUIC connection is closed, an agent should not discard
+requests, responses, watches, or events related to the other party.  This allows
+agents to save power by closing unused connections.
+
+Note: Request and watch IDs are not unique across agents.  An agent can combine
+a request ID with a unique identifier for the agent that sent it (like its
+certificate fingerprint) to track requests across multiple agents.
+
+Protocol Extensions {#protocol-extensions}
+===================
+
+Open Screen agents may exchange extension messages that are not defined by this
+specification.  This could be used for experimentation, customization or other
+purposes.
+
+To add new extension messages, extension authors must register a capability ID
+with a range of message type keys in a public registry (location to be
+determined).  Agents may then indicate that they accept an extension by
+including the corresponding capability ID in the `capabilities` field of its
+`agent-info` message.
+
+Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
+Capability IDs 1000 and above are available for extensions.  See [[#appendix-b]]
+for legal ranges for extension message type keys.
+
+Note: The purpose of the public registry is to prevent conflicts between
+multiple extension authors' capability IDs and message type keys.
+
+Agents must not send extension messages to another agent that has not advertised
+the corresponding extension capability ID.
+
+Note: See [[#messages]] for how agents handle unknown message type keys.
+
+It is recommended that extension messages are also encoded in CBOR, to simplify
+implementations and provide an easier path to standardization of extension
+protocols.  However, this is not required; agents that support non-CBOR
+extensions must be able to decode QUIC streams that contain a mix of CBOR
+messages and non-CBOR extension messages.
+
+Protocol Extension Fields {#protocol-extension-fields}
+-------------------------
+
+It is legal for an agent to add additional, extension fields to a map-valued
+CBOR message type defined by the Open Screen Protocol.  Extension fields must be
+optional, and the Open Screen Protocol message must make sense both with and
+without the field set.
+
+Agents must not add extended fields to the `audio-frame` message directly.
+Instead, they may add them to its nested `optional` value.
+
+Extension fields should use string keys to avoid conflicts with integer keys in
+Open Screen Protocol messages.  An agent should not send extension fields to
+another agent unless that agent advertises an extension capability ID in its
+`agent-info` that indicates that it understands the extension fields.
 
 Security and Privacy {#security-privacy}
 ====================
@@ -1644,7 +1804,7 @@ and/or high value data:
 Presentation IDs are considered high value data because they can be used in
 conjunction with a Presentation URL to connect to a running presentation.
 
-Presentation display friendly names, model names, and capabilities, while not
+Presentation display names, model names, and capabilities, while not
 considered personally identifiable, are important to protect to prevent an
 attacker from changing them or substituting other values during the discovery
 and authentication process.
@@ -1781,10 +1941,10 @@ should be flagged include:
 
 * Untrusted agents whose public key fingerprint collides with that from an
     already-trusted agent that is concurrently being advertised.
-* Untrusted agents whose friendly name differs from the one previously
+* Untrusted agents whose display name differs from the one previously
     advertised under a given public key fingerprint.
 * Untrusted agents that fail the authentication challenge a certain number of times.
-* Untrusted agents that advertise a friendly name that is similar to that from an
+* Untrusted agents that advertise a display name that is similar to that from an
     already-trusted agent.
 * Already-trusted agents whose metadata provided through the `agent-info`
     message has changed.
@@ -1818,7 +1978,10 @@ Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.
 
-Issue(131): Mitigations for remote network attackers.
+Advertising agents must set the `at` field in their mDNS TXT record to protect
+themselves from off-LAN attempts to initiate [[#authentication]], which result
+in user annoyance (display or input of PSK) and potential brute force attacks
+against the PSK.
 
 ### Denial of service ### {#denial-of-service-mitigations}
 
@@ -1846,21 +2009,20 @@ persistent exploits.
 Appendix A: Messages {#appendix-a}
 ====================
 
-The following messages are defined with [[CDDL]]. When
-integer keys are used, a comment is appended to the line to indicate
-the name of the field. Object definitions in this specification have this
-unusual syntax to reduce the number of bytes-on-the-wire, while maintaining a
-human-readable name for each key. Integer keys are used instead of object arrays
-to allow for easy indexing of optional fields.
+The following messages are defined with [[CDDL]]. When integer keys are used, a
+comment is appended to the line to indicate the name of the field. Object
+definitions in this specification have this unusual syntax to reduce the number
+of bytes-on-the-wire, while maintaining a human-readable name for each
+key. Integer keys are used instead of object arrays to allow for easy indexing
+of optional fields.
 
-Each root message (one that can be put into a
-QUIC stream without being enclosed by another message) has a comment
-indicating the message type key.
+Each root message (one that can be put into a QUIC stream without being enclosed
+by another message) has a comment indicating the message type key.
 
-Smaller numbers should be reserved for message that will be sent more
-frequently or are very small or both and larger numbers should be
-reserved for messages that are infrequently sent or large or both
-because smaller type keys encode on the wire smaller.
+Smaller numbers should be reserved for message that will be sent more frequently
+or are very small or both and larger numbers should be reserved for messages
+that are infrequently sent or large or both because smaller type keys encode on
+the wire smaller.
 
 <pre class=include>
 path: messages_appendix.html
@@ -1869,3 +2031,77 @@ path: messages_appendix.html
 <pre class=include>
 path: code-style.html
 </pre>
+
+Appendix B: Message Type Key Ranges {#appendix-b}
+===================================
+
+The following appendix describes how the range of message type keys is divided.
+Legal values are 1 to 2<sup>64</sup>.
+
+Each type key is encoded as a variable-length integer on the wire of 1, 2, 4 or
+8 bytes.  For each wire byte size, 1/4 to 1/2 of the keys are available for
+extensions.
+
+<!--
+ASCII-art equivalent:
+
+| Bytes | Range           | Purpose                      |
+|-------|-----------------|------------------------------|
+| 1     | 1 - 48          | Open Screen Protocol         |
+| 1     | 49 - 63         | Available for extensions     |
+| 2     | 64 - 8,192      | Open Screen Protocol         |
+| 2     | 8,193 - 16,383  | Available for extensions     |
+| 4     | 16,384 - 2^29   | Reserved for future use      |
+| 4     | 2^29+1 - 2^30-1 | Available for extensions     |
+| 8     | >= 2^30         | Reserved for future use      |
+
+because @tabatkins doesn't like markdown tables:
+https://github.com/tabatkins/bikeshed/issues/1128
+-->
+
+<table>
+<thead>
+<tr>
+<th>Bytes</th>
+<th>Range</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1 - 48</td>
+<td>Open Screen Protocol</td>
+</tr>
+<tr>
+<td>1</td>
+<td>49 - 63</td>
+<td>Available for extensions</td>
+</tr>
+<tr>
+<td>2</td>
+<td>64 - 8,192</td>
+<td>Open Screen Protocol</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8,193 - 16,383</td>
+<td>Available for extensions</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16,384 - 2<sup>29</sup></td>
+<td>Reserved for future use</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2<sup>29</sup>+1 - 2<sup>30</sup>-1</td>
+<td>Available for extensions</td>
+</tr>
+<tr>
+<td>8</td>
+<td>&gt;= 2<sup>30</sup></td>
+<td>Reserved for future use</td>
+</tr>
+</tbody>
+</table>
