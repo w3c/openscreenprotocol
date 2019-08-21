@@ -1831,11 +1831,11 @@ advertising agent to discover updated metadata.</p>
    </dl>
    <p>The advertising agent should add an additional field to the TXT record:</p>
    <dl>
-    <dt data-md>pw
+    <dt data-md>at
     <dd data-md>
      <p>An alphanumeric, unguessable token consisting of characters from the set <code>[A-Za-z0-9+/]</code>.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> <code>pw</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 12.5.3 Remote active network attackers</a>. <code>pw</code> should have at least 32 bits of true
+   <p class="note" role="note"><span>Note:</span> <code>at</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 12.5.3 Remote active network attackers</a>. <code>at</code> should have at least 32 bits of true
 entropy to make brute force attacks impractical.</p>
    <p class="issue" id="issue-49bdd4e6"><a class="self-link" href="#issue-49bdd4e6"></a> Add examples of sample mDNS records.</p>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
@@ -1988,8 +1988,8 @@ are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input mus
 support the numeric PSK input method.</p>
    <p>Any authentication method may require an <code>auth-initation-token</code> before showing a
 PSK to the user or requesting PSK input from the user.  If an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
-agent</a> has the <code>pw</code> field in its mDNS TXT record, it must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
-that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>pw</code> provided by the
+agent</a> has the <code>at</code> field in its mDNS TXT record, it must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
+that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>at</code> provided by the
 advertising agent.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
    <p>For all messages and objects defined in this section, see Appendix A for
@@ -3205,7 +3205,7 @@ by a correct implementation of TLS 1.3.</p>
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.</p>
-   <p>Advertising agents should set the <code>pw</code> field in their mDNS TXT record to protect
+   <p>Advertising agents should set the <code>at</code> field in their mDNS TXT record to protect
 themselves from off-LAN attempts to initiate <a href="#authentication">§ 6 Authentication</a>, which result
 in user annoyance (display or input of PSK) and potential brute force attacks
 against the PSK.</p>
