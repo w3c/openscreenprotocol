@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="cb943811fc0b053b8fd07759438e94585c5d6f6b" name="document-revision">
+  <meta content="c0c766511b9e051e6268042c99ff9f074aa3b564" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-19">19 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-21">21 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1531,7 +1531,7 @@ pre .property::before, pre .property::after {
     <li>
      <a href="#streaming-protocol"><span class="secno">9</span> <span class="content">Streaming Protocol</span></a>
      <ol class="toc">
-      <li><a href="#streaming-capabilities"><span class="secno">9.1</span> <span class="content">Capabilities</span></a>
+      <li><a href="#streaming-protocol-capabilities"><span class="secno">9.1</span> <span class="content">Streaming Protocol Capabilities</span></a>
       <li><a href="#streaming-sessions"><span class="secno">9.2</span> <span class="content">Sessions</span></a>
       <li><a href="#streaming-audio"><span class="secno">9.3</span> <span class="content">Audio</span></a>
       <li><a href="#streaming-video"><span class="secno">9.4</span> <span class="content">Video</span></a>
@@ -1599,7 +1599,7 @@ pre .property::before, pre .property::after {
   <main>
    <p class="issue" id="issue-b711fac3"><a class="self-link" href="#issue-b711fac3"></a> Add short names to Presentation API spec, so that BS autolinking works as designed.</p>
    <p class="issue" id="issue-a8c8d59b"><a class="self-link" href="#issue-a8c8d59b"></a> Can autolinks to HTML51 be automatically generated?</p>
-   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="document-status"><span class="content">Status of this document</span></h2>
    <p>This specification was published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community
 Group</a>. It is not a W3C Standard nor
 is it on the W3C Standards Track. It should not be viewed as a stable
@@ -2040,13 +2040,10 @@ and sends the auth-status authenticated message.</p>
    <p>This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§ 7.1 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
 protocol messages defined in this section.</p>
-   <p>For all messages defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for the full
-CDDL definitions.</p>
    <p class="issue" id="issue-4f0d9dbd"><a class="self-link" href="#issue-4f0d9dbd"></a> Add a capability that indicates support for the presentation protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/123">&lt;https://github.com/webscreens/openscreenprotocol/issues/123></a></p>
    <p class="issue" id="issue-905f29c0"><a class="self-link" href="#issue-905f29c0"></a> Refinements to Presentation API protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/160">&lt;https://github.com/webscreens/openscreenprotocol/issues/160></a></p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation displays</a> for a
-particular URL or set of URLs, the controller may send a
-presentation-url-availability-request message with the following values:</p>
+particular URL or set of URLs, the controller may send a <a data-link-type="dfn" href="#presentation-url-availability-request" id="ref-for-presentation-url-availability-request">presentation-url-availability-request</a> message with the following values:</p>
    <dl>
     <dt data-md>urls
     <dd data-md>
@@ -2061,8 +2058,7 @@ about their URLs, should the availability change.</p>
 availability so that the controller knows which URLs the receiver is referring
 to.</p>
    </dl>
-   <p>In response, the receiver should send one presentation-url-availability-response
-message with the following values:</p>
+   <p>In response, the receiver should send one <a data-link-type="dfn" href="#presentation-url-availability-response" id="ref-for-presentation-url-availability-response">presentation-url-availability-response</a> message with the following values:</p>
    <dl>
     <dt data-md>url-availabilities
     <dd data-md>
@@ -2075,7 +2071,7 @@ Such events contain the following values:</p>
    <dl>
     <dt data-md>watch-id
     <dd data-md>
-     <p>The watch-id given in the presentation-url-availability-response,
+     <p>The watch-id given in the <a data-link-type="dfn" href="#presentation-url-availability-response" id="ref-for-presentation-url-availability-response①">presentation-url-availability-response</a>,
 used to refer to the presentation URLs whose availability has changed.</p>
     <dt data-md>url-availabilities
     <dd data-md>
@@ -2090,8 +2086,7 @@ availability request.</p>
 later reconnect to send availability requests and receive availability
 responses and updates.  The QUIC connection ID may or may not be the same
 when reconnecting.</p>
-   <p>To start a presentation, the controller may send a
-presentation-start-request message to the receiver with the following
+   <p>To start a presentation, the controller may send a <a data-link-type="dfn" href="#presentation-start-request" id="ref-for-presentation-start-request">presentation-start-request</a> message to the receiver with the following
 values:</p>
    <dl>
     <dt data-md>presentation-id
@@ -2109,8 +2104,7 @@ provided.</p>
    </dl>
    <p>The presentation ID must follow the restrictions defined by <a href="https://www.w3.org/TR/presentation-api/#common-idioms">section 6.1</a> of the Presentation API, in that
 it must consist of at least 16 ASCII characters.</p>
-   <p>When the receiver receives the presentation-start-request, it should send back a
-presentation-start-response message after either the presentation URL has been
+   <p>When the receiver receives the <a data-link-type="dfn" href="#presentation-start-request" id="ref-for-presentation-start-request①">presentation-start-request</a>, it should send back a <a data-link-type="dfn" href="#presentation-start-response" id="ref-for-presentation-start-response">presentation-start-response</a> message after either the presentation URL has been
 fetched and loaded, or the receiver has failed to do so. If it has failed, it
 must respond with the appropriate result (such as invalid-url or timeout).  If
 it has succeeded, it must reply with a success result.  Additionally, the
@@ -2123,19 +2117,16 @@ to each other.  It is chosen by the receiver for ease of implementation: if
 the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier.</p>
    </dl>
-   <p>To send a presentation message, the controller or receiver may send a
-presentation-connection-message with the following values:</p>
+   <p>To send a presentation message, the controller or receiver may send a <a data-link-type="dfn" href="#presentation-connection-message" id="ref-for-presentation-connection-message">presentation-connection-message</a> with the following values:</p>
    <dl>
     <dt data-md>connection-id
     <dd data-md>
-     <p>The ID from the presentation-start-response or
-presentation-connection-open-response messages.</p>
+     <p>The ID from the <a data-link-type="dfn" href="#presentation-start-response" id="ref-for-presentation-start-response①">presentation-start-response</a> or <a data-link-type="dfn" href="#presentation-connection-open-response" id="ref-for-presentation-connection-open-response">presentation-connection-open-response</a> messages.</p>
     <dt data-md>message
     <dd data-md>
      <p>The presentation message data.</p>
    </dl>
-   <p>To terminate a presentation, the controller may send a
-presentation-termination-request message with the following values:</p>
+   <p>To terminate a presentation, the controller may send a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request">presentation-termination-request</a> message with the following values:</p>
    <dl>
     <dt data-md>presentation-id
     <dd data-md>
@@ -2144,10 +2135,10 @@ presentation-termination-request message with the following values:</p>
     <dd data-md>
      <p>The reason the presentation is being terminated.</p>
    </dl>
-   <p>When a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver②">receiver</a> receives a presentation-termination-request, it should
-send back a presentation-termination-response message to the requesting
+   <p>When a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver②">receiver</a> receives a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request①">presentation-termination-request</a>, it should
+send back a <a data-link-type="dfn" href="#presentation-termination-response" id="ref-for-presentation-termination-response">presentation-termination-response</a> message to the requesting
 controller.  It should also notify other controllers about the termination by sending
-a presentation-termination-event message.  And it can send the same message if
+a <a data-link-type="dfn" href="#presentation-termination-event" id="ref-for-presentation-termination-event">presentation-termination-event</a> message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:</p>
    <dl>
@@ -2159,7 +2150,7 @@ message contains the following values:</p>
      <p>The reason the presentation was terminated.</p>
    </dl>
    <p>To accept incoming connection requests from controller, a receiver must receive
-and process the presentation-connection-open-request message which contains the
+and process the <a data-link-type="dfn" href="#presentation-connection-open-request" id="ref-for-presentation-connection-open-request">presentation-connection-open-request</a> message which contains the
 following values:</p>
    <dl>
     <dt data-md>presentation-id
@@ -2169,9 +2160,7 @@ following values:</p>
     <dd data-md>
      <p>The URL of the presentation to connect to.</p>
    </dl>
-   <p>The receiver should, upon receipt of a
-presentation-connection-open-request message, send back a
-presentation-connection-open-response message which contains the
+   <p>The receiver should, upon receipt of a <a data-link-type="dfn" href="#presentation-connection-open-request" id="ref-for-presentation-connection-open-request①">presentation-connection-open-request</a> message, send back a <a data-link-type="dfn" href="#presentation-connection-open-response" id="ref-for-presentation-connection-open-response①">presentation-connection-open-response</a> message which contains the
 following values:</p>
    <dl>
     <dt data-md>result
@@ -2185,7 +2174,7 @@ the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier).</p>
    </dl>
    <p>A controller may close a connection without terminating the presentation by
-sending a <code>presentation-connection-close-event</code> message to the receiver with the
+sending a <a data-link-type="dfn" href="#presentation-connection-close-event" id="ref-for-presentation-connection-close-event">presentation-connection-close-event</a> message to the receiver with the
 following values:</p>
    <dl>
     <dt data-md>connection-id
@@ -2196,7 +2185,7 @@ following values:</p>
      <p>Set to <code>close-method-called</code> or <code>connection-object-discarded</code>.</p>
    </dl>
    <p>The receiver may also close a connection without terminating a presentation.  If
-it does so, it should send a <code>presentation-connection-close-event</code> message to the
+it does so, it should send a <a data-link-type="dfn" href="#presentation-connection-close-event" id="ref-for-presentation-connection-close-event①">presentation-connection-close-event</a> message to the
 controller with the following values:</p>
    <dl>
     <dt data-md>connection-id
@@ -2214,8 +2203,7 @@ presentation may succeed or fail, so a response message is required.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "This list of presentation displays ... is populated based on an
 implementation specific discovery mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent③">controlling user agent</a> may
-use the mDNS, QUIC, agent-info-request, and
-presentation-url-availability-request messages defined previously in this spec
+use the mDNS, QUIC, agent-info-request, and <a data-link-type="dfn" href="#presentation-url-availability-request" id="ref-for-presentation-url-availability-request①">presentation-url-availability-request</a> messages defined previously in this spec
 to discover receivers.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "To further save power, ... implementation specific discovery of
@@ -2223,7 +2211,7 @@ presentation displays can be resumed or suspended.", the <a data-link-type="dfn"
 agent</a> may use the power saving mechanism defined in the previous section.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#starting-a-presentation-connection">section 6.3.4</a> says
 "Using an implementation specific mechanism, tell U to create a receiving
-browsing context with D, presentationUrl, and I as parameters.", U (the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑤">controlling user agent</a>) may send a presentation-start-request message to D
+browsing context with D, presentationUrl, and I as parameters.", U (the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑤">controlling user agent</a>) may send a <a data-link-type="dfn" href="#presentation-start-request" id="ref-for-presentation-start-request②">presentation-start-request</a> message to D
 (the receiver), with I for the presentation identifier and presentationUrl for
 the selected presentation URL.</p>
    <p class="issue" id="issue-733afe74"><a class="self-link" href="#issue-733afe74"></a> Once the Presentation API has text about reconnecting via an
@@ -2231,27 +2219,26 @@ implementation specific mechanism, quote that here and map it to a message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection">section
 6.5.2</a> says "Using an implementation specific mechanism, transmit the contents
 of messageOrData as the presentation message data and messageType as the
-presentation message type to the destination browsing context", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑥">controlling user agent</a> may send a presentation-connection-message with
+presentation message type to the destination browsing context", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑥">controlling user agent</a> may send a <a data-link-type="dfn" href="#presentation-connection-message" id="ref-for-presentation-connection-message①">presentation-connection-message</a> with
 messageOrData for the presentation message data.  Note that the messageType is
 embedded in the encoded CBOR type and does not need an additional value in the
 message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#closing-a-presentationconnection">section 6.5.5</a> says
 "Start to signal to the destination browsing context the intention to close the
-corresponding PresentationConnection", the <a data-link-type="dfn" href="https://w3c.github.io/reporting/#report-user-agent" id="ref-for-report-user-agent">user agent</a> may send a <code>presentation-connection-close-event</code> message to the user agent with the
+corresponding PresentationConnection", the <a data-link-type="dfn" href="https://w3c.github.io/reporting/#report-user-agent" id="ref-for-report-user-agent">user agent</a> may send a <code>[=presentation-connection-close-event=]</code> message to the user agent with the
 destination browsing context.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
-agent</a> may send a presentation-termination-request message.</p>
+agent</a> may send a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request②">presentation-termination-request</a> message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "it MUST listen to and accept incoming connection requests from a
 controlling browsing context using an implementation specific
-mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> must receive and process the
-presentation-connection-open-request.</p>
+mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> must receive and process the <a data-link-type="dfn" href="#presentation-connection-open-request" id="ref-for-presentation-connection-open-request②">presentation-connection-open-request</a>.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "Establish the connection between the controlling and receiving
 browsing contexts using an implementation specific mechanism.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving
-user agent</a>, must send a presentation-connection-open-response message.</p>
+user agent</a>, must send a <a data-link-type="dfn" href="#presentation-connection-open-response" id="ref-for-presentation-connection-open-response②">presentation-connection-open-response</a> message.</p>
    <h2 class="heading settled" data-level="8" id="remote-playback-protocol"><span class="secno">8. </span><span class="content">Remote Playback Protocol</span><a class="self-link" href="#remote-playback-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting, terminating,
 and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 8.2 Remote Playback API</a> defines how
@@ -2642,7 +2629,7 @@ user agent may send the remote-playback-termination-request message.</p>
    <h2 class="heading settled" data-level="9" id="streaming-protocol"><span class="secno">9. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for streaming
 media from a media sender to a media receiver.</p>
-   <h3 class="heading settled" data-level="9.1" id="streaming-capabilities"><span class="secno">9.1. </span><span class="content">Capabilities</span><a class="self-link" href="#streaming-capabilities"></a></h3>
+   <h3 class="heading settled" data-level="9.1" id="streaming-protocol-capabilities"><span class="secno">9.1. </span><span class="content">Streaming Protocol Capabilities</span><a class="self-link" href="#streaming-protocol-capabilities"></a></h3>
     If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an streaming-capabilities-request
 message, and receive back a streaming-capabilities-response message with the
@@ -3205,33 +3192,30 @@ by another message) has a comment indicating the message type key.</p>
 or are very small or both and larger numbers should be reserved for messages
 that are infrequently sent or large or both because smaller type keys encode on
 the wire smaller.</p>
-   <div class="highlight">
-<pre><span></span><span class="c1">; type key 10</span>
-<span class="nc">agent-info-request </span><span class="p">=</span> <span class="p">{</span>
+   <div>
+<pre><span class="c1">; type key 10</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="agent-info-request">agent-info-request<a class="self-link" href="#agent-info-request"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="p">}</span>
 
 <p><span class="c1">; type key 11</span>
-<span class="nc">agent-info-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="agent-info-response">agent-info-response<a class="self-link" href="#agent-info-response"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="agent-capability">agent-capability<a class="self-link" href="#agent-capability"></a></dfn> </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">receive-audio</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span></p>
-
-<p><span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">3</span></p>
-
-<p><span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">4</span>
-  <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">5</span></p>
-
-<p><span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">6</span>
+  <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">5</span>
+  <span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">6</span>
   <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">7</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">agent-info </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="agent-info">agent-info<a class="self-link" href="#agent-info"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">agent-capability</span><span class="p">]</span> <span class="c1">; capabilities</span>
@@ -3239,68 +3223,68 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 12</span>
-<span class="nc">agent-status-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="agent-status-request">agent-status-request<a class="self-link" href="#agent-status-request"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 13</span>
-<span class="nc">agent-status-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="agent-status-response">agent-status-response<a class="self-link" href="#agent-status-response"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">status </span><span class="p">=</span> <span class="p">{}</span></p>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="status">status<a class="self-link" href="#status"></a></dfn> </span><span class="p">=</span> <span class="p">{}</span></p>
 
-<p><span class="nc">request </span><span class="p">=</span> <span class="p">(</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="request">request<a class="self-link" href="#request"></a></dfn> </span><span class="p">=</span> <span class="p">(</span>
  <span class="mi">0</span><span class="p">:</span> <span class="nx">request-id </span><span class="c1">; request-id</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">response </span><span class="p">=</span> <span class="p">(</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="response">response<a class="self-link" href="#response"></a></dfn> </span><span class="p">=</span> <span class="p">(</span>
  <span class="mi">0</span><span class="p">:</span> <span class="nx">request-id </span><span class="c1">; request-id</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">request-id </span><span class="p">=</span> <span class="kt">uint</span></p>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="request-id">request-id<a class="self-link" href="#request-id"></a></dfn> </span><span class="p">=</span> <span class="kt">uint</span></p>
 
-<p><span class="nc">microseconds </span><span class="p">=</span> <span class="kt">uint</span></p>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="microseconds">microseconds<a class="self-link" href="#microseconds"></a></dfn> </span><span class="p">=</span> <span class="kt">uint</span></p>
 
 <p><span class="c1">; type key 1001</span>
-<span class="nc">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="auth-capabilities">auth-capabilities<a class="self-link" href="#auth-capabilities"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="psk-input-method">psk-input-method<a class="self-link" href="#psk-input-method"></a></dfn> </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">auth-initiation-token </span><span class="p">=</span> <span class="p">(</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="auth-initiation-token">auth-initiation-token<a class="self-link" href="#auth-initiation-token"></a></dfn> </span><span class="p">=</span> <span class="p">(</span>
   <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; token</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 1002</span>
-<span class="nc">auth-spake2-need-psk </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="auth-spake2-need-psk">auth-spake2-need-psk<a class="self-link" href="#auth-spake2-need-psk"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initiation-token</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1003</span>
-<span class="nc">auth-spake2-message </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="auth-spake2-message">auth-spake2-message<a class="self-link" href="#auth-spake2-message"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initation-token</span>
 <span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1004</span>
-<span class="nc">auth-spake2-confirmation </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="auth-spake2-confirmation">auth-spake2-confirmation<a class="self-link" href="#auth-spake2-confirmation"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; confirmation</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1005</span>
-<span class="nc">auth-status </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="auth-status">auth-status<a class="self-link" href="#auth-status"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">auth-status-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="auth-status-result">auth-status-result<a class="self-link" href="#auth-status-result"></a></dfn> </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">authenticated</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">timeout</span><span class="p">:</span> <span class="mi">2</span>
@@ -3309,10 +3293,10 @@ the wire smaller.</p>
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">watch-id </span><span class="p">=</span> <span class="kt">uint</span></p>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="watch-id">watch-id<a class="self-link" href="#watch-id"></a></dfn> </span><span class="p">=</span> <span class="kt">uint</span></p>
 
 <p><span class="c1">; type key 14</span>
-<span class="nc">presentation-url-availability-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-url-availability-request">presentation-url-availability-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
@@ -3320,46 +3304,46 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 15</span>
-<span class="nc">presentation-url-availability-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-url-availability-response">presentation-url-availability-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 103</span>
-<span class="nc">presentation-url-availability-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="presentation-url-availability-event">presentation-url-availability-event<a class="self-link" href="#presentation-url-availability-event"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; idea: use HTTP response codes?</span>
-<span class="nc">url-availability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="url-availability">url-availability<a class="self-link" href="#url-availability"></a></dfn> </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">available</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">unavailable</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">invalid</span><span class="p">:</span> <span class="mi">10</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 104</span>
-<span class="nc">presentation-start-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-start-request">presentation-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; url</span>
   <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">http-header</span><span class="p">]</span> <span class="c1">; headers</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">http-header </span><span class="p">=</span> <span class="p">[</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="http-header">http-header<a class="self-link" href="#http-header"></a></dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">key</span><span class="p">:</span> <span class="nx">text</span>
 <span class="nx">  value</span><span class="p">:</span> <span class="nx">text</span>
 <span class="p">]</span></p>
 
 <p><span class="c1">; type key 105</span>
-<span class="nc">presentation-start-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-start-response">presentation-start-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 106</span>
-<span class="nc">presentation-termination-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-request">presentation-termination-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3370,13 +3354,13 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 107</span>
-<span class="nc">presentation-termination-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-response">presentation-termination-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 108</span>
-<span class="nc">presentation-termination-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-event">presentation-termination-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">receiver-called-terminate</span><span class="p">:</span> <span class="mi">1</span>
@@ -3393,21 +3377,21 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 109</span>
-<span class="nc">presentation-connection-open-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-connection-open-request">presentation-connection-open-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; url</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 110</span>
-<span class="nc">presentation-connection-open-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-connection-open-response">presentation-connection-open-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 113</span>
-<span class="nc">presentation-connection-close-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-connection-close-event">presentation-connection-close-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">close-method-called</span><span class="p">:</span> <span class="mi">1</span>
@@ -3418,12 +3402,12 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 16</span>
-<span class="nc">presentation-connection-message </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-connection-message">presentation-connection-message</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">bytes </span><span class="o">/</span> <span class="nx">text </span><span class="c1">; message</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">result </span><span class="p">=</span> <span class="p">(</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="result">result<a class="self-link" href="#result"></a></dfn> </span><span class="p">=</span> <span class="p">(</span>
   <span class="nx">success</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">invalid-url</span><span class="p">:</span> <span class="mi">10</span>
   <span class="nx">invalid-presentation-id</span><span class="p">:</span> <span class="mi">11</span>
@@ -3435,7 +3419,7 @@ the wire smaller.</p>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 17</span>
-<span class="nc">remote-playback-availability-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-availability-request">remote-playback-availability-request<a class="self-link" href="#remote-playback-availability-request"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
@@ -3443,19 +3427,19 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 18</span>
-<span class="nc">remote-playback-availability-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-availability-response">remote-playback-availability-response<a class="self-link" href="#remote-playback-availability-response"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  url-availabilities</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 114</span>
-<span class="nc">remote-playback-availability-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-availability-event">remote-playback-availability-event<a class="self-link" href="#remote-playback-availability-event"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 115</span>
-<span class="nc">remote-playback-start-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-start-request">remote-playback-start-request<a class="self-link" href="#remote-playback-start-request"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
@@ -3465,14 +3449,14 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 116</span>
-<span class="nc">remote-playback-start-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-start-response">remote-playback-start-response<a class="self-link" href="#remote-playback-start-response"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 117</span>
-<span class="nc">remote-playback-termination-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-termination-request">remote-playback-termination-request<a class="self-link" href="#remote-playback-termination-request"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3482,13 +3466,13 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 118</span>
-<span class="nc">remote-playback-termination-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-termination-response">remote-playback-termination-response<a class="self-link" href="#remote-playback-termination-response"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 119</span>
-<span class="nc">remote-playback-termination-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-termination-event">remote-playback-termination-event<a class="self-link" href="#remote-playback-termination-event"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
  <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">receiver-called-terminate</span><span class="p">:</span> <span class="mi">1</span>
@@ -3501,28 +3485,28 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 19</span>
-<span class="nc">remote-playback-modify-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-modify-request">remote-playback-modify-request<a class="self-link" href="#remote-playback-modify-request"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 20</span>
-<span class="nc">remote-playback-modify-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-modify-response">remote-playback-modify-response<a class="self-link" href="#remote-playback-modify-response"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 21</span>
-<span class="nc">remote-playback-state-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-state-event">remote-playback-state-event<a class="self-link" href="#remote-playback-state-event"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">remote-playback-id </span><span class="p">=</span> <span class="kt">uint</span></p>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-id">remote-playback-id<a class="self-link" href="#remote-playback-id"></a></dfn> </span><span class="p">=</span> <span class="kt">uint</span></p>
 
-<p><span class="nc">remote-playback-controls </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-controls">remote-playback-controls<a class="self-link" href="#remote-playback-controls"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">url </span><span class="c1">; source</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span><span class="nx">none</span><span class="p">,</span> <span class="nx">metadata</span><span class="p">,</span> <span class="nx">auto</span><span class="p">)</span> <span class="c1">; preload</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; loop</span>
@@ -3539,7 +3523,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">14</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">changed-text-track</span><span class="p">]</span> <span class="c1">; changed-text-tracks</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">remote-playback-state </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="remote-playback-state">remote-playback-state<a class="self-link" href="#remote-playback-state"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span><span class="nx">rate</span><span class="p">:</span> <span class="nx">bool</span><span class="p">,</span>
          <span class="nx">preload</span><span class="p">:</span> <span class="nx">bool</span><span class="p">,</span>
          <span class="nx">poster</span><span class="p">:</span> <span class="nx">bool</span><span class="p">,</span>
@@ -3580,7 +3564,7 @@ the wire smaller.</p>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">22</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text-track-state</span><span class="p">]</span> <span class="nx">text-tracks</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">added-text-track </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="added-text-track">added-text-track<a class="self-link" href="#added-text-track"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">subtitles</span>
 <span class="nx">    captions</span>
@@ -3592,39 +3576,39 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; language</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">changed-text-track </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="changed-text-track">changed-text-track<a class="self-link" href="#changed-text-track"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">mode </span><span class="c1">; mode</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text-track-cue</span><span class="p">]</span> <span class="c1">; added-cues</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; removed-cue-ids</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">text-track-mode </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="text-track-mode">text-track-mode<a class="self-link" href="#text-track-mode"></a></dfn> </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">disabled</span>
 <span class="nx">  showing</span>
 <span class="nx">  hidden</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">text-track-cue </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="text-track-cue">text-track-cue<a class="self-link" href="#text-track-cue"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">media-time-range </span><span class="c1">; range</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; text</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">media-time-range </span><span class="p">=</span> <span class="p">[</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="media-time-range">media-time-range<a class="self-link" href="#media-time-range"></a></dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">start</span><span class="p">:</span> <span class="nx">media-time</span><span class="p">,</span>
   <span class="nx">end</span><span class="p">:</span> <span class="nx">media-time</span>
 <span class="p">]</span></p>
 
-<p><span class="nc">media-time </span><span class="p">=</span> <span class="p">[</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="media-time">media-time<a class="self-link" href="#media-time"></a></dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">value</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">scale</span><span class="p">:</span> <span class="kt">uint</span>
 <span class="p">]</span></p>
 
-<p><span class="nc">unknown </span><span class="p">=</span> <span class="mi">0</span>
-<span class="nc">forever </span><span class="p">=</span> <span class="mi">1</span></p>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="unknown">unknown<a class="self-link" href="#unknown"></a></dfn> </span><span class="p">=</span> <span class="mi">0</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="forever">forever<a class="self-link" href="#forever"></a></dfn> </span><span class="p">=</span> <span class="mi">1</span></p>
 
-<p><span class="nc">media-error </span><span class="p">=</span> <span class="p">[</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="media-error">media-error<a class="self-link" href="#media-error"></a></dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">code</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">user-aborted</span><span class="p">:</span> <span class="mi">1</span>
     <span class="nx">network-error</span><span class="p">:</span> <span class="mi">2</span>
@@ -3635,29 +3619,29 @@ the wire smaller.</p>
   <span class="nx">message</span><span class="p">:</span> <span class="nx">text</span>
 <span class="p">]</span></p>
 
-<p><span class="nc">track-state </span><span class="p">=</span> <span class="p">(</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="track-state">track-state<a class="self-link" href="#track-state"></a></dfn> </span><span class="p">=</span> <span class="p">(</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; label</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; language</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">audio-track-state </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="audio-track-state">audio-track-state<a class="self-link" href="#audio-track-state"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">track-state</span>
 <span class="nx">  4</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; enabled</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">video-track-state </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="video-track-state">video-track-state<a class="self-link" href="#video-track-state"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">track-state</span>
 <span class="nx">  5 </span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; selected</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">text-track-state </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="text-track-state">text-track-state<a class="self-link" href="#text-track-state"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">track-state</span>
 <span class="nx">  6 </span><span class="p">:</span> <span class="nx">mode </span><span class="c1">; text-track-mode</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 22</span>
-<span class="nc">audio-frame </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="audio-frame">audio-frame<a class="self-link" href="#audio-frame"></a></dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">encoding-id</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">start-time</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">payload</span><span class="p">:</span> <span class="nx">bytes</span>
@@ -3668,7 +3652,7 @@ the wire smaller.</p>
 <span class="p">]</span></p>
 
 <p><span class="c1">; type key 23</span>
-<span class="nc">video-frame </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="video-frame">video-frame<a class="self-link" href="#video-frame"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="kt">int</span><span class="p">]</span> <span class="c1">; depends-on</span>
@@ -3680,7 +3664,7 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 24</span>
-<span class="nc">data-frame </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="data-frame">data-frame<a class="self-link" href="#data-frame"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
@@ -3690,54 +3674,54 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 120</span>
-<span class="nc">video-frame-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn data-dfn-type="dfn" data-noexport id="video-frame-request">video-frame-request<a class="self-link" href="#video-frame-request"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
  <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; sequence-number</span>
  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; highest-decoded-frame-sequence-number</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">ratio </span><span class="p">=</span> <span class="p">[</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="ratio">ratio<a class="self-link" href="#ratio"></a></dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">antecedent</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
 <span class="p">]</span></p>
 
-<p><span class="nc">streaming-capabilities-request </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="streaming-capabilities-request">streaming-capabilities-request<a class="self-link" href="#streaming-capabilities-request"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">streaming-capabilities-response </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="streaming-capabilities-response">streaming-capabilities-response<a class="self-link" href="#streaming-capabilities-response"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">streaming-capabilities </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="streaming-capabilities">streaming-capabilities<a class="self-link" href="#streaming-capabilities"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-audio-capability</span><span class="p">]</span> <span class="c1">; receive-audio</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-video-capability</span><span class="p">]</span> <span class="c1">; receive-video</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-data-capability</span><span class="p">]</span> <span class="c1">; receive-data</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">format </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="format">format<a class="self-link" href="#format"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">format-parameter</span><span class="p">]</span> <span class="c1">; parameters</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">format-parameter </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="format-parameter">format-parameter<a class="self-link" href="#format-parameter"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; key</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; value</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">receive-audio-capability </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="receive-audio-capability">receive-audio-capability<a class="self-link" href="#receive-audio-capability"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-audio-channels</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">video-resolution </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="video-resolution">video-resolution<a class="self-link" href="#video-resolution"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; height</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; width</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">receive-video-capability </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="receive-video-capability">receive-video-capability<a class="self-link" href="#receive-video-capability"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="c1">; max-resolution</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-frames-per-second</span>
@@ -3749,7 +3733,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">receive-data-capability </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn data-dfn-type="dfn" data-noexport id="receive-data-capability">receive-data-capability<a class="self-link" href="#receive-data-capability"></a></dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; format</span>
 <span class="p">}</span></p>
 </pre>
@@ -3946,10 +3930,86 @@ extensions.</p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
+   <li><a href="#added-text-track">added-text-track</a><span>, in §Unnumbered section</span>
    <li><a href="#advertising-agent">advertising agent</a><span>, in §3</span>
+   <li><a href="#agent-capability">agent-capability</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-info">agent-info</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-info-request">agent-info-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-info-response">agent-info-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-status-request">agent-status-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-status-response">agent-status-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#audio-frame">audio-frame</a><span>, in §Unnumbered section</span>
+   <li><a href="#audio-track-state">audio-track-state</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-capabilities">auth-capabilities</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-initiation-token">auth-initiation-token</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-spake2-confirmation">auth-spake2-confirmation</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-spake2-message">auth-spake2-message</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-status">auth-status</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-status-result">auth-status-result</a><span>, in §Unnumbered section</span>
+   <li><a href="#changed-text-track">changed-text-track</a><span>, in §Unnumbered section</span>
+   <li><a href="#data-frame">data-frame</a><span>, in §Unnumbered section</span>
    <li><a href="#display-name">display name</a><span>, in §3</span>
+   <li><a href="#forever">forever</a><span>, in §Unnumbered section</span>
+   <li><a href="#format">format</a><span>, in §Unnumbered section</span>
+   <li><a href="#format-parameter">format-parameter</a><span>, in §Unnumbered section</span>
+   <li><a href="#http-header">http-header</a><span>, in §Unnumbered section</span>
    <li><a href="#listening-agent">listening agent</a><span>, in §3</span>
+   <li><a href="#media-error">media-error</a><span>, in §Unnumbered section</span>
+   <li><a href="#media-time">media-time</a><span>, in §Unnumbered section</span>
+   <li><a href="#media-time-range">media-time-range</a><span>, in §Unnumbered section</span>
+   <li><a href="#microseconds">microseconds</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-connection-close-event">presentation-connection-close-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-connection-message">presentation-connection-message</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-connection-open-request">presentation-connection-open-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-connection-open-response">presentation-connection-open-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-start-request">presentation-start-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-start-response">presentation-start-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-termination-event">presentation-termination-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-termination-request">presentation-termination-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-termination-response">presentation-termination-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-url-availability-event">presentation-url-availability-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-url-availability-request">presentation-url-availability-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#presentation-url-availability-response">presentation-url-availability-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#psk-input-method">psk-input-method</a><span>, in §Unnumbered section</span>
+   <li><a href="#ratio">ratio</a><span>, in §Unnumbered section</span>
+   <li><a href="#receive-audio-capability">receive-audio-capability</a><span>, in §Unnumbered section</span>
+   <li><a href="#receive-data-capability">receive-data-capability</a><span>, in §Unnumbered section</span>
+   <li><a href="#receive-video-capability">receive-video-capability</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-availability-event">remote-playback-availability-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-availability-request">remote-playback-availability-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-availability-response">remote-playback-availability-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-controls">remote-playback-controls</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-id">remote-playback-id</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-modify-request">remote-playback-modify-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-modify-response">remote-playback-modify-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-start-request">remote-playback-start-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-start-response">remote-playback-start-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-state">remote-playback-state</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-state-event">remote-playback-state-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-termination-event">remote-playback-termination-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-termination-request">remote-playback-termination-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-termination-response">remote-playback-termination-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#request">request</a><span>, in §Unnumbered section</span>
+   <li><a href="#request-id">request-id</a><span>, in §Unnumbered section</span>
+   <li><a href="#response">response</a><span>, in §Unnumbered section</span>
+   <li><a href="#result">result</a><span>, in §Unnumbered section</span>
+   <li><a href="#status">status</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-capabilities">streaming-capabilities</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-capabilities-request">streaming-capabilities-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-capabilities-response">streaming-capabilities-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#text-track-cue">text-track-cue</a><span>, in §Unnumbered section</span>
+   <li><a href="#text-track-mode">text-track-mode</a><span>, in §Unnumbered section</span>
+   <li><a href="#text-track-state">text-track-state</a><span>, in §Unnumbered section</span>
+   <li><a href="#track-state">track-state</a><span>, in §Unnumbered section</span>
+   <li><a href="#unknown">unknown</a><span>, in §Unnumbered section</span>
+   <li><a href="#url-availability">url-availability</a><span>, in §Unnumbered section</span>
    <li><a href="#verified-display-name">verified display name</a><span>, in §3</span>
+   <li><a href="#video-frame">video-frame</a><span>, in §Unnumbered section</span>
+   <li><a href="#video-frame-request">video-frame-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#video-resolution">video-resolution</a><span>, in §Unnumbered section</span>
+   <li><a href="#video-track-state">video-track-state</a><span>, in §Unnumbered section</span>
+   <li><a href="#watch-id">watch-id</a><span>, in §Unnumbered section</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-htmlmediaelement">
    <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement</a><b>Referenced in:</b>
@@ -4208,6 +4268,78 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <b><a href="#verified-display-name">#verified-display-name</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-verified-display-name">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-url-availability-request">
+   <b><a href="#presentation-url-availability-request">#presentation-url-availability-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-url-availability-request">7. Presentation Protocol</a>
+    <li><a href="#ref-for-presentation-url-availability-request①">7.1. Presentation API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-url-availability-response">
+   <b><a href="#presentation-url-availability-response">#presentation-url-availability-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-url-availability-response">7. Presentation Protocol</a> <a href="#ref-for-presentation-url-availability-response①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-start-request">
+   <b><a href="#presentation-start-request">#presentation-start-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-start-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-start-request①">(2)</a>
+    <li><a href="#ref-for-presentation-start-request②">7.1. Presentation API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-start-response">
+   <b><a href="#presentation-start-response">#presentation-start-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-start-response">7. Presentation Protocol</a> <a href="#ref-for-presentation-start-response①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-termination-request">
+   <b><a href="#presentation-termination-request">#presentation-termination-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-termination-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-termination-request①">(2)</a>
+    <li><a href="#ref-for-presentation-termination-request②">7.1. Presentation API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-termination-response">
+   <b><a href="#presentation-termination-response">#presentation-termination-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-termination-response">7. Presentation Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-termination-event">
+   <b><a href="#presentation-termination-event">#presentation-termination-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-termination-event">7. Presentation Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-connection-open-request">
+   <b><a href="#presentation-connection-open-request">#presentation-connection-open-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-connection-open-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-connection-open-request①">(2)</a>
+    <li><a href="#ref-for-presentation-connection-open-request②">7.1. Presentation API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-connection-open-response">
+   <b><a href="#presentation-connection-open-response">#presentation-connection-open-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-connection-open-response">7. Presentation Protocol</a> <a href="#ref-for-presentation-connection-open-response①">(2)</a>
+    <li><a href="#ref-for-presentation-connection-open-response②">7.1. Presentation API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-connection-close-event">
+   <b><a href="#presentation-connection-close-event">#presentation-connection-close-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-connection-close-event">7. Presentation Protocol</a> <a href="#ref-for-presentation-connection-close-event①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-connection-message">
+   <b><a href="#presentation-connection-message">#presentation-connection-message</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-connection-message">7. Presentation Protocol</a>
+    <li><a href="#ref-for-presentation-connection-message①">7.1. Presentation API</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */

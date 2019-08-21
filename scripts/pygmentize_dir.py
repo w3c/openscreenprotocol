@@ -11,7 +11,7 @@ from cddl_lexer import CustomLexer as CddlLexer
 
 OUTPUT_EXTENSION = ".html"
 
-CDDL_TYPE_KEY_RE = re.compile(r'(<span class="nc">)([A-Za-z-]+)');
+CDDL_TYPE_KEY_RE = re.compile(r'(<span class="nc">)([A-Za-z0-9-]+)');
 
 class OSPHtmlFormatter(HtmlFormatter):
   def wrap(self, source, outfile):
@@ -47,7 +47,6 @@ def pygmentize_dir(lexer, formatter):
 
 if __name__ == "__main__":
   formatter = OSPHtmlFormatter()
-#  formatter = HtmlFormatter()
 
   directory, _ = os.path.split(os.path.abspath(__file__))
   lexer = CddlLexer()

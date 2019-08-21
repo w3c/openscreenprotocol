@@ -65,7 +65,7 @@ url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; te
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
 </pre>
 
-<h2 class='no-num no-toc no-ref' id='status'>Status of this document</h2>
+<h2 class='no-num no-toc no-ref' id='document-status'>Status of this document</h2>
 
 This specification was published by the [Second Screen Community
 Group](https://www.w3.org/community/webscreens/). It is not a W3C Standard nor
@@ -599,17 +599,13 @@ terminating, and controlling presentations as defined by
 defines how APIs in [[PRESENTATION-API|Presentation API]] map to the
 protocol messages defined in this section.
 
-For all messages defined in this section, see [[#appendix-a]] for the full
-CDDL definitions.
-
 Issue(123): Add a capability that indicates support for the presentation protocol.
-
 
 Issue(160): Refinements to Presentation API protocol.
 
 To learn which receivers are [=available presentation displays=] for a
 particular URL or set of URLs, the controller may send a
-presentation-url-availability-request message with the following values:
+[=presentation-url-availability-request=] message with the following values:
 
 : urls
 :: A list of presentation URLs.  Must not be empty.
@@ -623,7 +619,7 @@ presentation-url-availability-request message with the following values:
     availability so that the controller knows which URLs the receiver is referring
     to.
 
-In response, the receiver should send one presentation-url-availability-response
+In response, the receiver should send one [=presentation-url-availability-response=]
 message with the following values:
 
 : url-availabilities
@@ -636,7 +632,7 @@ should send remote-playback-availability-event messages when URL availabilities 
 Such events contain the following values:
 
 : watch-id
-:: The watch-id given in the presentation-url-availability-response,
+:: The watch-id given in the [=presentation-url-availability-response=],
     used to refer to the presentation URLs whose availability has changed.
 
 : url-availabilities
@@ -654,7 +650,7 @@ responses and updates.  The QUIC connection ID may or may not be the same
 when reconnecting.
 
 To start a presentation, the controller may send a
-presentation-start-request message to the receiver with the following
+[=presentation-start-request=] message to the receiver with the following
 values:
 
 : presentation-id
@@ -675,8 +671,8 @@ The presentation ID must follow the restrictions defined by
 it must consist of at least 16 ASCII characters.
 
 
-When the receiver receives the presentation-start-request, it should send back a
-presentation-start-response message after either the presentation URL has been
+When the receiver receives the [=presentation-start-request=], it should send back a
+[=presentation-start-response=] message after either the presentation URL has been
 fetched and loaded, or the receiver has failed to do so. If it has failed, it
 must respond with the appropriate result (such as invalid-url or timeout).  If
 it has succeeded, it must reply with a success result.  Additionally, the
@@ -689,18 +685,18 @@ response must include the following:
     across connections, thus making message demuxing/routing easier.
 
 To send a presentation message, the controller or receiver may send a
-presentation-connection-message with the following values:
+[=presentation-connection-message=] with the following values:
 
 : connection-id
-:: The ID from the presentation-start-response or
-    presentation-connection-open-response messages.
+:: The ID from the [=presentation-start-response=] or
+    [=presentation-connection-open-response=] messages.
 
 : message
 :: The presentation message data.
 
 
 To terminate a presentation, the controller may send a
-presentation-termination-request message with the following values:
+[=presentation-termination-request=] message with the following values:
 
 : presentation-id
 :: The ID of the presentation to terminate.
@@ -709,10 +705,10 @@ presentation-termination-request message with the following values:
 :: The reason the presentation is being terminated.
 
 
-When a [=receiver=] receives a presentation-termination-request, it should
-send back a presentation-termination-response message to the requesting
+When a [=receiver=] receives a [=presentation-termination-request=], it should
+send back a [=presentation-termination-response=] message to the requesting
 controller.  It should also notify other controllers about the termination by sending
-a presentation-termination-event message.  And it can send the same message if
+a [=presentation-termination-event=] message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:
 
@@ -723,7 +719,7 @@ message contains the following values:
 :: The reason the presentation was terminated.
 
 To accept incoming connection requests from controller, a receiver must receive
-and process the presentation-connection-open-request message which contains the
+and process the [=presentation-connection-open-request=] message which contains the
 following values:
 
 : presentation-id
@@ -733,8 +729,8 @@ following values:
 :: The URL of the presentation to connect to.
 
 The receiver should, upon receipt of a
-presentation-connection-open-request message, send back a
-presentation-connection-open-response message which contains the
+[=presentation-connection-open-request=] message, send back a
+[=presentation-connection-open-response=] message which contains the
 following values:
 
 : result
@@ -747,7 +743,7 @@ following values:
     across connections, thus making message demuxing/routing easier).
 
 A controller may close a connection without terminating the presentation by
-sending a `presentation-connection-close-event` message to the receiver with the
+sending a [=presentation-connection-close-event=] message to the receiver with the
 following values:
 
 : connection-id
@@ -757,7 +753,7 @@ following values:
 :: Set to `close-method-called` or `connection-object-discarded`.
 
 The receiver may also close a connection without terminating a presentation.  If
-it does so, it should send a `presentation-connection-close-event` message to the
+it does so, it should send a [=presentation-connection-close-event=] message to the
 controller with the following values:
 
 : connection-id
@@ -781,7 +777,7 @@ When [[PRESENTATION-API#the-list-of-available-presentation-displays|section
 6.4.2]] says "This list of presentation displays ... is populated based on an
 implementation specific discovery mechanism", the [=controlling user agent=] may
 use the mDNS, QUIC, agent-info-request, and
-presentation-url-availability-request messages defined previously in this spec
+[=presentation-url-availability-request=] messages defined previously in this spec
 to discover receivers.
 
 When [[PRESENTATION-API#the-list-of-available-presentation-displays|section
@@ -792,7 +788,7 @@ agent=] may use the power saving mechanism defined in the previous section.
 When [[PRESENTATION-API#starting-a-presentation-connection|section 6.3.4]] says
 "Using an implementation specific mechanism, tell U to create a receiving
 browsing context with D, presentationUrl, and I as parameters.", U (the
-[=controlling user agent=]) may send a presentation-start-request message to D
+[=controlling user agent=]) may send a [=presentation-start-request=] message to D
 (the receiver), with I for the presentation identifier and presentationUrl for
 the selected presentation URL.
 
@@ -803,7 +799,7 @@ When [[PRESENTATION-API#sending-a-message-through-presentationconnection|section
 6.5.2]] says "Using an implementation specific mechanism, transmit the contents
 of messageOrData as the presentation message data and messageType as the
 presentation message type to the destination browsing context", the
-[=controlling user agent=] may send a presentation-connection-message with
+[=controlling user agent=] may send a [=presentation-connection-message=] with
 messageOrData for the presentation message data.  Note that the messageType is
 embedded in the encoded CBOR type and does not need an additional value in the
 message.
@@ -811,26 +807,26 @@ message.
 When [[PRESENTATION-API#closing-a-presentationconnection|section 6.5.5]] says
 "Start to signal to the destination browsing context the intention to close the
 corresponding PresentationConnection", the [=user agent=] may send a
-`presentation-connection-close-event` message to the user agent with the
+`[=presentation-connection-close-event=]` message to the user agent with the
 destination browsing context.
 
 When
 [[PRESENTATION-API#terminating-a-presentation-in-a-controlling-browsing-context|section
 6.5.6]] says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the [=controlling user
-agent=] may send a presentation-termination-request message.
+agent=] may send a [=presentation-termination-request=] message.
 
 When [[PRESENTATION-API#monitoring-incoming-presentation-connections|section
 6.7.1]]
 says "it MUST listen to and accept incoming connection requests from a
 controlling browsing context using an implementation specific
 mechanism", the [=receiving user agent=] must receive and process the
-presentation-connection-open-request.
+[=presentation-connection-open-request=].
 
 When [[PRESENTATION-API#monitoring-incoming-presentation-connections|section
 6.7.1]] says "Establish the connection between the controlling and receiving
 browsing contexts using an implementation specific mechanism.", the [=receiving
-user agent=], must send a presentation-connection-open-response message.
+user agent=], must send a [=presentation-connection-open-response=] message.
 
 
 Remote Playback Protocol {#remote-playback-protocol}
@@ -1313,7 +1309,7 @@ Streaming Protocol {#streaming-protocol}
 This section defines the use of the Open Screen Protocol for streaming
 media from a media sender to a media receiver.
 
-Capabilities {#streaming-capabilities}
+Streaming Protocol Capabilities {#streaming-protocol-capabilities}
 --------------------------------------------
 If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an streaming-capabilities-request

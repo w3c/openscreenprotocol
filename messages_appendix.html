@@ -12,13 +12,10 @@
 <span class="nc"><dfn>agent-capability</dfn> </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">receive-audio</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span>
-
   <span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">2</span>
   <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">3</span>
-
   <span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">4</span>
   <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">5</span>
-
   <span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">6</span>
   <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">7</span>
 <span class="p">)</span>
@@ -72,18 +69,18 @@
 <span class="p">)</span>
 
 <span class="c1">; type key 1002</span>
-<span class="nc"><dfn>auth-spake</dfn>2-need-psk </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>auth-spake2-need-psk</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initiation-token</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 1003</span>
-<span class="nc"><dfn>auth-spake</dfn>2-message </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>auth-spake2-message</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initation-token</span>
 <span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 1004</span>
-<span class="nc"><dfn>auth-spake</dfn>2-confirmation </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>auth-spake2-confirmation</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; confirmation</span>
 <span class="p">}</span>
 
