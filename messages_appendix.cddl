@@ -101,12 +101,6 @@ auth-status-result = &(
   proof-invalid: 5
 )
 
-psk-input-method = &(
-  numeric: 0
-  alphanumeric: 1
-  qr-code: 2
-)
-
 watch-id = uint
 
 ; type key 108

@@ -1802,6 +1802,39 @@ Video encoding receiver stats include the following properties:
 :: The sum of the time spent decoding frames received.
 
 
+Requests, Responses, and Watches {#requests-responses--watches}
+===============================================================
+
+Multiple sub-protocols in OSP have messages that act as requests, responses,
+watches, and events. Most requests have a `request-id`, and the agent that
+receives the request must send exactly one reponse message in return with the
+same `request-id`.  A watch request has a `watch-id`, and the agent that
+receives the request may send any number of event messages in response with
+the same `watch-id`, until the watch request expires.
+
+`request-id` and `watch-id` values are unsigned integer IDs that are assigned
+from a counter kept by each agent that starts at 1 and increments by 1 for each
+ID.  Whenever an agent changes its `state-token`, it must reset its counter to 1.
+
+When an agent sees that another agent has reset its state (by virtue of
+advertising a new `state-token`), it should discard any requests, responses,
+watches and events for that agent.
+
+Note: Request and watch IDs are not tied to any particular QUIC connection
+between agents.  If a QUIC connection is closed, an agent should not discard
+requests, responses, watches, or events related to the other party.  This allows
+agents to save power by closing unused connections.
+
+Note: Request and watch IDs are not unique across agents.  An agent can combine
+a request ID with a unique identifier for the agent that sent it (like its
+certificate fingerprint) to track requests across multiple agents.
+
+Extension fields should use string keys to avoid conflicts with integer keys in
+Open Screen Protocol messages.  An agent should not send extension fields to
+another agent unless that agent advertises an extension capability ID in its
+`agent-info` that indicates that it understands the extension fields.
+
+
 Protocol Extensions {#protocol-extensions}
 ===================
 
@@ -1841,37 +1874,6 @@ CBOR message type defined by the Open Screen Protocol.  Extension fields must be
 optional, and the Open Screen Protocol message must make sense both with and
 without the field set.
 
-Requests, Responses, and Watches {#requests-responses--watches}
-===============================================================
-
-Multiple sub-protocols in OSP have messages that act as requests, responses,
-watches, and events. Most requests have a `request-id`, and the agent that
-receives the request must send exactly one reponse message in return with the
-same `request-id`.  A watch request has a `watch-id`, and the agent that
-receives the request may send any number of event messages in response with
-the same `watch-id`, until the watch request expires.
-
-`request-id` and `watch-id` values are unsigned integer IDs that are assigned
-from a counter kept by each agent that starts at 1 and increments by 1 for each
-ID.  Whenever an agent changes its `state-token`, it must reset its counter to 1.
-
-When an agent sees that another agent has reset its state (by virtue of
-advertising a new `state-token`), it should discard any requests, responses,
-watches and events for that agent.
-
-Note: Request and watch IDs are not tied to any particular QUIC connection
-between agents.  If a QUIC connection is closed, an agent should not discard
-requests, responses, watches, or events related to the other party.  This allows
-agents to save power by closing unused connections.
-
-Note: Request and watch IDs are not unique across agents.  An agent can combine
-a request ID with a unique identifier for the agent that sent it (like its
-certificate fingerprint) to track requests across multiple agents.
-
-Extension fields should use string keys to avoid conflicts with integer keys in
-Open Screen Protocol messages.  An agent should not send extension fields to
-another agent unless that agent advertises an extension capability ID in its
-`agent-info` that indicates that it understands the extension fields.
 
 Security and Privacy {#security-privacy}
 ====================
