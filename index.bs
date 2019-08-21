@@ -1829,11 +1829,6 @@ Note: Request and watch IDs are not unique across agents.  An agent can combine
 a request ID with a unique identifier for the agent that sent it (like its
 certificate fingerprint) to track requests across multiple agents.
 
-Extension fields should use string keys to avoid conflicts with integer keys in
-Open Screen Protocol messages.  An agent should not send extension fields to
-another agent unless that agent advertises an extension capability ID in its
-`agent-info` that indicates that it understands the extension fields.
-
 
 Protocol Extensions {#protocol-extensions}
 ===================
@@ -1873,6 +1868,14 @@ It is legal for an agent to add additional, extension fields to a map-valued
 CBOR message type defined by the Open Screen Protocol.  Extension fields must be
 optional, and the Open Screen Protocol message must make sense both with and
 without the field set.
+
+Agents must not add extended fields to the `audio-frame` message directly.	
+Instead, they may add them to its nested `optional` value.	
+
+Extension fields should use string keys to avoid conflicts with integer keys in	
+Open Screen Protocol messages.  An agent should not send extension fields to	
+another agent unless that agent advertises an extension capability ID in its	
+`agent-info` that indicates that it understands the extension fields.
 
 
 Security and Privacy {#security-privacy}

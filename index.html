@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="c7a234aa5fae9f72a80c9c2f20cb94914632fb92" name="document-revision">
+  <meta content="de54a767236c2d9b2e9ed1f3d1f32a913406a183" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -3135,9 +3135,6 @@ agents to save power by closing unused connections.</p>
    <p class="note" role="note"><span>Note:</span> Request and watch IDs are not unique across agents.  An agent can combine
 a request ID with a unique identifier for the agent that sent it (like its
 certificate fingerprint) to track requests across multiple agents.</p>
-   <p>Extension fields should use string keys to avoid conflicts with integer keys in
-Open Screen Protocol messages.  An agent should not send extension fields to
-another agent unless that agent advertises an extension capability ID in its <code>agent-info</code> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="11" id="protocol-extensions"><span class="secno">11. </span><span class="content">Protocol Extensions</span><a class="self-link" href="#protocol-extensions"></a></h2>
    <p>Open Screen agents may exchange extension messages that are not defined by this
 specification.  This could be used for experimentation, customization or other
@@ -3163,6 +3160,11 @@ messages and non-CBOR extension messages.</p>
 CBOR message type defined by the Open Screen Protocol.  Extension fields must be
 optional, and the Open Screen Protocol message must make sense both with and
 without the field set.</p>
+   <p>Agents must not add extended fields to the <code>audio-frame</code> message directly.
+Instead, they may add them to its nested <code>optional</code> value.</p>
+   <p>Extension fields should use string keys to avoid conflicts with integer keys in
+Open Screen Protocol messages.  An agent should not send extension fields to	
+another agent unless that agent advertises an extension capability ID in its <code>agent-info</code> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
