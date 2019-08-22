@@ -1002,7 +1002,7 @@ remote-playback-modify-request message with the following values:
     are acked via the remote-playback-modify-response message.
 
 : remoting-stats-interval
-:: The frequency the contorller would like for the receiver to send
+:: The frequency the controller would like for the receiver to send
     remoting stats using the streaming stats message.
 
 When a receiver receives a remote-playback-modify-request it should send a
@@ -1467,7 +1467,7 @@ audio encoding.
 Unlike most Open Screen Protocol messages, this one uses an
 array-based grouping rather than a struct-based grouping.  For
 required fields, this allows for a more efficient use of bytes on the
-
+wire, which is important for streaming audio because the payload is
 typically so small and every byte of overhead is relatively large.  In
 order to accomodate optional values in the array-based grouping, one
 optional field in the array is used to hold all optional values in a

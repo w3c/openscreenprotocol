@@ -264,11 +264,12 @@
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
 <span class="p">}</span>
 
-<span class="c1">; type key 116</span>
+<span class="c1">; type key 125</span>
 <span class="nx">remote-playback-start-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; remoting-capabilities</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 117</span>
@@ -305,6 +306,9 @@
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">audio-encoding-offer</span><span class="p">]</span> <span class="c1">; remoting-audio</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">video-encoding-offer</span><span class="p">]</span> <span class="c1">; remoting-video</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; remoting-stats-interval</span>
 <span class="p">)</span>
 
 <span class="c1">; type key 20</span>
@@ -312,6 +316,7 @@
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; remoting-stats-interval</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 21</span>

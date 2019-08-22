@@ -271,13 +271,6 @@ remote-playback-start-response = {
   ? 2: remote-playback-state ; state
   ? 3: streaming-capabilities ; remoting-capabilities
 }
-p
-; type key 116
-remote-playback-start-response = {
-  response
-  1: &result ; result
-  ? 2: remote-playback-state ; state
-}
 
 ; type key 117
 remote-playback-termination-request = {

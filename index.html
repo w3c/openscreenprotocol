@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="8665d8b7d13273f5a339fd379370513f767ae5d8" name="document-revision">
+  <meta content="eb971893706a0e88e2d9c450fdbeeaa99824d109" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -2382,9 +2382,13 @@ the receiver decides to not attempt to load the resource at all.  If it chooses
 not to, it must respond with the appropriate failure result (such as timeout or
 invalid-url).  Additionally, the response must include the following:</p>
    <dl>
-    <dt data-md>state
+    <dt data-md>state (optional)
     <dd data-md>
      <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
+    <dt data-md>remoting-capabilities (optional)
+    <dd data-md>
+     <p>What kind of remoting (using the streaming protocol) that the
+receiver can receive.</p>
    </dl>
    <p>If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -2396,6 +2400,18 @@ remote-playback-modify-request message with the following values:</p>
     <dt data-md>controls
     <dd data-md>
      <p>Updated controls as defined in {#remote-playback-state-and-controls}</p>
+    <dt data-md>remoting-audio
+    <dd data-md>
+     <p>Audio encodings that the controller can send to the receiver once they
+are acked via the remote-playback-modify-response message.</p>
+    <dt data-md>remoting-video
+    <dd data-md>
+     <p>Videos encodings that the controller can send to the receiver once they
+are acked via the remote-playback-modify-response message.</p>
+    <dt data-md>remoting-stats-interval
+    <dd data-md>
+     <p>The frequency the controller would like for the receiver to send
+remoting stats using the streaming stats message.</p>
    </dl>
    <p>When a receiver receives a remote-playback-modify-request it should send a
 remote-playback-modify-response message in reply with the following values:</p>
@@ -2403,6 +2419,10 @@ remote-playback-modify-response message in reply with the following values:</p>
     <dt data-md>state
     <dd data-md>
      <p>The updated state of the remote playback as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
+    <dt data-md>remoting-stats-interval
+    <dd data-md>
+     <p>The frequency the contorller would like for the receiver to send
+back remoting stats using the streaming stats message.</p>
    </dl>
    <p>When the state of remote playback changes without request for modification from
 the controller (such as when the skips or pauses due to user user interaction on
@@ -3501,11 +3521,12 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 116</span>
+<p><span class="c1">; type key 125</span>
 <span class="nx">remote-playback-start-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; remoting-capabilities</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 117</span>
@@ -3542,6 +3563,9 @@ the wire smaller.</p>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">audio-encoding-offer</span><span class="p">]</span> <span class="c1">; remoting-audio</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">video-encoding-offer</span><span class="p">]</span> <span class="c1">; remoting-video</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; remoting-stats-interval</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 20</span>
@@ -3549,6 +3573,7 @@ the wire smaller.</p>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; remoting-stats-interval</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 21</span>
