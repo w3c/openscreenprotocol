@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="96e1310b083d8e8a7f7c33245a04ad98936e3331" name="document-revision">
+  <meta content="af0bf88a56101b3850094c7035455d1849d516c9" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1850,9 +1850,6 @@ Agents must not support the following hash functions: "md2", "md5".</p>
 metadata has changed.   The advertising agent must update it to a greater
 value.  This signals to the listening agent that it should connect to the
 advertising agent to discover updated metadata.</p>
-   </dl>
-   <p>The advertising agent should add an additional field to the TXT record:</p>
-   <dl>
     <dt data-md>at
     <dd data-md>
      <p>An alphanumeric, unguessable token consisting of characters from the set <code>[A-Za-z0-9+/]</code>.</p>
@@ -2005,8 +2002,8 @@ that it’s easy for the user to input PSK on the device.  Supported PSK input m
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
    <p>Any authentication method may require an <code>auth-initation-token</code> before showing a
-PSK to the user or requesting PSK input from the user.  If an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
-agent</a> has the <code>at</code> field in its mDNS TXT record, it must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
+PSK to the user or requesting PSK input from the user.  For an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
+agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
 that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>at</code> provided by the
 advertising agent.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
@@ -2203,6 +2200,22 @@ following values:</p>
 to each other.  It is chosen by the receiver for ease of implementation (if
 the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier).</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The new number of open connections to the presentation that received
+the incoming connection request.</p>
+   </dl>
+   <p>If the <code>presentation-connection-open-response</code> message indicates success, the
+receiver should also send a <code>presentation-change-event</code> to all other endpoints
+that have an active presentation connection to that presentation with the
+values:</p>
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>The ID of the presentation that just received a new presentation connection.</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The new total number of open connections to that presentation.</p>
    </dl>
    <p>A controller may close a connection without terminating the presentation by
 sending a <code>presentation-connection-close-event</code> message to the receiver with the
@@ -2225,6 +2238,20 @@ controller with the following values:</p>
     <dt data-md>reason
     <dd data-md>
      <p>Set to <code>close-method-called</code> or <code>connection-object-discarded</code>.</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The number of open presentation connections that remain.</p>
+   </dl>
+   <p>If a receiver closes a presentation connection (for any reason), it should send
+a <code>presentation-change-event</code> to all other controllers with an open connection
+to that presentation with the values:</p>
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>The ID of the presentation that just closed a connection.</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The number of open presentation connections that remain.</p>
    </dl>
    <p class="note" role="note"><span>Note:</span> When an agent closes a presentation connection, it is always successful,
 so request and response messages are not needed.  A request to terminate a
@@ -2258,7 +2285,7 @@ message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#closing-a-presentationconnection">section 6.5.5</a> says
 "Start to signal to the destination browsing context the intention to close the
 corresponding PresentationConnection", the <a data-link-type="dfn" href="https://w3c.github.io/reporting/#report-user-agent" id="ref-for-report-user-agent">user agent</a> may send a <code>presentation-connection-close-event</code> message to the user agent with the
-destination browsing context.</p>
+destination browsing context and a <code>presentation-change-event</code> when required.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
@@ -2270,8 +2297,8 @@ mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation
 presentation-connection-open-request.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "Establish the connection between the controlling and receiving
-browsing contexts using an implementation specific mechanism.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving
-user agent</a>, must send a presentation-connection-open-response message.</p>
+browsing contexts using an implementation specific mechanism," the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving
+user agent</a> must send a presentation-connection-open-response message and <code>presentation-change-event</code> messages when required.</p>
    <h2 class="heading settled" data-level="8" id="remote-playback-protocol"><span class="secno">8. </span><span class="content">Remote Playback Protocol</span><a class="self-link" href="#remote-playback-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting, terminating,
 and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 8.2 Remote Playback API</a> defines how
@@ -3206,7 +3233,7 @@ versions.</p>
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.</p>
-   <p>Advertising agents should set the <code>at</code> field in their mDNS TXT record to protect
+   <p>Advertising agents must set the <code>at</code> field in their mDNS TXT record to protect
 themselves from off-LAN attempts to initiate <a href="#authentication">§ 6 Authentication</a>, which result
 in user annoyance (display or input of PSK) and potential brute force attacks
 against the PSK.</p>
@@ -3437,6 +3464,7 @@ the wire smaller.</p>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 113</span>
@@ -3448,6 +3476,13 @@ the wire smaller.</p>
     <span class="nx">unrecoverable-error-while-sending-or-receiving-message</span><span class="p">:</span> <span class="mi">100</span>
   <span class="p">)</span> <span class="c1">; reason</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; error-message</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 121</span>
+<span class="nx">presentation-change-event </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-count</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 16</span>
