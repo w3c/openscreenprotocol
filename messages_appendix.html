@@ -193,6 +193,7 @@
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 113</span>
@@ -204,6 +205,13 @@
     <span class="nx">unrecoverable-error-while-sending-or-receiving-message</span><span class="p">:</span> <span class="mi">100</span>
   <span class="p">)</span> <span class="c1">; reason</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; error-message</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 121</span>
+<span class="nc"><dfn>presentation-change-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-count</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 16</span>

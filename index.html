@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="0bef2055dd9f22f10ef1837c05f750c1af2f8290" name="document-revision">
+  <meta content="8f53d5017209217c2319e14f0843cc92e058ae52" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-21">21 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-23">23 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1789,6 +1789,8 @@ presentation display, e.g. "Living Room TV."</p>
 agent’s display name.  If the Instance Name is not the complete display name, it
 must be terminated by a null (<code>\000</code>) character, so that a listening agent knows
 it has been truncated.</p>
+   <p>Advertising agents must follow the mDNS <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6762#section-9" id="ref-for-section-9">conflict resolution</a> procedure, to
+prevent multiple advertising agents from using the same DNS-SD Instance Name.</p>
    <p>Agents must treat Instance Names as unverified information, and should check
 that the Instance Name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an agent has done
 this check, it can show the name as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="verified-display-name">verified display name</dfn>.</p>
@@ -1826,14 +1828,11 @@ Agents must not support the following hash functions: "md2", "md5".</p>
 metadata has changed.   The advertising agent must update it to a greater
 value.  This signals to the listening agent that it should connect to the
 advertising agent to discover updated metadata.</p>
-   </dl>
-   <p>The advertising agent should add an additional field to the TXT record:</p>
-   <dl>
-    <dt data-md>pw
+    <dt data-md>at
     <dd data-md>
      <p>An alphanumeric, unguessable token consisting of characters from the set <code>[A-Za-z0-9+/]</code>.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> <code>pw</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 12.5.3 Remote active network attackers</a>. <code>pw</code> should have at least 32 bits of true
+   <p class="note" role="note"><span>Note:</span> <code>at</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 12.5.3 Remote active network attackers</a>. <code>at</code> should have at least 32 bits of true
 entropy to make brute force attacks impractical.</p>
    <p class="issue" id="issue-49bdd4e6"><a class="self-link" href="#issue-49bdd4e6"></a> Add examples of sample mDNS records.</p>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
@@ -1985,9 +1984,9 @@ that it’s easy for the user to input PSK on the device.  Supported PSK input m
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
    <p>Any authentication method may require an <code>auth-initation-token</code> before showing a
-PSK to the user or requesting PSK input from the user.  If an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
-agent</a> has the <code>pw</code> field in its mDNS TXT record, it must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
-that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>pw</code> provided by the
+PSK to the user or requesting PSK input from the user.  For an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
+agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
+that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>at</code> provided by the
 advertising agent.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
    <p>For all messages and objects defined in this section, see Appendix A for
@@ -2172,6 +2171,22 @@ following values:</p>
 to each other.  It is chosen by the receiver for ease of implementation (if
 the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier).</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The new number of open connections to the presentation that received
+the incoming connection request.</p>
+   </dl>
+   <p>If the <code>presentation-connection-open-response</code> message indicates success, the
+receiver should also send a <code>presentation-change-event</code> to all other endpoints
+that have an active presentation connection to that presentation with the
+values:</p>
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>The ID of the presentation that just received a new presentation connection.</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The new total number of open connections to that presentation.</p>
    </dl>
    <p>A controller may close a connection without terminating the presentation by
 sending a <a data-link-type="dfn" href="#presentation-connection-close-event" id="ref-for-presentation-connection-close-event">presentation-connection-close-event</a> message to the receiver with the
@@ -2194,6 +2209,20 @@ controller with the following values:</p>
     <dt data-md>reason
     <dd data-md>
      <p>Set to <code>close-method-called</code> or <code>connection-object-discarded</code>.</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The number of open presentation connections that remain.</p>
+   </dl>
+   <p>If a receiver closes a presentation connection (for any reason), it should send
+a <code>presentation-change-event</code> to all other controllers with an open connection
+to that presentation with the values:</p>
+   <dl>
+    <dt data-md>presentation-id
+    <dd data-md>
+     <p>The ID of the presentation that just closed a connection.</p>
+    <dt data-md>connection-count
+    <dd data-md>
+     <p>The number of open presentation connections that remain.</p>
    </dl>
    <p class="note" role="note"><span>Note:</span> When an agent closes a presentation connection, it is always successful,
 so request and response messages are not needed.  A request to terminate a
@@ -2225,8 +2254,8 @@ embedded in the encoded CBOR type and does not need an additional value in the
 message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#closing-a-presentationconnection">section 6.5.5</a> says
 "Start to signal to the destination browsing context the intention to close the
-corresponding PresentationConnection", the <a data-link-type="dfn" href="https://w3c.github.io/reporting/#report-user-agent" id="ref-for-report-user-agent">user agent</a> may send a <code>[=presentation-connection-close-event=]</code> message to the user agent with the
-destination browsing context.</p>
+corresponding PresentationConnection", the <a data-link-type="dfn" href="https://w3c.github.io/reporting/#report-user-agent" id="ref-for-report-user-agent">user agent</a> may send a <a data-link-type="dfn" href="#presentation-connection-close-event" id="ref-for-presentation-connection-close-event②">presentation-connection-close-event</a> message to the user agent with the
+destination browsing context and a <a data-link-type="dfn" href="#presentation-change-event" id="ref-for-presentation-change-event">presentation-change-event</a> when required.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
@@ -2238,7 +2267,7 @@ mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation
    <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "Establish the connection between the controlling and receiving
 browsing contexts using an implementation specific mechanism.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving
-user agent</a>, must send a <a data-link-type="dfn" href="#presentation-connection-open-response" id="ref-for-presentation-connection-open-response②">presentation-connection-open-response</a> message.</p>
+user agent</a>, must send a <a data-link-type="dfn" href="#presentation-connection-open-response" id="ref-for-presentation-connection-open-response②">presentation-connection-open-response</a> message and <a data-link-type="dfn" href="#presentation-change-event" id="ref-for-presentation-change-event①">presentation-change-event</a> messages when required.</p>
    <h2 class="heading settled" data-level="8" id="remote-playback-protocol"><span class="secno">8. </span><span class="content">Remote Playback Protocol</span><a class="self-link" href="#remote-playback-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting, terminating,
 and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 8.2 Remote Playback API</a> defines how
@@ -3160,7 +3189,7 @@ by a correct implementation of TLS 1.3.</p>
 Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.</p>
-   <p>Advertising agents should set the <code>pw</code> field in their mDNS TXT record to protect
+   <p>Advertising agents must set the <code>at</code> field in their mDNS TXT record to protect
 themselves from off-LAN attempts to initiate <a href="#authentication">§ 6 Authentication</a>, which result
 in user annoyance (display or input of PSK) and potential brute force attacks
 against the PSK.</p>
@@ -3388,6 +3417,7 @@ the wire smaller.</p>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 113</span>
@@ -3399,6 +3429,13 @@ the wire smaller.</p>
     <span class="nx">unrecoverable-error-while-sending-or-receiving-message</span><span class="p">:</span> <span class="mi">100</span>
   <span class="p">)</span> <span class="c1">; reason</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; error-message</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 121</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-change-event">presentation-change-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-count</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 16</span>
@@ -3933,6 +3970,7 @@ extensions.</p>
    <li><a href="#advertising-agent">advertising agent</a><span>, in §3</span>
    <li><a href="#display-name">display name</a><span>, in §3</span>
    <li><a href="#listening-agent">listening agent</a><span>, in §3</span>
+   <li><a href="#presentation-change-event">presentation-change-event</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-connection-close-event">presentation-connection-close-event</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-connection-message">presentation-connection-message</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-connection-open-request">presentation-connection-open-request</a><span>, in §Unnumbered section</span>
@@ -4081,6 +4119,12 @@ extensions.</p>
     <li><a href="#ref-for-report-user-agent">7.1. Presentation API</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-9">
+   <a href="https://tools.ietf.org/html/rfc6762#section-9">https://tools.ietf.org/html/rfc6762#section-9</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-9">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-section-4.1.1">
    <a href="https://tools.ietf.org/html/rfc6763#section-4.1.1">https://tools.ietf.org/html/rfc6763#section-4.1.1</a><b>Referenced in:</b>
    <ul>
@@ -4132,6 +4176,11 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-report-user-agent" style="color:initial">user agent</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[RFC6762]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-9" style="color:initial">conflict resolution</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[RFC6763]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-section-4.1.1" style="color:initial">instance name</span>
@@ -4151,6 +4200,8 @@ extensions.</p>
    <dd>Douglas Creager; et al. <a href="https://www.w3.org/TR/reporting-1/">Reporting API</a>. 25 September 2018. WD. URL: <a href="https://www.w3.org/TR/reporting-1/">https://www.w3.org/TR/reporting-1/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-rfc6762">[RFC6762]
+   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
   </dl>
@@ -4160,8 +4211,6 @@ extensions.</p>
    <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. Internet Draft. URL: <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/</a>
    <dt id="biblio-quic">[QUIC]
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
-   <dt id="biblio-rfc6762">[RFC6762]
-   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
@@ -4275,6 +4324,13 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <b><a href="#presentation-connection-close-event">#presentation-connection-close-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-connection-close-event">7. Presentation Protocol</a> <a href="#ref-for-presentation-connection-close-event①">(2)</a>
+    <li><a href="#ref-for-presentation-connection-close-event②">7.1. Presentation API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="presentation-change-event">
+   <b><a href="#presentation-change-event">#presentation-change-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-presentation-change-event">7.1. Presentation API</a> <a href="#ref-for-presentation-change-event①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="presentation-connection-message">

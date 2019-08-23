@@ -6,7 +6,7 @@ BIKESHED_ARGS ?= --print=plain
 index.html: index.bs messages_appendix.html
 	$(BIKESHED) $(BIKESHED_ARGS) spec $<
 
-messages_appendix.html: messages_appendix.cddl scripts/pygmentize_dir.py scripts/cddl_lexer.py
+messages_appendix.html: messages_appendix.cddl scripts/pygmentize_dir.py scripts/cddl_lexer.py scripts/openscreen_cddl_dfns.py
 	./scripts/pygmentize_dir.py
 
 lint: index.bs

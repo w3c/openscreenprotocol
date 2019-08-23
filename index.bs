@@ -61,6 +61,7 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: remote playback source
 urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML51
     text: media element
+url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
 </pre>
@@ -300,6 +301,9 @@ agent's display name.  If the Instance Name is not the complete display name, it
 must be terminated by a null (`\000`) character, so that a listening agent knows
 it has been truncated.
 
+Advertising agents must follow the mDNS [=conflict resolution=] procedure, to
+prevent multiple advertising agents from using the same DNS-SD Instance Name.
+
 Agents must treat Instance Names as unverified information, and should check
 that the Instance Name is a prefix of the display name received through the
 `agent-info` message after a successful QUIC connection.  Once an agent has done
@@ -340,14 +344,12 @@ Issue: Include cross references to the specs for these hash functions.
     value.  This signals to the listening agent that it should connect to the
     advertising agent to discover updated metadata.
 
-The advertising agent should add an additional field to the TXT record:
-
-: pw
+: at
 :: An alphanumeric, unguessable token consisting of characters from the set
     `[A-Za-z0-9+/]`.
 
-Note: `pw` prevents off-LAN parties from attempting authentication; see
-[[#remote-active-mitigations]].  `pw` should have at least 32 bits of true
+Note: `at` prevents off-LAN parties from attempting authentication; see
+[[#remote-active-mitigations]].  `at` should have at least 32 bits of true
 entropy to make brute force attacks impractical.
 
 Issue: Add examples of sample mDNS records.
@@ -527,11 +529,11 @@ are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input mus
 support the numeric PSK input method.
 
 Any authentication method may require an `auth-initation-token` before showing a
-PSK to the user or requesting PSK input from the user.  If an [=advertising
-agent=] has the `pw` field in its mDNS TXT record, it must be used as the
+PSK to the user or requesting PSK input from the user.  For an [=advertising
+agent=], the `at` field in its mDNS TXT record must be used as the
 `auth-initation-token` in the the first authentication message sent to or from
 that agent.  Agents should discard any authentication message whose
-`auth-initation-token` is set and does not match the `pw` provided by the
+`auth-initation-token` is set and does not match the `at` provided by the
 advertising agent.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
@@ -742,6 +744,21 @@ following values:
     the message receiver chooses the connection-id, it may keep the ID unique
     across connections, thus making message demuxing/routing easier).
 
+: connection-count
+:: The new number of open connections to the presentation that received
+    the incoming connection request.
+
+If the `presentation-connection-open-response` message indicates success, the
+receiver should also send a `presentation-change-event` to all other endpoints
+that have an active presentation connection to that presentation with the
+values:
+
+: presentation-id
+:: The ID of the presentation that just received a new presentation connection.
+
+: connection-count
+:: The new total number of open connections to that presentation.
+
 A controller may close a connection without terminating the presentation by
 sending a [=presentation-connection-close-event=] message to the receiver with the
 following values:
@@ -761,6 +778,19 @@ controller with the following values:
 
 : reason
 :: Set to `close-method-called` or `connection-object-discarded`.
+
+: connection-count
+:: The number of open presentation connections that remain.
+
+If a receiver closes a presentation connection (for any reason), it should send
+a `presentation-change-event` to all other controllers with an open connection
+to that presentation with the values:
+
+: presentation-id
+:: The ID of the presentation that just closed a connection.
+
+: connection-count
+:: The number of open presentation connections that remain.
 
 Note: When an agent closes a presentation connection, it is always successful,
 so request and response messages are not needed.  A request to terminate a
@@ -807,8 +837,8 @@ message.
 When [[PRESENTATION-API#closing-a-presentationconnection|section 6.5.5]] says
 "Start to signal to the destination browsing context the intention to close the
 corresponding PresentationConnection", the [=user agent=] may send a
-`[=presentation-connection-close-event=]` message to the user agent with the
-destination browsing context.
+[=presentation-connection-close-event=] message to the user agent with the
+destination browsing context and a [=presentation-change-event=] when required.
 
 When
 [[PRESENTATION-API#terminating-a-presentation-in-a-controlling-browsing-context|section
@@ -826,7 +856,8 @@ mechanism", the [=receiving user agent=] must receive and process the
 When [[PRESENTATION-API#monitoring-incoming-presentation-connections|section
 6.7.1]] says "Establish the connection between the controlling and receiving
 browsing contexts using an implementation specific mechanism.", the [=receiving
-user agent=], must send a [=presentation-connection-open-response=] message.
+user agent=], must send a [=presentation-connection-open-response=] message and
+[=presentation-change-event=] messages when required.
 
 
 Remote Playback Protocol {#remote-playback-protocol}
@@ -1923,7 +1954,7 @@ Protocol agents, because a misconfigured firewall or NAT could expose a
 LAN-connected agent to the broader Internet.  Open Screen Protocol agents
 should be secure against attack from any Internet host.
 
-Advertising agents should set the `pw` field in their mDNS TXT record to protect
+Advertising agents must set the `at` field in their mDNS TXT record to protect
 themselves from off-LAN attempts to initiate [[#authentication]], which result
 in user annoyance (display or input of PSK) and potential brute force attacks
 against the PSK.
