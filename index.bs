@@ -945,8 +945,8 @@ values:
 :: An identifier for this remote playback.  It should be universally unique
     among all remote playbacks.
 
-Note: A version 4 (pseudorandom) [=UUID=] meets the requirements for a
-remote-playback-id.
+Note: A version 4 (pseudorandom) [=UUID=] is recommended as it meets the
+requirements for a remote-playback-id.
 
 : urls
 :: The [=media resources=] that the controller has selected for playback on the
