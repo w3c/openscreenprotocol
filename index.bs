@@ -64,6 +64,7 @@ urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML5
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
+url: https://tools.ietf.org/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
 </pre>
 
 <h2 class='no-num no-toc no-ref' id='document-status'>Status of this document</h2>
@@ -941,10 +942,11 @@ remote-playback-start-request message to the receiver with the following
 values:
 
 : remote-playback-id
-:: An identifier that uniquely identifies the remote playback from the
-    controller to the receiver.  It does not need to be unique across all remote
-    playbacks from that controllers to all receivers nor unique across all remote
-    playbacks from all controllers to that receivers.
+:: An identifier for this remote playback.  It should be universally unique
+    among all remote playbacks.
+
+Note: A version 4 (pseudorandom) [=UUID=] meets the requirements for a
+remote-playback-id.
 
 : urls
 :: The [=media resources=] that the controller has selected for playback on the
@@ -960,8 +962,6 @@ values:
     receiver supports them.  If the receiver does not support them, it will
     ignore them and the controller will learn that it does not support them from
     the remote-playback-start-response message.
-
-Issue(147): Remote playback ID uniqueness.
 
 When the receiver receives a remote-playback-start-request message, it should
 send back a remote-playback-start-response message.  It should do so quickly,
