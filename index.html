@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="8f53d5017209217c2319e14f0843cc92e058ae52" name="document-revision">
+  <meta content="65c93f4e8cf9d44c8a9a6d79663d8590d5c9026d" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -2340,10 +2340,12 @@ values:</p>
    <dl>
     <dt data-md>remote-playback-id
     <dd data-md>
-     <p>An identifier that uniquely identifies the remote playback from the
-controller to the receiver.  It does not need to be unique across all remote
-playbacks from that controllers to all receivers nor unique across all remote
-playbacks from all controllers to that receivers.</p>
+     <p>An identifier for this remote playback.  It should be universally unique
+among all remote playbacks.</p>
+   </dl>
+   <p class="note" role="note"><span>Note:</span> A version 4 (pseudorandom) <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a> meets the requirements for a
+remote-playback-id.</p>
+   <dl>
     <dt data-md>urls
     <dd data-md>
      <p>The <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources①">media resources</a> that the controller has selected for playback on the
@@ -2360,7 +2362,6 @@ receiver supports them.  If the receiver does not support them, it will
 ignore them and the controller will learn that it does not support them from
 the remote-playback-start-response message.</p>
    </dl>
-   <p class="issue" id="issue-edcdffff"><a class="self-link" href="#issue-edcdffff"></a> Remote playback ID uniqueness. <a href="https://github.com/webscreens/openscreenprotocol/issues/147">&lt;https://github.com/webscreens/openscreenprotocol/issues/147></a></p>
    <p>When the receiver receives a remote-playback-start-request message, it should
 send back a remote-playback-start-response message.  It should do so quickly,
 usually before the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources③">media resource</a> has been loaded and instead give updates
@@ -4119,6 +4120,12 @@ extensions.</p>
     <li><a href="#ref-for-report-user-agent">7.1. Presentation API</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-4.4">
+   <a href="https://tools.ietf.org/html/rfc4122#section-4.4">https://tools.ietf.org/html/rfc4122#section-4.4</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-4.4">8. Remote Playback Protocol</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-section-9">
    <a href="https://tools.ietf.org/html/rfc6762#section-9">https://tools.ietf.org/html/rfc6762#section-9</a><b>Referenced in:</b>
    <ul>
@@ -4176,6 +4183,11 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-report-user-agent" style="color:initial">user agent</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[rfc4122]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-4.4" style="color:initial">uuid</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[RFC6762]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-section-9" style="color:initial">conflict resolution</span>
@@ -4211,6 +4223,8 @@ extensions.</p>
    <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. Internet Draft. URL: <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/</a>
    <dt id="biblio-quic">[QUIC]
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
+   <dt id="biblio-rfc4122">[RFC4122]
+   <dd>P. Leach; M. Mealling; R. Salz. <a href="https://tools.ietf.org/html/rfc4122">A Universally Unique IDentifier (UUID) URN Namespace</a>. July 2005. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc4122">https://tools.ietf.org/html/rfc4122</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
@@ -4234,7 +4248,6 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Make a required/default remote playback state table. <a href="https://github.com/webscreens/openscreenprotocol/issues/148">&lt;https://github.com/webscreens/openscreenprotocol/issues/148></a><a href="#issue-58529898"> ↵ </a></div>
    <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/159">&lt;https://github.com/webscreens/openscreenprotocol/issues/159></a><a href="#issue-649c173f"> ↵ </a></div>
    <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/webscreens/openscreenprotocol/issues/146">&lt;https://github.com/webscreens/openscreenprotocol/issues/146></a><a href="#issue-9145071e"> ↵ </a></div>
-   <div class="issue"> Remote playback ID uniqueness. <a href="https://github.com/webscreens/openscreenprotocol/issues/147">&lt;https://github.com/webscreens/openscreenprotocol/issues/147></a><a href="#issue-edcdffff"> ↵ </a></div>
    <div class="issue"> Add a table for whether it’s required and what the default is.<a href="#issue-6098c204"> ↵ </a></div>
    <div class="issue"> Algorithm for what messages to send when local/remote media element changes. <a href="https://github.com/webscreens/openscreenprotocol/issues/158">&lt;https://github.com/webscreens/openscreenprotocol/issues/158></a><a href="#issue-156f1d74"> ↵ </a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
