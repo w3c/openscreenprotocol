@@ -64,6 +64,7 @@ urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML5
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
+url: https://tools.ietf.org/html/rfc5646#section-2; type: dfn; spec: RFC5646; text: language tag
 </pre>
 
 <h2 class='no-num no-toc no-ref' id='document-status'>Status of this document</h2>
@@ -306,7 +307,7 @@ prevent multiple advertising agents from using the same DNS-SD Instance Name.
 
 Agents must treat Instance Names as unverified information, and should check
 that the Instance Name is a prefix of the display name received through the
-`agent-info` message after a successful QUIC connection.  Once an agent has done
+[=agent-info=] message after a successful QUIC connection.  Once an agent has done
 this check, it can show the name as a <dfn noexport>verified display name</dfn>.
 
 Agents should show only complete display names to the user, instead of truncated
@@ -377,13 +378,17 @@ restricted from changing IP or port without establishing a new QUIC
 connection.  In such cases, clients and servers must establish a new
 QUIC connection in order to change IP or port.
 
-To learn further metadata, an agent may send an agent-info-request message (see
-[[#appendix-a]]) and receive back an agent-info-response message.  Any agent may
-send this request at any time to learn about the state and capabilities of
-another device, which are described by the `agent-info` message in the
-`agent-info-response`.
+To learn further metadata, an agent may send an [=agent-info-request=] message
+and receive back an [=agent-info-response=] message.  Any agent may send this
+request at any time to learn about the state and capabilities of another device,
+which are described by the [=agent-info=] message in the
+[=agent-info-response=].
 
-The `agent-info` message contains the following properties:
+If an agent changes any information in its [=agent-info=] message, it should send
+an [=agent-info-event=] message to all other connected agents with the new
+[=agent-info=] (without waiting for an [=agent-info-request=]).
+
+The [=agent-info=] message contains the following properties:
 
 : display-name (required)
 :: The display name of the agent, intended to be displayed to a user by the
@@ -407,6 +412,10 @@ The `agent-info` message contains the following properties:
     [0-9A-Za-z].  This value is set before the agent makes its first connection
     and must be set to a new value when the agent is reset or otherwise lost all
     of its state related to this protocol.
+
+: locales (required)
+:: The agent's preferred locales for display of localized content, in the order
+    of user preference.  Each entry is an RFC5646 [=language tag=].
 
 The various capabilities have the following meanings:
 
@@ -464,13 +473,6 @@ agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.
 
 Issue(108): Define suspend and resume behavior for connection protocol.
-
-The agent-info-response message and agent-status-response messages may be
-extended to include additional information not defined in this spec.  If done
-ad-hoc by applications and not in future specs, keys should be chosen to avoid
-collision, such as by choosing large integers or long strings.  Agents must
-ignore keys in the agent-info-message that it does not understand to allow
-agents to easily extend this message.
 
 Messages delivery using CBOR and QUIC streams {#messages}
 ========================================================
@@ -662,8 +664,7 @@ values:
 :: The selected presentation URL
 
 : headers
-:: headers that the receiver should use to fetch the
-    presentationUrl.  For example,
+:: headers that the receiver should use to fetch the presentation URL.  For example,
     [[PRESENTATION-API#establishing-a-presentation-connection|section 6.6.1]] of
     the Presentation API says that the Accept-Language header should be
     provided.
@@ -672,13 +673,13 @@ The presentation ID must follow the restrictions defined by
 [[PRESENTATION-API#common-idioms|section 6.1]] of the Presentation API, in that
 it must consist of at least 16 ASCII characters.
 
-
 When the receiver receives the [=presentation-start-request=], it should send back a
 [=presentation-start-response=] message after either the presentation URL has been
 fetched and loaded, or the receiver has failed to do so. If it has failed, it
 must respond with the appropriate result (such as invalid-url or timeout).  If
-it has succeeded, it must reply with a success result.  Additionally, the
-response must include the following:
+it has succeeded, it must reply with a success result.
+
+Additionally, the response must include the following:
 
 : connection-id
 :: An ID that both agents can use to send connection messages
@@ -806,7 +807,7 @@ This section defines how the [[PRESENTATION-API|Presentation API]] uses the
 When [[PRESENTATION-API#the-list-of-available-presentation-displays|section
 6.4.2]] says "This list of presentation displays ... is populated based on an
 implementation specific discovery mechanism", the [=controlling user agent=] may
-use the mDNS, QUIC, agent-info-request, and
+use the mDNS, QUIC, [=agent-info-request=], and
 [=presentation-url-availability-request=] messages defined previously in this spec
 to discover receivers.
 
@@ -1297,7 +1298,7 @@ based on an implementation specific discovery mechanism" and
 [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
 6.2.1.4]] says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the
-mDNS, QUIC, agent-info-request, and remote-playback-availability messages
+mDNS, QUIC, [=agent-info-request=], and remote-playback-availability messages
 defined previously in this spec to discover [=remote playback devices=].  The
 remote-playback-availability urls must contain the [=availability sources set=].
 
@@ -1678,7 +1679,7 @@ messages and non-CBOR extension messages.
 Protocol Extension Fields {#protocol-extension-fields}
 -------------------------
 
-It is legal for an agent to add additional, extension fields to a map-valued
+It is legal for an agent to add additional, extension fields to any map-valued
 CBOR message type defined by the Open Screen Protocol.  Extension fields must be
 optional, and the Open Screen Protocol message must make sense both with and
 without the field set.
@@ -1689,7 +1690,7 @@ Instead, they may add them to its nested `optional` value.
 Extension fields should use string keys to avoid conflicts with integer keys in
 Open Screen Protocol messages.  An agent should not send extension fields to
 another agent unless that agent advertises an extension capability ID in its
-`agent-info` that indicates that it understands the extension fields.
+[=agent-info=] that indicates that it understands the extension fields.
 
 Security and Privacy {#security-privacy}
 ====================
@@ -1922,7 +1923,7 @@ should be flagged include:
 * Untrusted agents that fail the authentication challenge a certain number of times.
 * Untrusted agents that advertise a display name that is similar to that from an
     already-trusted agent.
-* Already-trusted agents whose metadata provided through the `agent-info`
+* Already-trusted agents whose metadata provided through the [=agent-info=]
     message has changed.
 
 Flagging means that the user is notified of the attempt at impersonation.  In

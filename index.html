@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="8f53d5017209217c2319e14f0843cc92e058ae52" name="document-revision">
+  <meta content="65c93f4e8cf9d44c8a9a6d79663d8590d5c9026d" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-23">23 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-26">26 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1792,7 +1792,7 @@ it has been truncated.</p>
    <p>Advertising agents must follow the mDNS <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6762#section-9" id="ref-for-section-9">conflict resolution</a> procedure, to
 prevent multiple advertising agents from using the same DNS-SD Instance Name.</p>
    <p>Agents must treat Instance Names as unverified information, and should check
-that the Instance Name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an agent has done
+that the Instance Name is a prefix of the display name received through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info">agent-info</a> message after a successful QUIC connection.  Once an agent has done
 this check, it can show the name as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="verified-display-name">verified display name</dfn>.</p>
    <p>Agents should show only complete display names to the user, instead of truncated
 display names from DNS-SD.  A truncated display name should be verified as above
@@ -1852,10 +1852,13 @@ be zero length.  If zero length connection IDs are chosen, agents are
 restricted from changing IP or port without establishing a new QUIC
 connection.  In such cases, clients and servers must establish a new
 QUIC connection in order to change IP or port.</p>
-   <p>To learn further metadata, an agent may send an agent-info-request message (see <a href="#appendix-a">Appendix A: Messages</a>) and receive back an agent-info-response message.  Any agent may
-send this request at any time to learn about the state and capabilities of
-another device, which are described by the <code>agent-info</code> message in the <code>agent-info-response</code>.</p>
-   <p>The <code>agent-info</code> message contains the following properties:</p>
+   <p>To learn further metadata, an agent may send an <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request">agent-info-request</a> message
+and receive back an <a data-link-type="dfn" href="#agent-info-response" id="ref-for-agent-info-response">agent-info-response</a> message.  Any agent may send this
+request at any time to learn about the state and capabilities of another device,
+which are described by the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info①">agent-info</a> message in the <a data-link-type="dfn" href="#agent-info-response" id="ref-for-agent-info-response①">agent-info-response</a>.</p>
+   <p>If an agent changes any information in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info②">agent-info</a> message, it should send
+an <a data-link-type="dfn" href="#agent-info-event" id="ref-for-agent-info-event">agent-info-event</a> message to all other connected agents with the new <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info③">agent-info</a> (without waiting for an <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request①">agent-info-request</a>).</p>
+   <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info④">agent-info</a> message contains the following properties:</p>
    <dl>
     <dt data-md>display-name (required)
     <dd data-md>
@@ -1880,6 +1883,10 @@ the media types it supports.</p>
 [0-9A-Za-z].  This value is set before the agent makes its first connection
 and must be set to a new value when the agent is reset or otherwise lost all
 of its state related to this protocol.</p>
+    <dt data-md>locales (required)
+    <dd data-md>
+     <p>The agent’s preferred locales for display of localized content, in the order
+of user preference.  Each entry is an RFC5646 <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc5646#section-2" id="ref-for-section-2">language tag</a>.</p>
    </dl>
    <p>The various capabilities have the following meanings:</p>
    <dl>
@@ -1934,12 +1941,6 @@ timer expires, a agent-status-request message should be sent.</p>
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.</p>
    <p class="issue" id="issue-e0955a17"><a class="self-link" href="#issue-e0955a17"></a> Define suspend and resume behavior for connection protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a></p>
-   <p>The agent-info-response message and agent-status-response messages may be
-extended to include additional information not defined in this spec.  If done
-ad-hoc by applications and not in future specs, keys should be chosen to avoid
-collision, such as by choosing large integers or long strings.  Agents must
-ignore keys in the agent-info-message that it does not understand to allow
-agents to easily extend this message.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
    <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To
 send a group of messages in order, that group of messages must be sent in one
@@ -2096,8 +2097,7 @@ values:</p>
      <p>The selected presentation URL</p>
     <dt data-md>headers
     <dd data-md>
-     <p>headers that the receiver should use to fetch the
-presentationUrl.  For example, <a href="https://www.w3.org/TR/presentation-api/#establishing-a-presentation-connection">section 6.6.1</a> of
+     <p>headers that the receiver should use to fetch the presentation URL.  For example, <a href="https://www.w3.org/TR/presentation-api/#establishing-a-presentation-connection">section 6.6.1</a> of
 the Presentation API says that the Accept-Language header should be
 provided.</p>
    </dl>
@@ -2106,8 +2106,8 @@ it must consist of at least 16 ASCII characters.</p>
    <p>When the receiver receives the <a data-link-type="dfn" href="#presentation-start-request" id="ref-for-presentation-start-request①">presentation-start-request</a>, it should send back a <a data-link-type="dfn" href="#presentation-start-response" id="ref-for-presentation-start-response">presentation-start-response</a> message after either the presentation URL has been
 fetched and loaded, or the receiver has failed to do so. If it has failed, it
 must respond with the appropriate result (such as invalid-url or timeout).  If
-it has succeeded, it must reply with a success result.  Additionally, the
-response must include the following:</p>
+it has succeeded, it must reply with a success result.</p>
+   <p>Additionally, the response must include the following:</p>
    <dl>
     <dt data-md>connection-id
     <dd data-md>
@@ -2232,7 +2232,7 @@ presentation may succeed or fail, so a response message is required.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "This list of presentation displays ... is populated based on an
 implementation specific discovery mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent③">controlling user agent</a> may
-use the mDNS, QUIC, agent-info-request, and <a data-link-type="dfn" href="#presentation-url-availability-request" id="ref-for-presentation-url-availability-request①">presentation-url-availability-request</a> messages defined previously in this spec
+use the mDNS, QUIC, <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request②">agent-info-request</a>, and <a data-link-type="dfn" href="#presentation-url-availability-request" id="ref-for-presentation-url-availability-request①">presentation-url-availability-request</a> messages defined previously in this spec
 to discover receivers.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "To further save power, ... implementation specific discovery of
@@ -2628,7 +2628,7 @@ messages defined in <a href="#remote-playback-protocol">§ 8 Remote Playback P
 based on an implementation specific discovery mechanism" and <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
 6.2.1.4</a> says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the
-mDNS, QUIC, agent-info-request, and remote-playback-availability messages
+mDNS, QUIC, <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request③">agent-info-request</a>, and remote-playback-availability messages
 defined previously in this spec to discover <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices③">remote playback devices</a>.  The
 remote-playback-availability urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability sources set</a>.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
@@ -2951,7 +2951,7 @@ protocols.  However, this is not required; agents that support non-CBOR
 extensions must be able to decode QUIC streams that contain a mix of CBOR
 messages and non-CBOR extension messages.</p>
    <h3 class="heading settled" data-level="11.1" id="protocol-extension-fields"><span class="secno">11.1. </span><span class="content">Protocol Extension Fields</span><a class="self-link" href="#protocol-extension-fields"></a></h3>
-   <p>It is legal for an agent to add additional, extension fields to a map-valued
+   <p>It is legal for an agent to add additional, extension fields to any map-valued
 CBOR message type defined by the Open Screen Protocol.  Extension fields must be
 optional, and the Open Screen Protocol message must make sense both with and
 without the field set.</p>
@@ -2959,7 +2959,7 @@ without the field set.</p>
 Instead, they may add them to its nested <code>optional</code> value.</p>
    <p>Extension fields should use string keys to avoid conflicts with integer keys in
 Open Screen Protocol messages.  An agent should not send extension fields to
-another agent unless that agent advertises an extension capability ID in its <code>agent-info</code> that indicates that it understands the extension fields.</p>
+another agent unless that agent advertises an extension capability ID in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑤">agent-info</a> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
@@ -3160,7 +3160,7 @@ advertised under a given public key fingerprint.</p>
      <p>Untrusted agents that advertise a display name that is similar to that from an
 already-trusted agent.</p>
     <li data-md>
-     <p>Already-trusted agents whose metadata provided through the <code>agent-info</code> message has changed.</p>
+     <p>Already-trusted agents whose metadata provided through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑥">agent-info</a> message has changed.</p>
    </ul>
    <p>Flagging means that the user is notified of the attempt at impersonation.  In
 the last case, the user should be required to re-authenticate to the
@@ -3223,14 +3223,19 @@ that are infrequently sent or large or both because smaller type keys encode on
 the wire smaller.</p>
    <div>
 <pre><span class="c1">; type key 10</span>
-<span class="nc">agent-info-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-info-request">agent-info-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="p">}</span>
 
 <p><span class="c1">; type key 11</span>
-<span class="nc">agent-info-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-info-response">agent-info-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 122</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-info-event">agent-info-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span></p>
 
 <p><span class="nc">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3244,11 +3249,12 @@ the wire smaller.</p>
   <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">7</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">agent-info </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-info">agent-info</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">agent-capability</span><span class="p">]</span> <span class="c1">; capabilities</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; state-token</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; locales</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 12</span>
@@ -3968,6 +3974,10 @@ extensions.</p>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#advertising-agent">advertising agent</a><span>, in §3</span>
+   <li><a href="#agent-info">agent-info</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-info-event">agent-info-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-info-request">agent-info-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-info-response">agent-info-response</a><span>, in §Unnumbered section</span>
    <li><a href="#display-name">display name</a><span>, in §3</span>
    <li><a href="#listening-agent">listening agent</a><span>, in §3</span>
    <li><a href="#presentation-change-event">presentation-change-event</a><span>, in §Unnumbered section</span>
@@ -4119,6 +4129,12 @@ extensions.</p>
     <li><a href="#ref-for-report-user-agent">7.1. Presentation API</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-2">
+   <a href="https://tools.ietf.org/html/rfc5646#section-2">https://tools.ietf.org/html/rfc5646#section-2</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-2">4. Transport and metadata discovery with QUIC</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-section-9">
    <a href="https://tools.ietf.org/html/rfc6762#section-9">https://tools.ietf.org/html/rfc6762#section-9</a><b>Referenced in:</b>
    <ul>
@@ -4176,6 +4192,11 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-report-user-agent" style="color:initial">user agent</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[rfc5646]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-2" style="color:initial">language tag</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[RFC6762]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-section-9" style="color:initial">conflict resolution</span>
@@ -4200,6 +4221,8 @@ extensions.</p>
    <dd>Douglas Creager; et al. <a href="https://www.w3.org/TR/reporting-1/">Reporting API</a>. 25 September 2018. WD. URL: <a href="https://www.w3.org/TR/reporting-1/">https://www.w3.org/TR/reporting-1/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-rfc5646">[RFC5646]
+   <dd>A. Phillips, Ed.; M. Davis, Ed.. <a href="https://tools.ietf.org/html/rfc5646">Tags for Identifying Languages</a>. September 2009. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc5646">https://tools.ietf.org/html/rfc5646</a>
    <dt id="biblio-rfc6762">[RFC6762]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
@@ -4253,6 +4276,35 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <b><a href="#verified-display-name">#verified-display-name</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-verified-display-name">3. Discovery with mDNS</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="agent-info-request">
+   <b><a href="#agent-info-request">#agent-info-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-agent-info-request">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info-request①">(2)</a>
+    <li><a href="#ref-for-agent-info-request②">7.1. Presentation API</a>
+    <li><a href="#ref-for-agent-info-request③">8.2. Remote Playback API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="agent-info-response">
+   <b><a href="#agent-info-response">#agent-info-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-agent-info-response">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info-response①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="agent-info-event">
+   <b><a href="#agent-info-event">#agent-info-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-agent-info-event">4. Transport and metadata discovery with QUIC</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="agent-info">
+   <b><a href="#agent-info">#agent-info</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-agent-info">3. Discovery with mDNS</a>
+    <li><a href="#ref-for-agent-info①">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info②">(2)</a> <a href="#ref-for-agent-info③">(3)</a> <a href="#ref-for-agent-info④">(4)</a>
+    <li><a href="#ref-for-agent-info⑤">11.1. Protocol Extension Fields</a>
+    <li><a href="#ref-for-agent-info⑥">12.5.2. Local active network attackers</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="presentation-url-availability-request">
