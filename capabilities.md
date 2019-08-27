@@ -1,8 +1,8 @@
 # Open Screen Protocol Capabilities Registry
 
-This registry lists the known capability values used by the [Open Screen
+This registry lists the known protocol capabilities used in the [Open Screen
 Protocol](https://webscreens.github.io/openscreenprotocol/).  An Open Screen
-agent uses capabilities to inform other agents of what protocol message types it
+agent uses capabilities to inform other agents which protocol messages it
 understands.
 
 Capability values 1-999 are reserved for use by the Open Screen Protocol itself.
@@ -22,16 +22,18 @@ Screen Protocol](https://webscreens.github.io/openscreenprotocol/#transport).
 | 7  | `receive-streaming`       | Receive media/data frames   | 22,23,24              |
 | 8  | `send-streaming`          | Send media/data frames      |                       |
 
+
 ## Extension Capabilities
 
-This table lists capabilities that are extensions of the core protocol.  Each
-extension should reserve a range of message type IDs and/or a list of additional
-fields that will be added to existing Open Screen Messages. (The entry below is
-just an example and not an actual registered extension.)
+This table lists capabilities that other parties have reserved to extend the
+core protoco.  Each extension should reserve a range of message type IDs and/or
+a list of additional fields that will be added to existing Open Screen
+Messages. (The entry below is just an example and not an actual registered
+extension.)
 
-| Id   |     Name                  |         Description         | Message Type IDs      |
-|------|---------------------------|-----------------------------|-----------------------|
-| 1000 | `xyzzy-frobinate`         | Adds xyzzy capability       | 49-51, 8,193-8,199    |
+| Id   |     Name            | Organization  | Description            | Message Type IDs      |
+|------|---------------------|---------------|------------------------|-----------------------|
+| 1000 | `frobinate-xyzzy`   | FrobozzCo     | Adds xyzzy capability  | 49-51, 8,193-8,199    |
 
 
 
