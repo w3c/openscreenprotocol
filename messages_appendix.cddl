@@ -12,12 +12,12 @@ agent-info-response = {
 agent-capability = &(
   receive-audio: 1
   receive-video: 2
-  receive-presentation: 2
-  control-presentation: 3
-  receive-remote-playback: 4
-  control-remote-playback: 5
-  receive-streaming: 6
-  send-streaming: 7
+  receive-presentation: 3
+  control-presentation: 4
+  receive-remote-playback: 5
+  control-remote-playback: 6
+  receive-streaming: 7
+  send-streaming: 8
 )
 
 agent-info = {
