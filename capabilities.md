@@ -26,7 +26,7 @@ Screen Protocol](https://webscreens.github.io/openscreenprotocol/#transport).
 ## Extension Capabilities
 
 This table lists capabilities that other parties have reserved to extend the
-core protoco.  Each extension should reserve a range of message type IDs and/or
+core protocol.  Each extension should reserve a range of message type IDs and/or
 a list of additional fields that will be added to existing Open Screen
 Messages. (The entry below is just an example and not an actual registered
 extension.)
