@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="a13934971eb79970c3c9f71fcc5046037a7c80b9" name="document-revision">
+  <meta content="64a6856f943a2ac1125ca232d28bdb2e5b864094" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-27">27 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-28">28 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -3196,8 +3196,8 @@ like <a href="https://en.wikipedia.org/wiki/Fuzzing">fuzz testing</a>.</p>
 components) should use defense-in-depth techniques like <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a> to prevent vulnerabilities from gaining access to user data or leading to
 persistent exploits.</p>
    <h3 class="heading settled" data-level="12.6" id="security-ui"><span class="secno">12.6. </span><span class="content">User Interface Considerations</span><a class="self-link" href="#security-ui"></a></h3>
-   <p>This specification does make any specific requirements of the security relevant
-user interfaces of Open Screen agents.  However there are important
+   <p>This specification does not make any specific requirements of the security
+relevant user interfaces of Open Screen agents.  However there are important
 considerations when designing these user interfaces, as PSK based authentication
 requires users to make informed decisions about which agents to trust.</p>
    <ol>
@@ -3207,7 +3207,7 @@ clear that any <code>agent-info</code> or other data from that device has not be
 verified by authentication.  (See below for how this applies to DNS-SD
 Instance Names.)</p>
     <li data-md>
-     <p>An <a data-link-type="dfn" href="#suspicious-agent" id="ref-for-suspicious-agent">suspicious agent</a> should be displayed differently from trusted
+     <p>A <a data-link-type="dfn" href="#suspicious-agent" id="ref-for-suspicious-agent">suspicious agent</a> should be displayed differently from trusted
 agents that are not suspicious, or not displayed at all.</p>
     <li data-md>
      <p>The user interface to input a PSK during authentication should be done in
@@ -3220,7 +3220,7 @@ user from blindly clicking through this step.</p>
 guidelines.</p>
    </ol>
    <h4 class="heading settled" data-level="12.6.1" id="instance-names"><span class="secno">12.6.1. </span><span class="content">Instance and Display Names</span><a class="self-link" href="#instance-names"></a></h4>
-   <p>Because DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-4.1.1" id="ref-for-section-4.1.1①">Instance Names</a> are the the primary information that the user
+   <p>Because DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-4.1.1" id="ref-for-section-4.1.1①">Instance Names</a> are the primary information that the user
 sees prior to authentication, careful presentation of these names is necessary.</p>
    <p>Agents must treat Instance Names as unverified information, and should check
 that the Instance Name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an agent has done
