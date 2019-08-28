@@ -3,6 +3,11 @@
 # specification.  Only these types will be wrapped in <dfn> tags and treated as
 # definitions.
 LINKED_TYPES = frozenset([
+  'agent-info',
+  'agent-info-event',
+  'agent-info-request',
+  'agent-info-response',
+  'agent-status-response',
   'presentation-change-event',
   'presentation-connection-close-event',
   'presentation-connection-message',

@@ -9,6 +9,11 @@ agent-info-response = {
   1: agent-info ; agent-info
 }
 
+; type key 122
+agent-info-event = {
+  1: agent-info ; agent-info
+}
+
 agent-capability = &(
   receive-audio: 1
   receive-video: 2
@@ -25,6 +30,7 @@ agent-info = {
   1: text ; model-name
   2: [* agent-capability] ; capabilities
   3: text ; state-token
+  4: [* text] ; locales
 }
 
 ; type key 12
