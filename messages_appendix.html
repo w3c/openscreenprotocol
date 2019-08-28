@@ -1,12 +1,17 @@
 <div><pre><span class="c1">; type key 10</span>
-<span class="nc">agent-info-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>agent-info-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 11</span>
-<span class="nc">agent-info-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>agent-info-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 122</span>
+<span class="nc"><dfn>agent-info-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
 <span class="p">}</span>
 
 <span class="nc">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -20,11 +25,12 @@
   <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">8</span>
 <span class="p">)</span>
 
-<span class="nc">agent-info </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>agent-info</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">agent-capability</span><span class="p">]</span> <span class="c1">; capabilities</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; state-token</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; locales</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 12</span>
@@ -34,7 +40,7 @@
 <span class="p">}</span>
 
 <span class="c1">; type key 13</span>
-<span class="nc">agent-status-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>agent-status-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
 <span class="p">}</span>
