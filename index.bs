@@ -1963,8 +1963,8 @@ persistent exploits.
 User Interface Considerations {#security-ui}
 -----------------------------
 
-This specification does make any specific requirements of the security relevant
-user interfaces of Open Screen agents.  However there are important
+This specification does not make any specific requirements of the security
+relevant user interfaces of Open Screen agents.  However there are important
 considerations when designing these user interfaces, as PSK based authentication
 requires users to make informed decisions about which agents to trust.
 
@@ -1972,7 +1972,7 @@ requires users to make informed decisions about which agents to trust.
     clear that any `agent-info` or other data from that device has not been
     verified by authentication.  (See below for how this applies to DNS-SD
     Instance Names.)
-1. An [=suspicious agent=] should be displayed differently from trusted
+1. A [=suspicious agent=] should be displayed differently from trusted
     agents that are not suspicious, or not displayed at all.
 1. The user interface to input a PSK during authentication should be done in
     trusted UI and be difficult to spoof.
@@ -1983,7 +1983,7 @@ requires users to make informed decisions about which agents to trust.
 
 ### Instance and Display Names  ### {#instance-names}
 
-Because DNS-SD [=Instance Names=] are the the primary information that the user
+Because DNS-SD [=Instance Names=] are the primary information that the user
 sees prior to authentication, careful presentation of these names is necessary.
 
 Agents must treat Instance Names as unverified information, and should check
