@@ -13,14 +13,14 @@ Screen Protocol](https://webscreens.github.io/openscreenprotocol/#transport).
 
 | Id |     Name                  |         Description         | Message Type IDs      |
 |----|---------------------------|-----------------------------|-----------------------|
-| 1  | `receive-audio`           | Renders audio               | n/a                   |
-| 2  | `receive-video`           | Renders video               | n/a                   |
+| 1  | `receive-audio`           | Audio Receiver              | 22                    |
+| 2  | `receive-video`           | Video Receiver              | 23                    |
 | 3  | `receive-presentation`    | Presentation API Receiver   | 14,16,104,106,109,113 |
 | 4  | `control-presentation`    | Presentation API Controller | 15,16,103,105,107,108,110,113,121 |
 | 5  | `receive-remote-playback` | Remote Playback Receiver    | 17,115,117,119        |
 | 6  | `control-remote-playback` | Remote Playback Controller  | 18,20,21,114,116,118  |
-| 7  | `receive-streaming`       | Receive media/data frames   | 22,23,24              |
-| 8  | `send-streaming`          | Send media/data frames      |                       |
+| 7  | `receive-streaming`       | Streaming Receiver          | 24                    |
+| 8  | `send-streaming`          | Streaming Sender            |                       |
 
 
 ## Extension Capabilities
@@ -33,7 +33,7 @@ extension.)
 
 | Id   |     Name            | Organization  | Description            | Message Type IDs      |
 |------|---------------------|---------------|------------------------|-----------------------|
-| 1000 | `frobinate-xyzzy`   | FrobozzCo     | Adds xyzzy capability  | 49-51, 8,193-8,199    |
+| 1000 | `frobinate-xyzzy`   | FrobozzCo     | Adds xyzzy capability  | 49-51, 8193-8199      |
 
 
 
