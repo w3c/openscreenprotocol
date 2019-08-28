@@ -7,6 +7,7 @@ LINKED_TYPES = frozenset([
   'agent-info-event',
   'agent-info-request',
   'agent-info-response',
+  'agent-status-response',
   'presentation-change-event',
   'presentation-connection-close-event',
   'presentation-connection-message',

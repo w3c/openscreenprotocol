@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="65c93f4e8cf9d44c8a9a6d79663d8590d5c9026d" name="document-revision">
+  <meta content="58d57c84894d0e962a0320fdf0d6c1aa0cf326b1" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-26">26 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-28">28 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1941,6 +1941,8 @@ timer expires, a agent-status-request message should be sent.</p>
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.</p>
    <p class="issue" id="issue-e0955a17"><a class="self-link" href="#issue-e0955a17"></a> Define suspend and resume behavior for connection protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a></p>
+   <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑤">agent-info</a> and <a data-link-type="dfn" href="#agent-status-response" id="ref-for-agent-status-response">agent-status-response</a> messages may be extended to
+include additional information not defined in this spec, as described in <a href="#protocol-extension-fields">§ 11.1 Protocol Extension Fields</a>.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
    <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To
 send a group of messages in order, that group of messages must be sent in one
@@ -2340,10 +2342,12 @@ values:</p>
    <dl>
     <dt data-md>remote-playback-id
     <dd data-md>
-     <p>An identifier that uniquely identifies the remote playback from the
-controller to the receiver.  It does not need to be unique across all remote
-playbacks from that controllers to all receivers nor unique across all remote
-playbacks from all controllers to that receivers.</p>
+     <p>An identifier for this remote playback.  It should be universally unique
+among all remote playbacks.</p>
+   </dl>
+   <p class="note" role="note"><span>Note:</span> A version 4 (pseudorandom) <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a> is recommended as it meets the
+requirements for a remote-playback-id.</p>
+   <dl>
     <dt data-md>urls
     <dd data-md>
      <p>The <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources①">media resources</a> that the controller has selected for playback on the
@@ -2360,7 +2364,6 @@ receiver supports them.  If the receiver does not support them, it will
 ignore them and the controller will learn that it does not support them from
 the remote-playback-start-response message.</p>
    </dl>
-   <p class="issue" id="issue-edcdffff"><a class="self-link" href="#issue-edcdffff"></a> Remote playback ID uniqueness. <a href="https://github.com/webscreens/openscreenprotocol/issues/147">&lt;https://github.com/webscreens/openscreenprotocol/issues/147></a></p>
    <p>When the receiver receives a remote-playback-start-request message, it should
 send back a remote-playback-start-response message.  It should do so quickly,
 usually before the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources③">media resource</a> has been loaded and instead give updates
@@ -2959,7 +2962,7 @@ without the field set.</p>
 Instead, they may add them to its nested <code>optional</code> value.</p>
    <p>Extension fields should use string keys to avoid conflicts with integer keys in
 Open Screen Protocol messages.  An agent should not send extension fields to
-another agent unless that agent advertises an extension capability ID in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑤">agent-info</a> that indicates that it understands the extension fields.</p>
+another agent unless that agent advertises an extension capability ID in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑥">agent-info</a> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
@@ -3160,7 +3163,7 @@ advertised under a given public key fingerprint.</p>
      <p>Untrusted agents that advertise a display name that is similar to that from an
 already-trusted agent.</p>
     <li data-md>
-     <p>Already-trusted agents whose metadata provided through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑥">agent-info</a> message has changed.</p>
+     <p>Already-trusted agents whose metadata provided through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑦">agent-info</a> message has changed.</p>
    </ul>
    <p>Flagging means that the user is notified of the attempt at impersonation.  In
 the last case, the user should be required to re-authenticate to the
@@ -3264,7 +3267,7 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 13</span>
-<span class="nc">agent-status-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-status-response">agent-status-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
 <span class="p">}</span></p>
@@ -3978,6 +3981,7 @@ extensions.</p>
    <li><a href="#agent-info-event">agent-info-event</a><span>, in §Unnumbered section</span>
    <li><a href="#agent-info-request">agent-info-request</a><span>, in §Unnumbered section</span>
    <li><a href="#agent-info-response">agent-info-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-status-response">agent-status-response</a><span>, in §Unnumbered section</span>
    <li><a href="#display-name">display name</a><span>, in §3</span>
    <li><a href="#listening-agent">listening agent</a><span>, in §3</span>
    <li><a href="#presentation-change-event">presentation-change-event</a><span>, in §Unnumbered section</span>
@@ -4129,6 +4133,12 @@ extensions.</p>
     <li><a href="#ref-for-report-user-agent">7.1. Presentation API</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-4.4">
+   <a href="https://tools.ietf.org/html/rfc4122#section-4.4">https://tools.ietf.org/html/rfc4122#section-4.4</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-4.4">8. Remote Playback Protocol</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-section-2">
    <a href="https://tools.ietf.org/html/rfc5646#section-2">https://tools.ietf.org/html/rfc5646#section-2</a><b>Referenced in:</b>
    <ul>
@@ -4192,6 +4202,11 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-report-user-agent" style="color:initial">user agent</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[rfc4122]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-4.4" style="color:initial">uuid</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[rfc5646]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-section-2" style="color:initial">language tag</span>
@@ -4234,6 +4249,8 @@ extensions.</p>
    <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. Internet Draft. URL: <a href="https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/">https://datatracker.ietf.org/doc/draft-ietf-cbor-cddl/</a>
    <dt id="biblio-quic">[QUIC]
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
+   <dt id="biblio-rfc4122">[RFC4122]
+   <dd>P. Leach; M. Mealling; R. Salz. <a href="https://tools.ietf.org/html/rfc4122">A Universally Unique IDentifier (UUID) URN Namespace</a>. July 2005. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc4122">https://tools.ietf.org/html/rfc4122</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
@@ -4257,7 +4274,6 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Make a required/default remote playback state table. <a href="https://github.com/webscreens/openscreenprotocol/issues/148">&lt;https://github.com/webscreens/openscreenprotocol/issues/148></a><a href="#issue-58529898"> ↵ </a></div>
    <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/159">&lt;https://github.com/webscreens/openscreenprotocol/issues/159></a><a href="#issue-649c173f"> ↵ </a></div>
    <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/webscreens/openscreenprotocol/issues/146">&lt;https://github.com/webscreens/openscreenprotocol/issues/146></a><a href="#issue-9145071e"> ↵ </a></div>
-   <div class="issue"> Remote playback ID uniqueness. <a href="https://github.com/webscreens/openscreenprotocol/issues/147">&lt;https://github.com/webscreens/openscreenprotocol/issues/147></a><a href="#issue-edcdffff"> ↵ </a></div>
    <div class="issue"> Add a table for whether it’s required and what the default is.<a href="#issue-6098c204"> ↵ </a></div>
    <div class="issue"> Algorithm for what messages to send when local/remote media element changes. <a href="https://github.com/webscreens/openscreenprotocol/issues/158">&lt;https://github.com/webscreens/openscreenprotocol/issues/158></a><a href="#issue-156f1d74"> ↵ </a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
@@ -4302,9 +4318,15 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <b><a href="#agent-info">#agent-info</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-agent-info">3. Discovery with mDNS</a>
-    <li><a href="#ref-for-agent-info①">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info②">(2)</a> <a href="#ref-for-agent-info③">(3)</a> <a href="#ref-for-agent-info④">(4)</a>
-    <li><a href="#ref-for-agent-info⑤">11.1. Protocol Extension Fields</a>
-    <li><a href="#ref-for-agent-info⑥">12.5.2. Local active network attackers</a>
+    <li><a href="#ref-for-agent-info①">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info②">(2)</a> <a href="#ref-for-agent-info③">(3)</a> <a href="#ref-for-agent-info④">(4)</a> <a href="#ref-for-agent-info⑤">(5)</a>
+    <li><a href="#ref-for-agent-info⑥">11.1. Protocol Extension Fields</a>
+    <li><a href="#ref-for-agent-info⑦">12.5.2. Local active network attackers</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="agent-status-response">
+   <b><a href="#agent-status-response">#agent-status-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-agent-status-response">4. Transport and metadata discovery with QUIC</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="presentation-url-availability-request">
