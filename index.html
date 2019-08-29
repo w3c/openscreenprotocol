@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="52e8b4a809980f35ba64689eb80304999e9893a5" name="document-revision">
+  <meta content="8e25af6dc6260acff218c40e5818fee9da5d14e8" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1931,19 +1931,18 @@ advertising agent wishes to send messages to a listening agent, it may wish to
 keep the QUIC connection alive.  Once neither side needs to keep the connection
 alive for the purposes of sending or receiving messages, the connection should
 be closed with an error code of 5139.  In order to keep a QUIC connection alive, an
-agent may send an agent-status-request message, and any agent that receives an
-agent-status-request message should send an agent-status-response message. Such
+agent may send an <a data-link-type="dfn" href="#agent-status-request" id="ref-for-agent-status-request">agent-status-request</a> message, and any agent that receives an <a data-link-type="dfn" href="#agent-status-request" id="ref-for-agent-status-request①">agent-status-request</a> message should send an <a data-link-type="dfn" href="#agent-status-response" id="ref-for-agent-status-response">agent-status-response</a> message. Such
 messages should be sent more frequently than the QUIC idle_timeout transport
 parameter (see section 18 of <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a>) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
 recommended.  The agent should behave as though a timer less than the
 idle_timeout were reset every time a message is sent on a QUIC stream.  If the
-timer expires, a agent-status-request message should be sent.</p>
+timer expires, a <a data-link-type="dfn" href="#agent-status-request" id="ref-for-agent-status-request②">agent-status-request</a> message should be sent.</p>
    <p>If a client agent wishes to send messages to a server agent, the client
 agent can connect to the server agent "on demand"; it does not need to
 keep the connection alive.</p>
    <p class="issue" id="issue-e0955a17"><a class="self-link" href="#issue-e0955a17"></a> Define suspend and resume behavior for connection protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a></p>
-   <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑤">agent-info</a> and <a data-link-type="dfn" href="#agent-status-response" id="ref-for-agent-status-response">agent-status-response</a> messages may be extended to
+   <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑤">agent-info</a> and <a data-link-type="dfn" href="#agent-status-response" id="ref-for-agent-status-response①">agent-status-response</a> messages may be extended to
 include additional information not defined in this spec, as described in <a href="#protocol-extension-fields">§ 11.1 Protocol Extension Fields</a>.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
    <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To
@@ -1976,7 +1975,7 @@ specific to that method.  The authentication method is explicitly specified by
 the message itself.  The authentication status message is common for all authentication
 methods.  Any new authentication method added must define new authentication messages.</p>
    <p>Open Screen Agents must implement <a href="#authentication-with-spake2">§ 6.1 Authentication with SPAKE2</a> with pre-shared keys.</p>
-   <p>Prior to authentication, agents exchange auth-capabilities messages specifying
+   <p>Prior to authentication, agents exchange <a data-link-type="dfn" href="#auth-capabilities" id="ref-for-auth-capabilities">auth-capabilities</a> messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
 either sends or receives an authentication request.  In case both agents have the same
@@ -1988,9 +1987,8 @@ it is not possible for the user to input PSK on this device and 100 means
 that it’s easy for the user to input PSK on the device.  Supported PSK input methods
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
-   <p>Any authentication method may require an <code>auth-initation-token</code> before showing a
-PSK to the user or requesting PSK input from the user.  For an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
-agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
+   <p>Any authentication method may require an <a data-link-type="dfn" href="#auth-initiation-token" id="ref-for-auth-initiation-token">auth-initiation-token</a> before
+showing a PSK to the user or requesting PSK input from the user.  For an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
 that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>at</code> provided by the
 advertising agent.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
@@ -2019,27 +2017,19 @@ such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.</p>
    <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.</p>
-   <p>The messages used in this authentication method are: auth-spake2-need-psk,
-auth-spake2-message, auth-spake2-confirmation and auth-status.
-SPAKE2 describes in detail how auth-spake2-message and auth-spake2-confirmation
-are computed.</p>
+   <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn" href="#auth-spake2-message" id="ref-for-auth-spake2-message">auth-spake2-message</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
+SPAKE2 describes in detail how <a data-link-type="dfn" href="#auth-spake2-message" id="ref-for-auth-spake2-message①">auth-spake2-message</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
    <p>If the PSK presenter wants to authenticate, the PSK presenter starts the
-authentication process by presenting the PSK to the user and sending a
-auth-spake2-message message. When the PSK consumer receives the
-auth-spake2-message message, the PSK consumer prompts the user for the PSK input
+authentication process by presenting the PSK to the user and sending a <a data-link-type="dfn" href="#auth-spake2-message" id="ref-for-auth-spake2-message②">auth-spake2-message</a> message. When the PSK consumer receives the <a data-link-type="dfn" href="#auth-spake2-message" id="ref-for-auth-spake2-message③">auth-spake2-message</a> message, the PSK consumer prompts the user for the PSK input
 if it has not done so yet.</p>
-   <p>If the PSK consumer wants to authenticate, the PSK consumer sends a
-auth-spake2-need-psk message to the PSK presenter to start the authentication
-process and prompts the user to input the PSK. If the PSK presenter receives a
-auth-spake2-need-psk message after starting authentication from their side, the
-PSK presenter ignores the auth-spake2-need-psk message.</p>
+   <p>If the PSK consumer wants to authenticate, the PSK consumer sends a <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk①">auth-spake2-need-psk</a> message to the PSK presenter to start the authentication
+process and prompts the user to input the PSK. If the PSK presenter receives a <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk②">auth-spake2-need-psk</a> message after starting authentication from their side, the
+PSK presenter ignores the <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk③">auth-spake2-need-psk</a> message.</p>
    <p>After the user inputs the PSK into the PSK consumer, the PSK consumer computes
-and sends a auth-spake2-message.</p>
-   <p>When either agent both knows the PSK and has received a auth-spake2-message
-message, the agent computes and sends a auth-spake2-confirmation message.</p>
-   <p>When either agent has received both auth-spake2-message and
-auth-spake2-confirmation messages, the agent validates the confirmation message
-and sends the auth-status authenticated message.</p>
+and sends a <a data-link-type="dfn" href="#auth-spake2-message" id="ref-for-auth-spake2-message④">auth-spake2-message</a>.</p>
+   <p>When either agent both knows the PSK and has received a <a data-link-type="dfn" href="#auth-spake2-message" id="ref-for-auth-spake2-message⑤">auth-spake2-message</a> message, the agent computes and sends a <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation②">auth-spake2-confirmation</a> message.</p>
+   <p>When either agent has received both <a data-link-type="dfn" href="#auth-spake2-message" id="ref-for-auth-spake2-message⑥">auth-spake2-message</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation③">auth-spake2-confirmation</a> messages, the agent validates the confirmation message
+and sends the <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status①">auth-status</a> authenticated message.</p>
    <h2 class="heading settled" data-level="7" id="presentation-protocol"><span class="secno">7. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§ 7.1 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
@@ -2180,8 +2170,8 @@ across connections, thus making message demuxing/routing easier).</p>
      <p>The new number of open connections to the presentation that received
 the incoming connection request.</p>
    </dl>
-   <p>If the <code>presentation-connection-open-response</code> message indicates success, the
-receiver should also send a <code>presentation-change-event</code> to all other endpoints
+   <p>If the <a data-link-type="dfn" href="#presentation-connection-open-response" id="ref-for-presentation-connection-open-response②">presentation-connection-open-response</a> message indicates success, the
+receiver should also send a <a data-link-type="dfn" href="#presentation-change-event" id="ref-for-presentation-change-event">presentation-change-event</a> to all other endpoints
 that have an active presentation connection to that presentation with the
 values:</p>
    <dl>
@@ -2218,7 +2208,7 @@ controller with the following values:</p>
      <p>The number of open presentation connections that remain.</p>
    </dl>
    <p>If a receiver closes a presentation connection (for any reason), it should send
-a <code>presentation-change-event</code> to all other controllers with an open connection
+a <a data-link-type="dfn" href="#presentation-change-event" id="ref-for-presentation-change-event①">presentation-change-event</a> to all other controllers with an open connection
 to that presentation with the values:</p>
    <dl>
     <dt data-md>presentation-id
@@ -2259,7 +2249,7 @@ message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#closing-a-presentationconnection">section 6.5.5</a> says
 "Start to signal to the destination browsing context the intention to close the
 corresponding PresentationConnection", the <a data-link-type="dfn" href="https://w3c.github.io/reporting/#report-user-agent" id="ref-for-report-user-agent">user agent</a> may send a <a data-link-type="dfn" href="#presentation-connection-close-event" id="ref-for-presentation-connection-close-event②">presentation-connection-close-event</a> message to the user agent with the
-destination browsing context and a <a data-link-type="dfn" href="#presentation-change-event" id="ref-for-presentation-change-event">presentation-change-event</a> when required.</p>
+destination browsing context and a <a data-link-type="dfn" href="#presentation-change-event" id="ref-for-presentation-change-event②">presentation-change-event</a> when required.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
@@ -2271,7 +2261,7 @@ mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation
    <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "Establish the connection between the controlling and receiving
 browsing contexts using an implementation specific mechanism.", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving
-user agent</a>, must send a <a data-link-type="dfn" href="#presentation-connection-open-response" id="ref-for-presentation-connection-open-response②">presentation-connection-open-response</a> message and <a data-link-type="dfn" href="#presentation-change-event" id="ref-for-presentation-change-event①">presentation-change-event</a> messages when required.</p>
+user agent</a>, must send a <a data-link-type="dfn" href="#presentation-connection-open-response" id="ref-for-presentation-connection-open-response③">presentation-connection-open-response</a> message and <a data-link-type="dfn" href="#presentation-change-event" id="ref-for-presentation-change-event③">presentation-change-event</a> messages when required.</p>
    <h2 class="heading settled" data-level="8" id="remote-playback-protocol"><span class="secno">8. </span><span class="content">Remote Playback Protocol</span><a class="self-link" href="#remote-playback-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting, terminating,
 and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 8.2 Remote Playback API</a> defines how
@@ -2284,7 +2274,7 @@ CDDL definitions.</p>
    <p class="issue" id="issue-649c173f"><a class="self-link" href="#issue-649c173f"></a> Refinements to Remote Playback protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/159">&lt;https://github.com/webscreens/openscreenprotocol/issues/159></a></p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device" id="ref-for-dfn-compatible-remote-playback-device">compatible remote playback device</a>s (also called
 available <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices②">remote playback devices</a>) for a particular URL or set of URLs, the
-controller may send a remote-playback-availability-request message with the
+controller may send a <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request">remote-playback-availability-request</a> message with the
 following values:</p>
    <dl>
     <dt data-md>urls
@@ -2309,8 +2299,7 @@ about their URLs, should the availability change.</p>
 availability so that the controller knows which URLs the receiver is referring
 to.</p>
    </dl>
-   <p>In response, the receiver should send a remote-playback-availability-response
-message with the following values:</p>
+   <p>In response, the receiver should send a <a data-link-type="dfn" href="#remote-playback-availability-response" id="ref-for-remote-playback-availability-response">remote-playback-availability-response</a> message with the following values:</p>
    <dl>
     <dt data-md>url-availabilities
     <dd data-md>
@@ -2318,7 +2307,7 @@ message with the following values:</p>
 from the request by list index.</p>
    </dl>
    <p>The receivers should later (up to the current time plus request
-watch-duration) send remote-playback-availability-event  messages if
+watch-duration) send <a data-link-type="dfn" href="#remote-playback-availability-event" id="ref-for-remote-playback-availability-event">remote-playback-availability-event</a> messages if
 URL availabilities change.  Such events contain the following values:</p>
    <dl>
     <dt data-md>watch-id
@@ -2338,8 +2327,7 @@ availability request.</p>
 later reconnect to send availability requests and receive availability
 responses and updates. The QUIC connection ID may or may not be the same
 when reconnecting.</p>
-   <p>To start remote playback, the controller may send a
-remote-playback-start-request message to the receiver with the following
+   <p>To start remote playback, the controller may send a <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request">remote-playback-start-request</a> message to the receiver with the following
 values:</p>
    <dl>
     <dt data-md>remote-playback-id
@@ -2364,12 +2352,12 @@ defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playbac
 controls that are optional for the receiver to support before it knows the
 receiver supports them.  If the receiver does not support them, it will
 ignore them and the controller will learn that it does not support them from
-the remote-playback-start-response message.</p>
+the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response">remote-playback-start-response</a> message.</p>
    </dl>
-   <p>When the receiver receives a remote-playback-start-request message, it should
-send back a remote-playback-start-response message.  It should do so quickly,
+   <p>When the receiver receives a <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request①">remote-playback-start-request</a> message, it should
+send back a <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①">remote-playback-start-response</a> message.  It should do so quickly,
 usually before the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources③">media resource</a> has been loaded and instead give updates
-of the progress of  loading with remote-playback-state-event messages, unless
+of the progress of  loading with <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event">remote-playback-state-event</a> messages, unless
 the receiver decides to not attempt to load the resource at all.  If it chooses
 not to, it must respond with the appropriate failure result (such as timeout or
 invalid-url).  Additionally, the response must include the following:</p>
@@ -2379,8 +2367,7 @@ invalid-url).  Additionally, the response must include the following:</p>
      <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
    </dl>
    <p>If the controller wishes to modify the state of the remote playback (for
-example, to pause, resume, skip, etc), it may send a
-remote-playback-modify-request message with the following values:</p>
+example, to pause, resume, skip, etc), it may send a <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request">remote-playback-modify-request</a> message with the following values:</p>
    <dl>
     <dt data-md>remote-playback-id
     <dd data-md>
@@ -2389,8 +2376,7 @@ remote-playback-modify-request message with the following values:</p>
     <dd data-md>
      <p>Updated controls as defined in {#remote-playback-state-and-controls}</p>
    </dl>
-   <p>When a receiver receives a remote-playback-modify-request it should send a
-remote-playback-modify-response message in reply with the following values:</p>
+   <p>When a receiver receives a <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request①">remote-playback-modify-request</a> it should send a <a data-link-type="dfn" href="#remote-playback-modify-response" id="ref-for-remote-playback-modify-response">remote-playback-modify-response</a> message in reply with the following values:</p>
    <dl>
     <dt data-md>state
     <dd data-md>
@@ -2398,7 +2384,7 @@ remote-playback-modify-response message in reply with the following values:</p>
    </dl>
    <p>When the state of remote playback changes without request for modification from
 the controller (such as when the skips or pauses due to user user interaction on
-the receiver), the receiver may send a remote-playback-state-event to the
+the receiver), the receiver may send a <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event①">remote-playback-state-event</a> to the
 controller.</p>
    <dl>
     <dt data-md>remote-playback-id
@@ -2408,8 +2394,7 @@ controller.</p>
     <dd data-md>
      <p>The updated state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
    </dl>
-   <p>To terminate the remote playback, the controller may send a
-remote-playback-termination-request message with the following values:</p>
+   <p>To terminate the remote playback, the controller may send a <a data-link-type="dfn" href="#remote-playback-termination-request" id="ref-for-remote-playback-termination-request">remote-playback-termination-request</a> message with the following values:</p>
    <dl>
     <dt data-md>remote-playback-id
     <dd data-md>
@@ -2418,10 +2403,10 @@ remote-playback-termination-request message with the following values:</p>
     <dd data-md>
      <p>The reason the remote playback is being terminated.</p>
    </dl>
-   <p>When a receiver receives a remote-playback-termination-request, it should
-send back a remote-playback-termination-response message to the controller.</p>
+   <p>When a receiver receives a <a data-link-type="dfn" href="#remote-playback-termination-request" id="ref-for-remote-playback-termination-request①">remote-playback-termination-request</a>, it should
+send back a <a data-link-type="dfn" href="#remote-playback-termination-response" id="ref-for-remote-playback-termination-response">remote-playback-termination-response</a> message to the controller.</p>
    <p>If a receiver terminates a remote playback without a request from the controller
-to do so, it must send a remote-playback-termination-event message to the
+to do so, it must send a <a data-link-type="dfn" href="#remote-playback-termination-event" id="ref-for-remote-playback-termination-event">remote-playback-termination-event</a> message to the
 controller with the following values:</p>
    <dl>
     <dt data-md>remote-playback-id
@@ -2439,9 +2424,8 @@ upon the implementation of the receiver.</p>
    <h3 class="heading settled" data-level="8.1" id="remote-playback-state-and-controls"><span class="secno">8.1. </span><span class="content">Remote Playback State and Controls</span><a class="self-link" href="#remote-playback-state-and-controls"></a></h3>
    <p>In order for the controller and receiver to stay in sync with regards to the
 state of the remote playback, the controller may send controls to modify the state
-(for example, via the remote-playback-modify-request message) and the receiver
-may send updates about state changes (for example, via the
-remote-playback-state-event message).</p>
+(for example, via the <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request②">remote-playback-modify-request</a> message) and the receiver
+may send updates about state changes (for example, via the <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event②">remote-playback-state-event</a> message).</p>
    <p>The controls sent by the controller include the following individual control
 values, each of which is optional.  This allows the controller to change one
 control value or many control values at once without having to specify all
@@ -2451,19 +2435,16 @@ intentionally mirror settable attributes and methods of the <a href="https://htm
    <dl>
     <dt data-md>source
     <dd data-md>
-     <p>Change the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources④">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src">HtmlMediaElement.src</a> for more details. Must not be used in the initial controls of the
-remote-playback-start-request message (which already contains a list of URLs).</p>
+     <p>Change the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources④">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src">HtmlMediaElement.src</a> for more details. Must not be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request②">remote-playback-start-request</a> message (which already contains a list of URLs).</p>
     <dt data-md>preload
     <dd data-md>
-     <p>Set how aggressively to preload media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload">HtmlMediaElement.preload</a> for more details. Should only be used in the initial controls of the
-remote-playback-start-request message or when the source is changed.  If not
+     <p>Set how aggressively to preload media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload">HtmlMediaElement.preload</a> for more details. Should only be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request③">remote-playback-start-request</a> message or when the source is changed.  If not
 set in the initial controls, it is left to the receiver to decide.  This is
 optional for the receiver to support and if not supported, the receiver will
 behave as though it were never set.</p>
     <dt data-md>loop
     <dd data-md>
-     <p>Set whether or not to loop media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop">HtmlMediaElement.loop</a> for more details. Should only be used in the initial control of the
-remote-playback-start-request.  If not set in the initial controls, it is
+     <p>Set whether or not to loop media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop">HtmlMediaElement.loop</a> for more details. Should only be used in the initial control of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request④">remote-playback-start-request</a>.  If not set in the initial controls, it is
 assumed to be false.</p>
     <dt data-md>paused
     <dd data-md>
@@ -2509,8 +2490,7 @@ supported, the receiver will behave as though it were never set.</p>
     <dd data-md>
      <p>Change text tracks by ID.  All other text tracks are left
 unchanged.  Set the mode, add cues, and remove cues by id. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a> for more details.  Note that future specifications or extensions to this
-specifications are expected to add new properties to the text-track-cue
-(such as text size, alignment, position, etc).  Adding and removing
+specifications are expected to add new properties to the <a data-link-type="dfn" href="#text-track-cue" id="ref-for-text-track-cue">text-track-cue</a> (such as text size, alignment, position, etc).  Adding and removing
 cues is optional for the receiver to support and if not supported, the
 receiver will behave as though no cues were added or removed (both adding
 and removing are indicated via the support for "added-cues").  As specified in <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a>,
@@ -2529,36 +2509,36 @@ changed.</p>
      <p>The controls the receiver supports.  These may differ for different <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑤">media
 resource</a>s and should not changes unless the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑥">media resource</a> changes.
 The default is empty (support for nothing)
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②">remote-playback-start-response</a> message.</p>
     <dt data-md>source
     <dd data-md>
      <p>The current <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑦">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">HtmlMediaElement.currentSrc</a>.
-Must be present in the initial state in the remote-playback-start-response message.</p>
+Must be present in the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response③">remote-playback-start-response</a> message.</p>
     <dt data-md>loading
     <dd data-md>
      <p>The state of network activity for loading the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑧">media resource</a>. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">HtmlMediaElement.networkState</a>.
 The default is empty (NETWORK_EMPTY)
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response④">remote-playback-start-response</a> message.</p>
     <dt data-md>loaded
     <dd data-md>
      <p>The state of the loaded media (whether enough is loaded to play). See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate">HtmlMediaElement.readyState</a>.
 The default is nothing (HAVE_NOTHING)
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑤">remote-playback-start-response</a> message.</p>
     <dt data-md>error
     <dd data-md>
      <p>A major error occurred which prevents the remote playback from continuing. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error">HtmlMediaElement.error</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code">HtmlMediaElement media error codes</a>.
 The default is no error
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑥">remote-playback-start-response</a> message.</p>
     <dt data-md>epoch
     <dd data-md>
      <p>The "zero time" of the media timeline. See <a href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset">HtmlMediaElement’s timeline offset</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate">HtmlMediaElement.getStartDate()</a>.
 The default is an unknown epoch
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑦">remote-playback-start-response</a> message.</p>
     <dt data-md>duration
     <dd data-md>
      <p>The duration of the media timeline. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration">HtmlMediaElement.duration</a>.
 The default is an unknown duration
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑧">remote-playback-start-response</a> message.</p>
     <dt data-md>buffered-time-ranges
     <dd data-md>
      <p>The time ranges for which media has been buffered. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">HtmlMediaElement.buffered</a>.</p>
@@ -2573,32 +2553,32 @@ for the initial state in the remote-playback-start-response message.</p>
      <p>The playback position. See <a href="https://html.spec.whatwg.org/multipage/media.html#official-playback-position">HtmlMediaElement’s official playback
 position</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">HtmlMediaElement.currentTime</a>.
 The default is 0
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑨">remote-playback-start-response</a> message.</p>
     <dt data-md>playbackRate
     <dd data-md>
      <p>The current rate of playback on a scale where 1.0 is "normal speed". See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">HtmlMediaElement.playbackRate</a>.
 The default is 1.0
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⓪">remote-playback-start-response</a> message.</p>
     <dt data-md>paused
     <dd data-md>
      <p>Whether media is paused or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused">HtmlMediaElement.paused</a>.
 The default is false
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①①">remote-playback-start-response</a> message.</p>
     <dt data-md>seeking
     <dd data-md>
      <p>Whether the receiver is seeking or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking">HtmlMediaElement.seeking</a>.
 The default is false
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①②">remote-playback-start-response</a> message.</p>
     <dt data-md>stalled
     <dd data-md>
      <p>If true, media is not playing because not enough media is loaded, and false otherwise. See <a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">HtmlMediaElement.stalled</a>.
 The default is false
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①③">remote-playback-start-response</a> message.</p>
     <dt data-md>ended
     <dd data-md>
      <p>Whether media has reached the end or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">HtmlMediaElement.ended</a>.
 The default is false
-for the initial state in the remote-playback-start-response message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①④">remote-playback-start-response</a> message.</p>
     <dt data-md>volume
     <dd data-md>
      <p>The current volume of playback on a scale of 0.0 to 1.0. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a>.</p>
@@ -2621,7 +2601,7 @@ See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">
 The controller can also add cues to and remove cues from text tracks.</p>
    </dl>
    <p>All times, time ranges, and durations (such as position, duration, and
-seekable-time-ranges) used above use a common media-time value (see Appendix A)
+seekable-time-ranges) used above use a common <a data-link-type="dfn" href="#media-time" id="ref-for-media-time">media-time</a> value (see Appendix A)
 which includes a time scale.  This allows time values which work on different
 time scales to be expressed without loss of precision.  The scale is represented
 in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
@@ -2632,16 +2612,13 @@ messages defined in <a href="#remote-playback-protocol">§ 8 Remote Playback P
 6.2.1.2</a> says "This list contains remote playback devices and is populated
 based on an implementation specific discovery mechanism" and <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
 6.2.1.4</a> says "Retrieve available remote playback devices (using an
-implementation specific mechanism)", the user agent may use the
-mDNS, QUIC, <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request③">agent-info-request</a>, and remote-playback-availability messages
-defined previously in this spec to discover <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices③">remote playback devices</a>.  The
-remote-playback-availability urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability sources set</a>.</p>
+implementation specific mechanism)", the user agent may use the mDNS, QUIC, <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request③">agent-info-request</a>, and <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request①">remote-playback-availability-request</a> messages
+defined previously in this spec to discover <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices③">remote playback devices</a>.  The <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request②">remote-playback-availability-request</a> urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability
+sources set</a>.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 6.2.4</a> says "Request connection of remote to device. The implementation of this
 step is specific to the user agent." and  "Synchronize the current media element
-state with the remote playback state", the user agent may send the
-remote-playback-start-request message to start remote playback.  The
-remote-playback-start-request urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote playback source</a>.
+state with the remote playback state", the user agent may send the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑤">remote-playback-start-request</a> message to start remote playback.  The <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑥">remote-playback-start-request</a> urls must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote playback source</a>.
 The current <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> only allows a single source,
 but the protocol allows for several and future versions of <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> may allow for several.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
@@ -2650,23 +2627,20 @@ remote playback device and play the remote playback source is an implementation
 choice of the user agent. The connection will likely have to provide a two-way
 messaging abstraction capable of carrying media commands to the remote playback
 device and receiving media playback state in order to keep the media element
-state and remote playback state in sync", the user agent may send
-remote-playback-modify-request messages to change the remote playback state
-based on changes to the local media element and receive
-remote-playback-modify-response and remote-playback-state-event messages to
+state and remote playback state in sync", the user agent may send <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request③">remote-playback-modify-request</a> messages to change the remote playback state
+based on changes to the local media element and receive <a data-link-type="dfn" href="#remote-playback-modify-response" id="ref-for-remote-playback-modify-response①">remote-playback-modify-response</a> and <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event③">remote-playback-state-event</a> messages to
 change the local media element based on changes to the remote playback state.</p>
    <p class="issue" id="issue-156f1d74"><a class="self-link" href="#issue-156f1d74"></a> Algorithm for what messages to send when local/remote media element changes. <a href="https://github.com/webscreens/openscreenprotocol/issues/158">&lt;https://github.com/webscreens/openscreenprotocol/issues/158></a></p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 6.2.7</a> says "Request disconnection of remote from the device. The
 implementation of this step is specific to the user agent.", the controlling
-user agent may send the remote-playback-termination-request message.</p>
+user agent may send the <a data-link-type="dfn" href="#remote-playback-termination-request" id="ref-for-remote-playback-termination-request②">remote-playback-termination-request</a> message.</p>
    <h2 class="heading settled" data-level="9" id="streaming-protocol"><span class="secno">9. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for streaming
 media from a media sender to a media receiver.</p>
    <h3 class="heading settled" data-level="9.1" id="streaming-protocol-capabilities"><span class="secno">9.1. </span><span class="content">Streaming Protocol Capabilities</span><a class="self-link" href="#streaming-protocol-capabilities"></a></h3>
     If the advertiser is already authenticated, the requester has the ability to
-request additional information by sending an streaming-capabilities-request
-message, and receive back a streaming-capabilities-response message with the
+request additional information by sending an <a data-link-type="dfn" href="#streaming-capabilities-request" id="ref-for-streaming-capabilities-request">streaming-capabilities-request</a> message, and receive back a <a data-link-type="dfn" href="#streaming-capabilities-response" id="ref-for-streaming-capabilities-response">streaming-capabilities-response</a> message with the
 following properties: 
    <dl>
     <dt data-md>receive-audio (required)
@@ -2748,7 +2722,7 @@ provided in a video-resolution not listed in the native-resolutions list
    <h3 class="heading settled" data-level="9.2" id="streaming-sessions"><span class="secno">9.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
    <p>TODO</p>
    <h3 class="heading settled" data-level="9.3" id="streaming-audio"><span class="secno">9.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
-   <p>Senders may send audio to receivers by sending audio-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  An audio frame message
+   <p>Senders may send audio to receivers by sending <a data-link-type="dfn" href="#audio-frame" id="ref-for-audio-frame">audio-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  An audio frame message
 contains a set of encoded audio samples for a range of time. A series of
 encoded audio frames that share a codec, codec parameters and a timeline form an
 audio encoding.</p>
@@ -2794,7 +2768,7 @@ be; it can be any clock chosen by the sender.</p>
      <p>The data.  The type of data is inferred from the properties of the encoding.</p>
    </dl>
    <h3 class="heading settled" data-level="9.4" id="streaming-video"><span class="secno">9.4. </span><span class="content">Video</span><a class="self-link" href="#streaming-video"></a></h3>
-   <p>Senders may send video to receivers by sending video-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video frame message
+   <p>Senders may send video to receivers by sending <a data-link-type="dfn" href="#video-frame" id="ref-for-video-frame">video-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video frame message
 contains an encoded video frame (an encoded image) at a specific point in time
 or over a specfic time range (if the duration is known).  A series of encoded
 video frames that share a codec, codec parameters and a timeline form a video
@@ -2851,7 +2825,7 @@ The default is 0 (no rotation).</p>
 inferred from the properties of the encoding.</p>
    </dl>
    <h3 class="heading settled" data-level="9.5" id="media-streaming-data"><span class="secno">9.5. </span><span class="content">Data</span><a class="self-link" href="#media-streaming-data"></a></h3>
-   <p>Senders may send timed data to receivers by sending data-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
+   <p>Senders may send timed data to receivers by sending <a data-link-type="dfn" href="#data-frame" id="ref-for-data-frame">data-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
 contains an arbitrary payload that can be synchronized with and video, such as
 text track data.  A series of data frames that share a data type and timeline
 form a data encoding.</p>
@@ -2942,7 +2916,7 @@ purposes.</p>
    <p>To add new extension messages, extension authors must register a capability ID
 with a range of message type keys in a <a href="https://webscreens.github.io/openscreenprotocol/capabilites.md">public registry</a>.
 Agents may then indicate that they accept an extension by including the
-corresponding capability ID in the <code>capabilities</code> field of its <code>agent-info</code> message.</p>
+corresponding capability ID in the <code>capabilities</code> field of its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑥">agent-info</a> message.</p>
    <p>Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
 Capability IDs 1000 and above are available for extensions.  See <a href="#appendix-b">Appendix B: Message Type Key Ranges</a> for legal ranges for extension message type keys.</p>
    <p class="note" role="note"><span>Note:</span> The purpose of the public registry is to prevent conflicts between
@@ -2960,11 +2934,11 @@ messages and non-CBOR extension messages.</p>
 CBOR message type defined by the Open Screen Protocol.  Extension fields must be
 optional, and the Open Screen Protocol message must make sense both with and
 without the field set.</p>
-   <p>Agents must not add extended fields to the <code>audio-frame</code> message directly.
+   <p>Agents must not add extended fields to the <a data-link-type="dfn" href="#audio-frame" id="ref-for-audio-frame①">audio-frame</a> message directly.
 Instead, they may add them to its nested <code>optional</code> value.</p>
    <p>Extension fields should use string keys to avoid conflicts with integer keys in
 Open Screen Protocol messages.  An agent should not send extension fields to
-another agent unless that agent advertises an extension capability ID in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑥">agent-info</a> that indicates that it understands the extension fields.</p>
+another agent unless that agent advertises an extension capability ID in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑦">agent-info</a> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
 and exchange user and application data.  As such, its security and privacy
@@ -3165,7 +3139,7 @@ advertised under a given public key fingerprint.</p>
      <p>Untrusted agents that advertise a display name that is similar to that from an
 already-trusted agent.</p>
     <li data-md>
-     <p>Already-trusted agents whose metadata provided through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑦">agent-info</a> message has changed.</p>
+     <p>Already-trusted agents whose metadata provided through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑧">agent-info</a> message has changed.</p>
    </ul>
    <p>Flagging means that the user is notified of the attempt at impersonation.  In
 the last case, the user should be required to re-authenticate to the
@@ -3263,7 +3237,7 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 12</span>
-<span class="nc">agent-status-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-status-request">agent-status-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
 <span class="p">}</span></p>
@@ -3289,7 +3263,7 @@ the wire smaller.</p>
 <p><span class="nc">microseconds </span><span class="p">=</span> <span class="kt">uint</span></p>
 
 <p><span class="c1">; type key 1001</span>
-<span class="nc">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-capabilities">auth-capabilities</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
 <span class="p">}</span></p>
@@ -3299,28 +3273,28 @@ the wire smaller.</p>
   <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">auth-initiation-token </span><span class="p">=</span> <span class="p">(</span>
+<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-initiation-token">auth-initiation-token</dfn> </span><span class="p">=</span> <span class="p">(</span>
   <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; token</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 1002</span>
-<span class="nc">auth-spake2-need-psk </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-need-psk">auth-spake2-need-psk</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initiation-token</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1003</span>
-<span class="nc">auth-spake2-message </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-message">auth-spake2-message</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initation-token</span>
 <span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1004</span>
-<span class="nc">auth-spake2-confirmation </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-confirmation">auth-spake2-confirmation</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; confirmation</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1005</span>
-<span class="nc">auth-status </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-status">auth-status</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
@@ -3467,7 +3441,7 @@ the wire smaller.</p>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 17</span>
-<span class="nc">remote-playback-availability-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-availability-request">remote-playback-availability-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
@@ -3475,19 +3449,19 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 18</span>
-<span class="nc">remote-playback-availability-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-availability-response">remote-playback-availability-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  url-availabilities</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 114</span>
-<span class="nc">remote-playback-availability-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-availability-event">remote-playback-availability-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 115</span>
-<span class="nc">remote-playback-start-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-start-request">remote-playback-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
@@ -3497,14 +3471,14 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 116</span>
-<span class="nc">remote-playback-start-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-start-response">remote-playback-start-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 117</span>
-<span class="nc">remote-playback-termination-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-termination-request">remote-playback-termination-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3514,13 +3488,13 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 118</span>
-<span class="nc">remote-playback-termination-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-termination-response">remote-playback-termination-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 119</span>
-<span class="nc">remote-playback-termination-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-termination-event">remote-playback-termination-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
  <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">receiver-called-terminate</span><span class="p">:</span> <span class="mi">1</span>
@@ -3533,21 +3507,21 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 19</span>
-<span class="nc">remote-playback-modify-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-modify-request">remote-playback-modify-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 20</span>
-<span class="nc">remote-playback-modify-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-modify-response">remote-playback-modify-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 21</span>
-<span class="nc">remote-playback-state-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-state-event">remote-playback-state-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
 <span class="p">}</span></p>
@@ -3637,7 +3611,7 @@ the wire smaller.</p>
 <span class="nx">  hidden</span>
 <span class="p">)</span></p>
 
-<p><span class="nc">text-track-cue </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="text-track-cue">text-track-cue</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">media-time-range </span><span class="c1">; range</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; text</span>
@@ -3648,7 +3622,7 @@ the wire smaller.</p>
   <span class="nx">end</span><span class="p">:</span> <span class="nx">media-time</span>
 <span class="p">]</span></p>
 
-<p><span class="nc">media-time </span><span class="p">=</span> <span class="p">[</span>
+<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="media-time">media-time</dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">value</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">scale</span><span class="p">:</span> <span class="kt">uint</span>
 <span class="p">]</span></p>
@@ -3689,7 +3663,7 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 22</span>
-<span class="nc">audio-frame </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="audio-frame">audio-frame</dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">encoding-id</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">start-time</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">payload</span><span class="p">:</span> <span class="nx">bytes</span>
@@ -3700,7 +3674,7 @@ the wire smaller.</p>
 <span class="p">]</span></p>
 
 <p><span class="c1">; type key 23</span>
-<span class="nc">video-frame </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="video-frame">video-frame</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="kt">int</span><span class="p">]</span> <span class="c1">; depends-on</span>
@@ -3712,7 +3686,7 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 24</span>
-<span class="nc">data-frame </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="data-frame">data-frame</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
@@ -3733,11 +3707,11 @@ the wire smaller.</p>
   <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
 <span class="p">]</span></p>
 
-<p><span class="nc">streaming-capabilities-request </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-capabilities-request">streaming-capabilities-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">streaming-capabilities-response </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-capabilities-response">streaming-capabilities-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
 <span class="p">}</span></p>
@@ -3983,9 +3957,19 @@ extensions.</p>
    <li><a href="#agent-info-event">agent-info-event</a><span>, in §Unnumbered section</span>
    <li><a href="#agent-info-request">agent-info-request</a><span>, in §Unnumbered section</span>
    <li><a href="#agent-info-response">agent-info-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#agent-status-request">agent-status-request</a><span>, in §Unnumbered section</span>
    <li><a href="#agent-status-response">agent-status-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#audio-frame">audio-frame</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-capabilities">auth-capabilities</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-initiation-token">auth-initiation-token</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-spake2-confirmation">auth-spake2-confirmation</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-spake2-message">auth-spake2-message</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-status">auth-status</a><span>, in §Unnumbered section</span>
+   <li><a href="#data-frame">data-frame</a><span>, in §Unnumbered section</span>
    <li><a href="#display-name">display name</a><span>, in §3</span>
    <li><a href="#listening-agent">listening agent</a><span>, in §3</span>
+   <li><a href="#media-time">media-time</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-change-event">presentation-change-event</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-connection-close-event">presentation-connection-close-event</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-connection-message">presentation-connection-message</a><span>, in §Unnumbered section</span>
@@ -3999,7 +3983,22 @@ extensions.</p>
    <li><a href="#presentation-url-availability-event">presentation-url-availability-event</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-url-availability-request">presentation-url-availability-request</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-url-availability-response">presentation-url-availability-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-availability-event">remote-playback-availability-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-availability-request">remote-playback-availability-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-availability-response">remote-playback-availability-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-modify-request">remote-playback-modify-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-modify-response">remote-playback-modify-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-start-request">remote-playback-start-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-start-response">remote-playback-start-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-state-event">remote-playback-state-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-termination-event">remote-playback-termination-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-termination-request">remote-playback-termination-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#remote-playback-termination-response">remote-playback-termination-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-capabilities-request">streaming-capabilities-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-capabilities-response">streaming-capabilities-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#text-track-cue">text-track-cue</a><span>, in §Unnumbered section</span>
    <li><a href="#verified-display-name">verified display name</a><span>, in §3</span>
+   <li><a href="#video-frame">video-frame</a><span>, in §Unnumbered section</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-htmlmediaelement">
    <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement</a><b>Referenced in:</b>
@@ -4321,14 +4320,57 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <ul>
     <li><a href="#ref-for-agent-info">3. Discovery with mDNS</a>
     <li><a href="#ref-for-agent-info①">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info②">(2)</a> <a href="#ref-for-agent-info③">(3)</a> <a href="#ref-for-agent-info④">(4)</a> <a href="#ref-for-agent-info⑤">(5)</a>
-    <li><a href="#ref-for-agent-info⑥">11.1. Protocol Extension Fields</a>
-    <li><a href="#ref-for-agent-info⑦">12.5.2. Local active network attackers</a>
+    <li><a href="#ref-for-agent-info⑥">11. Protocol Extensions</a>
+    <li><a href="#ref-for-agent-info⑦">11.1. Protocol Extension Fields</a>
+    <li><a href="#ref-for-agent-info⑧">12.5.2. Local active network attackers</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="agent-status-request">
+   <b><a href="#agent-status-request">#agent-status-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-agent-status-request">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-status-request①">(2)</a> <a href="#ref-for-agent-status-request②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="agent-status-response">
    <b><a href="#agent-status-response">#agent-status-response</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-agent-status-response">4. Transport and metadata discovery with QUIC</a>
+    <li><a href="#ref-for-agent-status-response">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-status-response①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="auth-capabilities">
+   <b><a href="#auth-capabilities">#auth-capabilities</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-auth-capabilities">6. Authentication</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="auth-initiation-token">
+   <b><a href="#auth-initiation-token">#auth-initiation-token</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-auth-initiation-token">6. Authentication</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="auth-spake2-need-psk">
+   <b><a href="#auth-spake2-need-psk">#auth-spake2-need-psk</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-auth-spake2-need-psk">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-spake2-need-psk①">(2)</a> <a href="#ref-for-auth-spake2-need-psk②">(3)</a> <a href="#ref-for-auth-spake2-need-psk③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="auth-spake2-message">
+   <b><a href="#auth-spake2-message">#auth-spake2-message</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-auth-spake2-message">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-spake2-message①">(2)</a> <a href="#ref-for-auth-spake2-message②">(3)</a> <a href="#ref-for-auth-spake2-message③">(4)</a> <a href="#ref-for-auth-spake2-message④">(5)</a> <a href="#ref-for-auth-spake2-message⑤">(6)</a> <a href="#ref-for-auth-spake2-message⑥">(7)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="auth-spake2-confirmation">
+   <b><a href="#auth-spake2-confirmation">#auth-spake2-confirmation</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-auth-spake2-confirmation">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-spake2-confirmation①">(2)</a> <a href="#ref-for-auth-spake2-confirmation②">(3)</a> <a href="#ref-for-auth-spake2-confirmation③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="auth-status">
+   <b><a href="#auth-status">#auth-status</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-auth-status">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-status①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="presentation-url-availability-request">
@@ -4392,8 +4434,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="presentation-connection-open-response">
    <b><a href="#presentation-connection-open-response">#presentation-connection-open-response</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-presentation-connection-open-response">7. Presentation Protocol</a> <a href="#ref-for-presentation-connection-open-response①">(2)</a>
-    <li><a href="#ref-for-presentation-connection-open-response②">7.1. Presentation API</a>
+    <li><a href="#ref-for-presentation-connection-open-response">7. Presentation Protocol</a> <a href="#ref-for-presentation-connection-open-response①">(2)</a> <a href="#ref-for-presentation-connection-open-response②">(3)</a>
+    <li><a href="#ref-for-presentation-connection-open-response③">7.1. Presentation API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="presentation-connection-close-event">
@@ -4406,7 +4448,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="presentation-change-event">
    <b><a href="#presentation-change-event">#presentation-change-event</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-presentation-change-event">7.1. Presentation API</a> <a href="#ref-for-presentation-change-event①">(2)</a>
+    <li><a href="#ref-for-presentation-change-event">7. Presentation Protocol</a> <a href="#ref-for-presentation-change-event①">(2)</a>
+    <li><a href="#ref-for-presentation-change-event②">7.1. Presentation API</a> <a href="#ref-for-presentation-change-event③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="presentation-connection-message">
@@ -4414,6 +4457,125 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <ul>
     <li><a href="#ref-for-presentation-connection-message">7. Presentation Protocol</a>
     <li><a href="#ref-for-presentation-connection-message①">7.1. Presentation API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-availability-request">
+   <b><a href="#remote-playback-availability-request">#remote-playback-availability-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-availability-request">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-remote-playback-availability-request①">8.2. Remote Playback API</a> <a href="#ref-for-remote-playback-availability-request②">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-availability-response">
+   <b><a href="#remote-playback-availability-response">#remote-playback-availability-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-availability-response">8. Remote Playback Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-availability-event">
+   <b><a href="#remote-playback-availability-event">#remote-playback-availability-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-availability-event">8. Remote Playback Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-start-request">
+   <b><a href="#remote-playback-start-request">#remote-playback-start-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-start-request">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-start-request①">(2)</a>
+    <li><a href="#ref-for-remote-playback-start-request②">8.1. Remote Playback State and Controls</a> <a href="#ref-for-remote-playback-start-request③">(2)</a> <a href="#ref-for-remote-playback-start-request④">(3)</a>
+    <li><a href="#ref-for-remote-playback-start-request⑤">8.2. Remote Playback API</a> <a href="#ref-for-remote-playback-start-request⑥">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-start-response">
+   <b><a href="#remote-playback-start-response">#remote-playback-start-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-start-response">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-start-response①">(2)</a>
+    <li><a href="#ref-for-remote-playback-start-response②">8.1. Remote Playback State and Controls</a> <a href="#ref-for-remote-playback-start-response③">(2)</a> <a href="#ref-for-remote-playback-start-response④">(3)</a> <a href="#ref-for-remote-playback-start-response⑤">(4)</a> <a href="#ref-for-remote-playback-start-response⑥">(5)</a> <a href="#ref-for-remote-playback-start-response⑦">(6)</a> <a href="#ref-for-remote-playback-start-response⑧">(7)</a> <a href="#ref-for-remote-playback-start-response⑨">(8)</a> <a href="#ref-for-remote-playback-start-response①⓪">(9)</a> <a href="#ref-for-remote-playback-start-response①①">(10)</a> <a href="#ref-for-remote-playback-start-response①②">(11)</a> <a href="#ref-for-remote-playback-start-response①③">(12)</a> <a href="#ref-for-remote-playback-start-response①④">(13)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-termination-request">
+   <b><a href="#remote-playback-termination-request">#remote-playback-termination-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-termination-request">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-termination-request①">(2)</a>
+    <li><a href="#ref-for-remote-playback-termination-request②">8.2. Remote Playback API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-termination-response">
+   <b><a href="#remote-playback-termination-response">#remote-playback-termination-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-termination-response">8. Remote Playback Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-termination-event">
+   <b><a href="#remote-playback-termination-event">#remote-playback-termination-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-termination-event">8. Remote Playback Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-modify-request">
+   <b><a href="#remote-playback-modify-request">#remote-playback-modify-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-modify-request">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-modify-request①">(2)</a>
+    <li><a href="#ref-for-remote-playback-modify-request②">8.1. Remote Playback State and Controls</a>
+    <li><a href="#ref-for-remote-playback-modify-request③">8.2. Remote Playback API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-modify-response">
+   <b><a href="#remote-playback-modify-response">#remote-playback-modify-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-modify-response">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-remote-playback-modify-response①">8.2. Remote Playback API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="remote-playback-state-event">
+   <b><a href="#remote-playback-state-event">#remote-playback-state-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-remote-playback-state-event">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-state-event①">(2)</a>
+    <li><a href="#ref-for-remote-playback-state-event②">8.1. Remote Playback State and Controls</a>
+    <li><a href="#ref-for-remote-playback-state-event③">8.2. Remote Playback API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="text-track-cue">
+   <b><a href="#text-track-cue">#text-track-cue</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-text-track-cue">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="media-time">
+   <b><a href="#media-time">#media-time</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-media-time">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="audio-frame">
+   <b><a href="#audio-frame">#audio-frame</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-audio-frame">9.3. Audio</a>
+    <li><a href="#ref-for-audio-frame①">11.1. Protocol Extension Fields</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="video-frame">
+   <b><a href="#video-frame">#video-frame</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-video-frame">9.4. Video</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="data-frame">
+   <b><a href="#data-frame">#data-frame</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-data-frame">9.5. Data</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-capabilities-request">
+   <b><a href="#streaming-capabilities-request">#streaming-capabilities-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-capabilities-request">9.1. Streaming Protocol Capabilities</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-capabilities-response">
+   <b><a href="#streaming-capabilities-response">#streaming-capabilities-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-capabilities-response">9.1. Streaming Protocol Capabilities</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */

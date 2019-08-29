@@ -34,7 +34,7 @@
 <span class="p">}</span>
 
 <span class="c1">; type key 12</span>
-<span class="nc">agent-status-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>agent-status-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
 <span class="p">}</span>
@@ -60,7 +60,7 @@
 <span class="nc">microseconds </span><span class="p">=</span> <span class="kt">uint</span>
 
 <span class="c1">; type key 1001</span>
-<span class="nc">auth-capabilities </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>auth-capabilities</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
 <span class="p">}</span>
@@ -70,28 +70,28 @@
   <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">)</span>
 
-<span class="nc">auth-initiation-token </span><span class="p">=</span> <span class="p">(</span>
+<span class="nc"><dfn>auth-initiation-token</dfn> </span><span class="p">=</span> <span class="p">(</span>
   <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; token</span>
 <span class="p">)</span>
 
 <span class="c1">; type key 1002</span>
-<span class="nc">auth-spake2-need-psk </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>auth-spake2-need-psk</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initiation-token</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 1003</span>
-<span class="nc">auth-spake2-message </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>auth-spake2-message</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initation-token</span>
 <span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; message</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 1004</span>
-<span class="nc">auth-spake2-confirmation </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>auth-spake2-confirmation</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; confirmation</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 1005</span>
-<span class="nc">auth-status </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>auth-status</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
 <span class="p">}</span>
 
@@ -238,7 +238,7 @@
 <span class="p">)</span>
 
 <span class="c1">; type key 17</span>
-<span class="nc">remote-playback-availability-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-availability-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
@@ -246,19 +246,19 @@
 <span class="p">}</span>
 
 <span class="c1">; type key 18</span>
-<span class="nc">remote-playback-availability-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-availability-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  url-availabilities</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 114</span>
-<span class="nc">remote-playback-availability-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-availability-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 115</span>
-<span class="nc">remote-playback-start-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
@@ -268,14 +268,14 @@
 <span class="p">}</span>
 
 <span class="c1">; type key 116</span>
-<span class="nc">remote-playback-start-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-start-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 117</span>
-<span class="nc">remote-playback-termination-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-termination-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -285,13 +285,13 @@
 <span class="p">}</span>
 
 <span class="c1">; type key 118</span>
-<span class="nc">remote-playback-termination-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-termination-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 119</span>
-<span class="nc">remote-playback-termination-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-termination-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
  <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">receiver-called-terminate</span><span class="p">:</span> <span class="mi">1</span>
@@ -304,21 +304,21 @@
 <span class="p">}</span>
 
 <span class="c1">; type key 19</span>
-<span class="nc">remote-playback-modify-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-modify-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
 <span class="p">)</span>
 
 <span class="c1">; type key 20</span>
-<span class="nc">remote-playback-modify-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-modify-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 21</span>
-<span class="nc">remote-playback-state-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>remote-playback-state-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
 <span class="p">}</span>
@@ -408,7 +408,7 @@
 <span class="nx">  hidden</span>
 <span class="p">)</span>
 
-<span class="nc">text-track-cue </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>text-track-cue</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">media-time-range </span><span class="c1">; range</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; text</span>
@@ -419,7 +419,7 @@
   <span class="nx">end</span><span class="p">:</span> <span class="nx">media-time</span>
 <span class="p">]</span>
 
-<span class="nc">media-time </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc"><dfn>media-time</dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">value</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">scale</span><span class="p">:</span> <span class="kt">uint</span>
 <span class="p">]</span>
@@ -460,7 +460,7 @@
 <span class="p">}</span>
 
 <span class="c1">; type key 22</span>
-<span class="nc">audio-frame </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc"><dfn>audio-frame</dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">encoding-id</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">start-time</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">payload</span><span class="p">:</span> <span class="nx">bytes</span>
@@ -471,7 +471,7 @@
 <span class="p">]</span>
 
 <span class="c1">; type key 23</span>
-<span class="nc">video-frame </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>video-frame</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="kt">int</span><span class="p">]</span> <span class="c1">; depends-on</span>
@@ -483,7 +483,7 @@
 <span class="p">}</span>
 
 <span class="c1">; type key 24</span>
-<span class="nc">data-frame </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>data-frame</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
@@ -504,11 +504,11 @@
   <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
 <span class="p">]</span>
 
-<span class="nc">streaming-capabilities-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>streaming-capabilities-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="p">}</span>
 
-<span class="nc">streaming-capabilities-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn>streaming-capabilities-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
 <span class="p">}</span>
