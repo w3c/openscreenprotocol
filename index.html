@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="70d6070cc3e111a0f1e82882a4c7274328f84645" name="document-revision">
+  <meta content="694b0827d9a637747ea1a1c87442e4279e731114" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1913,6 +1913,8 @@ protocol.</p>
     <dd data-md>
      <p>The agent can send streaming using the streaming protocol.</p>
    </dl>
+   <p class="note" role="note"><span>Note:</span> See the <a href="https://webscreens.github.io/openscreenprotocol/capabilities.md">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
+through <a href="#protocol-extensions">§ 11 Protocol Extensions</a>).</p>
    <p>Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
@@ -2928,9 +2930,9 @@ certificate fingerprint) to track requests across multiple agents.</p>
 specification.  This could be used for experimentation, customization or other
 purposes.</p>
    <p>To add new extension messages, extension authors must register a capability ID
-with a range of message type keys in a public registry (location to be
-determined).  Agents may then indicate that they accept an extension by
-including the corresponding capability ID in the <code>capabilities</code> field of its <code>agent-info</code> message.</p>
+with a range of message type keys in a <a href="https://webscreens.github.io/openscreenprotocol/capabilites.md">public registry</a>.
+Agents may then indicate that they accept an extension by including the
+corresponding capability ID in the <code>capabilities</code> field of its <code>agent-info</code> message.</p>
    <p>Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
 Capability IDs 1000 and above are available for extensions.  See <a href="#appendix-b">Appendix B: Message Type Key Ranges</a> for legal ranges for extension message type keys.</p>
    <p class="note" role="note"><span>Note:</span> The purpose of the public registry is to prevent conflicts between
@@ -3273,12 +3275,12 @@ the wire smaller.</p>
 <p><span class="nc">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">receive-audio</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">3</span>
-  <span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">4</span>
-  <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">5</span>
-  <span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">6</span>
-  <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">7</span>
+  <span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="nx">control-presentation</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">receive-remote-playback</span><span class="p">:</span> <span class="mi">5</span>
+  <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">6</span>
+  <span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">7</span>
+  <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">8</span>
 <span class="p">)</span></p>
 
 <p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-info">agent-info</dfn> </span><span class="p">=</span> <span class="p">{</span>
