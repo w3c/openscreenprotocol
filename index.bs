@@ -681,6 +681,12 @@ Additionally, the response must include the following:
     the message receiver chooses the connection-id, it may keep the ID unique
     across connections, thus making message demuxing/routing easier.
 
+The response should include the following:
+
+: http-response-code
+:: The numeric HTTP response code that was returned from fetching the
+    presentation URL (after redirects).
+
 To send a presentation message, the controller or receiver may send a
 [=presentation-connection-message=] with the following values:
 
@@ -699,12 +705,15 @@ To terminate a presentation, the controller may send a
 :: The ID of the presentation to terminate.
 
 : reason
-:: The reason the presentation is being terminated.
-
+:: Set to `application-request` if the application requested termination,
+    or `user-request` if the user requested termination. (These are the only
+    valid values for `reason` in a [=presentation-termination-request=].)
 
 When a [=receiver=] receives a [=presentation-termination-request=], it should
 send back a [=presentation-termination-response=] message to the requesting
-controller.  It should also notify other controllers about the termination by sending
+controller.
+
+It should also notify other controllers about the termination by sending
 a [=presentation-termination-event=] message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:
@@ -712,8 +721,12 @@ message contains the following values:
 : presentation-id
 :: The ID of the presentation that was terminated.
 
+: source
+:: Set to `controller` when the termination was in response to a
+    [=presentation-termination-request=], or `receiver` otherwise.
+
 : reason
-:: The reason the presentation was terminated.
+:: The detailed reason why the presentation was terminated.
 
 To accept incoming connection requests from controller, a receiver must receive
 and process the [=presentation-connection-open-request=] message which contains the
@@ -839,7 +852,8 @@ When
 [[PRESENTATION-API#terminating-a-presentation-in-a-controlling-browsing-context|section
 6.5.6]] says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the [=controlling user
-agent=] may send a [=presentation-termination-request=] message.
+agent=] may send a [=presentation-termination-request=] message with a `reason`
+of `application-request`.
 
 When [[PRESENTATION-API#monitoring-incoming-presentation-connections|section
 6.7.1]]
