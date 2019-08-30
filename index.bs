@@ -1970,7 +1970,7 @@ User Interface Considerations {#security-ui}
 
 This specification does not make any specific requirements of the security
 relevant user interfaces of Open Screen agents.  However there are important
-considerations when designing these user interfaces, as PSK based authentication
+considerations when designing these user interfaces, as PSK-based authentication
 requires users to make informed decisions about which agents to trust.
 
 1. Before an agent has authenticated another device, the agent should make it
