@@ -1786,8 +1786,8 @@ APIs.</p>
 To do so, agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
    <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a></p>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent</dfn> is one that responds to mDNS queries
-for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
-name<a class="self-link" href="#display-name"></a></dfn> (a non-empty string) that is a human readable description of the
+for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
+name</dfn> (a non-empty string) that is a human readable description of the
 presentation display, e.g. "Living Room TV."</p>
    <p>A <dfn data-dfn-type="dfn" data-noexport id="listening-agent">listening agent<a class="self-link" href="#listening-agent"></a></dfn> is one that sends mDNS queries for <code>_openscreen._udp.local</code>.  Listening agents may have a display name.</p>
    <p>Advertising agents must use a DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-4.1.1" id="ref-for-section-4.1.1">Instance Name</a> that is a prefix of the
@@ -3017,13 +3017,16 @@ considered personally identifiable, are important to protect to prevent an
 attacker from changing them or substituting other values during the discovery
 and authentication process.</p>
    <p>The following data cannot be reasonably made confidential and should be
-considered public and untrusted data:</p>
+considered public:</p>
    <ol>
     <li data-md>
      <p>IP addresses and ports used by the Open Screen Protocol.</p>
     <li data-md>
      <p>Data advertised through mDNS, including the display name prefix, the
 certificate fingerprint, and the metadata version.</p>
+    <li data-md>
+     <p>Data provided by an agent through <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑦">agent-info</a>, including its <a data-link-type="dfn" href="#display-name" id="ref-for-display-name">display name</a>, its device model name, its capabilities, and its
+preferred locales.</p>
    </ol>
    <h4 class="heading settled" data-level="12.2.2" id="cross-origin-state"><span class="secno">12.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
    <p>Access to origin state across browsing sessions is possible through the
@@ -3141,7 +3144,7 @@ advertised under a given public key fingerprint.</p>
      <p>Untrusted agents that advertise a display name that is similar to that from an
 already-trusted agent.</p>
     <li data-md>
-     <p>Already-trusted agents whose metadata provided through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑦">agent-info</a> message has changed.</p>
+     <p>Already-trusted agents whose metadata provided through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑧">agent-info</a> message has changed.</p>
    </ul>
    <p>The second is through management of the low-entropy secret during mutual
 authentication:</p>
@@ -4371,6 +4374,12 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
     <li><a href="#ref-for-advertising-agent">6. Authentication</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="display-name">
+   <b><a href="#display-name">#display-name</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-display-name">12.2.1. Personally Identifiable Information &amp; High-Value Data</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="suspicious-agent">
    <b><a href="#suspicious-agent">#suspicious-agent</a></b><b>Referenced in:</b>
    <ul>
@@ -4409,7 +4418,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
     <li><a href="#ref-for-agent-info">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info①">(2)</a> <a href="#ref-for-agent-info②">(3)</a> <a href="#ref-for-agent-info③">(4)</a> <a href="#ref-for-agent-info④">(5)</a>
     <li><a href="#ref-for-agent-info⑤">11. Protocol Extensions</a>
     <li><a href="#ref-for-agent-info⑥">11.1. Protocol Extension Fields</a>
-    <li><a href="#ref-for-agent-info⑦">12.5.2. Local active network attackers</a>
+    <li><a href="#ref-for-agent-info⑦">12.2.1. Personally Identifiable Information &amp; High-Value Data</a>
+    <li><a href="#ref-for-agent-info⑧">12.5.2. Local active network attackers</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="agent-status-request">
