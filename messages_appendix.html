@@ -151,17 +151,31 @@
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="p">?</span> <span class="kt">uint</span> <span class="c1">; http-response-code</span>
 <span class="p">}</span>
+
+<span class="nc">presentation-termination-source </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">controller</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">receiver</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
+<span class="p">)</span>
+
+<span class="nc">presentation-termination-reason </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">application-request</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">user-request</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">receiver-replaced-presentation</span><span class="p">:</span> <span class="mi">20</span>
+  <span class="nx">receiver-idle-too-long</span><span class="p">:</span> <span class="mi">30</span>
+  <span class="nx">receiver-attempted-to-navigate</span><span class="p">:</span> <span class="mi">31</span>
+  <span class="nx">receiver-powering-down</span><span class="p">:</span> <span class="mi">100</span>
+  <span class="nx">receiver-error</span><span class="p">:</span> <span class="mi">101</span>
+  <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
+<span class="p">)</span>
 
 <span class="c1">; type key 106</span>
 <span class="nc"><dfn>presentation-termination-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
-    <span class="nx">controller-called-terminate</span><span class="p">:</span> <span class="mi">10</span>
-    <span class="nx">user-terminated-via-controller</span><span class="p">:</span> <span class="mi">11</span>
-    <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
-  <span class="p">)</span> <span class="c1">; reason</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">presentation-termination-reason </span><span class="c1">; reason</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 107</span>
@@ -173,18 +187,8 @@
 <span class="c1">; type key 108</span>
 <span class="nc"><dfn>presentation-termination-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
-    <span class="nx">receiver-called-terminate</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="nx">user-terminated-via-receiver</span><span class="p">:</span> <span class="mi">2</span>
-    <span class="nx">controller-called-terminate</span><span class="p">:</span> <span class="mi">10</span>
-    <span class="nx">user-terminated-via-controller</span><span class="p">:</span> <span class="mi">11</span>
-    <span class="nx">receiver-replaced-presentation</span><span class="p">:</span> <span class="mi">20</span>
-    <span class="nx">receiver-idle-too-long</span><span class="p">:</span> <span class="mi">30</span>
-    <span class="nx">receiver-attempted-to-navigate</span><span class="p">:</span> <span class="mi">31</span>
-    <span class="nx">receiver-powering-down</span><span class="p">:</span> <span class="mi">100</span>
-    <span class="nx">receiver-crashed</span><span class="p">:</span> <span class="mi">101</span>
-    <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
-  <span class="p">)</span> <span class="c1">; reason</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">presentation-termination-source </span><span class="c1">; source</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">presentation-termination-reason </span><span class="c1">; reason</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 109</span>

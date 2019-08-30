@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="b222800ecaab84c3d30a47ada2054f99e6473f8f" name="document-revision">
+  <meta content="d5f63863d4ffe819fa73e6e3fdf3cdf4e80d77b6" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -2100,6 +2100,13 @@ to each other.  It is chosen by the receiver for ease of implementation: if
 the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier.</p>
    </dl>
+   <p>The response should include the following:</p>
+   <dl>
+    <dt data-md>http-response-code
+    <dd data-md>
+     <p>The numeric HTTP response code that was returned from fetching the
+presentation URL (after redirects).</p>
+   </dl>
    <p>To send a presentation message, the controller or receiver may send a <a data-link-type="dfn" href="#presentation-connection-message" id="ref-for-presentation-connection-message">presentation-connection-message</a> with the following values:</p>
    <dl>
     <dt data-md>connection-id
@@ -2116,11 +2123,14 @@ across connections, thus making message demuxing/routing easier.</p>
      <p>The ID of the presentation to terminate.</p>
     <dt data-md>reason
     <dd data-md>
-     <p>The reason the presentation is being terminated.</p>
+     <p>Set to <code>application-request</code> if the application requested termination,
+or <code>user-request</code> if the user requested termination. (These are the only
+valid values for <code>reason</code> in a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request①">presentation-termination-request</a>.)</p>
    </dl>
-   <p>When a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver②">receiver</a> receives a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request①">presentation-termination-request</a>, it should
+   <p>When a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver②">receiver</a> receives a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request②">presentation-termination-request</a>, it should
 send back a <a data-link-type="dfn" href="#presentation-termination-response" id="ref-for-presentation-termination-response">presentation-termination-response</a> message to the requesting
-controller.  It should also notify other controllers about the termination by sending
+controller.</p>
+   <p>It should also notify other controllers about the termination by sending
 a <a data-link-type="dfn" href="#presentation-termination-event" id="ref-for-presentation-termination-event">presentation-termination-event</a> message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:</p>
@@ -2128,9 +2138,12 @@ message contains the following values:</p>
     <dt data-md>presentation-id
     <dd data-md>
      <p>The ID of the presentation that was terminated.</p>
+    <dt data-md>source
+    <dd data-md>
+     <p>Set to <code>controller</code> when the termination was in response to a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request③">presentation-termination-request</a>, or <code>receiver</code> otherwise.</p>
     <dt data-md>reason
     <dd data-md>
-     <p>The reason the presentation was terminated.</p>
+     <p>The detailed reason why the presentation was terminated.</p>
    </dl>
    <p>To accept incoming connection requests from controller, a receiver must receive
 and process the <a data-link-type="dfn" href="#presentation-connection-open-request" id="ref-for-presentation-connection-open-request">presentation-connection-open-request</a> message which contains the
@@ -2243,7 +2256,7 @@ destination browsing context and a <a data-link-type="dfn" href="#presentation-c
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
-agent</a> may send a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request②">presentation-termination-request</a> message.</p>
+agent</a> may send a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request④">presentation-termination-request</a> message with a <code>reason</code> of <code>application-request</code>.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "it MUST listen to and accept incoming connection requests from a
 controlling browsing context using an implementation specific
@@ -3383,17 +3396,31 @@ the wire smaller.</p>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="p">?</span> <span class="kt">uint</span> <span class="c1">; http-response-code</span>
 <span class="p">}</span></p>
+
+<p><span class="nc">presentation-termination-source </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">controller</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">receiver</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
+<span class="p">)</span></p>
+
+<p><span class="nc">presentation-termination-reason </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">application-request</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">user-request</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">receiver-replaced-presentation</span><span class="p">:</span> <span class="mi">20</span>
+  <span class="nx">receiver-idle-too-long</span><span class="p">:</span> <span class="mi">30</span>
+  <span class="nx">receiver-attempted-to-navigate</span><span class="p">:</span> <span class="mi">31</span>
+  <span class="nx">receiver-powering-down</span><span class="p">:</span> <span class="mi">100</span>
+  <span class="nx">receiver-error</span><span class="p">:</span> <span class="mi">101</span>
+  <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
+<span class="p">)</span></p>
 
 <p><span class="c1">; type key 106</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-request">presentation-termination-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
-    <span class="nx">controller-called-terminate</span><span class="p">:</span> <span class="mi">10</span>
-    <span class="nx">user-terminated-via-controller</span><span class="p">:</span> <span class="mi">11</span>
-    <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
-  <span class="p">)</span> <span class="c1">; reason</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">presentation-termination-reason </span><span class="c1">; reason</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 107</span>
@@ -3405,18 +3432,8 @@ the wire smaller.</p>
 <p><span class="c1">; type key 108</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-event">presentation-termination-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
-    <span class="nx">receiver-called-terminate</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="nx">user-terminated-via-receiver</span><span class="p">:</span> <span class="mi">2</span>
-    <span class="nx">controller-called-terminate</span><span class="p">:</span> <span class="mi">10</span>
-    <span class="nx">user-terminated-via-controller</span><span class="p">:</span> <span class="mi">11</span>
-    <span class="nx">receiver-replaced-presentation</span><span class="p">:</span> <span class="mi">20</span>
-    <span class="nx">receiver-idle-too-long</span><span class="p">:</span> <span class="mi">30</span>
-    <span class="nx">receiver-attempted-to-navigate</span><span class="p">:</span> <span class="mi">31</span>
-    <span class="nx">receiver-powering-down</span><span class="p">:</span> <span class="mi">100</span>
-    <span class="nx">receiver-crashed</span><span class="p">:</span> <span class="mi">101</span>
-    <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
-  <span class="p">)</span> <span class="c1">; reason</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">presentation-termination-source </span><span class="c1">; source</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">presentation-termination-reason </span><span class="c1">; reason</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 109</span>
@@ -4443,8 +4460,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="presentation-termination-request">
    <b><a href="#presentation-termination-request">#presentation-termination-request</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-presentation-termination-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-termination-request①">(2)</a>
-    <li><a href="#ref-for-presentation-termination-request②">7.1. Presentation API</a>
+    <li><a href="#ref-for-presentation-termination-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-termination-request①">(2)</a> <a href="#ref-for-presentation-termination-request②">(3)</a> <a href="#ref-for-presentation-termination-request③">(4)</a>
+    <li><a href="#ref-for-presentation-termination-request④">7.1. Presentation API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="presentation-termination-response">
