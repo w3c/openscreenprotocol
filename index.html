@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="b222800ecaab84c3d30a47ada2054f99e6473f8f" name="document-revision">
+  <meta content="d5f63863d4ffe819fa73e6e3fdf3cdf4e80d77b6" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-29">29 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-30">30 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1803,15 +1803,11 @@ keys and values:</p>
     <dt data-md>fp
     <dd data-md>
      <p>The certificate fingerprint of the advertising agent.
-The format of the fingerprint is defined by <a href="https://tools.ietf.org/html/rfc8122#section-5">RFC 8122 section
-5</a>, excluding the
+The format of the fingerprint is defined by <a data-link-type="biblio" href="#biblio-rfc5122">[RFC5122]</a>, excluding the
 "fingerprint:" prefix and including the hash function, space, and hex-encoded
 fingerprint.  The fingerprint value also functions as an ID for the agent.
-All agents must support the following hash functions: "sha-256", "sha-512".
-Agents must not support the following hash functions: "md2", "md5".</p>
-   </dl>
-   <p class="issue" id="issue-ad92979f"><a class="self-link" href="#issue-ad92979f"></a> Include cross references to the specs for these hash functions.</p>
-   <dl>
+All agents must support the following hash functions: <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5">sha-256</a>, <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5①">sha-512</a>.
+Agents must not support the following hash functions: <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5②">md2</a>, <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5③">md5</a>.</p>
     <dt data-md>mv
     <dd data-md>
      <p>An unsigned integer value that indicates that
@@ -4195,6 +4191,30 @@ extensions.</p>
     <li><a href="#ref-for-section-7">3. Discovery with mDNS</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-5">
+   <a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-section-5">
+   <a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-section-5">
+   <a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-section-5">
+   <a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
+   </ul>
+  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
@@ -4254,6 +4274,14 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-section-4.1.1" style="color:initial">instance name</span>
      <li><span class="dfn-paneled" id="term-for-section-7" style="color:initial">service name</span>
     </ul>
+   <li>
+    <a data-link-type="biblio">[rfc8122]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-5" style="color:initial">md2</span>
+     <li><span class="dfn-paneled" id="term-for-section-5①" style="color:initial">md5</span>
+     <li><span class="dfn-paneled" id="term-for-section-5②" style="color:initial">sha-256</span>
+     <li><span class="dfn-paneled" id="term-for-section-5③" style="color:initial">sha-512</span>
+    </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
@@ -4274,6 +4302,8 @@ extensions.</p>
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
+   <dt id="biblio-rfc8122">[RFC8122]
+   <dd>J. Lennox; C. Holmberg. <a href="https://tools.ietf.org/html/rfc8122">Connection-Oriented Media Transport over the Transport Layer Security (TLS) Protocol in the Session Description Protocol (SDP)</a>. March 2017. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8122">https://tools.ietf.org/html/rfc8122</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -4283,6 +4313,8 @@ extensions.</p>
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">Concise data definition language (CDDL): a notational convention to express CBOR and JSON data structures</a>. 23 October 2018. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-16">https://tools.ietf.org/html/draft-ietf-quic-transport-16</a>
    <dt id="biblio-rfc4122">[RFC4122]
    <dd>P. Leach; M. Mealling; R. Salz. <a href="https://tools.ietf.org/html/rfc4122">A Universally Unique IDentifier (UUID) URN Namespace</a>. July 2005. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc4122">https://tools.ietf.org/html/rfc4122</a>
+   <dt id="biblio-rfc5122">[RFC5122]
+   <dd>P. Saint-Andre. <a href="https://tools.ietf.org/html/rfc5122">Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)</a>. February 2008. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc5122">https://tools.ietf.org/html/rfc5122</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
@@ -4294,7 +4326,6 @@ extensions.</p>
    <div class="issue"> Can autolinks to HTML51 be automatically generated?<a href="#issue-a8c8d59b"> ↵ </a></div>
    <div class="issue"> Receiver/Controller/Agent terminology. <a href="https://github.com/webscreens/openscreenprotocol/issues/144">&lt;https://github.com/webscreens/openscreenprotocol/issues/144></a><a href="#issue-8ce75287"> ↵ </a></div>
    <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a><a href="#issue-56c2cd35"> ↵ </a></div>
-   <div class="issue"> Include cross references to the specs for these hash functions.<a href="#issue-ad92979f"> ↵ </a></div>
    <div class="issue"> Add examples of sample mDNS records.<a href="#issue-49bdd4e6"> ↵ </a></div>
    <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a><a href="#issue-e0955a17"> ↵ </a></div>
    <div class="issue"> Clarify scoping/uniqueness of request IDs. <a href="https://github.com/webscreens/openscreenprotocol/issues/139">&lt;https://github.com/webscreens/openscreenprotocol/issues/139></a><a href="#issue-7a02cf11"> ↵ </a></div>

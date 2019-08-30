@@ -66,6 +66,10 @@ url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; te
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
 url: https://tools.ietf.org/html/rfc5646#section-2; type: dfn; spec: RFC5646; text: language tag
 url: https://tools.ietf.org/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
+url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-256
+url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-512
+url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md2
+url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
 </pre>
 
 <h2 class='no-num no-toc no-ref' id='document-status'>Status of this document</h2>
@@ -314,14 +318,11 @@ keys and values:
 
 : fp
 :: The certificate fingerprint of the advertising agent.
-    The format of the fingerprint is defined by [RFC 8122 section
-    5](https://tools.ietf.org/html/rfc8122#section-5), excluding the
+    The format of the fingerprint is defined by [[RFC5122]], excluding the
     "fingerprint:" prefix and including the hash function, space, and hex-encoded
     fingerprint.  The fingerprint value also functions as an ID for the agent.
-    All agents must support the following hash functions: "sha-256", "sha-512".
-    Agents must not support the following hash functions: "md2", "md5".
-
-Issue: Include cross references to the specs for these hash functions.
+    All agents must support the following hash functions: [=sha-256=], [=sha-512=].
+    Agents must not support the following hash functions: [=md2=], [=md5=].
 
 : mv
 :: An unsigned integer value that indicates that
