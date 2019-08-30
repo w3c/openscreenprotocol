@@ -1781,11 +1781,14 @@ attacker from changing them or substituting other values during the discovery
 and authentication process.
 
 The following data cannot be reasonably made confidential and should be
-considered public and untrusted data:
+considered public:
 
 1. IP addresses and ports used by the Open Screen Protocol.
 1. Data advertised through mDNS, including the display name prefix, the
     certificate fingerprint, and the metadata version.
+1. Data provided by an agent through [=agent-info=], including its
+    [=display name=], its device model name, its capabilities, and its
+    preferred locales.
 
 ### Cross Origin State Considerations ### {#cross-origin-state}
 
