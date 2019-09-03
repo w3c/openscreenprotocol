@@ -63,6 +63,7 @@ microseconds = uint
 auth-capabilities = {
   0: uint ; psk-ease-of-input
   1: [* psk-input-method] ; psk-input-methods
+  2: uint ; psk-min-bits-of-entropy
 }
 
 psk-input-method = &(
