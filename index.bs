@@ -1687,6 +1687,31 @@ Open Screen Protocol messages.  An agent should not send extension fields to
 another agent unless that agent advertises an extension capability ID in its
 [=agent-info=] that indicates that it understands the extension fields.
 
+Type Key Backwards Compatibility
+--------------------------------
+
+As messages are modified or extended over time, certain rules must be followed
+to maintain backwards compatibiilty with agents that understand older versions
+of messages.
+
+1.  If a required field is added to or removed from a message, a new type key must
+be assigned to the message.  Is is effectively a new message and must not be sent
+unless the receiving agent is known to understand the new type key.
+
+1.  If an optional field is added to a message, the type key may remain unchanged
+if the behavior of an older client that does not understand the added field is
+compatible with newer clients that do understand the added field.  Otherwise,
+a new type key must be assigned.
+
+1.  If an optional field is removed from a message, the type key may remain unchanged
+if the behavior of a newer client that does not understand the remove field is
+compatible with older clients that do understand the removed field.  Otherwise,
+a new type key must be assigned.  Messages that use array-based grouping
+(such as audio-frame) are very unlikely to remain compatible when removing
+fields from an array-based grouping, so a new type key should be assigned when
+removing fields from an array-based grouping.
+
+
 Security and Privacy {#security-privacy}
 ====================
 
