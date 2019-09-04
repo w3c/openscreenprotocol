@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="d5f63863d4ffe819fa73e6e3fdf3cdf4e80d77b6" name="document-revision">
+  <meta content="03cc6d8d3ed91fcccd21a95a9149b8a0d7a2f479" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-30">30 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-04">4 September 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1977,6 +1977,15 @@ support the numeric PSK input method.</p>
 showing a PSK to the user or requesting PSK input from the user.  For an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
 that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>at</code> provided by the
 advertising agent.</p>
+   <p>In the <code>psk-min-bits-of-entropy</code> field of the <a data-link-type="dfn" href="#auth-capabilities" id="ref-for-auth-capabilities①">auth-capabilities</a> messsage,
+agents may specify the minimum bits of entropy it requires for a PSK, in the
+range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
+generate a PSK that has at least as many bits of entropy as it receives in this
+field, and at least as many bits of entropy as it sends in this field.</p>
+   <p>If an agent chooses to show a user a PSK in more than one way (such as both a
+QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the 
+PSK presenter would not know which one the user chose to use, and that may lead
+to authentication failures.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
    <p>For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.</p>
@@ -2385,6 +2394,68 @@ example, to pause, resume, skip, etc), it may send a <a data-link-type="dfn" hre
 the controller (such as when the skips or pauses due to user user interaction on
 the receiver), the receiver may send a <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event①">remote-playback-state-event</a> to the
 controller.</p>
+   <p>The receiver should send a <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event②">remote-playback-state-event</a> message whenever:</p>
+   <p>Any of the following methods are called:</p>
+   <ul>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek">HtmlMediaElement.fastSeek()</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-pause">HtmlMediaElement.pause()</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-play">HtmlMediaElement.play()</a></p>
+   </ul>
+   <p>Any of the following attributes observably change since the last sent <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event③">remote-playback-state-event</a> message:</p>
+   <ul>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">HtmlMediaElement.currentSrc</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">HtmlMediaElement.networkState</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate">HtmlMediaElement.readyState</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error">HtmlMediaElement.error</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset">HtmlMediaElement’s timeline offset</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration">HtmlMediaElement.duration</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">HtmlMediaElement.buffered</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable">HtmlMediaElement.seekable</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">HtmlMediaElement.playbackRate</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused">HtmlMediaElement.paused</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking">HtmlMediaElement.seeking</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">HtmlMediaElement.stalled</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">HtmlMediaElement.ended</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">HtmlMediaElement.muted</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth">HtmlMediaElement.videoWidth</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight">HtmlMediaElement.videoHeight</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">HtmlMediaElement.audioTracks</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.videoTracks</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.textTracks</a></p>
+   </ul>
+   <p>More than 350ms pass since the last <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event④">remote-playback-state-event</a> message
+  and any of the following attributes observably change since the last <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑤">remote-playback-state-event</a> message. Any new continuously changing
+  attributes fall under this rule.</p>
+   <ul>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played">HtmlMediaElement.played</a></p>
+    <li data-md>
+     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">HtmlMediaElement.currentTime</a></p>
+   </ul>
    <dl>
     <dt data-md>remote-playback-id
     <dd data-md>
@@ -2424,7 +2495,7 @@ upon the implementation of the receiver.</p>
    <p>In order for the controller and receiver to stay in sync with regards to the
 state of the remote playback, the controller may send controls to modify the state
 (for example, via the <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request②">remote-playback-modify-request</a> message) and the receiver
-may send updates about state changes (for example, via the <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event②">remote-playback-state-event</a> message).</p>
+may send updates about state changes (for example, via the <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑥">remote-playback-state-event</a> message).</p>
    <p>The controls sent by the controller include the following individual control
 values, each of which is optional.  This allows the controller to change one
 control value or many control values at once without having to specify all
@@ -2627,7 +2698,7 @@ choice of the user agent. The connection will likely have to provide a two-way
 messaging abstraction capable of carrying media commands to the remote playback
 device and receiving media playback state in order to keep the media element
 state and remote playback state in sync", the user agent may send <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request③">remote-playback-modify-request</a> messages to change the remote playback state
-based on changes to the local media element and receive <a data-link-type="dfn" href="#remote-playback-modify-response" id="ref-for-remote-playback-modify-response①">remote-playback-modify-response</a> and <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event③">remote-playback-state-event</a> messages to
+based on changes to the local media element and receive <a data-link-type="dfn" href="#remote-playback-modify-response" id="ref-for-remote-playback-modify-response①">remote-playback-modify-response</a> and <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑦">remote-playback-state-event</a> messages to
 change the local media element based on changes to the remote playback state.</p>
    <p class="issue" id="issue-156f1d74"><a class="self-link" href="#issue-156f1d74"></a> Algorithm for what messages to send when local/remote media element changes. <a href="https://github.com/webscreens/openscreenprotocol/issues/158">&lt;https://github.com/webscreens/openscreenprotocol/issues/158></a></p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
@@ -4437,7 +4508,7 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="auth-capabilities">
    <b><a href="#auth-capabilities">#auth-capabilities</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-auth-capabilities">6. Authentication</a>
+    <li><a href="#ref-for-auth-capabilities">6. Authentication</a> <a href="#ref-for-auth-capabilities①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="auth-initiation-token">
@@ -4627,9 +4698,9 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="remote-playback-state-event">
    <b><a href="#remote-playback-state-event">#remote-playback-state-event</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-remote-playback-state-event">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-state-event①">(2)</a>
-    <li><a href="#ref-for-remote-playback-state-event②">8.1. Remote Playback State and Controls</a>
-    <li><a href="#ref-for-remote-playback-state-event③">8.2. Remote Playback API</a>
+    <li><a href="#ref-for-remote-playback-state-event">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-state-event①">(2)</a> <a href="#ref-for-remote-playback-state-event②">(3)</a> <a href="#ref-for-remote-playback-state-event③">(4)</a> <a href="#ref-for-remote-playback-state-event④">(5)</a> <a href="#ref-for-remote-playback-state-event⑤">(6)</a>
+    <li><a href="#ref-for-remote-playback-state-event⑥">8.1. Remote Playback State and Controls</a>
+    <li><a href="#ref-for-remote-playback-state-event⑦">8.2. Remote Playback API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="text-track-cue">
