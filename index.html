@@ -1786,8 +1786,8 @@ APIs.</p>
 To do so, agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
    <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a></p>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent</dfn> is one that responds to mDNS queries
-for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
-name<a class="self-link" href="#display-name"></a></dfn> (a non-empty string) that is a human readable description of the
+for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
+name</dfn> (a non-empty string) that is a human readable description of the
 presentation display, e.g. "Living Room TV."</p>
    <p>A <dfn data-dfn-type="dfn" data-noexport id="listening-agent">listening agent<a class="self-link" href="#listening-agent"></a></dfn> is one that sends mDNS queries for <code>_openscreen._udp.local</code>.  Listening agents may have a display name.</p>
    <p>Advertising agents must use a DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-4.1.1" id="ref-for-section-4.1.1">Instance Name</a> that is a prefix of the
@@ -2096,6 +2096,13 @@ to each other.  It is chosen by the receiver for ease of implementation: if
 the message receiver chooses the connection-id, it may keep the ID unique
 across connections, thus making message demuxing/routing easier.</p>
    </dl>
+   <p>The response should include the following:</p>
+   <dl>
+    <dt data-md>http-response-code
+    <dd data-md>
+     <p>The numeric HTTP response code that was returned from fetching the
+presentation URL (after redirects).</p>
+   </dl>
    <p>To send a presentation message, the controller or receiver may send a <a data-link-type="dfn" href="#presentation-connection-message" id="ref-for-presentation-connection-message">presentation-connection-message</a> with the following values:</p>
    <dl>
     <dt data-md>connection-id
@@ -2112,11 +2119,14 @@ across connections, thus making message demuxing/routing easier.</p>
      <p>The ID of the presentation to terminate.</p>
     <dt data-md>reason
     <dd data-md>
-     <p>The reason the presentation is being terminated.</p>
+     <p>Set to <code>application-request</code> if the application requested termination,
+or <code>user-request</code> if the user requested termination. (These are the only
+valid values for <code>reason</code> in a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request①">presentation-termination-request</a>.)</p>
    </dl>
-   <p>When a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver②">receiver</a> receives a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request①">presentation-termination-request</a>, it should
+   <p>When a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiver" id="ref-for-dfn-receiver②">receiver</a> receives a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request②">presentation-termination-request</a>, it should
 send back a <a data-link-type="dfn" href="#presentation-termination-response" id="ref-for-presentation-termination-response">presentation-termination-response</a> message to the requesting
-controller.  It should also notify other controllers about the termination by sending
+controller.</p>
+   <p>It should also notify other controllers about the termination by sending
 a <a data-link-type="dfn" href="#presentation-termination-event" id="ref-for-presentation-termination-event">presentation-termination-event</a> message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:</p>
@@ -2124,9 +2134,12 @@ message contains the following values:</p>
     <dt data-md>presentation-id
     <dd data-md>
      <p>The ID of the presentation that was terminated.</p>
+    <dt data-md>source
+    <dd data-md>
+     <p>Set to <code>controller</code> when the termination was in response to a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request③">presentation-termination-request</a>, or <code>receiver</code> otherwise.</p>
     <dt data-md>reason
     <dd data-md>
-     <p>The reason the presentation was terminated.</p>
+     <p>The detailed reason why the presentation was terminated.</p>
    </dl>
    <p>To accept incoming connection requests from controller, a receiver must receive
 and process the <a data-link-type="dfn" href="#presentation-connection-open-request" id="ref-for-presentation-connection-open-request">presentation-connection-open-request</a> message which contains the
@@ -2239,7 +2252,7 @@ destination browsing context and a <a data-link-type="dfn" href="#presentation-c
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent⑦">controlling user
-agent</a> may send a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request②">presentation-termination-request</a> message.</p>
+agent</a> may send a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request④">presentation-termination-request</a> message with a <code>reason</code> of <code>application-request</code>.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "it MUST listen to and accept incoming connection requests from a
 controlling browsing context using an implementation specific
@@ -3004,13 +3017,16 @@ considered personally identifiable, are important to protect to prevent an
 attacker from changing them or substituting other values during the discovery
 and authentication process.</p>
    <p>The following data cannot be reasonably made confidential and should be
-considered public and untrusted data:</p>
+considered public:</p>
    <ol>
     <li data-md>
      <p>IP addresses and ports used by the Open Screen Protocol.</p>
     <li data-md>
      <p>Data advertised through mDNS, including the display name prefix, the
 certificate fingerprint, and the metadata version.</p>
+    <li data-md>
+     <p>Data provided by an agent through <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑦">agent-info</a>, including its <a data-link-type="dfn" href="#display-name" id="ref-for-display-name">display name</a>, its device model name, its capabilities, and its
+preferred locales.</p>
    </ol>
    <h4 class="heading settled" data-level="12.2.2" id="cross-origin-state"><span class="secno">12.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
    <p>Access to origin state across browsing sessions is possible through the
@@ -3128,7 +3144,7 @@ advertised under a given public key fingerprint.</p>
      <p>Untrusted agents that advertise a display name that is similar to that from an
 already-trusted agent.</p>
     <li data-md>
-     <p>Already-trusted agents whose metadata provided through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑦">agent-info</a> message has changed.</p>
+     <p>Already-trusted agents whose metadata provided through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑧">agent-info</a> message has changed.</p>
    </ul>
    <p>The second is through management of the low-entropy secret during mutual
 authentication:</p>
@@ -3183,6 +3199,10 @@ Instance Names.)</p>
     <li data-md>
      <p>A <a data-link-type="dfn" href="#suspicious-agent" id="ref-for-suspicious-agent">suspicious agent</a> should be displayed differently from trusted
 agents that are not suspicious, or not displayed at all.</p>
+    <li data-md>
+     <p>The user interface to present a PSK during authentication should be done in
+trusted UI and be difficult to spoof.  It should be clear to the user which
+physical device is presenting the PSK.</p>
     <li data-md>
      <p>The user interface to input a PSK during authentication should be done in
 trusted UI and be difficult to spoof.</p>
@@ -3379,17 +3399,31 @@ the wire smaller.</p>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="p">?</span> <span class="kt">uint</span> <span class="c1">; http-response-code</span>
 <span class="p">}</span></p>
+
+<p><span class="nc">presentation-termination-source </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">controller</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">receiver</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
+<span class="p">)</span></p>
+
+<p><span class="nc">presentation-termination-reason </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">application-request</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">user-request</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">receiver-replaced-presentation</span><span class="p">:</span> <span class="mi">20</span>
+  <span class="nx">receiver-idle-too-long</span><span class="p">:</span> <span class="mi">30</span>
+  <span class="nx">receiver-attempted-to-navigate</span><span class="p">:</span> <span class="mi">31</span>
+  <span class="nx">receiver-powering-down</span><span class="p">:</span> <span class="mi">100</span>
+  <span class="nx">receiver-error</span><span class="p">:</span> <span class="mi">101</span>
+  <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
+<span class="p">)</span></p>
 
 <p><span class="c1">; type key 106</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-request">presentation-termination-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
-    <span class="nx">controller-called-terminate</span><span class="p">:</span> <span class="mi">10</span>
-    <span class="nx">user-terminated-via-controller</span><span class="p">:</span> <span class="mi">11</span>
-    <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
-  <span class="p">)</span> <span class="c1">; reason</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">presentation-termination-reason </span><span class="c1">; reason</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 107</span>
@@ -3401,18 +3435,8 @@ the wire smaller.</p>
 <p><span class="c1">; type key 108</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-event">presentation-termination-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
-    <span class="nx">receiver-called-terminate</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="nx">user-terminated-via-receiver</span><span class="p">:</span> <span class="mi">2</span>
-    <span class="nx">controller-called-terminate</span><span class="p">:</span> <span class="mi">10</span>
-    <span class="nx">user-terminated-via-controller</span><span class="p">:</span> <span class="mi">11</span>
-    <span class="nx">receiver-replaced-presentation</span><span class="p">:</span> <span class="mi">20</span>
-    <span class="nx">receiver-idle-too-long</span><span class="p">:</span> <span class="mi">30</span>
-    <span class="nx">receiver-attempted-to-navigate</span><span class="p">:</span> <span class="mi">31</span>
-    <span class="nx">receiver-powering-down</span><span class="p">:</span> <span class="mi">100</span>
-    <span class="nx">receiver-crashed</span><span class="p">:</span> <span class="mi">101</span>
-    <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
-  <span class="p">)</span> <span class="c1">; reason</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">presentation-termination-source </span><span class="c1">; source</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">presentation-termination-reason </span><span class="c1">; reason</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 109</span>
@@ -4350,6 +4374,12 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
     <li><a href="#ref-for-advertising-agent">6. Authentication</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="display-name">
+   <b><a href="#display-name">#display-name</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-display-name">12.2.1. Personally Identifiable Information &amp; High-Value Data</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="suspicious-agent">
    <b><a href="#suspicious-agent">#suspicious-agent</a></b><b>Referenced in:</b>
    <ul>
@@ -4388,7 +4418,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
     <li><a href="#ref-for-agent-info">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info①">(2)</a> <a href="#ref-for-agent-info②">(3)</a> <a href="#ref-for-agent-info③">(4)</a> <a href="#ref-for-agent-info④">(5)</a>
     <li><a href="#ref-for-agent-info⑤">11. Protocol Extensions</a>
     <li><a href="#ref-for-agent-info⑥">11.1. Protocol Extension Fields</a>
-    <li><a href="#ref-for-agent-info⑦">12.5.2. Local active network attackers</a>
+    <li><a href="#ref-for-agent-info⑦">12.2.1. Personally Identifiable Information &amp; High-Value Data</a>
+    <li><a href="#ref-for-agent-info⑧">12.5.2. Local active network attackers</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="agent-status-request">
@@ -4474,8 +4505,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="presentation-termination-request">
    <b><a href="#presentation-termination-request">#presentation-termination-request</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-presentation-termination-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-termination-request①">(2)</a>
-    <li><a href="#ref-for-presentation-termination-request②">7.1. Presentation API</a>
+    <li><a href="#ref-for-presentation-termination-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-termination-request①">(2)</a> <a href="#ref-for-presentation-termination-request②">(3)</a> <a href="#ref-for-presentation-termination-request③">(4)</a>
+    <li><a href="#ref-for-presentation-termination-request④">7.1. Presentation API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="presentation-termination-response">

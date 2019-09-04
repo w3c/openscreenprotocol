@@ -538,6 +538,11 @@ range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
 generate a PSK that has at least as many bits of entropy as it receives in this
 field, and at least as many bits of entropy as it sends in this field.
 
+If an agent chooses to show a user a PSK in more than one way (such as both a 
+QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the 
+PSK presenter would not know which one the user chose to use, and that may lead
+to authentication failures. 
+
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
 
@@ -687,6 +692,12 @@ Additionally, the response must include the following:
     the message receiver chooses the connection-id, it may keep the ID unique
     across connections, thus making message demuxing/routing easier.
 
+The response should include the following:
+
+: http-response-code
+:: The numeric HTTP response code that was returned from fetching the
+    presentation URL (after redirects).
+
 To send a presentation message, the controller or receiver may send a
 [=presentation-connection-message=] with the following values:
 
@@ -705,12 +716,15 @@ To terminate a presentation, the controller may send a
 :: The ID of the presentation to terminate.
 
 : reason
-:: The reason the presentation is being terminated.
-
+:: Set to `application-request` if the application requested termination,
+    or `user-request` if the user requested termination. (These are the only
+    valid values for `reason` in a [=presentation-termination-request=].)
 
 When a [=receiver=] receives a [=presentation-termination-request=], it should
 send back a [=presentation-termination-response=] message to the requesting
-controller.  It should also notify other controllers about the termination by sending
+controller.
+
+It should also notify other controllers about the termination by sending
 a [=presentation-termination-event=] message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:
@@ -718,8 +732,12 @@ message contains the following values:
 : presentation-id
 :: The ID of the presentation that was terminated.
 
+: source
+:: Set to `controller` when the termination was in response to a
+    [=presentation-termination-request=], or `receiver` otherwise.
+
 : reason
-:: The reason the presentation was terminated.
+:: The detailed reason why the presentation was terminated.
 
 To accept incoming connection requests from controller, a receiver must receive
 and process the [=presentation-connection-open-request=] message which contains the
@@ -845,7 +863,8 @@ When
 [[PRESENTATION-API#terminating-a-presentation-in-a-controlling-browsing-context|section
 6.5.6]] says "Send a termination request for the presentation to its receiving
 user agent using an implementation specific mechanism", the [=controlling user
-agent=] may send a [=presentation-termination-request=] message.
+agent=] may send a [=presentation-termination-request=] message with a `reason`
+of `application-request`.
 
 When [[PRESENTATION-API#monitoring-incoming-presentation-connections|section
 6.7.1]]
@@ -1788,11 +1807,14 @@ attacker from changing them or substituting other values during the discovery
 and authentication process.
 
 The following data cannot be reasonably made confidential and should be
-considered public and untrusted data:
+considered public:
 
 1. IP addresses and ports used by the Open Screen Protocol.
 1. Data advertised through mDNS, including the display name prefix, the
     certificate fingerprint, and the metadata version.
+1. Data provided by an agent through [=agent-info=], including its
+    [=display name=], its device model name, its capabilities, and its
+    preferred locales.
 
 ### Cross Origin State Considerations ### {#cross-origin-state}
 
@@ -1993,6 +2015,9 @@ requires users to make informed decisions about which agents to trust.
     Instance Names.)
 1. A [=suspicious agent=] should be displayed differently from trusted
     agents that are not suspicious, or not displayed at all.
+1. The user interface to present a PSK during authentication should be done in
+    trusted UI and be difficult to spoof.  It should be clear to the user which
+    physical device is presenting the PSK.
 1. The user interface to input a PSK during authentication should be done in
     trusted UI and be difficult to spoof.
 1. The user should be required to take action to input the PSK, to prevent the
