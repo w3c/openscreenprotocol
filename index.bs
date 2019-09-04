@@ -1007,37 +1007,42 @@ controller.
 
 The receiver should send a [=remote-playback-state-event=] message whenever:
 
-* Any of the following methods are called: 
-  * [HtmlMediaElement.fastSeek()](https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek)
-  * [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause)
-  * [HtmlMediaElement.play()](https://html.spec.whatwg.org/multipage/media.html#dom-media-play)
-* Any of the following attributes observably change since the last sent [=remote-playback-state-event=] message:
-  * [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc)
-  * [HtmlMediaElement.networkState](https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate)
-  * [HtmlMediaElement.readyState](https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate)
-  * [HtmlMediaElement.error](https://html.spec.whatwg.org/multipage/media.html#dom-media-error)
-  * [HtmlMediaElement's timeline offset](https://html.spec.whatwg.org/multipage/media.html#timeline-offset)
-  * [HtmlMediaElement.duration](https://html.spec.whatwg.org/multipage/media.html#dom-media-duration)
-  * [HtmlMediaElement.buffered](https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered)
-  * [HtmlMediaElement.seekable](https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable)
-  * [HtmlMediaElement.playbackRate](https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate)
-  * [HtmlMediaElement.paused](https://html.spec.whatwg.org/multipage/media.html#dom-media-paused)
-  * [HtmlMediaElement.seeking](https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking)
-  * [HtmlMediaElement.stalled](https://html.spec.whatwg.org/multipage/media.html#event-media-stalled)
-  * [HtmlMediaElement.ended](https://html.spec.whatwg.org/multipage/media.html#dom-media-ended)
-  * [HtmlMediaElement.volume](https://html.spec.whatwg.org/multipage/media.html#dom-media-volume)
-  * [HtmlMediaElement.muted](https://html.spec.whatwg.org/multipage/media.html#dom-media-muted)
-  * [HtmlMediaElement.videoWidth](https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth)
-  * [HtmlMediaElement.videoHeight](https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight)
-  * [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
-  * [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
-  * [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
-* More than 350ms pass since the last [=remote-playback-state-event=] message
+Any of the following methods are called: 
+
+* [HtmlMediaElement.fastSeek()](https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek)
+* [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause)
+* [HtmlMediaElement.play()](https://html.spec.whatwg.org/multipage/media.html#dom-media-play)
+
+Any of the following attributes observably change since the last sent [=remote-playback-state-event=] message:
+
+* [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc)
+* [HtmlMediaElement.networkState](https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate)
+* [HtmlMediaElement.readyState](https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate)
+* [HtmlMediaElement.error](https://html.spec.whatwg.org/multipage/media.html#dom-media-error)
+* [HtmlMediaElement's timeline offset](https://html.spec.whatwg.org/multipage/media.html#timeline-offset)
+* [HtmlMediaElement.duration](https://html.spec.whatwg.org/multipage/media.html#dom-media-duration)
+* [HtmlMediaElement.buffered](https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered)
+* [HtmlMediaElement.seekable](https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable)
+* [HtmlMediaElement.playbackRate](https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate)
+* [HtmlMediaElement.paused](https://html.spec.whatwg.org/multipage/media.html#dom-media-paused)
+* [HtmlMediaElement.seeking](https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking)
+* [HtmlMediaElement.stalled](https://html.spec.whatwg.org/multipage/media.html#event-media-stalled)
+* [HtmlMediaElement.ended](https://html.spec.whatwg.org/multipage/media.html#dom-media-ended)
+* [HtmlMediaElement.volume](https://html.spec.whatwg.org/multipage/media.html#dom-media-volume)
+* [HtmlMediaElement.muted](https://html.spec.whatwg.org/multipage/media.html#dom-media-muted)
+* [HtmlMediaElement.videoWidth](https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth)
+* [HtmlMediaElement.videoHeight](https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight)
+* [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
+* [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
+* [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
+
+More than 350ms pass since the last [=remote-playback-state-event=] message
   and any of the following attributes observably change since the last
   [=remote-playback-state-event=] message. Any new continuously changing
   attributes fall under this rule.
-  * [HtmlMediaElement.played](https://html.spec.whatwg.org/multipage/media.html#dom-media-played)
-  * [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime)
+  
+* [HtmlMediaElement.played](https://html.spec.whatwg.org/multipage/media.html#dom-media-played)
+* [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime)
 
 : remote-playback-id
 :: The ID of the remote playback whose state has changed.
