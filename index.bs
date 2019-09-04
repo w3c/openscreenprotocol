@@ -532,8 +532,10 @@ that agent.  Agents should discard any authentication message whose
 `auth-initation-token` is set and does not match the `at` provided by the
 advertising agent.
 
-If an agent chooses to show a user both a QR-code and a numeric PSK, they must
-be for the same PSK.
+If an agent chooses to show a user more a PSK in more than one way (such both a 
+QR-code and a numeric PSK), they should tbe for the same PSK.  If they were different, the 
+displaying agent would not know which one the user chose to use, and that may lead
+to authentication failures. 
 
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
