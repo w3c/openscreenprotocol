@@ -537,8 +537,7 @@ agents may specify the minimum bits of entropy it requires for a PSK, in the
 range of 20 to 60 bits inclusive.  Agents must terminate any connection
 attempting to authenticate with a PSK with fewer than the minimum number of bits
 of entropy and must not attempt to authenticate with an agent that advertises a
-value outside the allowed range (less than 20 or more than 60 bits of
-entropy).
+value outside the allowed range.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
