@@ -532,6 +532,12 @@ that agent.  Agents should discard any authentication message whose
 `auth-initation-token` is set and does not match the `at` provided by the
 advertising agent.
 
+In the `psk-min-bits-of-entropy` field of the [=auth-capabilities=] messsage,
+agents may specify the minimum bits of entropy it requires for a PSK, in the
+range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
+generate a PSK that has at least as many bits of entropy as it receives in this
+field, and at least as many bits of entropy as it sends in this field.
+
 If an agent chooses to show a user a PSK in more than one way (such as both a 
 QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the 
 PSK presenter would not know which one the user chose to use, and that may lead
