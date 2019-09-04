@@ -1032,13 +1032,12 @@ The receiver should send a [=remote-playback-state-event=] message whenever:
   * [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
   * [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
   * [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
-* More than 350ms pass since the last [=remote-playback-state-event=] message and any of the 
-  following attributes observably change since the last [=remote-playback-state-event=] message:
+* More than 350ms pass since the last [=remote-playback-state-event=] message
+  and any of the following attributes observably change since the last
+  [=remote-playback-state-event=] message. Any new continuously changing
+  attributes fall under this rule.
   * [HtmlMediaElement.played](https://html.spec.whatwg.org/multipage/media.html#dom-media-played)
   * [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime)
-
-The last rule is to prevent messages from being sent continuously, and if any new attributes are added
-which change continuously, those attributes should also fall under that rule.
 
 : remote-playback-id
 :: The ID of the remote playback whose state has changed.
