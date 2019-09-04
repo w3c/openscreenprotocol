@@ -534,10 +534,9 @@ advertising agent.
 
 In the `psk-min-bits-of-entropy` field of the [=auth-capabilities=] messsage,
 agents may specify the minimum bits of entropy it requires for a PSK, in the
-range of 20 to 60 bits inclusive.  Agents must terminate any connection
-attempting to authenticate with a PSK with fewer than the minimum number of bits
-of entropy and must not attempt to authenticate with an agent that advertises a
-value outside the allowed range.
+range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
+generate a PSK that has at least as many bits of entropy as it receives in this
+field, and at least as many bits of entropy as it sends in this field.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
