@@ -411,7 +411,7 @@ The [=agent certificate=] must have the following characteristics:
 
 The following X.509 v3 fields are to be set as follows:
 
-<table>
+m<table>
 <thead>
  <th>Field</th>
  <th>Value</th>
@@ -454,6 +454,8 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
 </tbody>
 </table>
+
+Mandatory fields not mentioned above should be set according to [[RFC 5280]].
 
 The value `<fp>` above should be substituted with the [=agent fingerprint=].
 
@@ -646,9 +648,9 @@ generate a PSK that has at least as many bits of entropy as it receives in this
 field, and at least as many bits of entropy as it sends in this field.
 
 If an agent chooses to show a user a PSK in more than one way (such as both a
-QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the
-PSK presenter would not know which one the user chose to use, and that may lead
-to authentication failures.
+QR-code and a numeric PSK), they should be for the same PSK.  If they were
+different, the PSK presenter would not know which one the user chose to use, and
+that may lead to authentication failures.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
@@ -2080,8 +2082,10 @@ device capabilities using the Open Screen Protocol.  The main strategy to addres
 this is data minimization, by only exposing opaque public key fingerprints
 before user-mediated authentication takes place.
 
-Passive attackers may also attempt timing attacks to learn the
-cryptographic parameters of the TLS 1.3 QUIC connection.
+Passive attackers may also attempt timing attacks to learn the cryptographic
+parameters of the TLS 1.3 QUIC connection.  The application profile for TLS 1.3
+mandates constant-time ciphers and TLS 1.3 implementations should use elliptic
+curve signing operations that are resistant to side channel attacks.
 
 ### Local active network attackers ### {#local-active-mitigations}
 
@@ -2119,7 +2123,8 @@ authentication:
 
 The active attacker may also attempt to disrupt data exchanged over the QUIC
 connection by injecting or modifying traffic.  These attacks should be mitigated
-by a correct implementation of TLS 1.3.
+by a correct implementation of TLS 1.3.  See Appendix E of [[RFC846]] for a
+detailed security analysis of the TLS 1.3 protocol.
 
 ### Remote active network attackers ### {#remote-active-mitigations}
 

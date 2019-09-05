@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="42a753077b871ed94f4d55b2869d70e591f32cbb" name="document-revision">
+  <meta content="202f9de039f49848be74aaf0d5782eb2b5e8b3e5" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1916,6 +1916,8 @@ QUIC connection.</p>
      <p>Valid for signing</p>
    </ul>
    <p>The following X.509 v3 fields are to be set as follows:</p>
+   <p>m</p>
+   <p></p>
    <table>
     <thead>
      <tr>
@@ -1944,6 +1946,7 @@ QUIC connection.</p>
       <td>Certificate Key usage
       <td>Signing
    </table>
+   <p>Mandatory fields not mentioned above should be set according to [[RFC 5280]].</p>
    <p>The value <code>&lt;fp></code> above should be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a>.</p>
    <p class="note" role="note"><span>Note:</span> The OSP agent may use the agent implementer’s or device model name as the
 value for the <code>O</code> key for user interface and debugging purposes. It may use the
@@ -2098,9 +2101,9 @@ range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
 generate a PSK that has at least as many bits of entropy as it receives in this
 field, and at least as many bits of entropy as it sends in this field.</p>
    <p>If an agent chooses to show a user a PSK in more than one way (such as both a
-QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the
-PSK presenter would not know which one the user chose to use, and that may lead
-to authentication failures.</p>
+QR-code and a numeric PSK), they should be for the same PSK.  If they were
+different, the PSK presenter would not know which one the user chose to use, and
+that may lead to authentication failures.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
    <p>For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.</p>
@@ -3311,8 +3314,10 @@ exchanged.</p>
 device capabilities using the Open Screen Protocol.  The main strategy to address
 this is data minimization, by only exposing opaque public key fingerprints
 before user-mediated authentication takes place.</p>
-   <p>Passive attackers may also attempt timing attacks to learn the
-cryptographic parameters of the TLS 1.3 QUIC connection.</p>
+   <p>Passive attackers may also attempt timing attacks to learn the cryptographic
+parameters of the TLS 1.3 QUIC connection.  The application profile for TLS 1.3
+mandates constant-time ciphers and TLS 1.3 implementations should use elliptic
+curve signing operations that are resistant to side channel attacks.</p>
    <h4 class="heading settled" data-level="12.5.2" id="local-active-mitigations"><span class="secno">12.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
    <p>Local active attackers may attempt to impersonate a presentation display the
 user would normally trust.  The <a href="#authentication">§ 6 Authentication</a> step of the Open Screen
@@ -3354,7 +3359,8 @@ prevent brute force attacks.</p>
    </ul>
    <p>The active attacker may also attempt to disrupt data exchanged over the QUIC
 connection by injecting or modifying traffic.  These attacks should be mitigated
-by a correct implementation of TLS 1.3.</p>
+by a correct implementation of TLS 1.3.  See Appendix E of <a data-link-type="biblio" href="#biblio-rfc846">[RFC846]</a> for a
+detailed security analysis of the TLS 1.3 protocol.</p>
    <h4 class="heading settled" data-level="12.5.3" id="remote-active-mitigations"><span class="secno">12.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
    <p>Unfortunately, we cannot rely on network devices to fully protect OSP agents,
 because a misconfigured firewall or NAT could expose a LAN-connected agent to
@@ -4507,6 +4513,8 @@ extensions.</p>
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
    <dt id="biblio-rfc8446">[RFC8446]
    <dd>E. Rescorla. <a href="https://tools.ietf.org/html/rfc8446">The Transport Layer Security (TLS) Protocol Version 1.3</a>. August 2018. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8446">https://tools.ietf.org/html/rfc8446</a>
+   <dt id="biblio-rfc846">[RFC846]
+   <dd>A. Westine; D. Smallberg; J. Postel. <a href="https://tools.ietf.org/html/rfc847">Summary of Smallberg surveys</a>. February 1983. Unknown. URL: <a href="https://tools.ietf.org/html/rfc847">https://tools.ietf.org/html/rfc847</a>
    <dt id="biblio-rfc8466">[RFC8466]
    <dd>B. Wen; et al. <a href="https://tools.ietf.org/html/rfc8466">A YANG Data Model for Layer 2 Virtual Private Network (L2VPN) Service Delivery</a>. October 2018. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8466">https://tools.ietf.org/html/rfc8466</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
