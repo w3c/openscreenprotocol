@@ -88,10 +88,10 @@ content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, and smart speakers.
 
 This spec defines a suite of network protocols that enable two user agents to
-implement the [[PRESENTATION-API|Presentation API]] and
-[[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable fashion.  This means
-that a Web developer can expect these APIs work as intended when connecting two
-devices from independent implementations of the Open Screen Protocol.
+implement the [[PRESENTATION-API|Presentation API]] and [[REMOTE-PLAYBACK|Remote
+Playback API]] in an interoperable fashion.  This means that a Web developer can
+expect these APIs to work as intended when connecting two devices from
+independent implementations of the Open Screen Protocol.
 
 The Open Screen Protocol is a specific implementation of these two APIs, meaning
 that it does not handle all possible ways that browsers and presentation
@@ -107,24 +107,25 @@ APIs or new Web APIs.
 Terminology {#terminology}
 --------------------------
 
-An <dfn>Open Screen agent</dfn> is any implementation of this protocol (browser,
+An <dfn lt="open screen protocol agent|osp agent">Open Screen Protocol
+agent</dfn> (or OSP agent) is any implementation of this protocol (browser,
 display, speaker, or other software).
 
-Some Open Screen agents support the [[PRESENTATION-API|Presentation API]].  The
+Some OSP agents support the [[PRESENTATION-API|Presentation API]].  The
 API allows a [=controlling user agent=] to initiate presentation of Web content
 on another device.  We call this agent a <dfn>controller</dfn> for short.  A
 [=receiving user agent=] is responsible for rendering the Web content, which we
 will call a <dfn>receiver</dfn> for short.  The the Web content itself is called
 a [=presentation=].
 
-Some Open Screen agents also support the
+Some OSP agents also support the
 [[REMOTE-PLAYBACK|Remote Playback API]].  That API allows an agent to render a
 media element on a [=remote playback device=].  In this document, we refer to it
 as a [=receiver=] because it is shorter and keeps terminology consistent between
 presentations and remote playbacks. Similarly, we use the term [=controller=] to
 refer to the agent that starts, terminates, and controls the remote playback.
 
-For media streaming, we refer to an Open Screen agent that sends a media stream
+For media streaming, we refer to an OSP agent that sends a media stream
 as a <dfn>media sender</dfn> and an agent that receives a media stream as a
 <dfn>media receiver</dfn>.  Note that an agent can be both a media sender and a
 media receiver.
@@ -139,11 +140,11 @@ Requirements {#requirements}
 General Requirements {#requirements-general}
 --------------------------------------------------------------
 
-1.  An [=Open Screen agent=] must be able to discover the presence of another Open
-    Screen agent connected to the same IPv4 or IPv6 subnet and reachable by IP
-    multicast.
+1.  An [=Open Screen Protocol agent=] must be able to discover the presence of
+    another OSP agent connected to the same IPv4 or IPv6 subnet and reachable by
+    IP multicast.
 
-2.  An Open Screen Agent must be able to obtain the IPv4 or IPv6 address of
+2.  An OSP agent must be able to obtain the IPv4 or IPv6 address of
     the agent, a display name for the agent, and an IP port number for
     establishing a network transport to the agent.
 
@@ -220,7 +221,7 @@ Remote Playback API Requirements {#requirements-remote-playback}
 Non-Functional Requirements {#requirements-non-functional}
 ----------------------------------------------------------
 
-1.  It should be possible to implement an Open Screen agent using modest
+1.  It should be possible to implement an OSP agent using modest
     hardware requirements, similar to what is found in a low end smartphone,
     smart TV or streaming device. See the [Device
     Specifications](device_specs.md) document for agent hardware specifications.
@@ -230,7 +231,7 @@ Non-Functional Requirements {#requirements-non-functional}
     powered.
 
 3.  The protocol should minimize the amount of information provided to a passive
-    network observer about the identity of the user or activities on the agent, including 
+    network observer about the identity of the user or activities on the agent, including
     presentations, remote playbacks, or the content of media streams.
 
 4.  The protocol should prevent active network attackers from impersonating a
@@ -253,9 +254,9 @@ Non-Functional Requirements {#requirements-non-functional}
     authenticated.
 
 8.  Message latency between agents should be minimized to permit interactive
-    use.  For example, it should be comfortable to type in a form 
-    one agent and have the text appear in the presentation in real time.
-    Real-time latency for gaming or mouse use is ideal, but not a requirement.
+    use.  For example, it should be comfortable to type in a form in one agent
+    and have the text appear in the presentation in real time.  Real-time
+    latency for gaming or mouse use is ideal, but not a requirement.
 
 9. The controller initiating a presentation or remote playback should
     communicate its preferred locale to the receiver, so it can render the
@@ -270,8 +271,9 @@ Non-Functional Requirements {#requirements-non-functional}
 Discovery with mDNS {#discovery}
 ===============================
 
-Agents must discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
-To do so, agents must use the [=Service Name=] `_openscreen._udp.local`.
+[=Open Screen Protocol agents=] must discover one another using
+[[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].  To do so, OSP agents must use the
+[=Service Name=] `_openscreen._udp.local`.
 
 Issue(107): Define suspend and resume behavior for discovery protocol.
 
@@ -450,14 +452,13 @@ include additional information not defined in this spec, as described in
 Messages delivery using CBOR and QUIC streams {#messages}
 ========================================================
 
-Messages are serialized using [[RFC7049|CBOR]].  To
-send a group of messages in order, that group of messages must be sent in one
-QUIC stream.  Independent groups of messages (with no ordering dependency
-across groups) should be sent in different QUIC streams.  In order to put
-multiple CBOR-serialized messages into the the same QUIC stream, the following
-is used.
+Messages are serialized using [[RFC7049|CBOR]].  To send a group of messages in
+order, that group of messages must be sent in one QUIC stream.  Independent
+groups of messages (with no ordering dependency across groups) should be sent in
+different QUIC streams.  In order to put multiple CBOR-serialized messages into
+the the same QUIC stream, the following is used.
 
-For each message, the agent must write to the QUIC stream the following:
+For each message, the [=OSP agent=] must write to the QUIC stream the following:
 
 1.  A type key representing the type of the message, encoded as a variable-length
     integer (see [[#appendix-a]] for type keys)
@@ -485,7 +486,8 @@ specific to that method.  The authentication method is explicitly specified by
 the message itself.  The authentication status message is common for all authentication
 methods.  Any new authentication method added must define new authentication messages.
 
-Open Screen Agents must implement [[#authentication-with-spake2]] with pre-shared keys.
+[=Open Screen Protocol agents=] must implement [[#authentication-with-spake2]]
+with pre-shared keys.
 
 Prior to authentication, agents exchange [=auth-capabilities=] messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
@@ -515,10 +517,10 @@ range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
 generate a PSK that has at least as many bits of entropy as it receives in this
 field, and at least as many bits of entropy as it sends in this field.
 
-If an agent chooses to show a user a PSK in more than one way (such as both a 
-QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the 
+If an agent chooses to show a user a PSK in more than one way (such as both a
+QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the
 PSK presenter would not know which one the user chose to use, and that may lead
-to authentication failures. 
+to authentication failures.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
@@ -547,7 +549,7 @@ such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.
 
 SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
-The client agent acts as Alice, the server acts as Bob.
+The client acts as Alice, the server acts as Bob.
 
 Issue: What do "client" and "server" mean here?
 
@@ -587,9 +589,9 @@ terminating, and controlling presentations as defined by
 defines how APIs in [[PRESENTATION-API|Presentation API]] map to the
 protocol messages defined in this section.
 
-If an Open Screen agent is a [=controller=] for the Presentation API, it must
-advertise the `control-presentation` capability.  If an Open Screen agent is a
-[=receiver=] for the Presentation API, it must advertise the
+If an [=Open Screen Protocol agent=] is a [=controller=] for the Presentation
+API, it must advertise the `control-presentation` capability.  If an OSP agent
+is a [=receiver=] for the Presentation API, it must advertise the
 `receive-presentation` capability.  The same agent may be a presentation
 controller and receiver.
 
@@ -840,7 +842,7 @@ message.
 When [[PRESENTATION-API#closing-a-presentationconnection|section 6.5.5]] says
 "Start to signal to the destination browsing context the intention to close the
 corresponding PresentationConnection", the agent may send a
-[=presentation-connection-close-event=] message to other agent with the
+[=presentation-connection-close-event=] message to the other agent with the
 destination browsing context and a [=presentation-change-event=] when required.
 
 When
@@ -873,9 +875,9 @@ and controlling remote playback of media as defined by the
 APIs in [[REMOTE-PLAYBACK|Remote Playback API]] map to the protocol messages
 defined in this section.
 
-If an Open Screen agent is a [=controller=] for the Remote Playback API, it must
-advertise the `control-remote-playback` capability.  If an Open Screen agent is
-a [=receiver=] for the Remote Playback API, it must advertise the
+If an [=Open Screen Protocol agent=] is a [=controller=] for the Remote Playback
+API, it must advertise the `control-remote-playback` capability.  If an OSP
+agent is a [=receiver=] for the Remote Playback API, it must advertise the
 `receive-remote-playback` capability.  The same agent may be a remote playback
 controller and receiver.
 
@@ -1007,7 +1009,7 @@ controller.
 
 The receiver should send a [=remote-playback-state-event=] message whenever:
 
-Any of the following methods are called: 
+Any of the following methods are called:
 
 * [HtmlMediaElement.fastSeek()](https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek)
 * [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause)
@@ -1040,7 +1042,7 @@ More than 350ms pass since the last [=remote-playback-state-event=] message
   and any of the following attributes observably change since the last
   [=remote-playback-state-event=] message. Any new continuously changing
   attributes fall under this rule.
-  
+
 * [HtmlMediaElement.played](https://html.spec.whatwg.org/multipage/media.html#dom-media-played)
 * [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime)
 
@@ -1386,10 +1388,10 @@ Streaming Protocol {#streaming-protocol}
 This section defines the use of the Open Screen Protocol for streaming
 media from a [=media sender=] to a [=media receiver=].
 
-If an Open Screen agent is a media sender, it must advertise the
-`send-streaming` capability.  If an agent is a media receiver, it must advertise
-the `receive-streaming` capability.  The same agent may be a media sender and a
-media receiver.
+If an [=Open Screen Protocol agent=] is a media sender, it must advertise the
+`send-streaming` capability.  If an OSP agent is a media receiver, it must
+advertise the `receive-streaming` capability.  The same agent may be a media
+sender and a media receiver.
 
 Note: These roles are independent of which agent was the [=advertising agent=]
 or the [=listening agent=] during discovery and connection establishment.
@@ -1675,12 +1677,12 @@ TODO
 Requests, Responses, and Watches {#requests-responses--watches}
 ===============================================================
 
-Multiple sub-protocols in OSP have messages that act as requests, responses,
-watches, and events. Most requests have a `request-id`, and the agent that
-receives the request must send exactly one reponse message in return with the
-same `request-id`.  A watch request has a `watch-id`, and the agent that
-receives the request may send any number of event messages in response with
-the same `watch-id`, until the watch request expires.
+Multiple sub-protocols in the Open Screen Protocol have messages that act as
+requests, responses, watches, and events. Most requests have a `request-id`, and
+the agent that receives the request must send exactly one reponse message in
+return with the same `request-id`.  A watch request has a `watch-id`, and the
+agent that receives the request may send any number of event messages in
+response with the same `watch-id`, until the watch request expires.
 
 `request-id` and `watch-id` values are unsigned integer IDs that are assigned
 from a counter kept by each agent that starts at 1 and increments by 1 for each
@@ -1702,9 +1704,9 @@ certificate fingerprint) to track requests across multiple agents.
 Protocol Extensions {#protocol-extensions}
 ===================
 
-Open Screen agents may exchange extension messages that are not defined by this
-specification.  This could be used for experimentation, customization or other
-purposes.
+[=Open Screen Protocol agents=] may exchange extension messages that are not
+defined by this specification.  This could be used for experimentation,
+customization or other purposes.
 
 To add new extension messages, extension authors must register a capability ID
 with a range of message type keys in a
@@ -1750,15 +1752,14 @@ another agent unless that agent advertises an extension capability ID in its
 Security and Privacy {#security-privacy}
 ====================
 
-The Open Screen Protocol allows two networked agents to discover each other
-and exchange user and application data.  As such, its security and privacy
+The Open Screen Protocol allows two [=OSP agents=] to discover each other and
+exchange user and application data.  As such, its security and privacy
 considerations should be closely examined.  We first evaluate the protocol
 itself using the W3C [[SECURITY-PRIVACY-QUESTIONNAIRE|Security and Privacy
 Questionnaire]].  We then examine whether the security and privacy guidelines
 recommended by the [[PRESENTATION-API|Presentation API]] and the
 [[REMOTE-PLAYBACK|Remote Playback API]] are met.  Finally we discuss recommended
-mitigations that agents can use to meet these security and privacy
-requirements.
+mitigations that agents can use to meet these security and privacy requirements.
 
 Threat Models {#threat-models}
 --------------------------------
@@ -1767,7 +1768,7 @@ Threat Models {#threat-models}
 
 The Open Screen Protocol should assume that all parties that are connected to
 the same LAN, either through a wired connection or through WiFi, are able to
-observe all data flowing between Open Screen Protocol agents.
+observe all data flowing between OSP agents.
 
 These parties will be able collect any data exposed through unencrypted
 messages, such as mDNS records and the QUIC handshakes.
@@ -1789,20 +1790,19 @@ be used to attempt the following:
     from the application state of the presentation or remote playback.
 
 One particular attack of concern is misconfigured or compromised routers that
-expose local network devices (such as Open Screen Protocol agents) to the
-Internet.  This vector of attack has been used by malicious parties to take
-control of printers and smart TVs by connecting to local network services that
-would normally be inaccessible from the Internet.
+expose local network devices (such as OSP agents) to the Internet.  This vector
+of attack has been used by malicious parties to take control of printers and
+smart TVs by connecting to local network services that would normally be
+inaccessible from the Internet.
 
 ### Denial of Service ### {#denial-of-service}
 
-Parties with connected to the LAN may attempt to deny access to Open Screen
-Protocol agents.  For example, an attacker my attempt to open
-a large number of QUIC connections to an agent in an attempt to block
-legitimate connections or exhaust the agent's system resources.  They may
-also multicast spurious DNS-SD records in an attempt to exhaust the cache
-capacity for mDNS listeners, or to get listeners to open a large number of bogus
-QUIC connections.
+Parties with connected to the LAN may attempt to deny access to OSP agents.  For
+example, an attacker my attempt to open a large number of QUIC connections to an
+agent in an attempt to block legitimate connections or exhaust the agent's
+system resources.  They may also multicast spurious DNS-SD records in an attempt
+to exhaust the cache capacity for mDNS listeners, or to get listeners to open a
+large number of bogus QUIC connections.
 
 ### Same-Origin Policy Violations ### {#same-origin-policy-violations}
 
@@ -1879,7 +1879,7 @@ behave identically regardless of which mode is in use.
 
 It's recommended that user agents use separate authentication contexts and QUIC
 connections for normal and incognito profiles from the same user agent instance.
-This prevents Open Screen agents from correlating activity among profiles
+This prevents OSP agents from correlating activity among profiles
 belonging to the same user (both normal and incognito).
 
 ### Persistent State ### {#persistent-state}
@@ -1999,10 +1999,10 @@ Issue(130): Review attack and mitigation considerations for TLS 1.3
 
 ### Remote active network attackers ### {#remote-active-mitigations}
 
-Unfortunately, we cannot rely on network devices to fully protect Open Screen
-Protocol agents, because a misconfigured firewall or NAT could expose a
-LAN-connected agent to the broader Internet.  Open Screen Protocol agents
-should be secure against attack from any Internet host.
+Unfortunately, we cannot rely on network devices to fully protect OSP agents,
+because a misconfigured firewall or NAT could expose a LAN-connected agent to
+the broader Internet.  OSP agents should be secure against attack from any
+Internet host.
 
 Advertising agents must set the `at` field in their mDNS TXT record to protect
 themselves from off-LAN attempts to initiate [[#authentication]], which result
@@ -2012,22 +2012,22 @@ against the PSK.
 ### Denial of service ### {#denial-of-service-mitigations}
 
 It will be difficult to completely prevent denial service of attacks that
-originate on the user's local area network.  Open Screen Protocol agents can
-refuse new connections, close connections that receive too many messages, or
-limit the number of mDNS records cached from a specific responder in an attempt
-to allow existing activities to continue in spite of such an attack.
+originate on the user's local area network.  OSP agents can refuse new
+connections, close connections that receive too many messages, or limit the
+number of mDNS records cached from a specific responder in an attempt to allow
+existing activities to continue in spite of such an attack.
 
 ### Malicious input ### {#malicious-input-mitigations}
 
-Open Screen Protocol agents should be robust against malicious input that
-attempts to compromise the target device by exploiting parsing vulnerabilities.
+OSP agents should be robust against malicious input that attempts to compromise
+the target device by exploiting parsing vulnerabilities.
 
 CBOR is intended to be less vulnerable to such attacks relative to alternatives
 like JSON and XML.  Still, agents should be thoroughly tested using approaches
 like [fuzz testing](https://en.wikipedia.org/wiki/Fuzzing).
 
-Where possible, Open Screen Protocol agents (including the content rendering
-components) should use defense-in-depth techniques like <a
+Where possible, OSP agents (including the content rendering components) should
+use defense-in-depth techniques like <a
 href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a>
 to prevent vulnerabilities from gaining access to user data or leading to
 persistent exploits.
@@ -2036,7 +2036,7 @@ User Interface Considerations {#security-ui}
 -----------------------------
 
 This specification does not make any specific requirements of the security
-relevant user interfaces of Open Screen agents.  However there are important
+relevant user interfaces of OSP agents.  However there are important
 considerations when designing these user interfaces, as PSK-based authentication
 requires users to make informed decisions about which agents to trust.
 

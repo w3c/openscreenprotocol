@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="854be8ced3b7c1a06c5d4c58277f9f88db3866c2" name="document-revision">
+  <meta content="146349f55a3cfb7a67decb384d1de7cc7810818e" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-04">4 September 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-05">5 September 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1621,9 +1621,10 @@ Groups</a>.</p>
 content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, and smart speakers.</p>
    <p>This spec defines a suite of network protocols that enable two user agents to
-implement the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> in an interoperable fashion.  This means
-that a Web developer can expect these APIs work as intended when connecting two
-devices from independent implementations of the Open Screen Protocol.</p>
+implement the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and <a data-link-type="biblio" href="#biblio-remote-playback">Remote
+Playback API</a> in an interoperable fashion.  This means that a Web developer can
+expect these APIs to work as intended when connecting two devices from
+independent implementations of the Open Screen Protocol.</p>
    <p>The Open Screen Protocol is a specific implementation of these two APIs, meaning
 that it does not handle all possible ways that browsers and presentation
 displays could support these APIs.  The Open Screen Protocol specifically
@@ -1634,19 +1635,20 @@ HTML media element, and stream media data to another device.</p>
 capabilities can be added over time.  This may include additions to existing Web
 APIs or new Web APIs.</p>
    <h3 class="heading settled" data-level="1.1" id="terminology"><span class="secno">1.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
-   <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="open-screen-agent">Open Screen agent</dfn> is any implementation of this protocol (browser,
+   <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="open screen protocol agent|osp agent" data-noexport id="open-screen-protocol-agent">Open Screen Protocol
+agent</dfn> (or OSP agent) is any implementation of this protocol (browser,
 display, speaker, or other software).</p>
-   <p>Some Open Screen agents support the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>.  The
+   <p>Some OSP agents support the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>.  The
 API allows a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent">controlling user agent</a> to initiate presentation of Web content
 on another device.  We call this agent a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="controller">controller</dfn> for short.  A <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent">receiving user agent</a> is responsible for rendering the Web content, which we
 will call a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="receiver">receiver</dfn> for short.  The the Web content itself is called
 a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation" id="ref-for-dfn-presentation">presentation</a>.</p>
-   <p>Some Open Screen agents also support the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>.  That API allows an agent to render a
+   <p>Some OSP agents also support the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>.  That API allows an agent to render a
 media element on a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices">remote playback device</a>.  In this document, we refer to it
 as a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver">receiver</a> because it is shorter and keeps terminology consistent between
 presentations and remote playbacks. Similarly, we use the term <a data-link-type="dfn" href="#controller" id="ref-for-controller">controller</a> to
 refer to the agent that starts, terminates, and controls the remote playback.</p>
-   <p>For media streaming, we refer to an Open Screen agent that sends a media stream
+   <p>For media streaming, we refer to an OSP agent that sends a media stream
 as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="media-sender">media sender</dfn> and an agent that receives a media stream as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="media-receiver">media receiver</dfn>.  Note that an agent can be both a media sender and a
 media receiver.</p>
    <p>For additional terms and idioms specific to the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> or <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>,
@@ -1655,11 +1657,11 @@ please consult the respective specifications.</p>
    <h3 class="heading settled" data-level="2.1" id="requirements-general"><span class="secno">2.1. </span><span class="content">General Requirements</span><a class="self-link" href="#requirements-general"></a></h3>
    <ol>
     <li data-md>
-     <p>An <a data-link-type="dfn" href="#open-screen-agent" id="ref-for-open-screen-agent">Open Screen agent</a> must be able to discover the presence of another Open
-Screen agent connected to the same IPv4 or IPv6 subnet and reachable by IP
-multicast.</p>
+     <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent">Open Screen Protocol agent</a> must be able to discover the presence of
+another OSP agent connected to the same IPv4 or IPv6 subnet and reachable by
+IP multicast.</p>
     <li data-md>
-     <p>An Open Screen Agent must be able to obtain the IPv4 or IPv6 address of
+     <p>An OSP agent must be able to obtain the IPv4 or IPv6 address of
 the agent, a display name for the agent, and an IP port number for
 establishing a network transport to the agent.</p>
    </ol>
@@ -1729,7 +1731,7 @@ to the receiver to assist in rendering text during remote playback.</p>
    <h3 class="heading settled" data-level="2.4" id="requirements-non-functional"><span class="secno">2.4. </span><span class="content">Non-Functional Requirements</span><a class="self-link" href="#requirements-non-functional"></a></h3>
    <ol>
     <li data-md>
-     <p>It should be possible to implement an Open Screen agent using modest
+     <p>It should be possible to implement an OSP agent using modest
 hardware requirements, similar to what is found in a low end smartphone,
 smart TV or streaming device. See the <a href="device_specs.md">Device
 Specifications</a> document for agent hardware specifications.</p>
@@ -1739,7 +1741,7 @@ especially on a <a data-link-type="dfn" href="#listening-agent" id="ref-for-list
 powered.</p>
     <li data-md>
      <p>The protocol should minimize the amount of information provided to a passive
-network observer about the identity of the user or activities on the agent, including 
+network observer about the identity of the user or activities on the agent, including
 presentations, remote playbacks, or the content of media streams.</p>
     <li data-md>
      <p>The protocol should prevent active network attackers from impersonating a
@@ -1762,9 +1764,9 @@ each time an agent wants to connect to an agent that the user has already
 authenticated.</p>
     <li data-md>
      <p>Message latency between agents should be minimized to permit interactive
-use.  For example, it should be comfortable to type in a form 
-one agent and have the text appear in the presentation in real time.
-Real-time latency for gaming or mouse use is ideal, but not a requirement.</p>
+use.  For example, it should be comfortable to type in a form in one agent
+and have the text appear in the presentation in real time.  Real-time
+latency for gaming or mouse use is ideal, but not a requirement.</p>
     <li data-md>
      <p>The controller initiating a presentation or remote playback should
 communicate its preferred locale to the receiver, so it can render the
@@ -1776,8 +1778,7 @@ specification, to facilitate experimentation and enhancement of the base
 APIs.</p>
    </ol>
    <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Discovery with mDNS</span><a class="self-link" href="#discovery"></a></h2>
-   <p>Agents must discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.
-To do so, agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
+   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent①">Open Screen Protocol agents</a> must discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.  To do so, OSP agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
    <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a></p>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent</dfn> is one that responds to mDNS queries
 for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
@@ -1923,13 +1924,12 @@ need to keep the connection alive.</p>
    <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info④">agent-info</a> and <a data-link-type="dfn" href="#agent-status-response" id="ref-for-agent-status-response①">agent-status-response</a> messages may be extended to
 include additional information not defined in this spec, as described in <a href="#protocol-extension-fields">§ 11.1 Protocol Extension Fields</a>.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
-   <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To
-send a group of messages in order, that group of messages must be sent in one
-QUIC stream.  Independent groups of messages (with no ordering dependency
-across groups) should be sent in different QUIC streams.  In order to put
-multiple CBOR-serialized messages into the the same QUIC stream, the following
-is used.</p>
-   <p>For each message, the agent must write to the QUIC stream the following:</p>
+   <p>Messages are serialized using <a data-link-type="biblio" href="#biblio-rfc7049">CBOR</a>.  To send a group of messages in
+order, that group of messages must be sent in one QUIC stream.  Independent
+groups of messages (with no ordering dependency across groups) should be sent in
+different QUIC streams.  In order to put multiple CBOR-serialized messages into
+the the same QUIC stream, the following is used.</p>
+   <p>For each message, the <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent②">OSP agent</a> must write to the QUIC stream the following:</p>
    <ol>
     <li data-md>
      <p>A type key representing the type of the message, encoded as a variable-length
@@ -1951,7 +1951,7 @@ request they are associated with.</p>
 specific to that method.  The authentication method is explicitly specified by
 the message itself.  The authentication status message is common for all authentication
 methods.  Any new authentication method added must define new authentication messages.</p>
-   <p>Open Screen Agents must implement <a href="#authentication-with-spake2">§ 6.1 Authentication with SPAKE2</a> with pre-shared keys.</p>
+   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent③">Open Screen Protocol agents</a> must implement <a href="#authentication-with-spake2">§ 6.1 Authentication with SPAKE2</a> with pre-shared keys.</p>
    <p>Prior to authentication, agents exchange <a data-link-type="dfn" href="#auth-capabilities" id="ref-for-auth-capabilities">auth-capabilities</a> messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
@@ -1974,7 +1974,7 @@ range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
 generate a PSK that has at least as many bits of entropy as it receives in this
 field, and at least as many bits of entropy as it sends in this field.</p>
    <p>If an agent chooses to show a user a PSK in more than one way (such as both a
-QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the 
+QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the
 PSK presenter would not know which one the user chose to use, and that may lead
 to authentication failures.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
@@ -2002,7 +2002,7 @@ is not stored in any form.</p>
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.</p>
    <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
-The client agent acts as Alice, the server acts as Bob.</p>
+The client acts as Alice, the server acts as Bob.</p>
    <p class="issue" id="issue-492f86ab"><a class="self-link" href="#issue-492f86ab"></a> What do "client" and "server" mean here?</p>
    <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn" href="#auth-spake2-message" id="ref-for-auth-spake2-message">auth-spake2-message</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
 SPAKE2 describes in detail how <a data-link-type="dfn" href="#auth-spake2-message" id="ref-for-auth-spake2-message①">auth-spake2-message</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
@@ -2021,8 +2021,9 @@ and sends the <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-statu
    <p>This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§ 7.1 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
 protocol messages defined in this section.</p>
-   <p>If an Open Screen agent is a <a data-link-type="dfn" href="#controller" id="ref-for-controller③">controller</a> for the Presentation API, it must
-advertise the <code>control-presentation</code> capability.  If an Open Screen agent is a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver③">receiver</a> for the Presentation API, it must advertise the <code>receive-presentation</code> capability.  The same agent may be a presentation
+   <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent④">Open Screen Protocol agent</a> is a <a data-link-type="dfn" href="#controller" id="ref-for-controller③">controller</a> for the Presentation
+API, it must advertise the <code>control-presentation</code> capability.  If an OSP agent
+is a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver③">receiver</a> for the Presentation API, it must advertise the <code>receive-presentation</code> capability.  The same agent may be a presentation
 controller and receiver.</p>
    <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent③">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent②">listening agent</a> during discovery and connection establishment.</p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation displays</a> for a
@@ -2253,7 +2254,7 @@ embedded in the encoded CBOR type and does not need an additional value in the
 message.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#closing-a-presentationconnection">section 6.5.5</a> says
 "Start to signal to the destination browsing context the intention to close the
-corresponding PresentationConnection", the agent may send a <a data-link-type="dfn" href="#presentation-connection-close-event" id="ref-for-presentation-connection-close-event②">presentation-connection-close-event</a> message to other agent with the
+corresponding PresentationConnection", the agent may send a <a data-link-type="dfn" href="#presentation-connection-close-event" id="ref-for-presentation-connection-close-event②">presentation-connection-close-event</a> message to the other agent with the
 destination browsing context and a <a data-link-type="dfn" href="#presentation-change-event" id="ref-for-presentation-change-event②">presentation-change-event</a> when required.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#terminating-a-presentation-in-a-controlling-browsing-context">section
 6.5.6</a> says "Send a termination request for the presentation to its receiving
@@ -2272,9 +2273,9 @@ must send a <a data-link-type="dfn" href="#presentation-connection-open-response
 and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 8.2 Remote Playback API</a> defines how
 APIs in <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> map to the protocol messages
 defined in this section.</p>
-   <p>If an Open Screen agent is a <a data-link-type="dfn" href="#controller" id="ref-for-controller⑤">controller</a> for the Remote Playback API, it must
-advertise the <code>control-remote-playback</code> capability.  If an Open Screen agent is
-a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver⑤">receiver</a> for the Remote Playback API, it must advertise the <code>receive-remote-playback</code> capability.  The same agent may be a remote playback
+   <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑤">Open Screen Protocol agent</a> is a <a data-link-type="dfn" href="#controller" id="ref-for-controller⑤">controller</a> for the Remote Playback
+API, it must advertise the <code>control-remote-playback</code> capability.  If an OSP
+agent is a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver⑤">receiver</a> for the Remote Playback API, it must advertise the <code>receive-remote-playback</code> capability.  The same agent may be a remote playback
 controller and receiver.</p>
    <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent④">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent③">listening agent</a> during discovery and connection establishment.</p>
    <p>For all messages defined in this section, see Appendix A for the full
@@ -2708,9 +2709,9 @@ send the <a data-link-type="dfn" href="#remote-playback-termination-request" id=
    <h2 class="heading settled" data-level="9" id="streaming-protocol"><span class="secno">9. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for streaming
 media from a <a data-link-type="dfn" href="#media-sender" id="ref-for-media-sender">media sender</a> to a <a data-link-type="dfn" href="#media-receiver" id="ref-for-media-receiver">media receiver</a>.</p>
-   <p>If an Open Screen agent is a media sender, it must advertise the <code>send-streaming</code> capability.  If an agent is a media receiver, it must advertise
-the <code>receive-streaming</code> capability.  The same agent may be a media sender and a
-media receiver.</p>
+   <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑥">Open Screen Protocol agent</a> is a media sender, it must advertise the <code>send-streaming</code> capability.  If an OSP agent is a media receiver, it must
+advertise the <code>receive-streaming</code> capability.  The same agent may be a media
+sender and a media receiver.</p>
    <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑤">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent④">listening agent</a> during discovery and connection establishment.</p>
    <h3 class="heading settled" data-level="9.1" id="streaming-protocol-capabilities"><span class="secno">9.1. </span><span class="content">Streaming Protocol Capabilities</span><a class="self-link" href="#streaming-protocol-capabilities"></a></h3>
     If the advertiser is already authenticated, the requester has the ability to
@@ -2965,12 +2966,12 @@ frame.  If not set, the media sender must generate an indepdendent (key) frame.<
    <h3 class="heading settled" data-level="9.7" id="streaming-stats"><span class="secno">9.7. </span><span class="content">Stats</span><a class="self-link" href="#streaming-stats"></a></h3>
    <p>TODO</p>
    <h2 class="heading settled" data-level="10" id="requests-responses--watches"><span class="secno">10. </span><span class="content">Requests, Responses, and Watches</span><a class="self-link" href="#requests-responses--watches"></a></h2>
-   <p>Multiple sub-protocols in OSP have messages that act as requests, responses,
-watches, and events. Most requests have a <code>request-id</code>, and the agent that
-receives the request must send exactly one reponse message in return with the
-same <code>request-id</code>.  A watch request has a <code>watch-id</code>, and the agent that
-receives the request may send any number of event messages in response with
-the same <code>watch-id</code>, until the watch request expires.</p>
+   <p>Multiple sub-protocols in the Open Screen Protocol have messages that act as
+requests, responses, watches, and events. Most requests have a <code>request-id</code>, and
+the agent that receives the request must send exactly one reponse message in
+return with the same <code>request-id</code>.  A watch request has a <code>watch-id</code>, and the
+agent that receives the request may send any number of event messages in
+response with the same <code>watch-id</code>, until the watch request expires.</p>
    <p><code>request-id</code> and <code>watch-id</code> values are unsigned integer IDs that are assigned
 from a counter kept by each agent that starts at 1 and increments by 1 for each
 ID.  Whenever an agent changes its <code>state-token</code>, it must reset its counter to 1.</p>
@@ -2985,9 +2986,9 @@ agents to save power by closing unused connections.</p>
 a request ID with a unique identifier for the agent that sent it (like its
 certificate fingerprint) to track requests across multiple agents.</p>
    <h2 class="heading settled" data-level="11" id="protocol-extensions"><span class="secno">11. </span><span class="content">Protocol Extensions</span><a class="self-link" href="#protocol-extensions"></a></h2>
-   <p>Open Screen agents may exchange extension messages that are not defined by this
-specification.  This could be used for experimentation, customization or other
-purposes.</p>
+   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑦">Open Screen Protocol agents</a> may exchange extension messages that are not
+defined by this specification.  This could be used for experimentation,
+customization or other purposes.</p>
    <p>To add new extension messages, extension authors must register a capability ID
 with a range of message type keys in a <a href="https://webscreens.github.io/openscreenprotocol/capabilites.md">public registry</a>.
 Agents may then indicate that they accept an extension by including the
@@ -3015,19 +3016,18 @@ Instead, they may add them to its nested <code>optional</code> value.</p>
 Open Screen Protocol messages.  An agent should not send extension fields to
 another agent unless that agent advertises an extension capability ID in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑥">agent-info</a> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
-   <p>The Open Screen Protocol allows two networked agents to discover each other
-and exchange user and application data.  As such, its security and privacy
+   <p>The Open Screen Protocol allows two <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑧">OSP agents</a> to discover each other and
+exchange user and application data.  As such, its security and privacy
 considerations should be closely examined.  We first evaluate the protocol
 itself using the W3C <a data-link-type="biblio" href="#biblio-security-privacy-questionnaire">Security and Privacy
 Questionnaire</a>.  We then examine whether the security and privacy guidelines
 recommended by the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> are met.  Finally we discuss recommended
-mitigations that agents can use to meet these security and privacy
-requirements.</p>
+mitigations that agents can use to meet these security and privacy requirements.</p>
    <h3 class="heading settled" data-level="12.1" id="threat-models"><span class="secno">12.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
    <h4 class="heading settled" data-level="12.1.1" id="passive-network-attackers"><span class="secno">12.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
    <p>The Open Screen Protocol should assume that all parties that are connected to
 the same LAN, either through a wired connection or through WiFi, are able to
-observe all data flowing between Open Screen Protocol agents.</p>
+observe all data flowing between OSP agents.</p>
    <p>These parties will be able collect any data exposed through unencrypted
 messages, such as mDNS records and the QUIC handshakes.</p>
    <p>These parties may attempt to learn cryptographic parameters by observing data
@@ -3048,18 +3048,17 @@ to convince the user to authenticate to it.</p>
 from the application state of the presentation or remote playback.</p>
    </ul>
    <p>One particular attack of concern is misconfigured or compromised routers that
-expose local network devices (such as Open Screen Protocol agents) to the
-Internet.  This vector of attack has been used by malicious parties to take
-control of printers and smart TVs by connecting to local network services that
-would normally be inaccessible from the Internet.</p>
+expose local network devices (such as OSP agents) to the Internet.  This vector
+of attack has been used by malicious parties to take control of printers and
+smart TVs by connecting to local network services that would normally be
+inaccessible from the Internet.</p>
    <h4 class="heading settled" data-level="12.1.3" id="denial-of-service"><span class="secno">12.1.3. </span><span class="content">Denial of Service</span><a class="self-link" href="#denial-of-service"></a></h4>
-   <p>Parties with connected to the LAN may attempt to deny access to Open Screen
-Protocol agents.  For example, an attacker my attempt to open
-a large number of QUIC connections to an agent in an attempt to block
-legitimate connections or exhaust the agent’s system resources.  They may
-also multicast spurious DNS-SD records in an attempt to exhaust the cache
-capacity for mDNS listeners, or to get listeners to open a large number of bogus
-QUIC connections.</p>
+   <p>Parties with connected to the LAN may attempt to deny access to OSP agents.  For
+example, an attacker my attempt to open a large number of QUIC connections to an
+agent in an attempt to block legitimate connections or exhaust the agent’s
+system resources.  They may also multicast spurious DNS-SD records in an attempt
+to exhaust the cache capacity for mDNS listeners, or to get listeners to open a
+large number of bogus QUIC connections.</p>
    <h4 class="heading settled" data-level="12.1.4" id="same-origin-policy-violations"><span class="secno">12.1.4. </span><span class="content">Same-Origin Policy Violations</span><a class="self-link" href="#same-origin-policy-violations"></a></h4>
    <p>The Presentation API allows cross-origin communication between controlling pages
 and presentations with the consent of each origin (through their use of the
@@ -3121,7 +3120,7 @@ browsing and incognito modes, and agents that follow the specification
 behave identically regardless of which mode is in use.</p>
    <p>It’s recommended that user agents use separate authentication contexts and QUIC
 connections for normal and incognito profiles from the same user agent instance.
-This prevents Open Screen agents from correlating activity among profiles
+This prevents OSP agents from correlating activity among profiles
 belonging to the same user (both normal and incognito).</p>
    <h4 class="heading settled" data-level="12.2.5" id="persistent-state"><span class="secno">12.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
    <p>An agent is likely to persist the identity of agents that have successfully
@@ -3235,32 +3234,32 @@ connection by injecting or modifying traffic.  These attacks should be mitigated
 by a correct implementation of TLS 1.3.</p>
    <p class="issue" id="issue-84520e29①"><a class="self-link" href="#issue-84520e29①"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
    <h4 class="heading settled" data-level="12.5.3" id="remote-active-mitigations"><span class="secno">12.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
-   <p>Unfortunately, we cannot rely on network devices to fully protect Open Screen
-Protocol agents, because a misconfigured firewall or NAT could expose a
-LAN-connected agent to the broader Internet.  Open Screen Protocol agents
-should be secure against attack from any Internet host.</p>
+   <p>Unfortunately, we cannot rely on network devices to fully protect OSP agents,
+because a misconfigured firewall or NAT could expose a LAN-connected agent to
+the broader Internet.  OSP agents should be secure against attack from any
+Internet host.</p>
    <p>Advertising agents must set the <code>at</code> field in their mDNS TXT record to protect
 themselves from off-LAN attempts to initiate <a href="#authentication">§ 6 Authentication</a>, which result
 in user annoyance (display or input of PSK) and potential brute force attacks
 against the PSK.</p>
    <h4 class="heading settled" data-level="12.5.4" id="denial-of-service-mitigations"><span class="secno">12.5.4. </span><span class="content">Denial of service</span><a class="self-link" href="#denial-of-service-mitigations"></a></h4>
    <p>It will be difficult to completely prevent denial service of attacks that
-originate on the user’s local area network.  Open Screen Protocol agents can
-refuse new connections, close connections that receive too many messages, or
-limit the number of mDNS records cached from a specific responder in an attempt
-to allow existing activities to continue in spite of such an attack.</p>
+originate on the user’s local area network.  OSP agents can refuse new
+connections, close connections that receive too many messages, or limit the
+number of mDNS records cached from a specific responder in an attempt to allow
+existing activities to continue in spite of such an attack.</p>
    <h4 class="heading settled" data-level="12.5.5" id="malicious-input-mitigations"><span class="secno">12.5.5. </span><span class="content">Malicious input</span><a class="self-link" href="#malicious-input-mitigations"></a></h4>
-   <p>Open Screen Protocol agents should be robust against malicious input that
-attempts to compromise the target device by exploiting parsing vulnerabilities.</p>
+   <p>OSP agents should be robust against malicious input that attempts to compromise
+the target device by exploiting parsing vulnerabilities.</p>
    <p>CBOR is intended to be less vulnerable to such attacks relative to alternatives
 like JSON and XML.  Still, agents should be thoroughly tested using approaches
 like <a href="https://en.wikipedia.org/wiki/Fuzzing">fuzz testing</a>.</p>
-   <p>Where possible, Open Screen Protocol agents (including the content rendering
-components) should use defense-in-depth techniques like <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a> to prevent vulnerabilities from gaining access to user data or leading to
+   <p>Where possible, OSP agents (including the content rendering components) should
+use defense-in-depth techniques like <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a> to prevent vulnerabilities from gaining access to user data or leading to
 persistent exploits.</p>
    <h3 class="heading settled" data-level="12.6" id="security-ui"><span class="secno">12.6. </span><span class="content">User Interface Considerations</span><a class="self-link" href="#security-ui"></a></h3>
    <p>This specification does not make any specific requirements of the security
-relevant user interfaces of Open Screen agents.  However there are important
+relevant user interfaces of OSP agents.  However there are important
 considerations when designing these user interfaces, as PSK-based authentication
 requires users to make informed decisions about which agents to trust.</p>
    <ol>
@@ -4095,7 +4094,8 @@ extensions.</p>
    <li><a href="#media-receiver">media receiver</a><span>, in §1.1</span>
    <li><a href="#media-sender">media sender</a><span>, in §1.1</span>
    <li><a href="#media-time">media-time</a><span>, in §Unnumbered section</span>
-   <li><a href="#open-screen-agent">Open Screen agent</a><span>, in §1.1</span>
+   <li><a href="#open-screen-protocol-agent">open screen protocol agent</a><span>, in §1.1</span>
+   <li><a href="#open-screen-protocol-agent">osp agent</a><span>, in §1.1</span>
    <li><a href="#presentation-change-event">presentation-change-event</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-connection-close-event">presentation-connection-close-event</a><span>, in §Unnumbered section</span>
    <li><a href="#presentation-connection-message">presentation-connection-message</a><span>, in §Unnumbered section</span>
@@ -4400,10 +4400,18 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29"> ↵ </a></div>
    <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29①"> ↵ </a></div>
   </div>
-  <aside class="dfn-panel" data-for="open-screen-agent">
-   <b><a href="#open-screen-agent">#open-screen-agent</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="open-screen-protocol-agent">
+   <b><a href="#open-screen-protocol-agent">#open-screen-protocol-agent</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-open-screen-agent">2.1. General Requirements</a>
+    <li><a href="#ref-for-open-screen-protocol-agent">2.1. General Requirements</a>
+    <li><a href="#ref-for-open-screen-protocol-agent①">3. Discovery with mDNS</a>
+    <li><a href="#ref-for-open-screen-protocol-agent②">5. Messages delivery using CBOR and QUIC streams</a>
+    <li><a href="#ref-for-open-screen-protocol-agent③">6. Authentication</a>
+    <li><a href="#ref-for-open-screen-protocol-agent④">7. Presentation Protocol</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑤">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑥">9. Streaming Protocol</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑦">11. Protocol Extensions</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑧">12. Security and Privacy</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="controller">
