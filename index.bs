@@ -63,6 +63,7 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-512
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md2
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
+url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 </pre>
 
 <h2 class='no-num no-toc no-ref' id='document-status'>Status of this document</h2>
@@ -1413,10 +1414,8 @@ following properties:
 The format type is used as the basis for audio and video capabilities.
 Formats are composed of the following properties:
 
-<!-- TODO, specify where names are defined. -->
-
 : name (required)
-:: The name of the format. Expected values include "vp8", "h264", "opus."
+:: The name of the codec.   This must be a single-codec [=codecs parameter=].
 
 <!-- TODO, specify where codec-specific parameters are defined. -->
 
@@ -1540,7 +1539,8 @@ Each audio encoding offered defines the following properties:
     the media stream.
 
 : codec-name
-:: The name of the codec used by the encoding.
+:: The name of the codec used by the encoding.  This must be a single-codec
+   [=codecs parameter=].
 
 : time-scale
 :: The time scale used by all audio frames.  This allows senders to
