@@ -63,6 +63,7 @@ microseconds = uint
 auth-capabilities = {
   0: uint ; psk-ease-of-input
   1: [* psk-input-method] ; psk-input-methods
+  2: uint ; psk-min-bits-of-entropy
 }
 
 psk-input-method = &(
@@ -151,17 +152,31 @@ presentation-start-response = {
   response
   1: &result ; result
   2: uint ; connection-id
+  3: ? uint ; http-response-code
 }
+
+presentation-termination-source = &(
+  controller: 1
+  receiver: 2
+  unknown: 255
+)
+
+presentation-termination-reason = &(
+  application-request: 1
+  user-request: 2
+  receiver-replaced-presentation: 20
+  receiver-idle-too-long: 30
+  receiver-attempted-to-navigate: 31
+  receiver-powering-down: 100
+  receiver-error: 101
+  unknown: 255
+)
 
 ; type key 106
 presentation-termination-request = {
   request
   1: text ; presentation-id
-  2: &(
-    controller-called-terminate: 10
-    user-terminated-via-controller: 11
-    unknown: 255
-  ) ; reason
+  2: presentation-termination-reason ; reason
 }
 
 ; type key 107
@@ -173,18 +188,8 @@ presentation-termination-response = {
 ; type key 108
 presentation-termination-event = {
   1: text ; presentation-id
-  2: &(
-    receiver-called-terminate: 1
-    user-terminated-via-receiver: 2
-    controller-called-terminate: 10
-    user-terminated-via-controller: 11
-    receiver-replaced-presentation: 20
-    receiver-idle-too-long: 30
-    receiver-attempted-to-navigate: 31
-    receiver-powering-down: 100
-    receiver-crashed: 101
-    unknown: 255
-  ) ; reason
+  2: presentation-termination-source ; source
+  3: presentation-termination-reason ; reason
 }
 
 ; type key 109

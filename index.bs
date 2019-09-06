@@ -37,18 +37,11 @@ Issue: Can autolinks to HTML51 be automatically generated?
 <pre class="anchors">
 urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
     text: available presentation display
-    text: controller
     text: controlling user agent
-    text: controlling browsing context
     text: presentation
-    text: presentation display
-    text: presentation display availability
     text: presentation id
     text: presentation request url
-    text: receiver
-    text: receiving browsing context
     text: receiving user agent
-    text: available presentation display
 urlPrefix: https://w3c.github.io/presentation-api/; type: interface; spec: PRESENTATION-API
     text: PresentationConnection
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
@@ -92,195 +85,184 @@ Introduction {#introduction}
 
 The Open Screen Protocol connects browsers to devices capable of rendering Web
 content for a shared audience.  Typically, these are devices like
-Internet-connected TVs, HDMI dongles, or "smart" speakers.
+Internet-connected TVs, HDMI dongles, and smart speakers.
 
-The protocol is a suite of subsidiary network protocols that enable two user
-agents to implement the [[PRESENTATION-API|Presentation API]] and
-[[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable fashion.  This means
-that a user can expect these APIs work as intended when connecting two devices
-from independent implementations of the Open Screen Protocol.
+This spec defines a suite of network protocols that enable two user agents to
+implement the [[PRESENTATION-API|Presentation API]] and [[REMOTE-PLAYBACK|Remote
+Playback API]] in an interoperable fashion.  This means that a Web developer can
+expect these APIs to work as intended when connecting two devices from
+independent implementations of the Open Screen Protocol.
 
 The Open Screen Protocol is a specific implementation of these two APIs, meaning
 that it does not handle all possible ways that browsers and presentation
 displays could support these APIs.  The Open Screen Protocol specifically
 supports browsers and displays that are connected via the same local area
-network, and that initiate presentation or remote playback by sending a URL
-from the browser to the target display.
+network.  It allows a browser to present a URL, initiate remote playback of an
+HTML media element, and stream media data to another device.
 
 The Open Screen Protocol is intended to be extensible, so that additional
-capabilities can be added over time.  This may include new implementations of
-existing APIs, or new APIs.
+capabilities can be added over time.  This may include additions to existing Web
+APIs or new Web APIs.
 
 Terminology {#terminology}
 --------------------------
 
-We use the term "agent" to mean any implementation of this protocol
-(browser, device, or otherwise), acting as a controller or a receiver.
+An <dfn lt="open screen protocol agent|osp agent">Open Screen Protocol
+agent</dfn> (or OSP agent) is any implementation of this protocol (browser,
+display, speaker, or other software).
 
-We borrow terminology from the [[PRESENTATION-API|Presentation API]]. We call
-the agent that is used to discover and initiate presentation of Web content on
-another device the [=controller=] (or [=controlling user agent=] when it is a
-browser).  We call the agent on the device rendering the Web content the
-[=receiver=] or [=presentation display=] (or [=receiving user agent=] when it is
-a browser). [=presentation display availability=] refers to whether or not a
-[=receiver=] is compatible with a [=presentation request URL=].  However, in the
-[[PRESENTATION-API|Presentation API]], a "controller" refers to as a specific
-browsing context within the browser, whereas here the "controller" refers to the
-browser itself, although it may be acting on behalf of a browsing context.
+Some OSP agents support the [[PRESENTATION-API|Presentation API]].  The
+API allows a [=controlling user agent=] to initiate presentation of Web content
+on another device.  We call this agent a <dfn>controller</dfn> for short.  A
+[=receiving user agent=] is responsible for rendering the Web content, which we
+will call a <dfn>receiver</dfn> for short.  The the Web content itself is called
+a [=presentation=].
 
-We borrow terminology from the [[REMOTE-PLAYBACK|Remote Playback API]].  The
-agent responsible for rendering media of a remote playback is called the
-[=remote playback device=]. In this document, we also refer to it as the
-*receiver* because it is shorter and keeps terminology consistent between
-presentations and remote playbacks. Similarly, we use the term "controller"
-(referred to as the "user agent" in the [[REMOTE-PLAYBACK|Remote Playback API]])
-to refer to the agent that starts, terminates, and controls the remote playback.
+Some OSP agents also support the
+[[REMOTE-PLAYBACK|Remote Playback API]].  That API allows an agent to render a
+media element on a [=remote playback device=].  In this document, we refer to it
+as a [=receiver=] because it is shorter and keeps terminology consistent between
+presentations and remote playbacks. Similarly, we use the term [=controller=] to
+refer to the agent that starts, terminates, and controls the remote playback.
 
-For media streaming, we refer to the agent sending media as the media
-*sender* and the agent receiving the media as the media *receiver*.
-Note that a media *receiver* may or may not be a *receiver* or
-*controller* as defined by the Presentation API or Remote Playback
-API.  Also note that an agent may be both a *sender* and *receiver*.
+For media streaming, we refer to an OSP agent that sends a media stream
+as a <dfn>media sender</dfn> and an agent that receives a media stream as a
+<dfn>media receiver</dfn>.  Note that an agent can be both a media sender and a
+media receiver.
 
-For additional terms and idioms specific to the [[PRESENTATION-API|Presentation
-API]] or [[REMOTE-PLAYBACK|Remote Playback API]], please consult the respective
-specifications.
-
-Issue(144): Receiver/Controller/Agent terminology.
+For additional terms and idioms specific to the
+[[PRESENTATION-API|Presentation API]] or [[REMOTE-PLAYBACK|Remote Playback API]],
+please consult the respective specifications.
 
 Requirements {#requirements}
 ============================
 
+General Requirements {#requirements-general}
+--------------------------------------------------------------
+
+1.  An [=Open Screen Protocol agent=] must be able to discover the presence of
+    another OSP agent connected to the same IPv4 or IPv6 subnet and reachable by
+    IP multicast.
+
+2.  An OSP agent must be able to obtain the IPv4 or IPv6 address of
+    the agent, a display name for the agent, and an IP port number for
+    establishing a network transport to the agent.
+
+
 Presentation API Requirements {#requirements-presentation-api}
 --------------------------------------------------------------
 
-1.  A controlling user agent must be able to discover the presence of a
-    presentation display connected to the same IPv4 or IPv6 subnet and reachable
-    by IP multicast.
+1.  A [=controller=] must be able to determine if a [=receiver=] is reasonably
+    capable of rendering a specific [=presentation request URL=].
 
-2.  A controlling user agent must be able to obtain the IPv4 or IPv6 address of
-    the display, a display name for the display, and an IP port number for
-    establishing a network transport to the display.
+2.  A controller must be able to start a new [=presentation=] on a
+    receiver given a [=presentation request URL=] and [=presentation ID=].
 
-3.  A controlling user agent must be able to determine if the receiver is
-    reasonably capable of rendering a specific [=presentation request URL=].
-
-4.  A controlling user agent must be able to start a new presentation on a receiver given a
-    [=presentation request URL=] and [=presentation ID=].
-
-5.  A controlling user agent must be able to create a new
+3.  A controller must be able to create a new
     {{PresentationConnection}} to an existing presentation on the
     receiver, given its [=presentation request URL=] and [=presentation ID=].
 
-6.  It must be possible to close a {{PresentationConnection}} between a
+4.  It must be possible to close a {{PresentationConnection}} between a
     controller and a presentation, and signal both parties with the
     reason why the connection was closed.
 
-7.  Multiple controllers must be able to connect to a single presentation
-    simultaneously, possibly from from one or more [=controlling user agents=].
+5.  Multiple controllers must be able to connect to a single presentation
+    simultaneously.
 
-8.  Messages sent by the controller must be delivered to the presentation (or
+6.  Messages sent by the controller must be delivered to the presentation (or
     vice versa) in a reliable and in-order fashion.
 
-9.  If a message cannot be delivered, then the controlling user agent must be
+7.  If a message cannot be delivered, then the controller must be
     able to signal the receiver (or vice versa) that the connection should be
     closed with reason `error`.
 
-10. The controller and presentation must be able to send and receive `DOMString`
+8.  The controller and presentation must be able to send and receive `DOMString`
     messages (represented as `string` type in ECMAScript).
 
-11. The controller and presentation must be able to send and receive binary
+9.  The controller and presentation must be able to send and receive binary
     messages (represented as `Blob` objects in HTML5, or `ArrayBuffer` or
     `ArrayBufferView` types in ECMAScript).
 
-12. The controlling user agent must be able to signal to the receiver to
+10. The controller must be able to signal to the receiver to
     terminate a presentation, given its [=presentation request URL=] and [=presentation
     ID=].
 
-13. The receiver must be able to signal all connected controlling user agents
+11. The receiver must be able to signal all connected controllers
     when a presentation is terminated.
 
 
 Remote Playback API Requirements {#requirements-remote-playback}
 ----------------------------------------------------------------
 
-1.  A [=controlling user agent=] must be able to find out whether there is at
-    least one compatible [=remote playback device=] available for a given
-    {{HTMLMediaElement}}, both instantaneously and continuously.
+1.  A [=controller=] must be able to find out whether there is at least one
+    compatible [=receiver=] for a given {{HTMLMediaElement}}, both
+    instantaneously and continuously.
 
-2.  A controlling user agent must be able to to [=initiate remote playback=] of
-    an {{HTMLMediaElement}} to a compatible remote playback device.
+2.  A controller must be able to to [=initiate remote playback=] of
+    an {{HTMLMediaElement}} to a compatible receiver.
 
-3.  The controlling user agent must be able send media sources as URLs and text
-    tracks from an {{HTMLMediaElement}} to a compatible remote playback device.
+3.  The controller must be able send media sources as URLs and text
+    tracks from an {{HTMLMediaElement}} to a compatible receiver.
 
-4.  During remote playback, the controlling user agent and the remote playback
+4.  The controller must be able send media data from an {{HTMLMediaElement}} to
+    a compatible receiver.
+
+5.  During remote playback, the controller and the remote playback
     device must be able to synchronize the [=media element state=] of the
     {{HTMLMediaElement}}.
 
-5.  During remote playback, either the controlling user agent or the
-    remote playback device must be able to disconnect from the other party.
+6.  During remote playback, either the controller or the receiver must be able
+    to disconnect from the other party.
 
-6.  The controlling user agent should be able to pass locale and text
-    direction information to the remote playback device to assist in rendering
-    text during remote playback.
+7.  The controller should be able to pass locale and text direction information
+    to the receiver to assist in rendering text during remote playback.
 
 
 Non-Functional Requirements {#requirements-non-functional}
 ----------------------------------------------------------
 
-1.  It should be possible to implement an Open Screen presentation display using
-    modest hardware requirements, similar to what is found in a low end
-    smartphone, smart TV or streaming device. See the [Device
-    Specifications](device_specs.md) document for expected presentation display
-    hardware specifications.
+1.  It should be possible to implement an OSP agent using modest
+    hardware requirements, similar to what is found in a low end smartphone,
+    smart TV or streaming device. See the [Device
+    Specifications](device_specs.md) document for agent hardware specifications.
 
-2.  It should be possible to implement an Open Screen controlling user agent on a
-    low-end smartphone. See the [Device Specifications](device_specs.md) document
-    for expected controlling user agent hardware specifications.
-
-3.  The discovery and connection protocols should minimize power consumption,
-    especially on the controlling user agent which is likely to be battery
+2.  The discovery and connection protocols should minimize power consumption,
+    especially on a [=listening agent=] which is likely to be battery
     powered.
 
-4.  The protocol should minimize the amount of information provided to a passive
-    network observer about the identity of the user, activity on the controlling
-    user agent and activity on the receiver.
+3.  The protocol should minimize the amount of information provided to a passive
+    network observer about the identity of the user or activities on the agent, including
+    presentations, remote playbacks, or the content of media streams.
 
-5.  The protocol should prevent passive network eavesdroppers from learning
-    presentation URLs, presentation IDs, or the content of presentation messages
-    passed between controllers and presentations.
-
-6.  The protocol should prevent active network attackers from impersonating a
+4.  The protocol should prevent active network attackers from impersonating a
     display and observing or altering data intended for the controller or
-    presentation.
+    receiver.
 
-7.  The controlling user agent should be able to discover quickly when a
-    presentation display becomes available or unavailable (i.e., when it connects
-    or disconnects from the network).
+5.  A listening agent should be able to discover quickly when an [=advertising
+    agent=] becomes available or unavailable (i.e., when it connects or
+    disconnects from the network).
 
-8.  The controlling user agent should present sensible information to the user
-    when a protocol operation fails.  For example, if a controlling user agent is
-    unable to start a presentation, it should be possible to report in the
-    controlling user agent interface if it was a network error, authentication
-    error, or the presentation content failed to load.
+6.  Agents should present sensible information to the user when a protocol
+    operation fails.  For example, if a controller is unable to start a
+    presentation, it should be possible to report in the controller interface if
+    it was a network error, authentication error, or the presentation content
+    failed to load.
 
-9.  The controlling user agent should be able to remember authenticated
-    presentation displays.  This means it is not required for the user to
-    intervene and re-authenticate each time the controlling user agent connects
-    to a pre-authenticated display.
+7.  Agents should be able to remember that a user authenticated another agent.
+    This means it is not required for the user to intervene and re-authenticate
+    each time an agent wants to connect to an agent that the user has already
+    authenticated.
 
-10.  Message latency between the controller and a presentation should be minimized
-    to permit interactive use.  For example, it should be comfortable to type in
-    a form in the controller and have the text appear in the presentation in real
-    time.  Real-time latency for gaming or mouse use is ideal, but not a
-    requirement.
+8.  Message latency between agents should be minimized to permit interactive
+    use.  For example, it should be comfortable to type in a form in one agent
+    and have the text appear in the presentation in real time.  Real-time
+    latency for gaming or mouse use is ideal, but not a requirement.
 
-11. The controlling user agent initiating a presentation should communicate its
-    preferred locale to the receiver, so it can render the presentation content
-    in that locale.
+9. The controller initiating a presentation or remote playback should
+    communicate its preferred locale to the receiver, so it can render the
+    content in that locale.
 
-12. It should be possible to extend the control protocol (above the discovery and
+10. It should be possible to extend the control protocol (above the discovery and
     transport levels) with optional features not defined explicitly by the
     specification, to facilitate experimentation and enhancement of the base
     APIs.
@@ -289,8 +271,9 @@ Non-Functional Requirements {#requirements-non-functional}
 Discovery with mDNS {#discovery}
 ===============================
 
-Agents must discover one another using [[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].
-To do so, agents must use the [=Service Name=] `_openscreen._udp.local`.
+[=Open Screen Protocol agents=] must discover one another using
+[[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].  To do so, OSP agents must use the
+[=Service Name=] `_openscreen._udp.local`.
 
 Issue(107): Define suspend and resume behavior for discovery protocol.
 
@@ -351,17 +334,17 @@ mechanism for metadata discovery.
 Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
-If an agent wants to connect to or learn further metadata about another agent,
-it initiates a [[QUIC]] connection to the IP and port from the SRV record.
-Prior to authentication, a message may be exchanged (such as further metadata),
-but such info should be treated as unverified (such as indicating to a user that
-a display name of an unauthenticated agent is unverified).
+If a [=listening agent=] wants to connect to or learn further metadata about an
+[=advertising agent=], it initiates a [[QUIC]] connection to the IP and port
+from its SRV record.  Prior to authentication, a message may be exchanged (such
+as further metadata), but such info should be treated as unverified (such as
+indicating to a user that a display name of an unauthenticated agent is
+unverified).
 
-The connection IDs used both by the [[QUIC]] client and server should
-be zero length.  If zero length connection IDs are chosen, agents are
-restricted from changing IP or port without establishing a new QUIC
-connection.  In such cases, clients and servers must establish a new
-QUIC connection in order to change IP or port.
+The connection IDs used both by agents should be zero length.  If zero length
+connection IDs are chosen, agents are restricted from changing IP or port
+without establishing a new QUIC connection.  In such cases, agents must
+establish a new QUIC connection in order to change IP or port.
 
 To learn further metadata, an agent may send an [=agent-info-request=] message
 and receive back an [=agent-info-response=] message.  Any agent may send this
@@ -442,8 +425,6 @@ for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
 
 
-Listening agents act as QUIC clients.  Advertising agents act as QUIC servers.
-
 If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
 keep the QUIC connection alive.  Once neither side needs to keep the connection
@@ -458,9 +439,9 @@ recommended.  The agent should behave as though a timer less than the
 idle_timeout were reset every time a message is sent on a QUIC stream.  If the
 timer expires, a [=agent-status-request=] message should be sent.
 
-If a client agent wishes to send messages to a server agent, the client
-agent can connect to the server agent "on demand"; it does not need to
-keep the connection alive.
+If a listening agent wishes to send messages to an advertising agent, the
+listening agent can connect to the advertising agent "on demand"; it does not
+need to keep the connection alive.
 
 Issue(108): Define suspend and resume behavior for connection protocol.
 
@@ -471,14 +452,13 @@ include additional information not defined in this spec, as described in
 Messages delivery using CBOR and QUIC streams {#messages}
 ========================================================
 
-Messages are serialized using [[RFC7049|CBOR]].  To
-send a group of messages in order, that group of messages must be sent in one
-QUIC stream.  Independent groups of messages (with no ordering dependency
-across groups) should be sent in different QUIC streams.  In order to put
-multiple CBOR-serialized messages into the the same QUIC stream, the following
-is used.
+Messages are serialized using [[RFC7049|CBOR]].  To send a group of messages in
+order, that group of messages must be sent in one QUIC stream.  Independent
+groups of messages (with no ordering dependency across groups) should be sent in
+different QUIC streams.  In order to put multiple CBOR-serialized messages into
+the the same QUIC stream, the following is used.
 
-For each message, the sender must write to the QUIC stream the following:
+For each message, the [=OSP agent=] must write to the QUIC stream the following:
 
 1.  A type key representing the type of the message, encoded as a variable-length
     integer (see [[#appendix-a]] for type keys)
@@ -497,8 +477,6 @@ Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.
-
-Issue(139): Clarify scoping/uniqueness of request IDs.
 
 Type Key Backwards Compatibility
 --------------------------------
@@ -537,7 +515,8 @@ specific to that method.  The authentication method is explicitly specified by
 the message itself.  The authentication status message is common for all authentication
 methods.  Any new authentication method added must define new authentication messages.
 
-Open Screen Agents must implement [[#authentication-with-spake2]] with pre-shared keys.
+[=Open Screen Protocol agents=] must implement [[#authentication-with-spake2]]
+with pre-shared keys.
 
 Prior to authentication, agents exchange [=auth-capabilities=] messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
@@ -560,6 +539,17 @@ showing a PSK to the user or requesting PSK input from the user.  For an
 that agent.  Agents should discard any authentication message whose
 `auth-initation-token` is set and does not match the `at` provided by the
 advertising agent.
+
+In the `psk-min-bits-of-entropy` field of the [=auth-capabilities=] messsage,
+agents may specify the minimum bits of entropy it requires for a PSK, in the
+range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
+generate a PSK that has at least as many bits of entropy as it receives in this
+field, and at least as many bits of entropy as it sends in this field.
+
+If an agent chooses to show a user a PSK in more than one way (such as both a
+QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the
+PSK presenter would not know which one the user chose to use, and that may lead
+to authentication failures.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
@@ -589,6 +579,8 @@ phone, a keyboard or a TV remote control.
 
 SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.
+
+Issue: What do "client" and "server" mean here?
 
 The messages used in this authentication method are: [=auth-spake2-need-psk=],
 [=auth-spake2-message=], [=auth-spake2-confirmation=] and [=auth-status=].
@@ -626,13 +618,18 @@ terminating, and controlling presentations as defined by
 defines how APIs in [[PRESENTATION-API|Presentation API]] map to the
 protocol messages defined in this section.
 
-Issue(123): Add a capability that indicates support for the presentation protocol.
+If an [=Open Screen Protocol agent=] is a [=controller=] for the Presentation
+API, it must advertise the `control-presentation` capability.  If an OSP agent
+is a [=receiver=] for the Presentation API, it must advertise the
+`receive-presentation` capability.  The same agent may be a presentation
+controller and receiver.
 
-Issue(160): Refinements to Presentation API protocol.
+Note: These roles are independent of which agent was the [=advertising agent=]
+or the [=listening agent=] during discovery and connection establishment.
 
 To learn which receivers are [=available presentation displays=] for a
-particular URL or set of URLs, the controller may send a
-[=presentation-url-availability-request=] message with the following values:
+particular [=presentation request URL=] or set of URLs, the controller may send
+a [=presentation-url-availability-request=] message with the following values:
 
 : urls
 :: A list of presentation URLs.  Must not be empty.
@@ -710,6 +707,12 @@ Additionally, the response must include the following:
     the message receiver chooses the connection-id, it may keep the ID unique
     across connections, thus making message demuxing/routing easier.
 
+The response should include the following:
+
+: http-response-code
+:: The numeric HTTP response code that was returned from fetching the
+    presentation URL (after redirects).
+
 To send a presentation message, the controller or receiver may send a
 [=presentation-connection-message=] with the following values:
 
@@ -728,12 +731,15 @@ To terminate a presentation, the controller may send a
 :: The ID of the presentation to terminate.
 
 : reason
-:: The reason the presentation is being terminated.
-
+:: Set to `application-request` if the application requested termination,
+    or `user-request` if the user requested termination. (These are the only
+    valid values for `reason` in a [=presentation-termination-request=].)
 
 When a [=receiver=] receives a [=presentation-termination-request=], it should
 send back a [=presentation-termination-response=] message to the requesting
-controller.  It should also notify other controllers about the termination by sending
+controller.
+
+It should also notify other controllers about the termination by sending
 a [=presentation-termination-event=] message.  And it can send the same message if
 it terminates a presentation without a request from a controller to do so. This
 message contains the following values:
@@ -741,8 +747,12 @@ message contains the following values:
 : presentation-id
 :: The ID of the presentation that was terminated.
 
+: source
+:: Set to `controller` when the termination was in response to a
+    [=presentation-termination-request=], or `receiver` otherwise.
+
 : reason
-:: The reason the presentation was terminated.
+:: The detailed reason why the presentation was terminated.
 
 To accept incoming connection requests from controller, a receiver must receive
 and process the [=presentation-connection-open-request=] message which contains the
@@ -829,20 +839,20 @@ This section defines how the [[PRESENTATION-API|Presentation API]] uses the
 
 When [[PRESENTATION-API#the-list-of-available-presentation-displays|section
 6.4.2]] says "This list of presentation displays ... is populated based on an
-implementation specific discovery mechanism", the [=controlling user agent=] may
+implementation specific discovery mechanism", the [=controller=] may
 use the mDNS, QUIC, [=agent-info-request=], and
 [=presentation-url-availability-request=] messages defined previously in this spec
 to discover receivers.
 
 When [[PRESENTATION-API#the-list-of-available-presentation-displays|section
 6.4.2]] says "To further save power, ... implementation specific discovery of
-presentation displays can be resumed or suspended.", the [=controlling user
-agent=] may use the power saving mechanism defined in the previous section.
+presentation displays can be resumed or suspended.", the agent may use the
+power saving mechanism defined in the previous section.
 
 When [[PRESENTATION-API#starting-a-presentation-connection|section 6.3.4]] says
 "Using an implementation specific mechanism, tell U to create a receiving
 browsing context with D, presentationUrl, and I as parameters.", U (the
-[=controlling user agent=]) may send a [=presentation-start-request=] message to D
+controller) may send a [=presentation-start-request=] message to D
 (the receiver), with I for the presentation identifier and presentationUrl for
 the selected presentation URL.
 
@@ -853,34 +863,35 @@ When [[PRESENTATION-API#sending-a-message-through-presentationconnection|section
 6.5.2]] says "Using an implementation specific mechanism, transmit the contents
 of messageOrData as the presentation message data and messageType as the
 presentation message type to the destination browsing context", the
-[=controlling user agent=] may send a [=presentation-connection-message=] with
+controller may send a [=presentation-connection-message=] with
 messageOrData for the presentation message data.  Note that the messageType is
 embedded in the encoded CBOR type and does not need an additional value in the
 message.
 
 When [[PRESENTATION-API#closing-a-presentationconnection|section 6.5.5]] says
 "Start to signal to the destination browsing context the intention to close the
-corresponding PresentationConnection", the [=user agent=] may send a
-[=presentation-connection-close-event=] message to the user agent with the
+corresponding PresentationConnection", the agent may send a
+[=presentation-connection-close-event=] message to the other agent with the
 destination browsing context and a [=presentation-change-event=] when required.
 
 When
 [[PRESENTATION-API#terminating-a-presentation-in-a-controlling-browsing-context|section
 6.5.6]] says "Send a termination request for the presentation to its receiving
-user agent using an implementation specific mechanism", the [=controlling user
-agent=] may send a [=presentation-termination-request=] message.
+user agent using an implementation specific mechanism", the controller may send
+a [=presentation-termination-request=] message to the receiver with a `reason`
+of `application-request`.
 
 When [[PRESENTATION-API#monitoring-incoming-presentation-connections|section
 6.7.1]]
 says "it MUST listen to and accept incoming connection requests from a
 controlling browsing context using an implementation specific
-mechanism", the [=receiving user agent=] must receive and process the
+mechanism", the receiver must receive and process the
 [=presentation-connection-open-request=].
 
 When [[PRESENTATION-API#monitoring-incoming-presentation-connections|section
 6.7.1]] says "Establish the connection between the controlling and receiving
-browsing contexts using an implementation specific mechanism.", the [=receiving
-user agent=], must send a [=presentation-connection-open-response=] message and
+browsing contexts using an implementation specific mechanism.", the receiver
+must send a [=presentation-connection-open-response=] message and
 [=presentation-change-event=] messages when required.
 
 
@@ -893,21 +904,26 @@ and controlling remote playback of media as defined by the
 APIs in [[REMOTE-PLAYBACK|Remote Playback API]] map to the protocol messages
 defined in this section.
 
+If an [=Open Screen Protocol agent=] is a [=controller=] for the Remote Playback
+API, it must advertise the `control-remote-playback` capability.  If an OSP
+agent is a [=receiver=] for the Remote Playback API, it must advertise the
+`receive-remote-playback` capability.  The same agent may be a remote playback
+controller and receiver.
+
+Note: These roles are independent of which agent was the [=advertising agent=]
+or the [=listening agent=] during discovery and connection establishment.
+
 For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
-
-Issue(123): Add a capability that indicates support for the remote playback protocol.
-
 
 Issue(148): Make a required/default remote playback state table.
 
 
 Issue(159): Refinements to Remote Playback protocol.
 
-To learn which receivers are [=compatible remote playback device=]s (also called
-available [=remote playback devices=]) for a particular URL or set of URLs, the
-controller may send a [=remote-playback-availability-request=] message with the
-following values:
+To learn which receivers are [=compatible remote playback devices=] for a
+particular URL or set of URLs, the controller may send a
+[=remote-playback-availability-request=] message with the following values:
 
 : urls
 :: A list of [=media resources=].  Must not be empty.
@@ -1019,6 +1035,45 @@ When the state of remote playback changes without request for modification from
 the controller (such as when the skips or pauses due to user user interaction on
 the receiver), the receiver may send a [=remote-playback-state-event=] to the
 controller.
+
+The receiver should send a [=remote-playback-state-event=] message whenever:
+
+Any of the following methods are called:
+
+* [HtmlMediaElement.fastSeek()](https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek)
+* [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause)
+* [HtmlMediaElement.play()](https://html.spec.whatwg.org/multipage/media.html#dom-media-play)
+
+Any of the following attributes observably change since the last sent [=remote-playback-state-event=] message:
+
+* [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc)
+* [HtmlMediaElement.networkState](https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate)
+* [HtmlMediaElement.readyState](https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate)
+* [HtmlMediaElement.error](https://html.spec.whatwg.org/multipage/media.html#dom-media-error)
+* [HtmlMediaElement's timeline offset](https://html.spec.whatwg.org/multipage/media.html#timeline-offset)
+* [HtmlMediaElement.duration](https://html.spec.whatwg.org/multipage/media.html#dom-media-duration)
+* [HtmlMediaElement.buffered](https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered)
+* [HtmlMediaElement.seekable](https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable)
+* [HtmlMediaElement.playbackRate](https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate)
+* [HtmlMediaElement.paused](https://html.spec.whatwg.org/multipage/media.html#dom-media-paused)
+* [HtmlMediaElement.seeking](https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking)
+* [HtmlMediaElement.stalled](https://html.spec.whatwg.org/multipage/media.html#event-media-stalled)
+* [HtmlMediaElement.ended](https://html.spec.whatwg.org/multipage/media.html#dom-media-ended)
+* [HtmlMediaElement.volume](https://html.spec.whatwg.org/multipage/media.html#dom-media-volume)
+* [HtmlMediaElement.muted](https://html.spec.whatwg.org/multipage/media.html#dom-media-muted)
+* [HtmlMediaElement.videoWidth](https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth)
+* [HtmlMediaElement.videoHeight](https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight)
+* [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
+* [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
+* [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
+
+More than 350ms pass since the last [=remote-playback-state-event=] message
+  and any of the following attributes observably change since the last
+  [=remote-playback-state-event=] message. Any new continuously changing
+  attributes fall under this rule.
+
+* [HtmlMediaElement.played](https://html.spec.whatwg.org/multipage/media.html#dom-media-played)
+* [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime)
 
 : remote-playback-id
 :: The ID of the remote playback whose state has changed.
@@ -1315,26 +1370,26 @@ This section defines how the [[REMOTE-PLAYBACK|Remote Playback API]] uses the
 messages defined in [[#remote-playback-protocol]].
 
 When [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
-6.2.1.2]] says "This list contains remote playback devices and is populated
+6.2.1.2]] says "This list contains [=remote playback devices=] and is populated
 based on an implementation specific discovery mechanism" and
 [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
 6.2.1.4]] says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the mDNS, QUIC,
 [=agent-info-request=], and [=remote-playback-availability-request=] messages
-defined previously in this spec to discover [=remote playback devices=].  The
-[=remote-playback-availability-request=] urls must contain the [=availability
+defined previously in this spec to discover [=receivers=].  The
+[=remote-playback-availability-request=] URLs must contain the [=availability
 sources set=].
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
 6.2.4]] says "Request connection of remote to device. The implementation of this
-step is specific to the user agent." and  "Synchronize the current media element
-state with the remote playback state", the user agent may send the
-[=remote-playback-start-request=] message to start remote playback.  The
-[=remote-playback-start-request=] urls must contain the [=remote playback source=].
-The current [[REMOTE-PLAYBACK|Remote Playback API]] only allows a single source,
-but the protocol allows for several and future versions of
-[[REMOTE-PLAYBACK|Remote Playback API]] may allow for several.
+step is specific to the user agent." and "Synchronize the current media element
+state with the remote playback state", the controller may send the
+[=remote-playback-start-request=] message to the receiver to start remote
+playback.  The [=remote-playback-start-request=] URLs must contain the [=remote
+playback source=].  The current [[REMOTE-PLAYBACK|Remote Playback API]] only
+allows a single source, but the protocol allows for several and future versions
+of [[REMOTE-PLAYBACK|Remote Playback API]] may allow for several.
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
@@ -1343,26 +1398,32 @@ remote playback device and play the remote playback source is an implementation
 choice of the user agent. The connection will likely have to provide a two-way
 messaging abstraction capable of carrying media commands to the remote playback
 device and receiving media playback state in order to keep the media element
-state and remote playback state in sync", the user agent may send
-[=remote-playback-modify-request=] messages to change the remote playback state
+state and remote playback state in sync", the controller may send
+[=remote-playback-modify-request=] messages to the receiver to change the remote playback state
 based on changes to the local media element and receive
 [=remote-playback-modify-response=] and [=remote-playback-state-event=] messages to
 change the local media element based on changes to the remote playback state.
 
-Issue(158): Algorithm for what messages to send when local/remote media element changes.
-
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
 6.2.7]] says "Request disconnection of remote from the device. The
-implementation of this step is specific to the user agent.", the controlling
-user agent may send the [=remote-playback-termination-request=] message.
+implementation of this step is specific to the user agent," the controller may
+send the [=remote-playback-termination-request=] message to the receiver.
 
 
 Streaming Protocol {#streaming-protocol}
 ========================================
 
 This section defines the use of the Open Screen Protocol for streaming
-media from a media sender to a media receiver.
+media from a [=media sender=] to a [=media receiver=].
+
+If an [=Open Screen Protocol agent=] is a media sender, it must advertise the
+`send-streaming` capability.  If an OSP agent is a media receiver, it must
+advertise the `receive-streaming` capability.  The same agent may be a media
+sender and a media receiver.
+
+Note: These roles are independent of which agent was the [=advertising agent=]
+or the [=listening agent=] during discovery and connection establishment.
 
 Streaming Protocol Capabilities {#streaming-protocol-capabilities}
 --------------------------------------------
@@ -1401,26 +1462,26 @@ additional fields:
 
 : max-audio-channels (optional)
 :: An optional field indicating the maximum amount of audio
-    channels the receiver is capable of supporting. Default value is "2," meaning
+    channels the media receiver is capable of supporting. Default value is "2," meaning
     a stereo speaker channel setup.
 
 : min-bit-rate (optional)
 :: An optional field indicating the minimum audio bit rate that
-    the receiver can handle, in kilobits per second. Default is no minimum.
+    the media receiver can handle, in kilobits per second. Default is no minimum.
 
 Video capabilities are similarly composed of the above format type, with the
 following additional fields:
 
 : max-resolution (optional)
 :: An optional field indicating the maximum video-resolution (width, height)
-    that the receiver is capable of processing. Default is no maximum.
+    that the media receiver is capable of processing. Default is no maximum.
 
 : max-frames-per-second (optional)
-:: An optional field indicating the maximum frames-per-second the receiver is
+:: An optional field indicating the maximum frames-per-second the media receiver is
     capable of processing. Default is no maximum.
 
 : max-pixels-per-second (optional)
-:: An optional field indicating the maximum pixels-per-second the receiver is
+:: An optional field indicating the maximum pixels-per-second the media receiver is
     capable of processing, in pixels per second. Default is no maximum.
 
 : min-video-bit-rate (optional)
@@ -1438,12 +1499,12 @@ following additional fields:
     video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.
 
 : native-resolutions (optional)
-:: An optional field indicating what video-resolutions the receiver supports and
+:: An optional field indicating what video-resolutions the media receiver supports and
     considers to be "native," meaning that scaling is not required.
     The default value is none.
 
 : supports-scaling (optional)
-:: A optional boolean field indicating whether the receiver can scale content
+:: A optional boolean field indicating whether the media receiver can scale content
     provided in a video-resolution not listed in the native-resolutions list
     (if provided) or of a different aspect ratio. The default value is true.
 
@@ -1458,11 +1519,11 @@ TODO
 Audio {#streaming-audio}
 ------------------------------
 
-Senders may send audio to receivers by sending [=audio-frame=] messages (see
-[[#appendix-a]]) with the following keys and values.  An audio frame message
-contains a set of encoded audio samples for a range of time. A series of
-encoded audio frames that share a codec, codec parameters and a timeline form an
-audio encoding.
+[Media senders=] may send audio to [=media receivers=] by sending
+[=audio-frame=] messages (see [[#appendix-a]]) with the following keys and
+values.  An audio frame message contains a set of encoded audio samples for a
+range of time. A series of encoded audio frames that share a codec, codec
+parameters and a timeline form an audio encoding.
 
 Unlike most Open Screen Protocol messages, this one uses an
 array-based grouping rather than a struct-based grouping.  For
@@ -1500,7 +1561,7 @@ separate QUIC streams.
 :: If present, a time used to synchronize the start time of this audio frame (and
     thus, this encoding) with that of other media encodings on
     different timelines.  It may be wall clock time, but it need not
-    be; it can be any clock chosen by the sender.
+    be; it can be any clock chosen by the media sender.
 
 : payload
 :: The data.  The type of data is inferred from the properties of the encoding.
@@ -1508,12 +1569,12 @@ separate QUIC streams.
 Video {#streaming-video}
 --------------------------------------------
 
-Senders may send video to receivers by sending [=video-frame=] messages (see
-[[#appendix-a]]) with the following keys and values.  A video frame message
-contains an encoded video frame (an encoded image) at a specific point in time
-or over a specfic time range (if the duration is known).  A series of encoded
-video frames that share a codec, codec parameters and a timeline form a video
-encoding.
+Media senders may send video to media receivers by sending [=video-frame=]
+messages (see [[#appendix-a]]) with the following keys and values.  A video
+frame message contains an encoded video frame (an encoded image) at a specific
+point in time or over a specfic time range (if the duration is known).  A series
+of encoded video frames that share a codec, codec parameters and a timeline form
+a video encoding.
 
 To allow for video frames to be sent out of order, they may be sent in
 separate QUIC streams.  If the encoding is a long chain of encoded video frames
@@ -1569,7 +1630,7 @@ ending at the last dependent frame.
 Data {#media-streaming-data}
 ------------------------------------
 
-Senders may send timed data to receivers by sending [=data-frame=] messages (see
+Media senders may send timed data to media receivers by sending [=data-frame=] messages (see
 [[#appendix-a]]) with the following keys and values.  A data frame message
 contains an arbitrary payload that can be synchronized with and video, such as
 text track data.  A series of data frames that share a data type and timeline
@@ -1615,7 +1676,8 @@ a timescale of 1000000 (microseconds).
 Feedback {#streaming-feedback}
 ------------------------------------
 
-The receiver can send feedback to the sender, such as key frame requests.
+The media receiver can send feedback to the media sender, such as key frame
+requests.
 
 A video key frame is requested by sending a video-request message with
 the following keys and values.
@@ -1624,17 +1686,17 @@ To allow for video frames to be sent out of order, they may be sent in separate
 QUIC streams.
 
 : encoding-id
-:: The encoding for which the sender should send a new key frame.
+:: The encoding for which the media sender should send a new key frame.
 
 : sequence-number
 :: Gives the order in the encoding.
     Within an encoding, larger sequence numbers invalidate previous ones.
-    A sender may ignore smaller sequence numbers after a larger one has been processed.
+    A media sender may ignore smaller sequence numbers after a larger one has been processed.
     This it to prevent out-of-order requests from generating more key frames than necessary.
 
 : highest-decoded-frame-sequence-number: uint
-:: If set, the sender may generate a video frame dependent on the last decoded
-    frame.  If not set, the sender must generate an indepdendent (key) frame.
+:: If set, the media sender may generate a video frame dependent on the last decoded
+    frame.  If not set, the media sender must generate an indepdendent (key) frame.
 
 Stats {#streaming-stats}
 ------------------------------
@@ -1644,12 +1706,12 @@ TODO
 Requests, Responses, and Watches {#requests-responses--watches}
 ===============================================================
 
-Multiple sub-protocols in OSP have messages that act as requests, responses,
-watches, and events. Most requests have a `request-id`, and the agent that
-receives the request must send exactly one reponse message in return with the
-same `request-id`.  A watch request has a `watch-id`, and the agent that
-receives the request may send any number of event messages in response with
-the same `watch-id`, until the watch request expires.
+Multiple sub-protocols in the Open Screen Protocol have messages that act as
+requests, responses, watches, and events. Most requests have a `request-id`, and
+the agent that receives the request must send exactly one reponse message in
+return with the same `request-id`.  A watch request has a `watch-id`, and the
+agent that receives the request may send any number of event messages in
+response with the same `watch-id`, until the watch request expires.
 
 `request-id` and `watch-id` values are unsigned integer IDs that are assigned
 from a counter kept by each agent that starts at 1 and increments by 1 for each
@@ -1671,9 +1733,9 @@ certificate fingerprint) to track requests across multiple agents.
 Protocol Extensions {#protocol-extensions}
 ===================
 
-Open Screen agents may exchange extension messages that are not defined by this
-specification.  This could be used for experimentation, customization or other
-purposes.
+[=Open Screen Protocol agents=] may exchange extension messages that are not
+defined by this specification.  This could be used for experimentation,
+customization or other purposes.
 
 To add new extension messages, extension authors must register a capability ID
 with a range of message type keys in a
@@ -1719,15 +1781,14 @@ another agent unless that agent advertises an extension capability ID in its
 Security and Privacy {#security-privacy}
 ====================
 
-The Open Screen Protocol allows two networked agents to discover each other
-and exchange user and application data.  As such, its security and privacy
+The Open Screen Protocol allows two [=OSP agents=] to discover each other and
+exchange user and application data.  As such, its security and privacy
 considerations should be closely examined.  We first evaluate the protocol
 itself using the W3C [[SECURITY-PRIVACY-QUESTIONNAIRE|Security and Privacy
 Questionnaire]].  We then examine whether the security and privacy guidelines
 recommended by the [[PRESENTATION-API|Presentation API]] and the
 [[REMOTE-PLAYBACK|Remote Playback API]] are met.  Finally we discuss recommended
-mitigations that agents can use to meet these security and privacy
-requirements.
+mitigations that agents can use to meet these security and privacy requirements.
 
 Threat Models {#threat-models}
 --------------------------------
@@ -1736,7 +1797,7 @@ Threat Models {#threat-models}
 
 The Open Screen Protocol should assume that all parties that are connected to
 the same LAN, either through a wired connection or through WiFi, are able to
-observe all data flowing between Open Screen Protocol agents.
+observe all data flowing between OSP agents.
 
 These parties will be able collect any data exposed through unencrypted
 messages, such as mDNS records and the QUIC handshakes.
@@ -1758,20 +1819,19 @@ be used to attempt the following:
     from the application state of the presentation or remote playback.
 
 One particular attack of concern is misconfigured or compromised routers that
-expose local network devices (such as Open Screen Protocol agents) to the
-Internet.  This vector of attack has been used by malicious parties to take
-control of printers and smart TVs by connecting to local network services that
-would normally be inaccessible from the Internet.
+expose local network devices (such as OSP agents) to the Internet.  This vector
+of attack has been used by malicious parties to take control of printers and
+smart TVs by connecting to local network services that would normally be
+inaccessible from the Internet.
 
 ### Denial of Service ### {#denial-of-service}
 
-Parties with connected to the LAN may attempt to deny access to Open Screen
-Protocol agents.  For example, an attacker my attempt to open
-a large number of QUIC connections to an agent in an attempt to block
-legitimate connections or exhaust the agent's system resources.  They may
-also multicast spurious DNS-SD records in an attempt to exhaust the cache
-capacity for mDNS listeners, or to get listeners to open a large number of bogus
-QUIC connections.
+Parties with connected to the LAN may attempt to deny access to OSP agents.  For
+example, an attacker my attempt to open a large number of QUIC connections to an
+agent in an attempt to block legitimate connections or exhaust the agent's
+system resources.  They may also multicast spurious DNS-SD records in an attempt
+to exhaust the cache capacity for mDNS listeners, or to get listeners to open a
+large number of bogus QUIC connections.
 
 ### Same-Origin Policy Violations ### {#same-origin-policy-violations}
 
@@ -1811,11 +1871,14 @@ attacker from changing them or substituting other values during the discovery
 and authentication process.
 
 The following data cannot be reasonably made confidential and should be
-considered public and untrusted data:
+considered public:
 
 1. IP addresses and ports used by the Open Screen Protocol.
 1. Data advertised through mDNS, including the display name prefix, the
     certificate fingerprint, and the metadata version.
+1. Data provided by an agent through [=agent-info=], including its
+    [=display name=], its device model name, its capabilities, and its
+    preferred locales.
 
 ### Cross Origin State Considerations ### {#cross-origin-state}
 
@@ -1824,18 +1887,16 @@ Presentation API by reconnecting to a presentation that was started by a
 previous session. This scenario is addressed in
 [[PRESENTATION-API#cross-origin-access]].
 
-Presentation display availability and remote playback device availability are
-states that are available cross-origin depending on the user's network
+Receiver availability is available cross-origin depending on the user's network
 context.  Exposure of this data to the Web is also discussed in
 [[PRESENTATION-API#personally-identifiable-information]] and
 [[REMOTE-PLAYBACK#personally-identifiable-information]].
 
 ### Origin Access to Other Devices ### {#origin-access-devices}
 
-By design, the Open Screen Protocol allows access to presentation displays and
-remote playback devices from the Web.  By implementing the protocol, these
-devices are knowingly making themselves available to the Web and should be
-designed accordingly.
+By design, the Open Screen Protocol allows access to receivers from the Web.  By
+implementing the protocol, these devices are knowingly making themselves
+available to the Web and should be designed accordingly.
 
 Below, we discuss mitigation steps to prevent malicious use of these devices.
 
@@ -1847,7 +1908,7 @@ behave identically regardless of which mode is in use.
 
 It's recommended that user agents use separate authentication contexts and QUIC
 connections for normal and incognito profiles from the same user agent instance.
-This prevents Open Screen agents from correlating activity among profiles
+This prevents OSP agents from correlating activity among profiles
 belonging to the same user (both normal and incognito).
 
 ### Persistent State ### {#persistent-state}
@@ -1899,14 +1960,12 @@ The Open Screen Protocol addresses these considerations by:
      {{PresentationConnection|PresentationConnections}} so that agents can track
      the number of active connections.
 
-Issue(143): Notify endpoints when new connection is created.
-
 Remote Playback API Considerations {#remote-playback-considerations}
 ----------------------------------
 
 The [[REMOTE-PLAYBACK#security-and-privacy-considerations]] also state that
-messaging between local and remote playback devices should also be authenticated
-and confidential.
+messaging between controllers and receivers should also be authenticated and
+confidential.
 
 This consideration is handled by requiring mutual authentication and a
 TLS-secured QUIC connection before any remote playback related messages are
@@ -1969,10 +2028,10 @@ Issue(130): Review attack and mitigation considerations for TLS 1.3
 
 ### Remote active network attackers ### {#remote-active-mitigations}
 
-Unfortunately, we cannot rely on network devices to fully protect Open Screen
-Protocol agents, because a misconfigured firewall or NAT could expose a
-LAN-connected agent to the broader Internet.  Open Screen Protocol agents
-should be secure against attack from any Internet host.
+Unfortunately, we cannot rely on network devices to fully protect OSP agents,
+because a misconfigured firewall or NAT could expose a LAN-connected agent to
+the broader Internet.  OSP agents should be secure against attack from any
+Internet host.
 
 Advertising agents must set the `at` field in their mDNS TXT record to protect
 themselves from off-LAN attempts to initiate [[#authentication]], which result
@@ -1982,22 +2041,22 @@ against the PSK.
 ### Denial of service ### {#denial-of-service-mitigations}
 
 It will be difficult to completely prevent denial service of attacks that
-originate on the user's local area network.  Open Screen Protocol agents can
-refuse new connections, close connections that receive too many messages, or
-limit the number of mDNS records cached from a specific responder in an attempt
-to allow existing activities to continue in spite of such an attack.
+originate on the user's local area network.  OSP agents can refuse new
+connections, close connections that receive too many messages, or limit the
+number of mDNS records cached from a specific responder in an attempt to allow
+existing activities to continue in spite of such an attack.
 
 ### Malicious input ### {#malicious-input-mitigations}
 
-Open Screen Protocol agents should be robust against malicious input that
-attempts to compromise the target device by exploiting parsing vulnerabilities.
+OSP agents should be robust against malicious input that attempts to compromise
+the target device by exploiting parsing vulnerabilities.
 
 CBOR is intended to be less vulnerable to such attacks relative to alternatives
 like JSON and XML.  Still, agents should be thoroughly tested using approaches
 like [fuzz testing](https://en.wikipedia.org/wiki/Fuzzing).
 
-Where possible, Open Screen Protocol agents (including the content rendering
-components) should use defense-in-depth techniques like <a
+Where possible, OSP agents (including the content rendering components) should
+use defense-in-depth techniques like <a
 href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a>
 to prevent vulnerabilities from gaining access to user data or leading to
 persistent exploits.
@@ -2006,7 +2065,7 @@ User Interface Considerations {#security-ui}
 -----------------------------
 
 This specification does not make any specific requirements of the security
-relevant user interfaces of Open Screen agents.  However there are important
+relevant user interfaces of OSP agents.  However there are important
 considerations when designing these user interfaces, as PSK-based authentication
 requires users to make informed decisions about which agents to trust.
 
@@ -2016,6 +2075,9 @@ requires users to make informed decisions about which agents to trust.
     Instance Names.)
 1. A [=suspicious agent=] should be displayed differently from trusted
     agents that are not suspicious, or not displayed at all.
+1. The user interface to present a PSK during authentication should be done in
+    trusted UI and be difficult to spoof.  It should be clear to the user which
+    physical device is presenting the PSK.
 1. The user interface to input a PSK during authentication should be done in
     trusted UI and be difficult to spoof.
 1. The user should be required to take action to input the PSK, to prevent the
