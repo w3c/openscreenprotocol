@@ -1549,7 +1549,7 @@ Each audio encoding offered defines the following properties:
 
 : default-duration:
 :: The duration of an audio frame .  This allows senders to make
-    audio-frame messagse smaller by not including the duration for
+    audio-frame messages smaller by not including the duration for
     audio-frame messages that have the default duration.
 
 Each video encoding offered defines the following properties:
@@ -1568,12 +1568,12 @@ Each video encoding offered defines the following properties:
 
 : default-duration:
 :: The default duration of a video frame .  This allows senders to make
-    video-frame messagse smaller by not including the duration for
+    video-frame messages smaller by not including the duration for
     video-frame messages that have the default duration.
 
 : default-rotation:
 :: The default rotation of a video frame .  This allows senders to make
-    video-frame messagse smaller by not including the rotation for
+    video-frame messages smaller by not including the rotation for
     video-frame messages that have the default rotation.
 
 Each data encoding offered defines the following properties:
@@ -1592,7 +1592,7 @@ Each data encoding offered defines the following properties:
 
 : default-duration:
 :: The duration of an data frame .  This allows senders to make
-    data-frame messagse smaller by not including the duration for
+    data-frame messages smaller by not including the duration for
     data-frame messages that have the default duration.
 
 After receiving a streaming-session-start-request message, a receiver
@@ -1631,7 +1631,7 @@ containing a modify list of stream-requests.  When the sender receives
 a streaming-session-modify-request, it should send back a
 streaming-session-modify-response.
 
-Finally, either sender may terminate the streaming session by sending
+Finally, the sender may terminate the streaming session by sending
 a streaming-session-terminate-request command.  When the receiver
 receives the streaming-session-terminate-request, it should send back
 a streaming-session-terminate-response.  The receiver can terminate at
@@ -1820,7 +1820,7 @@ QUIC streams.
 Stats {#streaming-stats}
 ------------------------------
 
-Durings a streaming session, the sender should send stats with the
+During a streaming session, the sender should send stats with the
 streaming-session-sender-stats-event at the interval the receiver requested.  It
 should send all of the following stats for all of the media streams it is
 sending. The streaming-session-sender-stats-event message contains the following
@@ -1907,8 +1907,8 @@ Audio encoding receiver stats include the following properties:
 : cumulative-lost-duration
 :: The sum of all of the durations of all of the audio frames detected as lost.
 
-: cumulative-jitter-buffer-delay
-:: The sum of the time frames spend in the jitter buffer.
+: cumulative-buffer-delay
+:: The sum of the time frames spent buffered between receipt and playout.
 
 : cumulative-decode-delay
 :: The sum of the time spent decoding frames received.
@@ -1924,8 +1924,8 @@ Video encoding receiver stats include the following properties:
 : cumulative-lost-frames
 :: The total number of video frames detected as lost.
 
-: cumulative-jitter-buffer-delay
-:: The sum of the time frames spent in the jitter buffer.
+: cumulative-buffer-delay
+:: The sum of the time frames spent buffered between receipt and render.
 
 : cumulative-decode-delay
 :: The sum of the time spent decoding frames received.
@@ -1957,7 +1957,6 @@ agents to save power by closing unused connections.
 Note: Request and watch IDs are not unique across agents.  An agent can combine
 a request ID with a unique identifier for the agent that sent it (like its
 certificate fingerprint) to track requests across multiple agents.
-
 
 Protocol Extensions {#protocol-extensions}
 ===================
@@ -2006,7 +2005,6 @@ Extension fields should use string keys to avoid conflicts with integer keys in
 Open Screen Protocol messages.  An agent should not send extension fields to
 another agent unless that agent advertises an extension capability ID in its
 [=agent-info=] that indicates that it understands the extension fields.
-
 
 Security and Privacy {#security-privacy}
 ====================
