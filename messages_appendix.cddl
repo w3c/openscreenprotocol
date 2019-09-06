@@ -9,18 +9,20 @@ agent-info-response = {
   1: agent-info ; agent-info
 }
 
+; type key 122
+agent-info-event = {
+  1: agent-info ; agent-info
+}
+
 agent-capability = &(
   receive-audio: 1
   receive-video: 2
-
-  receive-presentation: 2
-  control-presentation: 3
-
-  receive-remote-playback: 4
-  control-remote-playback: 5
-
-  receive-streaming: 6
-  send-streaming: 7
+  receive-presentation: 3
+  control-presentation: 4
+  receive-remote-playback: 5
+  control-remote-playback: 6
+  receive-streaming: 7
+  send-streaming: 8
 )
 
 agent-info = {
@@ -28,6 +30,7 @@ agent-info = {
   1: text ; model-name
   2: [* agent-capability] ; capabilities
   3: text ; state-token
+  4: [* text] ; locales
 }
 
 ; type key 102
@@ -60,6 +63,7 @@ microseconds = uint
 auth-capabilities = {
   0: uint ; psk-ease-of-input
   1: [* psk-input-method] ; psk-input-methods
+  2: uint ; psk-min-bits-of-entropy
 }
 
 psk-input-method = &(
@@ -148,17 +152,31 @@ presentation-start-response = {
   response
   1: &result ; result
   2: uint ; connection-id
+  3: ? uint ; http-response-code
 }
 
-; type key 113
+presentation-termination-source = &(
+  controller: 1
+  receiver: 2
+  unknown: 255
+)
+
+presentation-termination-reason = &(
+  application-request: 1
+  user-request: 2
+  receiver-replaced-presentation: 20
+  receiver-idle-too-long: 30
+  receiver-attempted-to-navigate: 31
+  receiver-powering-down: 100
+  receiver-error: 101
+  unknown: 255
+)
+
+; type key 106
 presentation-termination-request = {
   request
   1: text ; presentation-id
-  2: &(
-    controller-called-terminate: 10
-    user-terminated-via-controller: 11
-    unknown: 255
-  ) ; reason
+  2: presentation-termination-reason ; reason
 }
 
 ; type key 114
@@ -170,18 +188,8 @@ presentation-termination-response = {
 ; type key 115
 presentation-termination-event = {
   1: text ; presentation-id
-  2: &(
-    receiver-called-terminate: 1
-    user-terminated-via-receiver: 2
-    controller-called-terminate: 10
-    user-terminated-via-controller: 11
-    receiver-replaced-presentation: 20
-    receiver-idle-too-long: 30
-    receiver-attempted-to-navigate: 31
-    receiver-powering-down: 100
-    receiver-crashed: 101
-    unknown: 255
-  ) ; reason
+  2: presentation-termination-source ; source
+  3: presentation-termination-reason ; reason
 }
 
 ; type key 116
