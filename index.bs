@@ -973,8 +973,9 @@ requirements for a remote-playback-id.
     ignore them and the controller will learn that it does not support them from
     the [=remote-playback-start-response=] message.
 
-Additionaly, the parameters for initiating a streaming session are embedded in the
-[=remote-playback-start-request=] message to allow the sender to initiate remoting.
+: remoting (optional)
+:: Parameters for starting a streaming session associated with this
+    remote playback.  If not included, no streaming session is started.
 
 When the receiver receives a [=remote-playback-start-request=] message, it should
 send back a [=remote-playback-start-response=] message.  It should do so quickly,
@@ -987,9 +988,18 @@ invalid-url).  Additionally, the response must include the following:
 : state
 :: The initial state of the remote playback, as defined in
     [[#remote-playback-state-and-controls]].
+    
+: remoting (optional)
+:: A response to the started streaming session associatd with this remote playback.
+    If not included, no streaming session is started.
 
-Additionaly, the parameters for initiating a streaming session are embedded in the
-[=remote-playback-start-response=] message to allow the receiver to initiate remoting.
+If a streaming session is started, streaming messages such a
+streaming-session-modify-request and video-frame can be used for the streaming
+session as if the streaming session had been started with
+streaming-session-start-request and streaming-session-start-response.  The
+streaming session may be terminated before the remote playback is terminated,
+but if the remote playback is terminated first, the streaming session associated
+with it is automatically terminated.
 
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -1000,9 +1010,6 @@ example, to pause, resume, skip, etc), it may send a
 
 : controls
 :: Updated controls as defined in {#remote-playback-state-and-controls}
-
-Additionaly, the parameters for modifying a streaming session are embedded in the
-[=remote-playback-modify-request=] message to allow the receiver to modify remoting.
 
 When a receiver receives a [=remote-playback-modify-request=] it should send a
 [=remote-playback-modify-response=] message in reply with the following values:
