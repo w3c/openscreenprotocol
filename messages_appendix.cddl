@@ -478,6 +478,7 @@ streaming-capabilities-response = {
 streaming-capabilities = {
   0: [* receive-audio-capability] ; receive-audio
   1: [* receive-video-capability] ; receive-video
+  2: [* receive-data-capability] ; receive-data
 }
 
 format = {
@@ -511,6 +512,10 @@ receive-video-capability = {
   ? 6: [* string] ; color-profiles
   ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling
+}
+
+receive-data-capability = {
+  0: format ; data-type
 }
 
 ; type key 134
@@ -560,31 +565,41 @@ streaming-session-terminate-event = {
 
 media-stream-offer = {
   1 : uint ; media-stream-id
-  ? 2 : text ; friendly-name
+  ? 2 : text ; display-name
   ? 3 : [1* audio-encoding-offer] ; audio
   ? 4 : [1* video-encoding-offer] ; video
+  ? 5 : [1* data-encoding-offer] ; data
 }
 
 media-stream-request = {
   1 : uint ; media-stream-id
   ? 2 : audio-encoding-request ; audio
   ? 3 : video-encoding-request ; video
+  ? 4 : data-encoding-request ; data
 }
 
 audio-encoding-offer = {
   1 : uint ; encoding-id
-  2 : text ; codec
+  2 : text ; codec-name
   3 : uint ; time-scale
   ? 4 : uint ; default-duration
 }
 
 video-encoding-offer = {
   1 : uint ; encoding-id
-  2 : text ; codec
+  2 : text ; codec-name
   3 : uint ; time-scale
   ? 4 : uint ; default-duration
   ? 5 : video-rotation ; default-rotation
 }
+
+data-encoding-offer = {
+  1 : uint ; encoding-id
+  2 : text ; data-type-name
+  3 : uint ; time-scale
+  ? 4 : uint ; default-duration
+}
+
 
 audio-encoding-request = {
   1: uint ; encoding-id
@@ -595,6 +610,11 @@ video-encoding-request = {
   ? 2 : video-resolution ; target-resolution
   ? 3 : float32 ; max-frames-per-second
 }
+
+data-encoding-request = {
+  1: uint ; encoding-id
+}
+
 
 ; type key 13
 audio-frame = [
@@ -625,6 +645,18 @@ video-frame-request = {
  2: uint; sequence-number
  ? 3: uint; highest-decoded-frame-sequence-number
 }
+
+; type key 15
+data-frame = [
+  encoding-id: uint
+  sequence-number: uint
+  start-time: uint
+  payload: bytes
+  ? optional: {
+    ? 0: uint ; duration
+    ? 1: media-time ; sync-time
+  }
+]
 
 ratio = [
   antecedent: uint
