@@ -505,7 +505,7 @@ video-resolution = {
 receive-video-capability = {
   0: format ; codec
   ? 1: video-resolution ; max-resolution
-  ? 2: uint ; max-frames-per-second
+  ? 2: ratio ; max-frames-per-second
   ? 3: uint ; max-pixels-per-second
   ? 4: uint ; min-bit-rate
   ? 5: ratio ; aspect-ratio
@@ -523,7 +523,7 @@ streaming-session-start-request = {
   request
   1: uint; streaming-session-id
   2: [* media-stream-offer] ;  stream-offers
-  3: microseconds ; stats-interval
+  3: microseconds ; desired-stats-interval
 }
 
 ; type key 135
@@ -531,7 +531,7 @@ streaming-session-start-response = {
   response
   1: &result ; result
   2: [* media-stream-request] ; stream-requests
-  3: microseconds ; stats-interval
+  3: microseconds ; desired-stats-interval
 }
 
 ; type key 136
@@ -608,7 +608,7 @@ audio-encoding-request = {
 video-encoding-request = {
   1 : uint ; encoding-id
   ? 2 : video-resolution ; target-resolution
-  ? 3 : float32 ; max-frames-per-second
+  ? 3 : ratio ; max-frames-per-second
 }
 
 data-encoding-request = {
@@ -635,7 +635,7 @@ video-frame = {
   3: uint ; start-time
   ? 4: uint ; duration
   5: bytes ; payload
-  ? 6: uint ; rotation
+  ? 6: uint ; video-rotation
   ? 7: media-time ; sync-time
 }
 
@@ -663,6 +663,13 @@ ratio = [
   consequent: uint
 ]
 
+video-rotation = &(
+  ; Degrees clockwise
+  video-rotation-0
+  video-rotation-90
+  video-rotation-180
+  video-rotation-270
+)
 
 ; type key 142
 streaming-session-sender-stats-event = {

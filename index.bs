@@ -1489,7 +1489,7 @@ streaming-session-start-request message with the following properties:
     receiver) pair.  Can be used later to modify or terminate a
     streaming session.
 
-: stats-interval
+: desired-stats-interval
 :: Indicates the frequency the receiver should send stats messages to
     the sender.
 
@@ -1599,7 +1599,7 @@ After receiving a streaming-session-start-request message, a receiver
 should send back a streaming-session-start-response message with the
 following properties:
 
-: stats-interval
+: desired-stats-interval
 :: Indicates the frequency the sender should send stats messages to
     the receiver.
 
@@ -1669,13 +1669,13 @@ separate QUIC streams.
     helps to avoid sending duplicate information in every frame.
 
 : start-time
-:: Identifies the beginning of the time range of the audio frame.  The time
+:: Identifies the beginning of the time range of the audio frame. The time
     scale is inferred from the properties of the encoding (from the
     audio-encoding-offer).  The end time can be inferred from the
     start time and duration.
 
 : duration
-:: If present, the duration of the audio frame.  The time
+:: If present, the duration of the audio frame. The time
     scale is inferred from the properties of the encoding.  Likewise, if not
     present, the duration is inferred from the properties of the encoding.
 
@@ -1724,14 +1724,14 @@ ending at the last dependent frame.
     If not present, the default value is [-1].
 
 : start-time
-:: Identifies the beginning of the time range of the video frame.  The time
+:: Identifies the beginning of the time range of the video frame. The time
     scale is inferred from the properties of the encoding (from the
     video-encoding-offer).  The end time can be inferred from the
     start time and duration.
 
 : duration
-:: If present, the duration of the video frame.  The time
-    scale is inferred from the properties of the encoding.  If not
+:: If present, the duration of the video frame. The time
+    scale is inferred from the properties of the encoding. If not
     present, that means duration is unknown.
 
 : sync-time
