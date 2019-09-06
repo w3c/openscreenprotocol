@@ -219,7 +219,7 @@ presentation-connection-close-event = {
   4: uint; connection-count
 }
 
-; type key 17
+; type key 121
 presentation-change-event = {
   1: text ; presentation-id
   2: uint ; connection-count
@@ -279,7 +279,7 @@ remote-playback-start-response = {
   ? 2: remote-playback-state ; state
 }
 
-; type key 126
+; type key 117
 remote-playback-termination-request = {
   request
   1: remote-playback-id ; remote-playback-id
@@ -289,7 +289,7 @@ remote-playback-termination-request = {
   ) ; reason
 }
 
-; type key 117
+; type key 118
 remote-playback-termination-response = {
   response
   1: &result ; result
@@ -488,16 +488,16 @@ video-frame = {
 }
 
 ; type key 24
-data-frame = {	
-  0: uint; encoding-id	
-  ? 1: uint ; sequence-number	
-  ? 2: uint ; start-time	
-  ? 3: uint ; duration	
-  4: any; payload	
-  ? 5: media-time ; sync-time	
+data-frame = {
+  0: uint; encoding-id
+  ? 1: uint ; sequence-number
+  ? 2: uint ; start-time
+  ? 3: uint ; duration
+  4: any; payload
+  ? 5: media-time ; sync-time
 }
 
-; type key 120  
+; type key 120
 video-frame-request = {
  1: uint; encoding-id
  2: uint; sequence-number
@@ -509,12 +509,12 @@ ratio = [
   consequent: uint
 ]
 
-; type key 121
+; type key 122
 streaming-capabilities-request = {
   request
 }
 
-; type key 122
+; type key 123
 streaming-capabilities-response = {
   response
   1: streaming-capabilities ; streaming-capabilities
@@ -563,7 +563,7 @@ receive-data-capability = {
   0: format ; data-type
 }
 
-; type key 123
+; type key 124
 streaming-session-start-request = {
   request
   1: uint; streaming-session-id
@@ -571,7 +571,7 @@ streaming-session-start-request = {
   3: microseconds ; desired-stats-interval
 }
 
-; type key 124
+; type key 125
 streaming-session-start-response = {
   response
   1: &result ; result
@@ -579,31 +579,31 @@ streaming-session-start-response = {
   3: microseconds ; desired-stats-interval
 }
 
-; type key 125
+; type key 126
 streaming-session-modify-request = {
   request
   1: uint ; streaming-session-id
   2: [* media-stream-request] ; stream-requests
 }
 
-; type key 126
+; type key 127
 streaming-session-modify-response = {
   response
   1: &result ; result
 }
 
-; type key 127
+; type key 128
 streaming-session-terminate-request = {
   request
   1 : uint ; streaming-session-id
 }
 
-; type key 128
+; type key 129
 streaming-session-terminate-response = {
   response
 }
 
-; type key 129
+; type key 130
 streaming-session-terminate-event = {
   1 : uint ; streaming-session-id
 }
@@ -668,7 +668,7 @@ video-rotation = &(
   video-rotation-270
 )
 
-; type key 130
+; type key 131
 streaming-session-sender-stats-event = {
   1: uint; streaming-session-id
   2: microseconds ; system-time
@@ -685,7 +685,7 @@ streaming-session-sender-stats-event = {
   }] ; video
 }
 
-; type key 131
+; type key 132
 streaming-session-receiver-stats-event = {
   1: uint; streaming-session-id
   2: microseconds ; system-time
