@@ -515,18 +515,16 @@ be sent unless the receiving agent is known to understand the new type key.
 1.  If an optional field is added to a message (either to the message directly
 or indirectly through the field of a field), the type key may remain unchanged
 if the behavior of older receiving agents that do not understand the added field
-is compatible with newer sendering agents that do understand the added field.
+is compatible with newer sending agents that include the field.
 Otherwise, a new type key must be assigned.
-
 
 1.  If an optional field is removed from a message (either from the message
 directly or indirectly through the field of a field), the type key may remain
 unchanged if the behavior of newer receiving agents that do not understand the
-removed field is compatible with older sending agents that do understand the
-removed field.  Otherwise, a new type key must be assigned.  
+removed field is compatible with older sending agents that include the field.
+Otherwise, a new type key must be assigned.  
 
-1. Required fields may not be added or removed from array-based messages (either
-to/from the message directly or indirectly through the field of a field), such
+1. Required fields may not be added or removed from array-based messages, such
 as audio-frame.
 
 
