@@ -1821,9 +1821,10 @@ Stats {#streaming-stats}
 ------------------------------
 
 Durings a streaming session, the sender should send stats with the
-streaming-session-sender-stats-event at the interval the receiver
-requested.  The streaming-session-sender-stats-event message contains
-the following properties:
+streaming-session-sender-stats-event at the interval the receiver requested.  It
+should send all of the following stats for all of the media streams it is
+sending. The streaming-session-sender-stats-event message contains the following
+properties:
 
 : streaming-session-id
 :: The ID of the streaming session these stats apply to.
@@ -1870,9 +1871,10 @@ Video encoding sender stats include the following properties:
 
 
 Durings a streaming session, the receiver should send stats with the
-streaming-session-receiver-stats-event at the interval the sender
-requested.  The streaming-session-receiver-stats-event message contains
-the following properties:
+streaming-session-receiver-stats-event at the interval the sender requested.
+It should send all of the following stats for all of the media streams it is
+receiving.  The streaming-session-receiver-stats-event message contains the
+following properties:
 
 : streaming-session-id
 :: The ID of the streaming session these stats apply to.
