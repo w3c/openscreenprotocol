@@ -478,32 +478,32 @@ those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.
 
-Type Key Backwards Compatibility
+Type Key Backwards Compatibility {#message-compatibility}
 --------------------------------
 
 As messages are modified or extended over time, certain rules must be followed
 to maintain backwards compatibiilty with agents that understand older versions
 of messages.
 
-1.  If a required field is added to or removed from a message (either to/from the
-message directly or indirectly through the field of a field), a new type key
-must be assigned to the message.  Is is effectively a new message and must not
-be sent unless the receiving agent is known to understand the new type key.
+1. If a required field is added to or removed from a message (either to/from the
+    message directly or indirectly through the field of a field), a new type key
+    must be assigned to the message.  Is is effectively a new message and must not
+    be sent unless the receiving agent is known to understand the new type key.
 
-1.  If an optional field is added to a message (either to the message directly
-or indirectly through the field of a field), the type key may remain unchanged
-if the behavior of older receiving agents that do not understand the added field
-is compatible with newer sending agents that include the field.
-Otherwise, a new type key must be assigned.
+1. If an optional field is added to a message (either to the message directly
+    or indirectly through the field of a field), the type key may remain unchanged
+    if the behavior of older receiving agents that do not understand the added field
+    is compatible with newer sending agents that include the field.
+    Otherwise, a new type key must be assigned.
 
-1.  If an optional field is removed from a message (either from the message
-directly or indirectly through the field of a field), the type key may remain
-unchanged if the behavior of newer receiving agents that do not understand the
-removed field is compatible with older sending agents that include the field.
-Otherwise, a new type key must be assigned.  
+1. If an optional field is removed from a message (either from the message
+    directly or indirectly through the field of a field), the type key may remain
+    unchanged if the behavior of newer receiving agents that do not understand the
+    removed field is compatible with older sending agents that include the field.
+    Otherwise, a new type key must be assigned.  
 
 1. Required fields may not be added or removed from array-based messages, such
-as audio-frame.
+    as audio-frame.
 
 
 
@@ -618,11 +618,11 @@ terminating, and controlling presentations as defined by
 defines how APIs in [[PRESENTATION-API|Presentation API]] map to the
 protocol messages defined in this section.
 
-If an [=Open Screen Protocol agent=] is a [=controller=] for the Presentation
-API, it must advertise the `control-presentation` capability.  If an OSP agent
-is a [=receiver=] for the Presentation API, it must advertise the
-`receive-presentation` capability.  The same agent may be a presentation
-controller and receiver.
+An [=Open Screen Protocol agent=] that is a [=controlling user agent=] for the
+[[PRESENTATION-API|Presentation API]] must support the `control-presentation` capability.
+An [=OSP agent=] that is a [=receiving user agent=] for the
+[[PRESENTATION-API|Presentation API]] must support the `receive-presentation` capability.
+The same OSP agent may be a [=controlling user agent=] and a [=receiving user agent=].
 
 Note: These roles are independent of which agent was the [=advertising agent=]
 or the [=listening agent=] during discovery and connection establishment.
@@ -904,11 +904,19 @@ and controlling remote playback of media as defined by the
 APIs in [[REMOTE-PLAYBACK|Remote Playback API]] map to the protocol messages
 defined in this section.
 
-If an [=Open Screen Protocol agent=] is a [=controller=] for the Remote Playback
-API, it must advertise the `control-remote-playback` capability.  If an OSP
-agent is a [=receiver=] for the Remote Playback API, it must advertise the
-`receive-remote-playback` capability.  The same agent may be a remote playback
-controller and receiver.
+An [=Open Screen Protocol agent=] that implements the
+[[REMOTE-PLAYBACK|Remote Playback API]] must support the
+`control-remote-playback` capability.  It may support the `send-streaming`
+capability so it can send {{HTMLMediaElement}} media data through media
+remoting.
+
+An an [=OSP agent=] that is a [=remote playback device=] for the
+[[REMOTE-PLAYBACK|Remote Playback API]] must support the
+`receive-remote-playback` capability.  It may support the `receive-streaming`
+capability so it can receive {{HTMLMediaElement}} data through media remoting.
+
+The same OSP agent may implement both the [[REMOTE-PLAYBACK|Remote Playback API]]
+and be a [=remote playback device=] for that API.
 
 Note: These roles are independent of which agent was the [=advertising agent=]
 or the [=listening agent=] during discovery and connection establishment.
