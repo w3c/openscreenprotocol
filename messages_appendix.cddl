@@ -265,19 +265,21 @@ remote-playback-availability-event = {
 ; type key 124
 remote-playback-start-request = {
   request
-  1: remote-playback-id ; remote-playback-id
-  2: [* text] ; urls
-  ? 3: [* text] ; text-track-urls
-  ? 4: [* http-header] ; headers
-  ? 5: remote-playback-controls ; controls
+  streaming-session-start-request-params
+  ; Give below big numbers to avoid collission with streaing session start params
+  21: remote-playback-id ; remote-playback-id
+  22: [* text] ; urls
+  ? 23: [* text] ; text-track-urls
+  ? 24: [* http-header] ; headers
+  ? 25: remote-playback-controls ; controls
 }
 
 ; type key 125
 remote-playback-start-response = {
   response
-  1: &result ; result
-  ? 2: remote-playback-state ; state
-  ? 3: streaming-capabilities ; remoting-capabilities
+  streaming-session-start-response-params
+  ; Give below big numbers to avoid collission with streaing session start params
+  ? 21: remote-playback-state ; state
 }
 
 ; type key 126
@@ -312,11 +314,10 @@ remote-playback-termination-event = {
 ; type key 129
 remote-playback-modify-request = {
   request
-  1: remote-playback-id ; remote-playback-id
-  2: remote-playback-controls ; controls
-  ? 3: [1* audio-encoding-offer] ; remoting-audio
-  ? 4: [1* video-encoding-offer] ; remoting-video
-  ? 5: microseconds ; remoting-stats-interval
+  streaming-session-modify-request-params
+  ; Give below big numbers to avoid collission with streaing session start params
+  21: remote-playback-id ; remote-playback-id
+  22: remote-playback-controls ; controls
 )
 
 ; type key 130
@@ -324,7 +325,6 @@ remote-playback-modify-response = {
   response
   1: &result ; result
   ? 2: remote-playback-state ; state
-  ? 3: microseconds ; remoting-stats-interval
 }
 
 ; type key 131
@@ -526,22 +526,34 @@ receive-data-capability = {
 ; type key 134
 streaming-session-start-request = {
   request
+  streaming-session-start-request-params
+}
+
+streaming-session-start-request-params = (
   1: uint; streaming-session-id
   2: [* media-stream-offer] ;  stream-offers
   3: microseconds ; desired-stats-interval
-}
+)
 
 ; type key 135
 streaming-session-start-response = {
   response
+  streaming-session-start-response-params
+}
+
+streaming-session-start-response-params = (
   1: &result ; result
   2: [* media-stream-request] ; stream-requests
-  3: microseconds ; desired-stats-interval
-}
+  3: microseconds ; desired-stats-interval  
+)
 
 ; type key 136
 streaming-session-modify-request = {
   request
+  streaming-session-modify-request-params
+}
+
+streaming-session-modify-request-params = (
   1: uint ; streaming-session-id
   2: [* media-stream-request] ; stream-requests
 }

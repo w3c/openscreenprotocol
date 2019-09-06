@@ -973,6 +973,9 @@ requirements for a remote-playback-id.
     ignore them and the controller will learn that it does not support them from
     the [=remote-playback-start-response=] message.
 
+Additionaly, the parameters for initiating a streaming session are embedded in the
+[=remote-playback-start-request=] message to allow the sender to initiate remoting.
+
 When the receiver receives a [=remote-playback-start-request=] message, it should
 send back a [=remote-playback-start-response=] message.  It should do so quickly,
 usually before the [=media resource=] has been loaded and instead give updates
@@ -981,13 +984,12 @@ the receiver decides to not attempt to load the resource at all.  If it chooses
 not to, it must respond with the appropriate failure result (such as timeout or
 invalid-url).  Additionally, the response must include the following:
 
-: state (optional)
+: state
 :: The initial state of the remote playback, as defined in
     [[#remote-playback-state-and-controls]].
 
-: remoting-capabilities (optional)
-:: What kind of remoting (using the streaming protocol) that the
-    receiver can receive.
+Additionaly, the parameters for initiating a streaming session are embedded in the
+[=remote-playback-start-response=] message to allow the receiver to initiate remoting.
 
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -999,17 +1001,8 @@ example, to pause, resume, skip, etc), it may send a
 : controls
 :: Updated controls as defined in {#remote-playback-state-and-controls}
 
-: remoting-audio
-:: Audio encodings that the controller can send to the receiver once they
-    are acked via the remote-playback-modify-response message.
-
-: remoting-video
-:: Videos encodings that the controller can send to the receiver once they
-    are acked via the remote-playback-modify-response message.
-
-: remoting-stats-interval
-:: The frequency the controller would like for the receiver to send
-    remoting stats using the streaming stats message.
+Additionaly, the parameters for modifying a streaming session are embedded in the
+[=remote-playback-modify-request=] message to allow the receiver to modify remoting.
 
 When a receiver receives a [=remote-playback-modify-request=] it should send a
 [=remote-playback-modify-response=] message in reply with the following values:
@@ -1017,10 +1010,6 @@ When a receiver receives a [=remote-playback-modify-request=] it should send a
 : state
 :: The updated state of the remote playback as defined in
     [[#remote-playback-state-and-controls]].
-
-: remoting-stats-interval
-:: The frequency the contorller would like for the receiver to send
-    back remoting stats using the streaming stats message.
 
 When the state of remote playback changes without request for modification from
 the controller (such as when the skips or pauses due to user user interaction on
