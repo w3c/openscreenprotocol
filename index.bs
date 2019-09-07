@@ -1528,6 +1528,10 @@ following additional fields:
     provided in a video-resolution not listed in the native-resolutions list
     (if provided) or of a different aspect ratio. The default value is true.
 
+: supports-rotation (optional)
+:: A optional boolean field indicating whether the media receiver can receive 
+    video frames with the the rotation field set. The default value is true.
+
 <!-- TODO: Add max-bit-rate, color profiles, HDR -->
 
 Sessions {#streaming-sessions}

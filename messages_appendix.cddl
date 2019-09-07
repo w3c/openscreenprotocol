@@ -558,6 +558,7 @@ receive-video-capability = {
   ? 6: [* string] ; color-profiles
   ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling
+  ? 9: bool ; supports-rotation
 }
 
 receive-data-capability = {
