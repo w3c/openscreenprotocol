@@ -501,7 +501,7 @@ Otherwise, a new type key must be assigned.
 directly or indirectly through the field of a field), the type key may remain
 unchanged if the behavior of newer receiving agents that do not understand the
 removed field is compatible with older sending agents that include the field.
-Otherwise, a new type key must be assigned.  
+Otherwise, a new type key must be assigned.
 
 1. Required fields may not be added or removed from array-based messages, such
 as audio-frame.
@@ -1018,7 +1018,7 @@ invalid-url).  Additionally, the response must include the following:
 : state
 :: The initial state of the remote playback, as defined in
     [[#remote-playback-state-and-controls]].
-    
+
 : remoting (optional)
 :: A response to the started streaming session associatd with this remote playback.
     If not included, no streaming session is started.
@@ -1551,7 +1551,7 @@ Each stream offer contains the following properties:
 :: An optional name intended to be shown to a user, such that the
     receiver may allow the user to choose which media streams to
     receive, or if they are received automatically by the receiver,
-    give the user some information about what th e media stream is.
+    give the user some information about what the media stream is.
 
 : audio
 :: A list of audio encodings offered.  An audio encoding is a series
@@ -1593,7 +1593,7 @@ Each audio encoding offered defines the following properties:
     in each one.
 
 : default-duration:
-:: The duration of an audio frame .  This allows senders to make
+:: The duration of an audio frame.  This allows senders to make
     audio-frame messages smaller by not including the duration for
     audio-frame messages that have the default duration.
 
@@ -1612,12 +1612,12 @@ Each video encoding offered defines the following properties:
     in each one.
 
 : default-duration:
-:: The default duration of a video frame .  This allows senders to make
+:: The default duration of a video frame.  This allows senders to make
     video-frame messages smaller by not including the duration for
     video-frame messages that have the default duration.
 
 : default-rotation:
-:: The default rotation of a video frame .  This allows senders to make
+:: The default rotation of a video frame.  This allows senders to make
     video-frame messages smaller by not including the rotation for
     video-frame messages that have the default rotation.
 
@@ -1649,7 +1649,7 @@ following properties:
     the receiver.
 
 : stream-requests
-:: Indicates which media streams the receiver would like to receiver
+:: Indicates which media streams the receiver would like to receive
     from the sender.
 
 Each stream request contains the following properties:
@@ -1915,7 +1915,7 @@ Video encoding sender stats include the following properties:
     or other contraints.
 
 
-Durings a streaming session, the receiver should send stats with the
+During a streaming session, the receiver should send stats with the
 streaming-session-receiver-stats-event at the interval the sender requested.
 It should send all of the following stats for all of the media streams it is
 receiving.  The streaming-session-receiver-stats-event message contains the
