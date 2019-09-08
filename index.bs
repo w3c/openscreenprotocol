@@ -479,6 +479,35 @@ those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.
 
+Type Key Backwards Compatibility
+--------------------------------
+
+As messages are modified or extended over time, certain rules must be followed
+to maintain backwards compatibiilty with agents that understand older versions
+of messages.
+
+1.  If a required field is added to or removed from a message (either to/from the
+message directly or indirectly through the field of a field), a new type key
+must be assigned to the message.  Is is effectively a new message and must not
+be sent unless the receiving agent is known to understand the new type key.
+
+1.  If an optional field is added to a message (either to the message directly
+or indirectly through the field of a field), the type key may remain unchanged
+if the behavior of older receiving agents that do not understand the added field
+is compatible with newer sending agents that include the field.
+Otherwise, a new type key must be assigned.
+
+1.  If an optional field is removed from a message (either from the message
+directly or indirectly through the field of a field), the type key may remain
+unchanged if the behavior of newer receiving agents that do not understand the
+removed field is compatible with older sending agents that include the field.
+Otherwise, a new type key must be assigned.  
+
+1. Required fields may not be added or removed from array-based messages, such
+as audio-frame.
+
+
+
 Authentication {#authentication}
 ================================
 
@@ -974,6 +1003,10 @@ requirements for a remote-playback-id.
     ignore them and the controller will learn that it does not support them from
     the [=remote-playback-start-response=] message.
 
+: remoting (optional)
+:: Parameters for starting a streaming session associated with this
+    remote playback.  If not included, no streaming session is started.
+
 When the receiver receives a [=remote-playback-start-request=] message, it should
 send back a [=remote-playback-start-response=] message.  It should do so quickly,
 usually before the [=media resource=] has been loaded and instead give updates
@@ -985,6 +1018,18 @@ invalid-url).  Additionally, the response must include the following:
 : state
 :: The initial state of the remote playback, as defined in
     [[#remote-playback-state-and-controls]].
+    
+: remoting (optional)
+:: A response to the started streaming session associatd with this remote playback.
+    If not included, no streaming session is started.
+
+If a streaming session is started, streaming messages such a
+streaming-session-modify-request and video-frame can be used for the streaming
+session as if the streaming session had been started with
+streaming-session-start-request and streaming-session-start-response.  The
+streaming session may be terminated before the remote playback is terminated,
+but if the remote playback is terminated first, the streaming session associated
+with it is automatically terminated.
 
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a

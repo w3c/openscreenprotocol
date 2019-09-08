@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="de54a767236c2d9b2e9ed1f3d1f32a913406a183" name="document-revision">
+  <meta content="eb971893706a0e88e2d9c450fdbeeaa99824d109" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1535,8 +1535,9 @@ pre .property::before, pre .property::after {
       <li><a href="#streaming-sessions"><span class="secno">9.2</span> <span class="content">Sessions</span></a>
       <li><a href="#streaming-audio"><span class="secno">9.3</span> <span class="content">Audio</span></a>
       <li><a href="#streaming-video"><span class="secno">9.4</span> <span class="content">Video</span></a>
-      <li><a href="#streaming-feedback"><span class="secno">9.5</span> <span class="content">Feedback</span></a>
-      <li><a href="#streaming-stats"><span class="secno">9.6</span> <span class="content">Stats</span></a>
+      <li><a href="#media-streaming-data"><span class="secno">9.5</span> <span class="content">Data</span></a>
+      <li><a href="#streaming-feedback"><span class="secno">9.6</span> <span class="content">Feedback</span></a>
+      <li><a href="#streaming-stats"><span class="secno">9.7</span> <span class="content">Stats</span></a>
      </ol>
     <li><a href="#requests-responses--watches"><span class="secno">10</span> <span class="content">Requests, Responses, and Watches</span></a>
     <li>
@@ -2381,9 +2382,13 @@ the receiver decides to not attempt to load the resource at all.  If it chooses
 not to, it must respond with the appropriate failure result (such as timeout or
 invalid-url).  Additionally, the response must include the following:</p>
    <dl>
-    <dt data-md>state
+    <dt data-md>state (optional)
     <dd data-md>
      <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
+    <dt data-md>remoting-capabilities (optional)
+    <dd data-md>
+     <p>What kind of remoting (using the streaming protocol) that the
+receiver can receive.</p>
    </dl>
    <p>If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -2395,6 +2400,18 @@ remote-playback-modify-request message with the following values:</p>
     <dt data-md>controls
     <dd data-md>
      <p>Updated controls as defined in {#remote-playback-state-and-controls}</p>
+    <dt data-md>remoting-audio
+    <dd data-md>
+     <p>Audio encodings that the controller can send to the receiver once they
+are acked via the remote-playback-modify-response message.</p>
+    <dt data-md>remoting-video
+    <dd data-md>
+     <p>Videos encodings that the controller can send to the receiver once they
+are acked via the remote-playback-modify-response message.</p>
+    <dt data-md>remoting-stats-interval
+    <dd data-md>
+     <p>The frequency the controller would like for the receiver to send
+remoting stats using the streaming stats message.</p>
    </dl>
    <p>When a receiver receives a remote-playback-modify-request it should send a
 remote-playback-modify-response message in reply with the following values:</p>
@@ -2402,6 +2419,10 @@ remote-playback-modify-response message in reply with the following values:</p>
     <dt data-md>state
     <dd data-md>
      <p>The updated state of the remote playback as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
+    <dt data-md>remoting-stats-interval
+    <dd data-md>
+     <p>The frequency the contorller would like for the receiver to send
+back remoting stats using the streaming stats message.</p>
    </dl>
    <p>When the state of remote playback changes without request for modification from
 the controller (such as when the skips or pauses due to user user interaction on
@@ -2682,8 +2703,12 @@ following properties:
     <dt data-md>receive-video (required)
     <dd data-md>
      <p>A list of capabilities for receiving video. For an explanation of fields, see below.</p>
+    <dt data-md>receive-data (required)
+    <dd data-md>
+     <p>A list of arbitrary data formats the device supports
+for receiving data.</p>
    </dl>
-   <p>The format type is used as the basis for audio and video capabilities.
+   <p>The format type is used as the basis for audio, video, and data capabilities.
 Formats are composed of the following properties:</p>
    <dl>
     <dt data-md>name (required)
@@ -2744,139 +2769,12 @@ considers to be "native," meaning that scaling is not required.
 The default value is none.</p>
     <dt data-md>supports-scaling (optional)
     <dd data-md>
-     <p>An optional boolean field indicating whether the receiver can scale content
+     <p>A optional boolean field indicating whether the receiver can scale content
 provided in a video-resolution not listed in the native-resolutions list
 (if provided) or of a different aspect ratio. The default value is true.</p>
    </dl>
    <h3 class="heading settled" data-level="9.2" id="streaming-sessions"><span class="secno">9.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
-   <p>To start a streaming session, a sender may send a
-streaming-session-start-request message with the following properties:</p>
-   <dl>
-    <dt data-md>streaming-session-id
-    <dd data-md>
-     <p>Identifies the streaming session.  Must be unique for the (sender,
-receiver) pair.  Can be used later to modify or terminate a
-streaming session.</p>
-    <dt data-md>stats-interval
-    <dd data-md>
-     <p>Indicates the frequency the receiver should send stats messages to
-the sender.</p>
-    <dt data-md>stream-offers
-    <dd data-md>
-     <p>Indicates the streams that the receiver can request from the sender.</p>
-   </dl>
-   <p>Each stream offer contains the following properties:</p>
-   <dl>
-    <dt data-md>media-stream-id
-    <dd data-md>
-     <p>Identifies the media stream b	eing offered.  Must be unique within
-the streaming session.  Can be used by the receiver to request the
-media session.</p>
-    <dt data-md>friendly-name
-    <dd data-md>
-     <p>An optional name intended to be shown to a user, such that the
-receiver may allow the user to choose which media streams to
-receive, or if they are received automatically by the receiver,
-give the user some information about what the media stream is.</p>
-    <dt data-md>audio
-    <dd data-md>
-     <p>A list of audio encodings offered.  An audio encoding is a series
-of encoded audio frames.  Encodings define properties needed by
-the receiver to know how to decode the encoding, such as codec and
-sample rate.  They can differ by codec and related properties,
-but should be different encodings of the same audio.</p>
-    <dt data-md>video
-    <dd data-md>
-     <p>A list of video encodings offered.  A video encoding is a series of
-encoded video frames.  Encodings define properties needed by the
-receiver to know how to decode the encoding, such as codec and
-default duration.  They can differ by codec and potentially other
-properties, but should be different encodings of the same video.</p>
-   </dl>
-   <p>Each audio encoding offered defines the following properties:</p>
-   <dl>
-    <dt data-md>encoding-id
-    <dd data-md>
-     <p>Identifies the audio encoding being offered.  Must be unique within
-the media stream.  Can be the receiver to request an encoding.</p>
-    <dt data-md>codec
-    <dd data-md>
-     <p>The name of the codec used by the encoding.</p>
-    <dt data-md>time-scale
-    <dd data-md>
-     <p>The time scale used by all audio frames.  This allows senders to
-make audio-frame messages smaller by not including the time scale
-in each one.</p>
-    <dt data-md>default-duration:
-    <dd data-md>
-     <p>The duration of an audio frame .  This allows senders to make
-audio-frame messagse smaller by not including the duration for
-audio-frame messages that have the default duration.</p>
-   </dl>
-   <p>Each video encoding offered defines the following properties:</p>
-   <dl>
-    <dt data-md>encoding-id
-    <dd data-md>
-     <p>Identifies the video encoding being offered.  Must be unique within
-the media stream.  Can be the receiver to request an encoding.</p>
-    <dt data-md>codec
-    <dd data-md>
-     <p>The name of the codec used by the encoding.</p>
-    <dt data-md>time-scale
-    <dd data-md>
-     <p>The time scale used by all video frames.  This allows senders to
-make video-frame messages smaller by not including the time scale
-in each one.</p>
-    <dt data-md>default-duration:
-    <dd data-md>
-     <p>The default duration of a video frame .  This allows senders to make
-video-frame messagse smaller by not including the duration for
-video-frame messages that have the default duration.</p>
-    <dt data-md>default-rotation:
-    <dd data-md>
-     <p>The default rotation of a video frame .  This allows senders to make
-video-frame messagse smaller by not including the rotation for
-video-frame messages that have the default rotation.</p>
-   </dl>
-   <p>After receiving a streaming-session-start-request message, a receiver
-should send back a streaming-session-start-response message with the
-following properties:</p>
-   <dl>
-    <dt data-md>stats-interval
-    <dd data-md>
-     <p>Indicates the frequency the sender should send stats messages to
-the receiver.</p>
-    <dt data-md>stream-requests
-    <dd data-md>
-     <p>Indicates which media streams the receiver would like to receiver
-from the sender.</p>
-   </dl>
-   <p>Each stream request contains the following properties:</p>
-   <dl>
-    <dt data-md>media-stream-id
-    <dd data-md>
-     <p>The ID of the stream reqeusted.</p>
-    <dt data-md>audio (optional)
-    <dd data-md>
-     <p>The requested audio encoding, by encoding ID</p>
-    <dt data-md>video (optional)
-    <dd data-md>
-     <p>The requested video encoding, by encoding ID.  It may
-include a target resolution and maximum frame rate.  The sender
-should not exceed the maximum frame rate and should attempt to
-send at the target bitrate, possibly exceeding it by a small amount.</p>
-   </dl>
-   <p>During a streaming session, the receiver can modify the requests it
-made for encodings by sending a streaming-session-modify-request
-containing a modify list of stream-requests.  When the sender receives
-a streaming-session-modify-request, it should send back a
-streaming-session-modify-response.</p>
-   <p>Finally, either sender may terminate the streaming session by sending
-a streaming-session-terminate-request command.  When the receiver
-receives the streaming-session-terminate-request, it should send back
-a streaming-session-terminate-response.  The receiver can terminate at
-any point and notify the sender by sending a
-streaming-session-terminate-event message.</p>
+   <p>TODO</p>
    <h3 class="heading settled" data-level="9.3" id="streaming-audio"><span class="secno">9.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
    <p>Senders may send audio to receivers by sending audio-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  An audio frame message
 contains a set of encoded audio samples for a range of time. A series of
@@ -2980,7 +2878,49 @@ The default is 0 (no rotation).</p>
      <p>The encoded video frame (encoded image).  The codec and codec parameters are
 inferred from the properties of the encoding.</p>
    </dl>
-   <h3 class="heading settled" data-level="9.5" id="streaming-feedback"><span class="secno">9.5. </span><span class="content">Feedback</span><a class="self-link" href="#streaming-feedback"></a></h3>
+   <h3 class="heading settled" data-level="9.5" id="media-streaming-data"><span class="secno">9.5. </span><span class="content">Data</span><a class="self-link" href="#media-streaming-data"></a></h3>
+   <p>Senders may send timed data to receivers by sending data-frame messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
+contains an arbitrary payload that can be synchronized with and video, such as
+text track data.  A series of data frames that share a data type and timeline
+form a data encoding.</p>
+   <p>To allow for data frames to be sent out of order, they may be sent in separate
+QUIC streams, but more than one data frame may be sent in one QUIC stream if
+that makes sense for a specific type of data.</p>
+   <p>Text track data uses a payload type of text, a default duration of unknown, and
+a timescale of 1000000 (microseconds).</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the media encoding to which this data frame belongs.  This can be
+used to reference properties of the encoding such as the type of data and
+time scale.  Referencing properties of the encoding through the encoding id
+helps to avoid sending duplicate information in every frame.</p>
+    <dt data-md>sequence-number
+    <dd data-md>
+     <p>Identifies the frame and its order in the encoding.
+Within an encoding, larger sequence numbers mean later start times.
+Within an encoding, gaps in sequence numbers mean frames are missing.</p>
+    <dt data-md>start-time
+    <dd data-md>
+     <p>Identifies the beginning of the time range of the data frame.  The time
+scale is inferred from the properties of the encoding.  The end time can be
+inferred from the start time and duration.</p>
+    <dt data-md>duration
+    <dd data-md>
+     <p>If present, the duration of the data frame.  The time
+scale is inferred from the properties of the encoding.  Likewise, if not
+present, the duration is inferred from the properties of the encoding.</p>
+    <dt data-md>sync-time
+    <dd data-md>
+     <p>If present, a time used to synchronize the start time of this audio frame (and
+thus, this encoding) with that of other media encodings on different
+timelines.</p>
+    <dt data-md>payload
+    <dd data-md>
+     <p>The data.  The format and parameters are inferred from
+the properties of the encoding.</p>
+   </dl>
+   <h3 class="heading settled" data-level="9.6" id="streaming-feedback"><span class="secno">9.6. </span><span class="content">Feedback</span><a class="self-link" href="#streaming-feedback"></a></h3>
    <p>The receiver can send feedback to the sender, such as key frame requests.</p>
    <p>A video key frame is requested by sending a video-request message with
 the following keys and values.</p>
@@ -3001,120 +2941,8 @@ This it to prevent out-of-order requests from generating more key frames than ne
      <p>If set, the sender may generate a video frame dependent on the last decoded
 frame.  If not set, the sender must generate an indepdendent (key) frame.</p>
    </dl>
-   <h3 class="heading settled" data-level="9.6" id="streaming-stats"><span class="secno">9.6. </span><span class="content">Stats</span><a class="self-link" href="#streaming-stats"></a></h3>
-   <p>Durings a streaming session, the sender should send stats with the
-streaming-session-sender-stats-event at the interval the receiver
-requested.  The streaming-session-sender-stats-event message contains
-the following properties:</p>
-   <dl>
-    <dt data-md>streaming-session-id
-    <dd data-md>
-     <p>The ID of the streaming session these stats apply to.</p>
-    <dt data-md>system-time
-    <dd data-md>
-     <p>The time when the stats were calculated, using a monotonic system
-clock.</p>
-    <dt data-md>audio
-    <dd data-md>
-     <p>Stats specific to audio.  Stats for multiple encodings can be sent
-at once, but encodings need not be included if the stats haven’t
-changed.  See below.</p>
-    <dt data-md>video
-    <dd data-md>
-     <p>Stats specific to video.  Stats for multiple encodings can be sent
-at once, but encodings need not be included if the stats haven’t
-changed.  See below.</p>
-   </dl>
-   <p>Audio encoding sender stats include the following properties:</p>
-   <dl>
-    <dt data-md>encoding-id
-    <dd data-md>
-     <p>The ID of the encoding for which the stats apply.</p>
-    <dt data-md>cumulative-sent-frames
-    <dd data-md>
-     <p>The total number of frames sent.</p>
-    <dt data-md>cumulative-encode-delay
-    <dd data-md>
-     <p>The sum of the time spent encoding frames sent.</p>
-   </dl>
-   <p>Video encoding sender stats include the following properties:</p>
-   <dl>
-    <dt data-md>encoding-id
-    <dd data-md>
-     <p>The ID of the encoding for which the stats apply.</p>
-    <dt data-md>cumulative-sent-duration
-    <dd data-md>
-     <p>The sum of all of the durations of all of the audio frames sent.</p>
-    <dt data-md>cumulative-encode-delay
-    <dd data-md>
-     <p>The sum of the time spent encoding frames sent.</p>
-    <dt data-md>cumulative-dropped frames
-    <dd data-md>
-     <p>The total number of frames that were not sent due to network, CPU,
-or other contraints.</p>
-   </dl>
-   <p>Durings a streaming session, the receiver should send stats with the
-streaming-session-receiver-stats-event at the interval the sender
-requested.  The streaming-session-receiver-stats-event message contains
-the following properties:</p>
-   <dl>
-    <dt data-md>streaming-session-id
-    <dd data-md>
-     <p>The ID of the streaming session these stats apply to.</p>
-    <dt data-md>system-time
-    <dd data-md>
-     <p>The time when the stats were calculated, using a monotonic system
-clock.</p>
-    <dt data-md>audio
-    <dd data-md>
-     <p>Stats specific to audio.  Stats for multiple encodings can be sent
-at once, but encodings need not be included if the stats haven’t
-changed.  See below.</p>
-    <dt data-md>video
-    <dd data-md>
-     <p>Stats specific to video.  Stats for multiple encodings can be sent
-at once, but encodings need not be included if the stats haven’t
-changed.  See below.</p>
-   </dl>
-   <p>Audio encoding receiver stats include the following properties:</p>
-   <dl>
-    <dt data-md>encoding-id
-    <dd data-md>
-     <p>The ID of the encoding for which the stats apply.</p>
-    <dt data-md>cumulative-decoded-frames
-    <dd data-md>
-     <p>The total number of audio frames received and decoded.</p>
-    <dt data-md>cumulative-received-duration
-    <dd data-md>
-     <p>The sum of all of the durations of all of the audio frames received.</p>
-    <dt data-md>cumulative-lost-duration
-    <dd data-md>
-     <p>The sum of all of the durations of all of the audio frames detected as lost.</p>
-    <dt data-md>cumulative-jitter-buffer-delay
-    <dd data-md>
-     <p>The sum of the time frames spend in the jitter buffer.</p>
-    <dt data-md>cumulative-decode-delay
-    <dd data-md>
-     <p>The sum of the time spent decoding frames received.</p>
-   </dl>
-   <p>Video encoding receiver stats include the following properties:</p>
-   <dl>
-    <dt data-md>encoding-id
-    <dd data-md>
-     <p>The ID of the encoding for which the stats apply.</p>
-    <dt data-md>cumulative-decoded-frames
-    <dd data-md>
-     <p>The total number of video frames received and decoded.</p>
-    <dt data-md>cumulative-lost-frames
-    <dd data-md>
-     <p>The total number of video frames detected as lost.</p>
-    <dt data-md>cumulative-jitter-buffer-delay
-    <dd data-md>
-     <p>The sum of the time frames spent in the jitter buffer.</p>
-    <dt data-md>cumulative-decode-delay
-    <dd data-md>
-     <p>The sum of the time spent decoding frames received.</p>
-   </dl>
+   <h3 class="heading settled" data-level="9.7" id="streaming-stats"><span class="secno">9.7. </span><span class="content">Stats</span><a class="self-link" href="#streaming-stats"></a></h3>
+   <p>TODO</p>
    <h2 class="heading settled" data-level="10" id="requests-responses--watches"><span class="secno">10. </span><span class="content">Requests, Responses, and Watches</span><a class="self-link" href="#requests-responses--watches"></a></h2>
    <p>Multiple sub-protocols in OSP have messages that act as requests, responses,
 watches, and events. Most requests have a <code>request-id</code>, and the agent that
@@ -3163,7 +2991,7 @@ without the field set.</p>
    <p>Agents must not add extended fields to the <code>audio-frame</code> message directly.
 Instead, they may add them to its nested <code>optional</code> value.</p>
    <p>Extension fields should use string keys to avoid conflicts with integer keys in
-Open Screen Protocol messages.  An agent should not send extension fields to	
+Open Screen Protocol messages.  An agent should not send extension fields to
 another agent unless that agent advertises an extension capability ID in its <code>agent-info</code> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
    <p>The Open Screen Protocol allows two networked agents to discover each other
@@ -3427,12 +3255,12 @@ or are very small or both and larger numbers should be reserved for messages
 that are infrequently sent or large or both because smaller type keys encode on
 the wire smaller.</p>
    <div class="highlight">
-<pre><span></span><span class="c1">; type key 100</span>
+<pre><span></span><span class="c1">; type key 10</span>
 <span class="nx">agent-info-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="p">}</span>
 
-<p><span class="c1">; type key 101</span>
+<p><span class="c1">; type key 11</span>
 <span class="nx">agent-info-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
@@ -3459,13 +3287,13 @@ the wire smaller.</p>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; state-token</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 102</span>
+<p><span class="c1">; type key 12</span>
 <span class="nx">agent-status-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 103</span>
+<p><span class="c1">; type key 13</span>
 <span class="nx">agent-status-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
@@ -3532,7 +3360,7 @@ the wire smaller.</p>
 
 <p><span class="nx">watch-id </span><span class="p">=</span> <span class="kt">uint</span></p>
 
-<p><span class="c1">; type key 108</span>
+<p><span class="c1">; type key 14</span>
 <span class="nx">presentation-url-availability-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
@@ -3540,13 +3368,13 @@ the wire smaller.</p>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 109</span>
+<p><span class="c1">; type key 15</span>
 <span class="nx">presentation-url-availability-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 110</span>
+<p><span class="c1">; type key 103</span>
 <span class="nx">presentation-url-availability-event </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
@@ -3559,7 +3387,7 @@ the wire smaller.</p>
   <span class="nx">invalid</span><span class="p">:</span> <span class="mi">10</span>
 <span class="p">)</span></p>
 
-<p><span class="c1">; type key 111</span>
+<p><span class="c1">; type key 104</span>
 <span class="nx">presentation-start-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
@@ -3572,14 +3400,14 @@ the wire smaller.</p>
 <span class="nx">  value</span><span class="p">:</span> <span class="nx">text</span>
 <span class="p">]</span></p>
 
-<p><span class="c1">; type key 112</span>
+<p><span class="c1">; type key 105</span>
 <span class="nx">presentation-start-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 113</span>
+<p><span class="c1">; type key 106</span>
 <span class="nx">presentation-termination-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
@@ -3590,13 +3418,13 @@ the wire smaller.</p>
   <span class="p">)</span> <span class="c1">; reason</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 114</span>
+<p><span class="c1">; type key 107</span>
 <span class="nx">presentation-termination-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 115</span>
+<p><span class="c1">; type key 108</span>
 <span class="nx">presentation-termination-event </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3613,14 +3441,14 @@ the wire smaller.</p>
   <span class="p">)</span> <span class="c1">; reason</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 116</span>
+<p><span class="c1">; type key 109</span>
 <span class="nx">presentation-connection-open-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; url</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 117</span>
+<p><span class="c1">; type key 110</span>
 <span class="nx">presentation-connection-open-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
@@ -3663,7 +3491,7 @@ the wire smaller.</p>
   <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">199</span>
 <span class="p">)</span></p>
 
-<p><span class="c1">; type key 121</span>
+<p><span class="c1">; type key 17</span>
 <span class="nx">remote-playback-availability-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
@@ -3671,19 +3499,19 @@ the wire smaller.</p>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 122</span>
+<p><span class="c1">; type key 18</span>
 <span class="nx">remote-playback-availability-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  url-availabilities</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 123</span>
+<p><span class="c1">; type key 114</span>
 <span class="nx">remote-playback-availability-event </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 124</span>
+<p><span class="c1">; type key 115</span>
 <span class="nx">remote-playback-start-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
@@ -3698,9 +3526,10 @@ the wire smaller.</p>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; remoting-capabilities</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 126</span>
+<p><span class="c1">; type key 117</span>
 <span class="nx">remote-playback-termination-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
@@ -3710,13 +3539,13 @@ the wire smaller.</p>
   <span class="p">)</span> <span class="c1">; reason</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 127</span>
+<p><span class="c1">; type key 118</span>
 <span class="nx">remote-playback-termination-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 128</span>
+<p><span class="c1">; type key 119</span>
 <span class="nx">remote-playback-termination-event </span><span class="p">=</span> <span class="p">{</span>
  <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3729,21 +3558,25 @@ the wire smaller.</p>
   <span class="p">)</span> <span class="c1">; reason</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 129</span>
+<p><span class="c1">; type key 19</span>
 <span class="nx">remote-playback-modify-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">audio-encoding-offer</span><span class="p">]</span> <span class="c1">; remoting-audio</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">video-encoding-offer</span><span class="p">]</span> <span class="c1">; remoting-video</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; remoting-stats-interval</span>
 <span class="p">)</span></p>
 
-<p><span class="c1">; type key 130</span>
+<p><span class="c1">; type key 20</span>
 <span class="nx">remote-playback-modify-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; remoting-stats-interval</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 131</span>
+<p><span class="c1">; type key 21</span>
 <span class="nx">remote-playback-state-event </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
@@ -3885,13 +3718,56 @@ the wire smaller.</p>
 <span class="nx">  6 </span><span class="p">:</span> <span class="nx">mode </span><span class="c1">; text-track-mode</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 132</span>
-<span class="nx">streaming-capabilities-request </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="c1">; type key 22</span>
+<span class="nx">audio-frame </span><span class="p">=</span> <span class="p">[</span>
+  <span class="nx">encoding-id</span><span class="p">:</span> <span class="kt">uint</span>
+  <span class="nx">start-time</span><span class="p">:</span> <span class="kt">uint</span>
+  <span class="nx">payload</span><span class="p">:</span> <span class="nx">bytes</span>
+<span class="nx">  </span><span class="p">?</span> <span class="nx">optional</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">?</span> <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
+    <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+  <span class="p">}</span>
+<span class="p">]</span></p>
+
+<p><span class="c1">; type key 23</span>
+<span class="nx">video-frame </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="kt">int</span><span class="p">]</span> <span class="c1">; depends-on</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
+  <span class="mi">5</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; payload</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; rotation</span>
+  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 24</span>
+<span class="nx">data-frame </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="nx">any</span><span class="c1">; payload</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 120</span>
+<span class="nx">video-frame-request </span><span class="p">=</span> <span class="p">{</span>
+ <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
+ <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; sequence-number</span>
+ <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; highest-decoded-frame-sequence-number</span>
+<span class="p">}</span></p>
+
+<p><span class="nx">ratio </span><span class="p">=</span> <span class="p">[</span>
+  <span class="nx">antecedent</span><span class="p">:</span> <span class="kt">uint</span>
+  <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
+<span class="p">]</span></p>
+
+<p><span class="nx">streaming-capabilities-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 133</span>
-<span class="nx">streaming-capabilities-response </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nx">streaming-capabilities-response </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
 <span class="p">}</span></p>
@@ -3899,6 +3775,7 @@ the wire smaller.</p>
 <p><span class="nx">streaming-capabilities </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-audio-capability</span><span class="p">]</span> <span class="c1">; receive-audio</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-video-capability</span><span class="p">]</span> <span class="c1">; receive-video</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-data-capability</span><span class="p">]</span> <span class="c1">; receive-data</span>
 <span class="p">}</span></p>
 
 <p><span class="nx">format </span><span class="p">=</span> <span class="p">{</span>
@@ -3934,160 +3811,8 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
 <span class="p">}</span></p>
 
-<p><span class="c1">; type key 134</span>
-<span class="nx">streaming-session-start-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-offer</span><span class="p">]</span> <span class="c1">;  stream-offers</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; stats-interval</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 135</span>
-<span class="nx">streaming-session-start-response </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-request</span><span class="p">]</span> <span class="c1">; stream-requests</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; stats-interval</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 136</span>
-<span class="nx">streaming-session-modify-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-request</span><span class="p">]</span> <span class="c1">; stream-requests</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 137</span>
-<span class="nx">streaming-session-modify-response </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 138</span>
-<span class="nx">streaming-session-terminate-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">request</span>
-<span class="nx">  1 </span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 139</span>
-<span class="nx">streaming-session-terminate-response </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">response</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 140</span>
-<span class="nx">streaming-session-terminate-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">media-stream-offer </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; media-stream-id</span>
-  <span class="p">?</span> <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; friendly-name</span>
-  <span class="p">?</span> <span class="mi">3</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">audio-encoding-offer</span><span class="p">]</span> <span class="c1">; audio</span>
-  <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">video-encoding-offer</span><span class="p">]</span> <span class="c1">; video</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">media-stream-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; media-stream-id</span>
-  <span class="p">?</span> <span class="mi">2</span> <span class="p">:</span> <span class="nx">audio-encoding-request </span><span class="c1">; audio</span>
-  <span class="p">?</span> <span class="mi">3</span> <span class="p">:</span> <span class="nx">video-encoding-request </span><span class="c1">; video</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">audio-encoding-offer </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-  <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; codec</span>
-  <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
-  <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; default-duration</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">video-encoding-offer </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-  <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; codec</span>
-  <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
-  <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; default-duration</span>
-  <span class="p">?</span> <span class="mi">5</span> <span class="p">:</span> <span class="nx">video-rotation </span><span class="c1">; default-rotation</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">audio-encoding-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">video-encoding-request </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-  <span class="p">?</span> <span class="mi">2</span> <span class="p">:</span> <span class="nx">video-resolution </span><span class="c1">; target-resolution</span>
-  <span class="p">?</span> <span class="mi">3</span> <span class="p">:</span> <span class="kt">float32</span> <span class="c1">; max-frames-per-second</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 13</span>
-<span class="nx">audio-frame </span><span class="p">=</span> <span class="p">[</span>
-  <span class="nx">encoding-id</span><span class="p">:</span> <span class="kt">uint</span>
-  <span class="nx">start-time</span><span class="p">:</span> <span class="kt">uint</span>
-  <span class="nx">payload</span><span class="p">:</span> <span class="nx">bytes</span>
-<span class="nx">  </span><span class="p">?</span> <span class="nx">optional</span><span class="p">:</span> <span class="p">{</span>
-    <span class="p">?</span> <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
-    <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
-  <span class="p">}</span>
-<span class="p">]</span></p>
-
-<p><span class="c1">; type key 14</span>
-<span class="nx">video-frame </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="kt">int</span><span class="p">]</span> <span class="c1">; depends-on</span>
-  <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
-  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
-  <span class="mi">5</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; payload</span>
-  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; rotation</span>
-  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 141</span>
-<span class="nx">video-frame-request </span><span class="p">=</span> <span class="p">{</span>
- <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
- <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; sequence-number</span>
- <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; highest-decoded-frame-sequence-number</span>
-<span class="p">}</span></p>
-
-<p><span class="nx">ratio </span><span class="p">=</span> <span class="p">[</span>
-  <span class="nx">antecedent</span><span class="p">:</span> <span class="kt">uint</span>
-  <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
-<span class="p">]</span></p>
-
-
-<p><span class="c1">; type key 142</span>
-<span class="nx">streaming-session-sender-stats-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; system-time</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
-    <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-    <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-sent-frames</span>
-    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-encode-delay</span>
-  <span class="p">}]</span> <span class="c1">; audio</span>
-  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
-    <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-    <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-sent-duration</span>
-    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-encode-delay</span>
-    <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-dropped-frames</span>
-  <span class="p">}]</span> <span class="c1">; video</span>
-<span class="p">}</span></p>
-
-<p><span class="c1">; type key 143</span>
-<span class="nx">streaming-session-receiver-stats-event </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; system-time</span>
-  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
-    <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-    <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-received-duration</span>
-    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-lost-duration</span>
-    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-jitter-buffer-delay</span>
-    <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-decode-delay</span>
-  <span class="p">}]</span> <span class="c1">; audio</span>
-  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
-    <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-    <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-decoded-frames</span>
-    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-lost-frames</span>
-    <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-jitter-buffer-delay</span>
-    <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-decode-delay</span>
-  <span class="p">}]</span> <span class="c1">; video</span>
+<p><span class="nx">receive-data-capability </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; format</span>
 <span class="p">}</span></p>
 </pre>
    </div>

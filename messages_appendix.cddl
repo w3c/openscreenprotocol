@@ -270,13 +270,14 @@ remote-playback-start-request = {
   ? 3: [* text] ; text-track-urls
   ? 4: [* http-header] ; headers
   ? 5: remote-playback-controls ; controls
+  ? 6: {streaming-session-start-request-params} ; remoting
 }
 
 ; type key 116
 remote-playback-start-response = {
   response
-  1: &result ; result
-  ? 2: remote-playback-state ; state
+  ? 1: remote-playback-state ; state
+  ? 2: {streaming-session-start-response-params} ; remoting
 }
 
 ; type key 117
@@ -566,22 +567,36 @@ receive-data-capability = {
 ; type key 124
 streaming-session-start-request = {
   request
-  1: uint; streaming-session-id
-  2: [* media-stream-offer] ;  stream-offers
-  3: microseconds ; desired-stats-interval
+  streaming-session-start-request-params
 }
 
 ; type key 125
 streaming-session-start-response = {
   response
-  1: &result ; result
-  2: [* media-stream-request] ; stream-requests
-  3: microseconds ; desired-stats-interval
+  streaming-session-start-response-params
 }
+
+; A separate group so it can be used in remote-playback-start-request
+streaming-session-start-request-params = (
+  1: uint; streaming-session-id
+  2: [* media-stream-offer] ;  stream-offers
+  3: microseconds ; desired-stats-interval
+)
 
 ; type key 126
 streaming-session-modify-request = {
   request
+  streaming-session-modify-request-params
+}
+
+; A separate group so it can be used in remote-playback-start-response
+streaming-session-start-response-params = (
+  1: &result ; result
+  2: [* media-stream-request] ; stream-requests
+  3: microseconds ; desired-stats-interval  
+)
+
+streaming-session-modify-request-params = (
   1: uint ; streaming-session-id
   2: [* media-stream-request] ; stream-requests
 }
