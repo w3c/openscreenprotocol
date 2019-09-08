@@ -353,11 +353,6 @@ When an [=OSP Agent=] makes a QUIC connection to another agent, it must use
 [[RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 must be used in the following
 application profile:
 
-* Only TLS 1.3 is supported.  Older revisions of TLS 1.2 and SSL are not allowed
-    and Open Screen connections must not be allowed to downgrade to earlier
-    versions.
-    * The `supported_versions` extension must include only `0x0304`.
-* Session resumption with pre-shared-keys is not allowed.
 * Only constant-time AEAD ciphers are allowed.
     * OSP agents must support [[RFC8446|TLS_AES_128_GCM_SHA256]].
     * OSP agents should support [[RFC8466|TLS_CHACHA20_POLY1305_SHA256]] and
@@ -376,19 +371,19 @@ application profile:
         the negotiated signature algoirithm.
 * The `server_name` extension should be set to the following `host_name`:
     `<fp>._openscreen._udp.local`.
-    * `<fp>` should be substituted with the [=agent fingerprint=].
-* 0-RTT data is not allowed.
+    * `<fp>` should be substituted with the [=agent fingerprint=] as used in mDNS TXT.
 * All other TLS 1.3 extensions must be ignored by OSP agents.
 
 Note: As this is an application-specific profile for TLS 1.3, it is not required
 for OSP agents to interoperate with non-OSP TLS 1.3 endpoints.
 
-Issue: Determine if there advantage to session resumption outside of early data.
+Issue: Determine if there is an advantage to session resumption outside of early
+data. If we allow session resumption, do we allow early data too?
+
+Issue: Do agents need to support the Cookies extension (used in HelloRetryRequest)?
 
 Issue: Make recommendations for cipher and signature algorithm preference list
 based on hardware characteristics of agents.
-
-Issue: Do agents need to support the Cookies extension (used in HelloRetryRequest)?
 
 Agent Certificates {#certificates}
 ----------------------------------
@@ -411,7 +406,7 @@ The [=agent certificate=] must have the following characteristics:
 
 The following X.509 v3 fields are to be set as follows:
 
-m<table>
+<table>
 <thead>
  <th>Field</th>
  <th>Value</th>
@@ -457,19 +452,20 @@ m<table>
 
 Mandatory fields not mentioned above should be set according to [[RFC 5280]].
 
-The value `<fp>` above should be substituted with the [=agent fingerprint=].
+The value `<fp>` above should be substituted with the [=agent fingerprint=] (as
+serialized in mDNS TXT).
 
-Note: The OSP agent may use the agent implementer's or device model name as the
-value for the `O` key for user interface and debugging purposes. It may use the
-agent implementer's or device manufacturer's location as the value for the
-location keys (`L`, `ST`, and `C`) for user interface and debugging purposes.
+Note: The OSP agent may use the implementer or device model name as the value
+for the `O` key for user interface and debugging purposes. It may use the agent
+implementer's or device manufacturer's location as the value for the location
+keys (`L`, `ST`, and `C`) for user interface and debugging purposes.
 
 If an OSP agent sees an [=agent certificate=] it has not yet verified through
 [[#authentication]], it must treat that agent as unverified and initiate
 authentication with that agent before allowing additional messages to be
 exchanged with that agent (apart from the messages described in [[#metadata]]).
 
-if an OSP agent sees a valid [=agent certificate=] it has verified through
+If an OSP agent sees a valid [=agent certificate=] it has verified through
 authentication, it is not required to initiate authentication with that agent
 before sending further messages.
 
