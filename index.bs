@@ -1477,7 +1477,7 @@ following additional fields:
 
 : supports-rotation (optional)
 :: A optional boolean field indicating whether the media receiver can receive 
-    video frames with the the rotation field set. The default value is true.
+    video frames with the rotation field set. The default value is true.
 
 <!-- TODO: Add max-bit-rate, color profiles, HDR -->
 
