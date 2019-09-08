@@ -500,7 +500,7 @@ of messages.
     directly or indirectly through the field of a field), the type key may remain
     unchanged if the behavior of newer receiving agents that do not understand the
     removed field is compatible with older sending agents that include the field.
-    Otherwise, a new type key must be assigned.  
+    Otherwise, a new type key must be assigned.
 
 1. Required fields may not be added or removed from array-based messages, such
     as audio-frame.
@@ -617,15 +617,6 @@ terminating, and controlling presentations as defined by
 [[PRESENTATION-API|Presentation API]]. [[#presentation-api]]
 defines how APIs in [[PRESENTATION-API|Presentation API]] map to the
 protocol messages defined in this section.
-
-An [=Open Screen Protocol agent=] that is a [=controlling user agent=] for the
-[[PRESENTATION-API|Presentation API]] must support the `control-presentation` capability.
-An [=OSP agent=] that is a [=receiving user agent=] for the
-[[PRESENTATION-API|Presentation API]] must support the `receive-presentation` capability.
-The same OSP agent may be a [=controlling user agent=] and a [=receiving user agent=].
-
-Note: These roles are independent of which agent was the [=advertising agent=]
-or the [=listening agent=] during discovery and connection establishment.
 
 To learn which receivers are [=available presentation displays=] for a
 particular [=presentation request URL=] or set of URLs, the controller may send
@@ -834,8 +825,17 @@ presentation may succeed or fail, so a response message is required.
 Presentation API {#presentation-api}
 ---------------------------------------------
 
-This section defines how the [[PRESENTATION-API|Presentation API]] uses the
-[[#presentation-protocol]].
+An [=Open Screen Protocol agent=] that is a [=controlling user agent=] for the
+[[PRESENTATION-API|Presentation API]] must support the `control-presentation` capability.
+An [=OSP agent=] that is a [=receiving user agent=] for the
+[[PRESENTATION-API|Presentation API]] must support the `receive-presentation` capability.
+The same OSP agent may be a [=controlling user agent=] and a [=receiving user agent=].
+
+Note: These roles are independent of which agent was the [=advertising agent=]
+or the [=listening agent=] during discovery and connection establishment.
+
+This is how the [[PRESENTATION-API|Presentation API]] uses the
+[[#presentation-protocol]]:
 
 When [[PRESENTATION-API#the-list-of-available-presentation-displays|section
 6.4.2]] says "This list of presentation displays ... is populated based on an
@@ -903,23 +903,6 @@ and controlling remote playback of media as defined by the
 [[REMOTE-PLAYBACK|Remote Playback API]].  [[#remote-playback-api]] defines how
 APIs in [[REMOTE-PLAYBACK|Remote Playback API]] map to the protocol messages
 defined in this section.
-
-An [=Open Screen Protocol agent=] that implements the
-[[REMOTE-PLAYBACK|Remote Playback API]] must support the
-`control-remote-playback` capability.  It may support the `send-streaming`
-capability so it can send {{HTMLMediaElement}} media data through media
-remoting.
-
-An an [=OSP agent=] that is a [=remote playback device=] for the
-[[REMOTE-PLAYBACK|Remote Playback API]] must support the
-`receive-remote-playback` capability.  It may support the `receive-streaming`
-capability so it can receive {{HTMLMediaElement}} data through media remoting.
-
-The same OSP agent may implement both the [[REMOTE-PLAYBACK|Remote Playback API]]
-and be a [=remote playback device=] for that API.
-
-Note: These roles are independent of which agent was the [=advertising agent=]
-or the [=listening agent=] during discovery and connection establishment.
 
 For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
@@ -1374,8 +1357,25 @@ in hertz, such as 90000 for 90000hz, a common time scale for video.
 Remote Playback API {#remote-playback-api}
 ------------------------------------------
 
-This section defines how the [[REMOTE-PLAYBACK|Remote Playback API]] uses the
-messages defined in [[#remote-playback-protocol]].
+An [=Open Screen Protocol agent=] that implements the
+[[REMOTE-PLAYBACK|Remote Playback API]] must support the
+`control-remote-playback` capability.  It may support the `send-streaming`
+capability so it can send {{HTMLMediaElement}} media data through media
+remoting.
+
+An an [=OSP agent=] that is a [=remote playback device=] for the
+[[REMOTE-PLAYBACK|Remote Playback API]] must support the
+`receive-remote-playback` capability.  It may support the `receive-streaming`
+capability so it can receive {{HTMLMediaElement}} data through media remoting.
+
+The same OSP agent may implement both the [[REMOTE-PLAYBACK|Remote Playback API]]
+and be a [=remote playback device=] for that API.
+
+Note: These roles are independent of which agent was the [=advertising agent=]
+or the [=listening agent=] during discovery and connection establishment.
+
+This is how the [[REMOTE-PLAYBACK|Remote Playback API]] uses the
+messages defined in [[#remote-playback-protocol]]:
 
 When [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
 6.2.1.2]] says "This list contains [=remote playback devices=] and is populated
