@@ -77,11 +77,10 @@ the core OSP standard to work with a non-https application; this is true of
 `cast:` URLs today, for example.  Browsers that do not have these features may
 believe that a non-https URL as available for presentation (because the
 receiving agent reports the URL as supported), but not be able to launch and
-control the URL successfully via OSP.  If [OSP
+control the presentation successfully via OSP.  If [OSP
 extensions](https://webscreens.github.io/openscreenprotocol/#protocol-extensions)
-are required to control a non-https presentation, they may need to be mapped to
-[OSP capabilities](https://github.com/webscreens/openscreenprotocol/blob/gh-pages/capabilities.md)
-so that agents can accurately determine compatbility.
+are required to control a non-https presentation, the non-https scheme may
+need to be mapped to an [OSP capability](https://github.com/webscreens/openscreenprotocol/blob/gh-pages/capabilities.md) so that agents can accurately determine compatbility.
 
 Another concern is the Web security model. Today, browsers decide which schemes
 should be considered secure from the controlling origin's point of view, and
