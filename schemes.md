@@ -1,19 +1,22 @@
 # Schemes and Open Screen Protocol
 
-This document discusses the usage of schemes as a mechanism to make Open Screen
-Protocol (OSP) extensible and to support any kind of application in the future
-without the need for agreement between the vendor of controlling user agent
-(controlling UA) and the vendor of receiving user agent (presentation screen),
-but only relying on the OSP.
+This document discusses the usage of HTTP schemes as a mechanism to make [Open
+Screen Protocol](https://webscreens.github.io/openscreenprotocol/) (OSP) agents
+extensible to support other kinds of applications in the future without the need
+for agreement between the agent implementations.
 
 The Presentation API allows a controller page to launch a presentation page on a
-display using the `PresentationRequest` interface. The `PresentationRequest`
-constructor accepts a URL or a sequence of URLs of the presentation page as
-input. While the current Presentation API spec defines the behavior of `http` or
-`https` schemes, it does not forbid the usage of other schemes. For example the
-`cast` scheme is used in the Presentation API tests as alternative scheme to
-support Google Cast receivers like Chromecast and Android TV. Let us consider
-the following example as input for discussion:
+display using the 
+[`PresentationRequest`](https://www.w3.org/TR/presentation-api/#interface-presentationrequest)
+interface. The `PresentationRequest` constructor accepts a URL or a sequence of
+URLs of the presentation page as input. While the current Presentation API spec
+defines the behavior of `https` URLs, it does not forbid the usage of other URLs
+with other schemes.
+
+For example the the `cast` scheme is used in the Presentation API tests as
+alternative scheme to support [Google Cast](https://developers.google.com/cast/)
+receivers like Chromecast and Android TV. Let us consider the following example
+as input for discussion:
 
 ```javascript
 var urls = [
@@ -30,8 +33,8 @@ This example provides three URLs with different schemes: `hbbtv`, `https` and
 filter presentation screens during discovery (regardless of which discovery
 protocol is used or how filtering is implemented).
 
-In order for a user to launch a presentation with a custom URL scheme, they must
-have a presentation screen available that responds postively to screen
+In order for a user to launch a presentation with a non-https URL scheme, they
+must have a presentation screen available that responds postively to screen
 availability requests for URLs with that scheme.
 
 If a single presentation screen supports more than one URL in a single
@@ -45,8 +48,10 @@ the controlling UA will launch the `hbbtv:` URL on it.
 
 If the controlling page needs the user to choose which URL to present, it can
 create a separate `PresentationRequest` object for each URL.  This is not
-recommended, as the user should generally not care about the details of the
-connection technology being used by the presentation screen.
+recommended, as this would require the user to choose a connection technology
+(by virtue of calling `PresentationRequest.start()` on a URL-specific
+`PresentationRequest`).  The user should generally not care about the details of
+the connection technology being used by the presentation screen.
 
 Alternatively, the presentation screen can advertise itself as multiple Open
 Screen Protocol endpoints, each of which advertises availability for a different
@@ -57,16 +62,33 @@ technology used by a given screen.
 
 ## Extensibility
 
-The mechanism of using schemes in the OSP allows to extend the supported
-application types on receiver devices. For example Android TV can implement the
-OSP (receiver part) for native TV applications in the future e.g. using the
-scheme `android` (the TV App uses in this case a native library that implements
-the OSP with similar interface to Presentation API). There is no need to
-update/extend the controlling UA to support new schemes, but it is up to the
-vendor of controlling UA to white/blacklist specific URL schemes.
+The mechanism of using schemes in the OSP allows controlling pages to support
+additional receiver application types.  For example, Android TV could implement
+the OSP receiver for native TV applications in the future and advertise them
+using the scheme `android.` A native Android TV app with a native library that
+acts as a presentation receiver could then be controlled through the
+Presentation Controller API.
 
-*TODO:*
-[Issue #93: Custom schemes and interop](https://github.com/webscreens/openscreenprotocol/issues/93)
+## Interoperability
+
+There remain interoperability concerns with supporting non-https schemes through
+the OSP.  A browser may need to support additional features that are not part of
+the core OSP standard to work with a non-https application; this is true of
+`cast:` URLs today, for example.  Browsers that do not have these features may
+believe that a non-https URL as available for presentation (because the
+receiving agent reports the URL as supported), but not be able to launch and
+control the URL successfully via OSP.  If [OSP
+extensions](https://webscreens.github.io/openscreenprotocol/#protocol-extensions)
+are required to control a non-https presentation, they may need to be mapped to
+[OSP capabilities](https://github.com/webscreens/openscreenprotocol/blob/gh-pages/capabilities.md)
+so that agents can accurately determine compatbility.
+
+Another concern is the Web security model. Today, browsers decide which schemes
+should be considered secure from the controlling origin's point of view, and
+block URLs that do not meet those requirements.  As OSP is intended to create a
+secure endpoint to the receiving agent, the expectation is that browsers should
+make an OSP-compliant endpoint accessible from secure contexts, even for
+presentations launched with non-https URLs.
 
 ## Scheme based filtering
 
@@ -86,13 +108,13 @@ discovery. Two possible options:
 ## HbbTV scheme
 
 The example above shows the usage of `hbbtv` scheme. Basically, all required
-parameters to address an HbbTV application on the terminal can be serialized as
-URL query parameters. The HbbTV URL in the example above contains the parameters
-`appId` (application ID) , `orgId` (organization ID), `appName` (application
-name) and `appUrl` (application URL), but other parameters can be supported in
-the same way. A receiver that advertises itself (e.g. `Receiver Device 1`
-depicted in the figure above) as a HbbTV terminal should use the scheme `hbbtv`
-during discovery.
+parameters to address an [HbbTV application](https://www.hbbtv.org/) on the terminal
+can be serialized as URL query parameters. The HbbTV URL in the example above
+contains the parameters `appId` (application ID) , `orgId` (organization ID),
+`appName` (application name) and `appUrl` (application URL), but other
+parameters can be supported in the same way. A receiver that advertises itself
+(e.g. `Receiver Device 1` depicted in the figure above) as a HbbTV terminal
+should use the scheme `hbbtv` during discovery.
 
 *TODO:*
 [Issue #94: Semantics of hbbtv: URLs](https://github.com/webscreens/openscreenprotocol/issues/94)
