@@ -908,9 +908,6 @@ defined in this section.
 For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
 
-Issue(148): Make a required/default remote playback state table.
-
-
 Issue(159): Refinements to Remote Playback protocol.
 
 To learn which receivers are [=compatible remote playback devices=] for a
