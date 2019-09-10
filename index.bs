@@ -1543,7 +1543,9 @@ streaming-session-start-request message with the following properties:
 : streaming-session-id
 :: Identifies the streaming session.  Must be unique for the (sender,
     receiver) pair.  Can be used later to modify or terminate a
-    streaming session.
+    streaming session.  These IDs should be treated like other IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
 
 : desired-stats-interval
 :: Indicates the frequency the receiver should send stats messages to
@@ -1557,7 +1559,9 @@ Each stream offer contains the following properties:
 : media-stream-id
 :: Identifies the media stream being offered.  Must be unique within
     the streaming session.  Can be used by the receiver to request the
-    media session.
+    media session.  These IDs should be treated like other IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
 
 : display-name
 :: An optional name intended to be shown to a user, such that the
@@ -1988,7 +1992,7 @@ Video encoding receiver stats include the following properties:
 :: The sum of the time spent decoding frames received.
 
 
-Requests, Responses, and Watches {#requests-responses--watches}
+Requests, Responses, and Watches {#requests-responses-watches}
 ===============================================================
 
 Multiple sub-protocols in the Open Screen Protocol have messages that act as
@@ -2005,6 +2009,10 @@ ID.  Whenever an agent changes its `state-token`, it must reset its counter to 1
 When an agent sees that another agent has reset its state (by virtue of
 advertising a new `state-token`), it should discard any requests, responses,
 watches and events for that agent.
+
+Other IDs that must be unique and would cause confusion if one side
+loses state, such as `streaming-session-id` and `media-session-id`
+should be treated the same.
 
 Note: Request and watch IDs are not tied to any particular QUIC connection
 between agents.  If a QUIC connection is closed, an agent should not discard
