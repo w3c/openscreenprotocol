@@ -1693,10 +1693,12 @@ Each stream request contains the following fields:
 
 
 During a streaming session, the receiver can modify the requests it
-made for encodings by sending a streaming-session-modify-request
+made for encodings by sending a `streaming-session-modify-request`
 containing a modify list of stream-requests.  When the sender receives
-a streaming-session-modify-request, it should send back a
-streaming-session-modify-response.
+a `streaming-session-modify-request`, it should send back a
+`streaming-session-modify-response` indicate whether or not the
+application of the new request from the
+`streaming-session-modify-request` was successful.
 
 Finally, the sender may terminate the streaming session by sending
 a streaming-session-terminate-request command.  When the receiver
