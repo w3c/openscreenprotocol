@@ -357,7 +357,7 @@ If an agent changes any information in its [=agent-info=] message, it should
 send an [=agent-info-event=] message to all other connected agents with the new
 [=agent-info=] (without waiting for an [=agent-info-request=]).
 
-The [=agent-info=] message contains the following properties:
+The [=agent-info=] message contains the following fields:
 
 : display-name (required)
 :: The display name of the agent, intended to be displayed to a user by the
@@ -1225,7 +1225,7 @@ intentionally mirror settable attributes and methods of the
     unchanged.  Set the mode, add cues, and remove cues by id. See
     [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks)
     for more details.  Note that future specifications or extensions to this
-    specifications are expected to add new properties to the [=text-track-cue=]
+    specifications are expected to add new fields to the [=text-track-cue=]
     (such as text size, alignment, position, etc).  Adding and removing
     cues is optional for the receiver to support and if not supported, the
     receiver will behave as though no cues were added or removed (both adding
@@ -1455,7 +1455,7 @@ Streaming Protocol Capabilities {#streaming-protocol-capabilities}
 If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an [=streaming-capabilities-request=]
 message, and receive back a [=streaming-capabilities-response=] message with the
-following properties:
+following fields:
 
 : receive-audio (required)
 :: A list of capabilities for receiving audio. For an explanation of fields, see below.
@@ -1465,7 +1465,7 @@ following properties:
 
 
 The format type is used as the basis for audio and video capabilities.
-Formats are composed of the following properties:
+Formats are composed of the following fields:
 
 : name (required)
 :: The name of the codec.   This must be a single-codec RFC 6381 [=codecs parameter=].
@@ -1473,9 +1473,9 @@ Formats are composed of the following properties:
 <!-- TODO, specify where codec-specific parameters are defined. -->
 
 : parameters (required)
-:: A list of (key, value) parameters that can be used to pass fields that are
-    properties of a specific format, and not shared by other formats of that type
-    (audio, video, etc.).
+:: A list of (key, value) parameters that can be used to describe
+    properties of a specific format, and not shared by other formats
+    of that type (audio, video, etc.).
 
 Audio capabilities are composed of the above format type, with the following
 additional fields:
@@ -1538,7 +1538,7 @@ Sessions {#streaming-sessions}
 ------------------------------------
 
 To start a streaming session, a sender may send a
-streaming-session-start-request message with the following properties:
+streaming-session-start-request message with the following fields:
 
 : streaming-session-id
 :: Identifies the streaming session.  Must be unique for the (sender,
@@ -1554,7 +1554,7 @@ streaming-session-start-request message with the following properties:
 : stream-offers
 :: Indicates the streams that the receiver can request from the sender.
 
-Each stream offer contains the following properties:
+Each stream offer contains the following fields:
 
 : media-stream-id
 :: Identifies the media stream being offered.  Must be unique within
@@ -1571,29 +1571,29 @@ Each stream offer contains the following properties:
 
 : audio
 :: A list of audio encodings offered.  An audio encoding is a series
-    of encoded audio frames.  Encodings define properties needed by
+    of encoded audio frames.  Encodings define fields needed by
     the receiver to know how to decode the encoding, such as codec and
-    sample rate.  They can differ by codec and related properties,
+    sample rate.  They can differ by codec and related fields,
     but should be different encodings of the same audio.
 
 : video
 :: A list of video encodings offered.  A video encoding is a series of
-    encoded video frames.  Encodings define properties needed by the
+    encoded video frames.  Encodings define fields needed by the
     receiver to know how to decode the encoding, such as codec and
     default duration.  They can differ by codec and potentially other
-    properties, but should be different encodings of the same video.
+    fields, but should be different encodings of the same video.
 
 : data
 :: A list of data encodings offered.  A data encoding is a series of
-    data frames.  Encodings define properties needed by the
+    data frames.  Encodings define fields needed by the
     receiver to know how to interpret the encoding, such as data type and
     default duration.  They can differ by data type and potentially other
-    properties, but should be different encodings of the same data.
+    fields, but should be different encodings of the same data.
     (For encodings of different data, use distinct media streams,
      not distinct encodints with the same media stream).
 
 
-Each audio encoding offered defines the following properties:
+Each audio encoding offered defines the following fields:
 
 : encoding-id
 :: Identifies the audio encoding being offered.  Must be unique within
@@ -1615,7 +1615,7 @@ Each audio encoding offered defines the following properties:
     audio-frame messages smaller by not including the duration for
     audio-frame messages that have the default duration.
 
-Each video encoding offered defines the following properties:
+Each video encoding offered defines the following fields:
 
 : encoding-id
 :: Identifies the video encoding being offered.  Must be unique within
@@ -1641,7 +1641,7 @@ Each video encoding offered defines the following properties:
     video-frame messages smaller by not including the rotation for
     video-frame messages that have the default rotation.
 
-Each data encoding offered defines the following properties:
+Each data encoding offered defines the following fields:
 
 : encoding-id
 :: Identifies the data encoding being offered.  Must be unique within
@@ -1664,7 +1664,7 @@ Each data encoding offered defines the following properties:
 
 After receiving a streaming-session-start-request message, a receiver
 should send back a streaming-session-start-response message with the
-following properties:
+following fields:
 
 : desired-stats-interval
 :: Indicates the frequency the sender should send stats messages to
@@ -1674,7 +1674,7 @@ following properties:
 :: Indicates which media streams the receiver would like to receive
     from the sender.
 
-Each stream request contains the following properties:
+Each stream request contains the following fields:
 
 : media-stream-id
 :: The ID of the stream reqeusted.
@@ -1729,17 +1729,17 @@ separate QUIC streams.
 
 : encoding-id
 :: Identifies the media encoding to which this audio frame belongs.  This can be
-    used to reference properties of the encoding (from the
+    used to reference fields of the encoding (from the
     audio-encoding-offer message) such as the codec, codec properties,
     time scale (aka clock rate or sample rate), and default duration.
-    Referencing properties of the encoding through the encoding id
+    Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : start-time
-:: Identifies the beginning of the time range of the audio frame. The time
-    scale is inferred from the properties of the encoding (from the
-    audio-encoding-offer).  The end time can be inferred from the
-    start time and duration.
+:: Identifies the beginning of the time range of the audio frame. The
+    end time can be inferred from the start time and duration. The
+    time scale is equal to the value in the `time-scale` field of the
+    `audio-encoding-offer` message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the audio frame. If not present, the
@@ -1755,7 +1755,9 @@ separate QUIC streams.
     be; it can be any clock chosen by the media sender.
 
 : payload
-:: The data.  The type of data is inferred from the properties of the encoding.
+:: The encoded audio.  The codec and codec parameters are equal to the
+    `format` field of the `audio-encoding-offer` message referenced by
+    the `encoding-id`
 
 Video {#streaming-video}
 --------------------------------------------
@@ -1774,11 +1776,11 @@ to send them in a single QUIC stream starting at the indepdendent frame and
 ending at the last dependent frame.
 
 : encoding-id
-:: Identifies the media encoding to which this video frame belongs.  This can be
-    used to reference properties of the encoding such as the codec, codec
-    properties, time scale, and default rotation.  Referencing properties of the
-    encoding through the encoding id helps to avoid sending duplicate
-    information in every frame.
+:: Identifies the media encoding to which this video frame belongs.
+    This can be used to reference fields of the encoding such as the
+    codec, codec properties, time scale, and default rotation.
+    Referencing fields of the encoding through the encoding id helps
+    to avoid sending duplicate information in every frame.
 
 : sequence-number
 :: Identifies the frame and its order in the encoding.
@@ -1793,10 +1795,10 @@ ending at the last dependent frame.
     If not present, the default value is [-1].
 
 : start-time
-:: Identifies the beginning of the time range of the video frame. The time
-    scale is inferred from the properties of the encoding (from the
-    video-encoding-offer).  The end time can be inferred from the
-    start time and duration.
+:: Identifies the beginning of the time range of the video frame.  The
+    end time can be inferred from the start time and duration. The
+    time scale is equal to the value in the `time-scale` field of the
+    `video-encoding-offer` message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the video frame. If not present, that
@@ -1817,9 +1819,9 @@ ending at the last dependent frame.
     referenced by the `encoding-id`.
 
 : payload
-:: The encoded video frame (encoded image).  The codec and codec parameters are
-    inferred from the properties of the encoding.
-
+:: The encoded video frame (encoded image).  The codec and codec
+     parameters are are equal to the `format` field of the
+     `audio-encoding-offer` message referenced by the `encoding-id`.
 
 Data {#streaming-data}
 ------------------------------------
@@ -1836,8 +1838,8 @@ that makes sense for a specific type of data.
 
 : encoding-id
 :: Identifies the data encoding to which this data frame belongs.  This can be
-    used to reference properties of the encoding such as the type of data and
-    time scale.  Referencing properties of the encoding through the encoding id
+    used to reference fields of the encoding such as the type of data and
+    time scale.  Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : sequence-number
@@ -1846,9 +1848,10 @@ that makes sense for a specific type of data.
     Within an encoding, gaps in sequence numbers mean frames are missing.
 
 : start-time
-:: Identifies the beginning of the time range of the data frame.  The time
-    scale is inferred from the properties of the encoding.  The end time can be
-    inferred from the start time and duration.
+:: Identifies the beginning of the time range of the data frame.  The
+    end time can be inferred from the start time and duration.  The
+    time scale is equal to the value in the `time-scale` field of the
+    `data-encoding-offer` message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the data frame. If not present, the
@@ -1863,8 +1866,8 @@ that makes sense for a specific type of data.
     timelines.
 
 : payload
-:: The data.  The format and parameters are inferred from
-    the properties of the encoding.
+:: The data.  The data type is equal to the `data-type` field of the 
+    the `data-encoding-offer` message referenced by the `encoding-id`.
 
 Feedback {#streaming-feedback}
 ------------------------------------
@@ -1898,7 +1901,7 @@ During a streaming session, the sender should send stats with the
 streaming-session-sender-stats-event at the interval the receiver requested.  It
 should send all of the following stats for all of the media streams it is
 sending. The streaming-session-sender-stats-event message contains the following
-properties:
+fields:
 
 : streaming-session-id
 :: The ID of the streaming session these stats apply to.
@@ -1917,7 +1920,7 @@ properties:
     at once, but encodings need not be included if the stats haven't
     changed.  See below.
 
-Audio encoding sender stats include the following properties:
+Audio encoding sender stats include the following fields:
 
 : encoding-id
 :: The ID of the encoding for which the stats apply.
@@ -1928,7 +1931,7 @@ Audio encoding sender stats include the following properties:
 : cumulative-encode-delay
 :: The sum of the time spent encoding frames sent.
 
-Video encoding sender stats include the following properties:
+Video encoding sender stats include the following fields:
 
 : encoding-id
 :: The ID of the encoding for which the stats apply.
@@ -1948,7 +1951,7 @@ During a streaming session, the receiver should send stats with the
 streaming-session-receiver-stats-event at the interval the sender requested.
 It should send all of the following stats for all of the media streams it is
 receiving.  The streaming-session-receiver-stats-event message contains the
-following properties:
+following fields:
 
 : streaming-session-id
 :: The ID of the streaming session these stats apply to.
@@ -1967,7 +1970,8 @@ following properties:
     at once, but encodings need not be included if the stats haven't
     changed.  See below.
 
-Audio encoding receiver stats include the following properties:
+Audio encoding receiver stats include the following fields.  If not
+present that indicates the value has not changed since the last value.:
 
 : encoding-id
 :: The ID of the encoding for which the stats apply.
@@ -1987,7 +1991,7 @@ Audio encoding receiver stats include the following properties:
 : cumulative-decode-delay
 :: The sum of the time spent decoding frames received.
 
-Video encoding receiver stats include the following properties:
+Video encoding receiver stats include the following fields:
 
 : encoding-id
 :: The ID of the encoding for which the stats apply.
