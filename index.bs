@@ -1742,9 +1742,11 @@ separate QUIC streams.
     start time and duration.
 
 : duration
-:: If present, the duration of the audio frame. The time
-    scale is inferred from the properties of the encoding.  Likewise, if not
-    present, the duration is inferred from the properties of the encoding.
+:: If present, the duration of the audio frame. If not present, the
+    duration is equal to the `default-duration` field of the
+    `audio-encoding-offer` message referenced by the `encoding-id`.
+    The time scale is equal to the value in the `time-scale` field of
+    the `audio-encoding-offer` message referenced by the `encoding-id`.
 
 : sync-time
 :: If present, a time used to synchronize the start time of this audio frame (and
@@ -1797,9 +1799,10 @@ ending at the last dependent frame.
     start time and duration.
 
 : duration
-:: If present, the duration of the video frame. The time
-    scale is inferred from the properties of the encoding. If not
-    present, that means duration is unknown.
+:: If present, the duration of the video frame. If not present, that
+    means duration is unknown.  The time scale is equal to the value
+    in the `time-scale` field of the `video-encoding-offer` message
+    referenced by the `encoding-id`.
 
 : sync-time
 :: If present, a time used to synchronize the start time of this frame (and
@@ -1807,9 +1810,11 @@ ending at the last dependent frame.
     timelines.
 
 : rotation
-:: If present, indicates how the frame should be rotated after decoding but
-    before rendering.  Rotation is clockwise in increments of 90 degrees.
-    The default is 0 (no rotation).
+:: If present, indicates how the frame should be rotated after
+    decoding but before rendering.  Rotation is clockwise in
+    increments of 90 degrees.  The default is equal to the
+    `default-rotation` field of the `video-encoding-offer` message
+    referenced by the `encoding-id`.
 
 : payload
 :: The encoded video frame (encoded image).  The codec and codec parameters are
@@ -1846,12 +1851,14 @@ that makes sense for a specific type of data.
     inferred from the start time and duration.
 
 : duration
-:: If present, the duration of the data frame.  The time
-    scale is inferred from the properties of the encoding.  Likewise, if not
-    present, the duration is inferred from the properties of the encoding.
+:: If present, the duration of the data frame. If not present, the
+    duration is equal to the `default-duration` field of the
+    `data-encoding-offer` message referenced by the `encoding-id`.
+    The time scale is equal to the value in the `time-scale` field of
+    the `data-encoding-offer` message referenced by the `encoding-id`.
 
 : sync-time
-:: If present, a time used to synchronize the start time of this audio frame (and
+:: If present, a time used to synchronize the start time of this data frame (and
     thus, this encoding) with that of other media encodings on different
     timelines.
 
