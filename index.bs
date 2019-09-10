@@ -1011,7 +1011,7 @@ invalid-url).  Additionally, the response must include the following:
     [[#remote-playback-state-and-controls]].
 
 : remoting (optional)
-:: A response to the started streaming session associatd with this remote playback.
+:: A response to the started streaming session associated with this remote playback.
     If not included, no streaming session is started.
 
 If a streaming session is started, streaming messages such a
@@ -1694,7 +1694,7 @@ Each stream request contains the following fields:
 
 During a streaming session, the receiver can modify the requests it
 made for encodings by sending a `streaming-session-modify-request`
-containing a modify list of stream-requests.  When the sender receives
+containing a modified list of stream-requests.  When the sender receives
 a `streaming-session-modify-request`, it should send back a
 `streaming-session-modify-response` indicate whether or not the
 application of the new request from the
@@ -1831,8 +1831,7 @@ Data {#streaming-data}
 Media senders may send timed data to media receivers by sending [=data-frame=] messages (see
 [[#appendix-a]]) with the following keys and values.  A data frame message
 contains an arbitrary payload that can be synchronized with audio and video.
-A series of data frames that share a data type and timeline
-form a data encoding.
+A series of data frames that share a data type and timeline form a data encoding.
 
 To allow for data frames to be sent out of order, they may be sent in separate
 QUIC streams, but more than one data frame may be sent in one QUIC stream if
