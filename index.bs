@@ -1234,7 +1234,25 @@ intentionally mirror settable attributes and methods of the
     if a cue ID is invalid (removing an un-added ID or adding an ID twice, for example),
     the receiver may reject the text track change.
 
-Issue: Add a table for whether it's required and what the default is.
+<div class="note">
+<table>
+<tr><th>Field</th>                  <th>Default value</th>                              <th>Receiver support</th></tr>
+<tr><td>source</td>                 <td>`urls` in [=remote-playback-start-request=]</td><td>Required</td></tr>
+<tr><td>preload</td>                <td>Decided by the receiver</td>                    <td>Not required</td></tr>
+<tr><td>loop</td>                   <td>False</td>                                      <td>Required</td></tr>
+<tr><td>paused</td>                 <td>Decided by the receiver</td>                    <td>Required</td></tr>
+<tr><td>muted</td>                  <td>Decided by the receiver</td>                    <td>Required</td></tr>
+<tr><td>volume</td>                 <td>Decided by the receiver</td>                    <td>Required</td></tr>
+<tr><td>seek</td>                   <td>-</td>                                          <td>Required</td></tr>
+<tr><td>fast-seek</td>              <td>-</td>                                          <td>Required</td></tr>
+<tr><td>playback-rate</td>          <td>Decided by the receiver</td>                    <td>Not required</td></tr>
+<tr><td>poster</td>                 <td>Decided by the receiver</td>                    <td>Not required</td></tr>
+<tr><td>enabled-audio-track-ids</td><td>-</td>                                          <td>Required</td></tr>
+<tr><td>select-video-track-id</td>  <td>-</td>                                          <td>Required</td></tr>
+<tr><td>added-text-tracks</td>      <td>-</td>                                          <td>Not required</td></tr>
+<tr><td>changed-text-tracks</td>    <td>-</td>                                          <td>Not required</td></tr>
+</table>
+</div>
 
 The states sent by the receiver include the following individual state values,
 each of which is optional.  This allows the receiver to update the controller
@@ -1529,7 +1547,7 @@ following additional fields:
     (if provided) or of a different aspect ratio. The default value is true.
 
 : supports-rotation (optional)
-:: A optional boolean field indicating whether the media receiver can receive 
+:: A optional boolean field indicating whether the media receiver can receive
     video frames with the rotation field set. The default value is true.
 
 <!-- TODO: Add max-bit-rate, color profiles, HDR -->
@@ -1867,7 +1885,7 @@ that makes sense for a specific type of data.
     timelines.
 
 : payload
-:: The data.  The data type is equal to the `data-type` field of the 
+:: The data.  The data type is equal to the `data-type` field of the
     the `data-encoding-offer` message referenced by the `encoding-id`.
 
 Feedback {#streaming-feedback}
