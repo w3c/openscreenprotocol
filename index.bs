@@ -1971,7 +1971,7 @@ following fields:
     changed.  See below.
 
 Audio encoding receiver stats include the following fields.  If not
-present that indicates the value has not changed since the last value.:
+present, that indicates the value has not changed since the last value.
 
 : encoding-id
 :: The ID of the encoding for which the stats apply.
@@ -1991,7 +1991,9 @@ present that indicates the value has not changed since the last value.:
 : cumulative-decode-delay
 :: The sum of the time spent decoding frames received.
 
-Video encoding receiver stats include the following fields:
+Video encoding receiver stats include the following fields.  If not
+present, that indicates the value has not changed since the last
+value.
 
 : encoding-id
 :: The ID of the encoding for which the stats apply.
