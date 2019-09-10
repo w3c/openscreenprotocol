@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="7cde4673640e2498a3796a219f0812b51327c45e" name="document-revision">
+  <meta content="cb099b9d023269b41a1adc284895de4bf6475957" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-08">8 September 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-10">10 September 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1544,7 +1544,7 @@ pre .property::before, pre .property::after {
       <li><a href="#streaming-feedback"><span class="secno">9.6</span> <span class="content">Feedback</span></a>
       <li><a href="#streaming-stats"><span class="secno">9.7</span> <span class="content">Stats</span></a>
      </ol>
-    <li><a href="#requests-responses--watches"><span class="secno">10</span> <span class="content">Requests, Responses, and Watches</span></a>
+    <li><a href="#requests-responses-watches"><span class="secno">10</span> <span class="content">Requests, Responses, and Watches</span></a>
     <li>
      <a href="#protocol-extensions"><span class="secno">11</span> <span class="content">Protocol Extensions</span></a>
      <ol class="toc">
@@ -1842,7 +1842,7 @@ request at any time to learn about the state and capabilities of another device,
 which are described by the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info">agent-info</a> message in the <a data-link-type="dfn" href="#agent-info-response" id="ref-for-agent-info-response①">agent-info-response</a>.</p>
    <p>If an agent changes any information in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info①">agent-info</a> message, it should
 send an <a data-link-type="dfn" href="#agent-info-event" id="ref-for-agent-info-event">agent-info-event</a> message to all other connected agents with the new <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info②">agent-info</a> (without waiting for an <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request①">agent-info-request</a>).</p>
-   <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info③">agent-info</a> message contains the following properties:</p>
+   <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info③">agent-info</a> message contains the following fields:</p>
    <dl>
     <dt data-md>display-name (required)
     <dd data-md>
@@ -2403,7 +2403,7 @@ invalid-url).  Additionally, the response must include the following:</p>
      <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
     <dt data-md>remoting (optional)
     <dd data-md>
-     <p>A response to the started streaming session associatd with this remote playback.
+     <p>A response to the started streaming session associated with this remote playback.
 If not included, no streaming session is started.</p>
    </dl>
    <p>If a streaming session is started, streaming messages such a
@@ -2599,7 +2599,7 @@ supported, the receiver will behave as though it were never set.</p>
     <dd data-md>
      <p>Change text tracks by ID.  All other text tracks are left
 unchanged.  Set the mode, add cues, and remove cues by id. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a> for more details.  Note that future specifications or extensions to this
-specifications are expected to add new properties to the <a data-link-type="dfn" href="#text-track-cue" id="ref-for-text-track-cue">text-track-cue</a> (such as text size, alignment, position, etc).  Adding and removing
+specifications are expected to add new fields to the <a data-link-type="dfn" href="#text-track-cue" id="ref-for-text-track-cue">text-track-cue</a> (such as text size, alignment, position, etc).  Adding and removing
 cues is optional for the receiver to support and if not supported, the
 receiver will behave as though no cues were added or removed (both adding
 and removing are indicated via the support for "added-cues").  As specified in <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a>,
@@ -2760,7 +2760,7 @@ sender and a media receiver.</p>
    <h3 class="heading settled" data-level="9.1" id="streaming-protocol-capabilities"><span class="secno">9.1. </span><span class="content">Streaming Protocol Capabilities</span><a class="self-link" href="#streaming-protocol-capabilities"></a></h3>
     If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an <a data-link-type="dfn" href="#streaming-capabilities-request" id="ref-for-streaming-capabilities-request">streaming-capabilities-request</a> message, and receive back a <a data-link-type="dfn" href="#streaming-capabilities-response" id="ref-for-streaming-capabilities-response">streaming-capabilities-response</a> message with the
-following properties: 
+following fields: 
    <dl>
     <dt data-md>receive-audio (required)
     <dd data-md>
@@ -2770,16 +2770,16 @@ following properties:
      <p>A list of capabilities for receiving video. For an explanation of fields, see below.</p>
    </dl>
    <p>The format type is used as the basis for audio and video capabilities.
-Formats are composed of the following properties:</p>
+Formats are composed of the following fields:</p>
    <dl>
     <dt data-md>name (required)
     <dd data-md>
      <p>The name of the codec.   This must be a single-codec RFC 6381 <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codecs parameter</a>.</p>
     <dt data-md>parameters (required)
     <dd data-md>
-     <p>A list of (key, value) parameters that can be used to pass fields that are
-properties of a specific format, and not shared by other formats of that type
-(audio, video, etc.).</p>
+     <p>A list of (key, value) parameters that can be used to describe
+properties of a specific format, and not shared by other formats
+of that type (audio, video, etc.).</p>
    </dl>
    <p>Audio capabilities are composed of the above format type, with the following
 additional fields:</p>
@@ -2833,16 +2833,21 @@ The default value is none.</p>
      <p>A optional boolean field indicating whether the media receiver can scale content
 provided in a video-resolution not listed in the native-resolutions list
 (if provided) or of a different aspect ratio. The default value is true.</p>
+    <dt data-md>supports-rotation (optional)
+    <dd data-md>
+     <p>A optional boolean field indicating whether the media receiver can receive
+video frames with the rotation field set. The default value is true.</p>
    </dl>
    <h3 class="heading settled" data-level="9.2" id="streaming-sessions"><span class="secno">9.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
    <p>To start a streaming session, a sender may send a
-streaming-session-start-request message with the following properties:</p>
+streaming-session-start-request message with the following fields:</p>
    <dl>
     <dt data-md>streaming-session-id
     <dd data-md>
      <p>Identifies the streaming session.  Must be unique for the (sender,
 receiver) pair.  Can be used later to modify or terminate a
-streaming session.</p>
+streaming session.  These IDs should be treated like other IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
     <dt data-md>desired-stats-interval
     <dd data-md>
      <p>Indicates the frequency the receiver should send stats messages to
@@ -2851,13 +2856,14 @@ the sender.</p>
     <dd data-md>
      <p>Indicates the streams that the receiver can request from the sender.</p>
    </dl>
-   <p>Each stream offer contains the following properties:</p>
+   <p>Each stream offer contains the following fields:</p>
    <dl>
     <dt data-md>media-stream-id
     <dd data-md>
      <p>Identifies the media stream being offered.  Must be unique within
 the streaming session.  Can be used by the receiver to request the
-media session.</p>
+media session.  These IDs should be treated like other IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
     <dt data-md>display-name
     <dd data-md>
      <p>An optional name intended to be shown to a user, such that the
@@ -2867,33 +2873,34 @@ give the user some information about what the media stream is.</p>
     <dt data-md>audio
     <dd data-md>
      <p>A list of audio encodings offered.  An audio encoding is a series
-of encoded audio frames.  Encodings define properties needed by
+of encoded audio frames.  Encodings define fields needed by
 the receiver to know how to decode the encoding, such as codec and
-sample rate.  They can differ by codec and related properties,
+sample rate.  They can differ by codec and related fields,
 but should be different encodings of the same audio.</p>
     <dt data-md>video
     <dd data-md>
      <p>A list of video encodings offered.  A video encoding is a series of
-encoded video frames.  Encodings define properties needed by the
+encoded video frames.  Encodings define fields needed by the
 receiver to know how to decode the encoding, such as codec and
 default duration.  They can differ by codec and potentially other
-properties, but should be different encodings of the same video.</p>
+fields, but should be different encodings of the same video.</p>
     <dt data-md>data
     <dd data-md>
      <p>A list of data encodings offered.  A data encoding is a series of
-data frames.  Encodings define properties needed by the
+data frames.  Encodings define fields needed by the
 receiver to know how to interpret the encoding, such as data type and
 default duration.  They can differ by data type and potentially other
-properties, but should be different encodings of the same data.
+fields, but should be different encodings of the same data.
 (For encodings of different data, use distinct media streams,
  not distinct encodints with the same media stream).</p>
    </dl>
-   <p>Each audio encoding offered defines the following properties:</p>
+   <p>Each audio encoding offered defines the following fields:</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
      <p>Identifies the audio encoding being offered.  Must be unique within
-the media stream.</p>
+the media stream.  These IDs should be treated like request IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
     <dt data-md>codec-name
     <dd data-md>
      <p>The name of the codec used by the encoding.  This must be a single-codec
@@ -2909,12 +2916,13 @@ in each one.</p>
 audio-frame messages smaller by not including the duration for
 audio-frame messages that have the default duration.</p>
    </dl>
-   <p>Each video encoding offered defines the following properties:</p>
+   <p>Each video encoding offered defines the following fields:</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
      <p>Identifies the video encoding being offered.  Must be unique within
-the media stream.</p>
+the media stream.  These IDs should be treated like request IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
     <dt data-md>codec-name
     <dd data-md>
      <p>The name of the codec used by the encoding.</p>
@@ -2934,12 +2942,13 @@ video-frame messages that have the default duration.</p>
 video-frame messages smaller by not including the rotation for
 video-frame messages that have the default rotation.</p>
    </dl>
-   <p>Each data encoding offered defines the following properties:</p>
+   <p>Each data encoding offered defines the following fields:</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
      <p>Identifies the data encoding being offered.  Must be unique within
-the media stream.</p>
+the media stream.  These IDs should be treated like request IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
     <dt data-md>data-type-name
     <dd data-md>
      <p>The name of the data type used by the encoding.</p>
@@ -2956,7 +2965,7 @@ data-frame messages that have the default duration.</p>
    </dl>
    <p>After receiving a streaming-session-start-request message, a receiver
 should send back a streaming-session-start-response message with the
-following properties:</p>
+following fields:</p>
    <dl>
     <dt data-md>desired-stats-interval
     <dd data-md>
@@ -2967,7 +2976,7 @@ the receiver.</p>
      <p>Indicates which media streams the receiver would like to receive
 from the sender.</p>
    </dl>
-   <p>Each stream request contains the following properties:</p>
+   <p>Each stream request contains the following fields:</p>
    <dl>
     <dt data-md>media-stream-id
     <dd data-md>
@@ -2986,10 +2995,9 @@ send at the target bitrate, possibly exceeding it by a small amount.</p>
      <p>The requested data encoding, by encoding ID</p>
    </dl>
    <p>During a streaming session, the receiver can modify the requests it
-made for encodings by sending a streaming-session-modify-request
-containing a modify list of stream-requests.  When the sender receives
-a streaming-session-modify-request, it should send back a
-streaming-session-modify-response.</p>
+made for encodings by sending a <code>streaming-session-modify-request</code> containing a modified list of stream-requests.  When the sender receives
+a <code>streaming-session-modify-request</code>, it should send back a <code>streaming-session-modify-response</code> indicate whether or not the
+application of the new request from the <code>streaming-session-modify-request</code> was successful.</p>
    <p>Finally, the sender may terminate the streaming session by sending
 a streaming-session-terminate-request command.  When the receiver
 receives the streaming-session-terminate-request, it should send back
@@ -3016,22 +3024,22 @@ separate QUIC streams.</p>
     <dt data-md>encoding-id
     <dd data-md>
      <p>Identifies the media encoding to which this audio frame belongs.  This can be
-used to reference properties of the encoding (from the
+used to reference fields of the encoding (from the
 audio-encoding-offer message) such as the codec, codec properties,
 time scale (aka clock rate or sample rate), and default duration.
-Referencing properties of the encoding through the encoding id
+Referencing fields of the encoding through the encoding id
 helps to avoid sending duplicate information in every frame.</p>
     <dt data-md>start-time
     <dd data-md>
-     <p>Identifies the beginning of the time range of the audio frame. The time
-scale is inferred from the properties of the encoding (from the
-audio-encoding-offer).  The end time can be inferred from the
-start time and duration.</p>
+     <p>Identifies the beginning of the time range of the audio frame. The
+end time can be inferred from the start time and duration. The
+time scale is equal to the value in the <code>time-scale</code> field of the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
-     <p>If present, the duration of the audio frame. The time
-scale is inferred from the properties of the encoding.  Likewise, if not
-present, the duration is inferred from the properties of the encoding.</p>
+     <p>If present, the duration of the audio frame. If not present, the
+duration is equal to the <code>default-duration</code> field of the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.
+The time scale is equal to the value in the <code>time-scale</code> field of
+the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
      <p>If present, a time used to synchronize the start time of this audio frame (and
@@ -3040,7 +3048,8 @@ different timelines.  It may be wall clock time, but it need not
 be; it can be any clock chosen by the media sender.</p>
     <dt data-md>payload
     <dd data-md>
-     <p>The data.  The type of data is inferred from the properties of the encoding.</p>
+     <p>The encoded audio.  The codec and codec parameters are equal to the <code>format</code> field of the <code>audio-encoding-offer</code> message referenced by
+the <code>encoding-id</code></p>
    </dl>
    <h3 class="heading settled" data-level="9.4" id="streaming-video"><span class="secno">9.4. </span><span class="content">Video</span><a class="self-link" href="#streaming-video"></a></h3>
    <p>Media senders may send video to media receivers by sending <a data-link-type="dfn" href="#video-frame" id="ref-for-video-frame">video-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video
@@ -3056,11 +3065,11 @@ ending at the last dependent frame.</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
-     <p>Identifies the media encoding to which this video frame belongs.  This can be
-used to reference properties of the encoding such as the codec, codec
-properties, time scale, and default rotation.  Referencing properties of the
-encoding through the encoding id helps to avoid sending duplicate
-information in every frame.</p>
+     <p>Identifies the media encoding to which this video frame belongs.
+This can be used to reference fields of the encoding such as the
+codec, codec properties, time scale, and default rotation.
+Referencing fields of the encoding through the encoding id helps
+to avoid sending duplicate information in every frame.</p>
     <dt data-md>sequence-number
     <dd data-md>
      <p>Identifies the frame and its order in the encoding.
@@ -3075,15 +3084,15 @@ If empty, this is an independent frame (a key frame).
 If not present, the default value is [-1].</p>
     <dt data-md>start-time
     <dd data-md>
-     <p>Identifies the beginning of the time range of the video frame. The time
-scale is inferred from the properties of the encoding (from the
-video-encoding-offer).  The end time can be inferred from the
-start time and duration.</p>
+     <p>Identifies the beginning of the time range of the video frame.  The
+end time can be inferred from the start time and duration. The
+time scale is equal to the value in the <code>time-scale</code> field of the <code>video-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
-     <p>If present, the duration of the video frame. The time
-scale is inferred from the properties of the encoding. If not
-present, that means duration is unknown.</p>
+     <p>If present, the duration of the video frame. If not present, that
+means duration is unknown.  The time scale is equal to the value
+in the <code>time-scale</code> field of the <code>video-encoding-offer</code> message
+referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
      <p>If present, a time used to synchronize the start time of this frame (and
@@ -3091,19 +3100,19 @@ thus, this encoding) with that of other media encodings on different
 timelines.</p>
     <dt data-md>rotation
     <dd data-md>
-     <p>If present, indicates how the frame should be rotated after decoding but
-before rendering.  Rotation is clockwise in increments of 90 degrees.
-The default is 0 (no rotation).</p>
+     <p>If present, indicates how the frame should be rotated after
+decoding but before rendering.  Rotation is clockwise in
+increments of 90 degrees.  The default is equal to the <code>default-rotation</code> field of the <code>video-encoding-offer</code> message
+referenced by the <code>encoding-id</code>.</p>
     <dt data-md>payload
     <dd data-md>
-     <p>The encoded video frame (encoded image).  The codec and codec parameters are
-inferred from the properties of the encoding.</p>
+     <p>The encoded video frame (encoded image).  The codec and codec
+ parameters are are equal to the <code>format</code> field of the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
    </dl>
    <h3 class="heading settled" data-level="9.5" id="streaming-data"><span class="secno">9.5. </span><span class="content">Data</span><a class="self-link" href="#streaming-data"></a></h3>
    <p>Media senders may send timed data to media receivers by sending <a data-link-type="dfn" href="#data-frame" id="ref-for-data-frame">data-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
 contains an arbitrary payload that can be synchronized with audio and video.
-A series of data frames that share a data type and timeline
-form a data encoding.</p>
+A series of data frames that share a data type and timeline form a data encoding.</p>
    <p>To allow for data frames to be sent out of order, they may be sent in separate
 QUIC streams, but more than one data frame may be sent in one QUIC stream if
 that makes sense for a specific type of data.</p>
@@ -3111,8 +3120,8 @@ that makes sense for a specific type of data.</p>
     <dt data-md>encoding-id
     <dd data-md>
      <p>Identifies the data encoding to which this data frame belongs.  This can be
-used to reference properties of the encoding such as the type of data and
-time scale.  Referencing properties of the encoding through the encoding id
+used to reference fields of the encoding such as the type of data and
+time scale.  Referencing fields of the encoding through the encoding id
 helps to avoid sending duplicate information in every frame.</p>
     <dt data-md>sequence-number
     <dd data-md>
@@ -3121,23 +3130,24 @@ Within an encoding, larger sequence numbers mean later start times.
 Within an encoding, gaps in sequence numbers mean frames are missing.</p>
     <dt data-md>start-time
     <dd data-md>
-     <p>Identifies the beginning of the time range of the data frame.  The time
-scale is inferred from the properties of the encoding.  The end time can be
-inferred from the start time and duration.</p>
+     <p>Identifies the beginning of the time range of the data frame.  The
+end time can be inferred from the start time and duration.  The
+time scale is equal to the value in the <code>time-scale</code> field of the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
-     <p>If present, the duration of the data frame.  The time
-scale is inferred from the properties of the encoding.  Likewise, if not
-present, the duration is inferred from the properties of the encoding.</p>
+     <p>If present, the duration of the data frame. If not present, the
+duration is equal to the <code>default-duration</code> field of the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.
+The time scale is equal to the value in the <code>time-scale</code> field of
+the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
-     <p>If present, a time used to synchronize the start time of this audio frame (and
+     <p>If present, a time used to synchronize the start time of this data frame (and
 thus, this encoding) with that of other media encodings on different
 timelines.</p>
     <dt data-md>payload
     <dd data-md>
-     <p>The data.  The format and parameters are inferred from
-the properties of the encoding.</p>
+     <p>The data.  The data type is equal to the <code>data-type</code> field of the
+the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
    </dl>
    <h3 class="heading settled" data-level="9.6" id="streaming-feedback"><span class="secno">9.6. </span><span class="content">Feedback</span><a class="self-link" href="#streaming-feedback"></a></h3>
    <p>The media receiver can send feedback to the media sender, such as key frame
@@ -3166,7 +3176,7 @@ frame.  If not set, the media sender must generate an indepdendent (key) frame.<
 streaming-session-sender-stats-event at the interval the receiver requested.  It
 should send all of the following stats for all of the media streams it is
 sending. The streaming-session-sender-stats-event message contains the following
-properties:</p>
+fields:</p>
    <dl>
     <dt data-md>streaming-session-id
     <dd data-md>
@@ -3186,7 +3196,7 @@ changed.  See below.</p>
 at once, but encodings need not be included if the stats haven’t
 changed.  See below.</p>
    </dl>
-   <p>Audio encoding sender stats include the following properties:</p>
+   <p>Audio encoding sender stats include the following fields:</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
@@ -3198,7 +3208,7 @@ changed.  See below.</p>
     <dd data-md>
      <p>The sum of the time spent encoding frames sent.</p>
    </dl>
-   <p>Video encoding sender stats include the following properties:</p>
+   <p>Video encoding sender stats include the following fields:</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
@@ -3218,7 +3228,7 @@ or other contraints.</p>
 streaming-session-receiver-stats-event at the interval the sender requested.
 It should send all of the following stats for all of the media streams it is
 receiving.  The streaming-session-receiver-stats-event message contains the
-following properties:</p>
+following fields:</p>
    <dl>
     <dt data-md>streaming-session-id
     <dd data-md>
@@ -3238,7 +3248,8 @@ changed.  See below.</p>
 at once, but encodings need not be included if the stats haven’t
 changed.  See below.</p>
    </dl>
-   <p>Audio encoding receiver stats include the following properties:</p>
+   <p>Audio encoding receiver stats include the following fields.  If not
+present, that indicates the value has not changed since the last value.</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
@@ -3259,7 +3270,9 @@ changed.  See below.</p>
     <dd data-md>
      <p>The sum of the time spent decoding frames received.</p>
    </dl>
-   <p>Video encoding receiver stats include the following properties:</p>
+   <p>Video encoding receiver stats include the following fields.  If not
+present, that indicates the value has not changed since the last
+value.</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
@@ -3277,7 +3290,7 @@ changed.  See below.</p>
     <dd data-md>
      <p>The sum of the time spent decoding frames received.</p>
    </dl>
-   <h2 class="heading settled" data-level="10" id="requests-responses--watches"><span class="secno">10. </span><span class="content">Requests, Responses, and Watches</span><a class="self-link" href="#requests-responses--watches"></a></h2>
+   <h2 class="heading settled" data-level="10" id="requests-responses-watches"><span class="secno">10. </span><span class="content">Requests, Responses, and Watches</span><a class="self-link" href="#requests-responses-watches"></a></h2>
    <p>Multiple sub-protocols in the Open Screen Protocol have messages that act as
 requests, responses, watches, and events. Most requests have a <code>request-id</code>, and
 the agent that receives the request must send exactly one reponse message in
@@ -3290,6 +3303,8 @@ ID.  Whenever an agent changes its <code>state-token</code>, it must reset its c
    <p>When an agent sees that another agent has reset its state (by virtue of
 advertising a new <code>state-token</code>), it should discard any requests, responses,
 watches and events for that agent.</p>
+   <p>Other IDs that must be unique and would cause confusion if one side
+loses state, such as <code>streaming-session-id</code>, <code>media-session-id</code>, and <code>encoding-id</code> should be treated the same.</p>
    <p class="note" role="note"><span>Note:</span> Request and watch IDs are not tied to any particular QUIC connection
 between agents.  If a QUIC connection is closed, an agent should not discard
 requests, responses, watches, or events related to the other party.  This allows
@@ -4190,6 +4205,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">string</span><span class="p">]</span> <span class="c1">; color-profiles</span>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-resolution</span><span class="p">]</span> <span class="c1">; native-resolutions</span>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
+  <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-rotation</span>
 <span class="p">}</span></p>
 
 <p><span class="nc">receive-data-capability </span><span class="p">=</span> <span class="p">{</span>
