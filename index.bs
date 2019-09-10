@@ -1597,7 +1597,9 @@ Each audio encoding offered defines the following properties:
 
 : encoding-id
 :: Identifies the audio encoding being offered.  Must be unique within
-    the media stream.
+    the media stream.  These IDs should be treated like request IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
 
 : codec-name
 :: The name of the codec used by the encoding.  This must be a single-codec
@@ -1617,7 +1619,9 @@ Each video encoding offered defines the following properties:
 
 : encoding-id
 :: Identifies the video encoding being offered.  Must be unique within
-    the media stream.
+    the media stream.  These IDs should be treated like request IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
 
 : codec-name
 :: The name of the codec used by the encoding.
@@ -1641,7 +1645,9 @@ Each data encoding offered defines the following properties:
 
 : encoding-id
 :: Identifies the data encoding being offered.  Must be unique within
-    the media stream.
+    the media stream.  These IDs should be treated like request IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
 
 : data-type-name
 :: The name of the data type used by the encoding.
@@ -2011,7 +2017,7 @@ advertising a new `state-token`), it should discard any requests, responses,
 watches and events for that agent.
 
 Other IDs that must be unique and would cause confusion if one side
-loses state, such as `streaming-session-id` and `media-session-id`
+loses state, such as `streaming-session-id`, `media-session-id`, and `encoding-id`
 should be treated the same.
 
 Note: Request and watch IDs are not tied to any particular QUIC connection
