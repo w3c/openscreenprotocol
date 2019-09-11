@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="cb099b9d023269b41a1adc284895de4bf6475957" name="document-revision">
+  <meta content="c9d9583954d8f779c833bbe7e987460decdc5673" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-10">10 September 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-11">11 September 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1511,7 +1511,13 @@ pre .property::before, pre .property::after {
       <li><a href="#requirements-non-functional"><span class="secno">2.4</span> <span class="content">Non-Functional Requirements</span></a>
      </ol>
     <li><a href="#discovery"><span class="secno">3</span> <span class="content">Discovery with mDNS</span></a>
-    <li><a href="#transport"><span class="secno">4</span> <span class="content">Transport and metadata discovery with QUIC</span></a>
+    <li>
+     <a href="#transport"><span class="secno">4</span> <span class="content">Transport and metadata discovery with QUIC</span></a>
+     <ol class="toc">
+      <li><a href="#tls-13"><span class="secno">4.1</span> <span class="content">TLS 1.3</span></a>
+      <li><a href="#certificates"><span class="secno">4.2</span> <span class="content">Agent Certificates</span></a>
+      <li><a href="#metadata"><span class="secno">4.3</span> <span class="content">Metadata Discovery</span></a>
+     </ol>
     <li>
      <a href="#messages"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
      <ol class="toc">
@@ -1801,12 +1807,10 @@ keys and values:</p>
    <dl>
     <dt data-md>fp
     <dd data-md>
-     <p>The certificate fingerprint of the advertising agent.
-The format of the fingerprint is defined by <a data-link-type="biblio" href="#biblio-rfc5122">[RFC5122]</a>, excluding the
-"fingerprint:" prefix and including the hash function, space, and hex-encoded
-fingerprint.  The fingerprint value also functions as an ID for the agent.
-All agents must support the following hash functions: <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5">sha-256</a>, <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5①">sha-512</a>.
-Agents must not support the following hash functions: <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5②">md2</a>, <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5③">md5</a>.</p>
+     <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-fingerprint">agent fingerprint</dfn> of the advertising agent, computed over the <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate">agent certificate</a>. The format of the fingerprint is defined by <a data-link-type="biblio" href="#biblio-rfc5122">[RFC5122]</a>,
+excluding the "fingerprint:" prefix and including the hash function, space,
+and hex-encoded fingerprint.  The fingerprint value also functions as an ID
+for the agent. All agents must support the following hash functions: <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5">sha-256</a>, <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5①">sha-512</a>.  Agents must not support the following hash functions: <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5②">md2</a>, <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5③">md5</a>.</p>
     <dt data-md>mv
     <dd data-md>
      <p>An unsigned integer value that indicates that
@@ -1836,6 +1840,117 @@ unverified).</p>
 connection IDs are chosen, agents are restricted from changing IP or port
 without establishing a new QUIC connection.  In such cases, agents must
 establish a new QUIC connection in order to change IP or port.</p>
+   <h3 class="heading settled" data-level="4.1" id="tls-13"><span class="secno">4.1. </span><span class="content">TLS 1.3</span><a class="self-link" href="#tls-13"></a></h3>
+   <p>When an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent②">OSP Agent</a> makes a QUIC connection to another agent, it must use <a data-link-type="biblio" href="#biblio-rfc8446">TLS 1.3</a> to secure the connection.  TLS 1.3 must be used in the following
+application profile:</p>
+   <ul>
+    <li data-md>
+     <p>Only constant-time AEAD ciphers are allowed.</p>
+     <ul>
+      <li data-md>
+       <p>OSP agents must support <a data-link-type="biblio" href="#biblio-rfc8446">TLS_AES_128_GCM_SHA256</a>.</p>
+      <li data-md>
+       <p>OSP agents should support <a data-link-type="biblio" href="#biblio-rfc8466">TLS_CHACHA20_POLY1305_SHA256</a> and <a data-link-type="biblio" href="#biblio-rfc8466">TLS_AES_256_GCM_SHA384</a>.</p>
+     </ul>
+    <li data-md>
+     <p>OSP agents must support the <a data-link-type="biblio" href="#biblio-rfc8446">ecdsa_secp256r1_sha256</a> digital signature algorithm.
+OSP agents should also support <a data-link-type="biblio" href="#biblio-rfc8466">ecdsa_secp384r1_sha384</a> and <a data-link-type="biblio" href="#biblio-rfc8466">ecdsa_secp521r1_sha512</a>. OSP agents must not support additional digital
+signature algorithms.</p>
+     <ul>
+      <li data-md>
+       <p><code>ecdsa_secp256r1_sha256</code> must be included in the <code>signature_algorithms</code> extension. <code>ecdsa_secp384r1_sha384</code> and <code>ecdsa_secp512r1_sha512</code> must be
+included if they are supported by the agent.</p>
+      <li data-md>
+       <p><code>secp256r1</code> must be included in the <code>supported_groups</code> extension. <code>secp384r1</code> and <code>secp512r1</code> must be included if they are supported by the
+agent.</p>
+      <li data-md>
+       <p>The <code>key_share</code> extension must be set to the cryptographic parameters for
+the negotiated signature algoirithm.</p>
+     </ul>
+    <li data-md>
+     <p>The <code>server_name</code> extension should be set to the following <code>host_name</code>: <code>&lt;fp>._openscreen._udp.local</code>.</p>
+     <ul>
+      <li data-md>
+       <p><code>&lt;fp></code> should be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint">agent fingerprint</a> as used in mDNS TXT.</p>
+     </ul>
+    <li data-md>
+     <p>All other TLS 1.3 extensions must be ignored by OSP agents.</p>
+   </ul>
+   <p class="note" role="note"><span>Note:</span> As this is an application-specific profile for TLS 1.3, it is not required
+for OSP agents to interoperate with non-OSP TLS 1.3 endpoints.</p>
+   <p class="issue" id="issue-eb53583c"><a class="self-link" href="#issue-eb53583c"></a> Determine if there is an advantage to session resumption outside of early
+data. If we allow session resumption, do we allow early data too?</p>
+   <p class="issue" id="issue-983764c9"><a class="self-link" href="#issue-983764c9"></a> Do agents need to support the Cookies extension (used in HelloRetryRequest)?</p>
+   <p class="issue" id="issue-08dfa2ca"><a class="self-link" href="#issue-08dfa2ca"></a> Make recommendations for cipher and signature algorithm preference list
+based on hardware characteristics of agents.</p>
+   <h3 class="heading settled" data-level="4.2" id="certificates"><span class="secno">4.2. </span><span class="content">Agent Certificates</span><a class="self-link" href="#certificates"></a></h3>
+   <p>Each OSP Agent must generate an <a data-link-type="biblio" href="#biblio-rfc5280">X.509 v3</a> <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="agent certificate" data-noexport id="agent-certificate">agent
+certificate</dfn> containing a public key to be used with the TLS 1.3
+certificate exchange.  Both <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent②">advertising agents</a> and <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent②">listening agents</a> must
+use the <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate①">agent certificate</a> in TLS 1.3 <code>Certificate</code> messages when making a
+QUIC connection.</p>
+   <p>The <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate②">agent certificate</a> must have the following characteristics:</p>
+   <ul>
+    <li data-md>
+     <p>256-bit, 384-bit, or 521-bit ECDSA public key</p>
+    <li data-md>
+     <p>Self-signed</p>
+    <li data-md>
+     <p>Supporting the at least one of the following signature algorithms:</p>
+     <ul>
+      <li data-md>
+       <p>secp256r1_sha256</p>
+      <li data-md>
+       <p>secp384r1_sha384</p>
+      <li data-md>
+       <p>secp521r1_sha512</p>
+     </ul>
+    <li data-md>
+     <p>Valid for signing</p>
+   </ul>
+   <p>The following X.509 v3 fields are to be set as follows:</p>
+   <table>
+    <thead>
+     <tr>
+      <th>Field
+      <th>Value
+    <tbody>
+     <tr>
+      <td>Version Number
+      <td>3
+     <tr>
+      <td>Serial Number
+      <td><code>&lt;fp></code>
+     <tr>
+      <td>Signature Algorithm ID
+      <td>One of the values listed above.
+     <tr>
+      <td>Issuer Name
+      <td>CN = The <code>model-name</code> from the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br> 
+     <tr>
+      <td>Subject Name
+      <td>CN = <code>&lt;fp></code>._openscreen._udp.local<br> O = See note.<br> 
+     <tr>
+      <td>Subject Public Key Algorithm
+      <td>Elliptic Curve Public Key
+     <tr>
+      <td>Certificate Key usage
+      <td>Signing
+   </table>
+   <p>Mandatory fields not mentioned above should be set according to [[RFC 5280]].</p>
+   <p>The value <code>&lt;fp></code> above should be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a> (as
+serialized in mDNS TXT).</p>
+   <p class="note" role="note"><span>Note:</span> The OSP agent may use the implementer or device model name as the value
+for the <code>O</code> key for user interface and debugging purposes. It may use the agent
+implementer’s or device manufacturer’s location as the value for the location
+keys (<code>L</code>, <code>ST</code>, and <code>C</code>) for user interface and debugging purposes.</p>
+   <p>If an OSP agent sees an <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate③">agent certificate</a> it has not yet verified through <a href="#authentication">§ 6 Authentication</a>, it must treat that agent as unverified and initiate
+authentication with that agent before allowing additional messages to be
+exchanged with that agent (apart from the messages described in <a href="#metadata">§ 4.3 Metadata Discovery</a>).</p>
+   <p>If an OSP agent sees a valid <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate④">agent certificate</a> it has verified through
+authentication, it is not required to initiate authentication with that agent
+before sending further messages.</p>
+   <h3 class="heading settled" data-level="4.3" id="metadata"><span class="secno">4.3. </span><span class="content">Metadata Discovery</span><a class="self-link" href="#metadata"></a></h3>
    <p>To learn further metadata, an agent may send an <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request">agent-info-request</a> message
 and receive back an <a data-link-type="dfn" href="#agent-info-response" id="ref-for-agent-info-response">agent-info-response</a> message.  Any agent may send this
 request at any time to learn about the state and capabilities of another device,
@@ -1933,7 +2048,7 @@ order, that group of messages must be sent in one QUIC stream.  Independent
 groups of messages (with no ordering dependency across groups) should be sent in
 different QUIC streams.  In order to put multiple CBOR-serialized messages into
 the the same QUIC stream, the following is used.</p>
-   <p>For each message, the <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent②">OSP agent</a> must write to the QUIC stream the following:</p>
+   <p>For each message, the <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent③">OSP agent</a> must write to the QUIC stream the following:</p>
    <ol>
     <li data-md>
      <p>A type key representing the type of the message, encoded as a variable-length
@@ -1981,7 +2096,7 @@ as audio-frame.</p>
 specific to that method.  The authentication method is explicitly specified by
 the message itself.  The authentication status message is common for all authentication
 methods.  Any new authentication method added must define new authentication messages.</p>
-   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent③">Open Screen Protocol agents</a> must implement <a href="#authentication-with-spake2">§ 6.1 Authentication with SPAKE2</a> with pre-shared keys.</p>
+   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent④">Open Screen Protocol agents</a> must implement <a href="#authentication-with-spake2">§ 6.1 Authentication with SPAKE2</a> with pre-shared keys.</p>
    <p>Prior to authentication, agents exchange <a data-link-type="dfn" href="#auth-capabilities" id="ref-for-auth-capabilities">auth-capabilities</a> messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
@@ -1995,7 +2110,7 @@ that it’s easy for the user to input PSK on the device.  Supported PSK input m
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
    <p>Any authentication method may require an <a data-link-type="dfn" href="#auth-initiation-token" id="ref-for-auth-initiation-token">auth-initiation-token</a> before
-showing a PSK to the user or requesting PSK input from the user.  For an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent②">advertising agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
+showing a PSK to the user or requesting PSK input from the user.  For an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent③">advertising agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
 that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>at</code> provided by the
 advertising agent.</p>
    <p>In the <code>psk-min-bits-of-entropy</code> field of the <a data-link-type="dfn" href="#auth-capabilities" id="ref-for-auth-capabilities①">auth-capabilities</a> messsage,
@@ -2004,9 +2119,9 @@ range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
 generate a PSK that has at least as many bits of entropy as it receives in this
 field, and at least as many bits of entropy as it sends in this field.</p>
    <p>If an agent chooses to show a user a PSK in more than one way (such as both a
-QR-code and a numeric PSK), they should be for the same PSK.  If they were different, the
-PSK presenter would not know which one the user chose to use, and that may lead
-to authentication failures.</p>
+QR-code and a numeric PSK), they should be for the same PSK.  If they were
+different, the PSK presenter would not know which one the user chose to use, and
+that may lead to authentication failures.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
    <p>For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.</p>
@@ -2251,10 +2366,10 @@ to that presentation with the values:</p>
 so request and response messages are not needed.  A request to terminate a
 presentation may succeed or fail, so a response message is required.</p>
    <h3 class="heading settled" data-level="7.1" id="presentation-api"><span class="secno">7.1. </span><span class="content">Presentation API</span><a class="self-link" href="#presentation-api"></a></h3>
-   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent④">Open Screen Protocol agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>control-presentation</code> capability.
-An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑤">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>receive-presentation</code> capability.
+   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑤">Open Screen Protocol agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>control-presentation</code> capability.
+An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑥">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>receive-presentation</code> capability.
 The same OSP agent may be a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agent</a> and a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving user agent</a>.</p>
-   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent③">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent②">listening agent</a> during discovery and connection establishment.</p>
+   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent④">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent③">listening agent</a> during discovery and connection establishment.</p>
    <p>This is how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§ 7 Presentation Protocol</a>:</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "This list of presentation displays ... is populated based on an
@@ -2715,11 +2830,11 @@ which includes a time scale.  This allows time values which work on different
 time scales to be expressed without loss of precision.  The scale is represented
 in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
    <h3 class="heading settled" data-level="8.2" id="remote-playback-api"><span class="secno">8.2. </span><span class="content">Remote Playback API</span><a class="self-link" href="#remote-playback-api"></a></h3>
-   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑥">Open Screen Protocol agent</a> that implements the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>control-remote-playback</code> capability.  It may support the <code>send-streaming</code> capability so it can send <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑤">HTMLMediaElement</a></code> media data through media
+   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑦">Open Screen Protocol agent</a> that implements the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>control-remote-playback</code> capability.  It may support the <code>send-streaming</code> capability so it can send <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑤">HTMLMediaElement</a></code> media data through media
 remoting.</p>
-   <p>An an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑦">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback device</a> for the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>receive-remote-playback</code> capability.  It may support the <code>receive-streaming</code> capability so it can receive <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑥">HTMLMediaElement</a></code> data through media remoting.</p>
+   <p>An an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑧">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback device</a> for the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>receive-remote-playback</code> capability.  It may support the <code>receive-streaming</code> capability so it can receive <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑥">HTMLMediaElement</a></code> data through media remoting.</p>
    <p>The same OSP agent may implement both the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> and be a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices②">remote playback device</a> for that API.</p>
-   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent④">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent③">listening agent</a> during discovery and connection establishment.</p>
+   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑤">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent④">listening agent</a> during discovery and connection establishment.</p>
    <p>This is how the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> uses the
 messages defined in <a href="#remote-playback-protocol">§ 8 Remote Playback Protocol</a>:</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
@@ -2753,10 +2868,10 @@ send the <a data-link-type="dfn" href="#remote-playback-termination-request" id=
    <h2 class="heading settled" data-level="9" id="streaming-protocol"><span class="secno">9. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for streaming
 media from a <a data-link-type="dfn" href="#media-sender" id="ref-for-media-sender">media sender</a> to a <a data-link-type="dfn" href="#media-receiver" id="ref-for-media-receiver">media receiver</a>.</p>
-   <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑧">Open Screen Protocol agent</a> is a media sender, it must advertise the <code>send-streaming</code> capability.  If an OSP agent is a media receiver, it must
+   <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑨">Open Screen Protocol agent</a> is a media sender, it must advertise the <code>send-streaming</code> capability.  If an OSP agent is a media receiver, it must
 advertise the <code>receive-streaming</code> capability.  The same agent may be a media
 sender and a media receiver.</p>
-   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑤">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent④">listening agent</a> during discovery and connection establishment.</p>
+   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑥">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent⑤">listening agent</a> during discovery and connection establishment.</p>
    <h3 class="heading settled" data-level="9.1" id="streaming-protocol-capabilities"><span class="secno">9.1. </span><span class="content">Streaming Protocol Capabilities</span><a class="self-link" href="#streaming-protocol-capabilities"></a></h3>
     If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an <a data-link-type="dfn" href="#streaming-capabilities-request" id="ref-for-streaming-capabilities-request">streaming-capabilities-request</a> message, and receive back a <a data-link-type="dfn" href="#streaming-capabilities-response" id="ref-for-streaming-capabilities-response">streaming-capabilities-response</a> message with the
@@ -3313,7 +3428,7 @@ agents to save power by closing unused connections.</p>
 a request ID with a unique identifier for the agent that sent it (like its
 certificate fingerprint) to track requests across multiple agents.</p>
    <h2 class="heading settled" data-level="11" id="protocol-extensions"><span class="secno">11. </span><span class="content">Protocol Extensions</span><a class="self-link" href="#protocol-extensions"></a></h2>
-   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑨">Open Screen Protocol agents</a> may exchange extension messages that are not
+   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent①⓪">Open Screen Protocol agents</a> may exchange extension messages that are not
 defined by this specification.  This could be used for experimentation,
 customization or other purposes.</p>
    <p>To add new extension messages, extension authors must register a capability ID
@@ -3343,7 +3458,7 @@ Instead, they may add them to its nested <code>optional</code> value.</p>
 Open Screen Protocol messages.  An agent should not send extension fields to
 another agent unless that agent advertises an extension capability ID in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑥">agent-info</a> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
-   <p>The Open Screen Protocol allows two <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent①⓪">OSP agents</a> to discover each other and
+   <p>The Open Screen Protocol allows two <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent①①">OSP agents</a> to discover each other and
 exchange user and application data.  As such, its security and privacy
 considerations should be closely examined.  We first evaluate the protocol
 itself using the W3C <a data-link-type="biblio" href="#biblio-security-privacy-questionnaire">Security and Privacy
@@ -3514,9 +3629,10 @@ exchanged.</p>
 device capabilities using the Open Screen Protocol.  The main strategy to address
 this is data minimization, by only exposing opaque public key fingerprints
 before user-mediated authentication takes place.</p>
-   <p>Passive attackers may also attempt timing attacks to learn the
-cryptographic parameters of the TLS 1.3 QUIC connection.</p>
-   <p class="issue" id="issue-84520e29"><a class="self-link" href="#issue-84520e29"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
+   <p>Passive attackers may also attempt timing attacks to learn the cryptographic
+parameters of the TLS 1.3 QUIC connection.  The application profile for TLS 1.3
+mandates constant-time ciphers and TLS 1.3 implementations should use elliptic
+curve signing operations that are resistant to side channel attacks.</p>
    <h4 class="heading settled" data-level="12.5.2" id="local-active-mitigations"><span class="secno">12.5.2. </span><span class="content">Local active network attackers</span><a class="self-link" href="#local-active-mitigations"></a></h4>
    <p>Local active attackers may attempt to impersonate a presentation display the
 user would normally trust.  The <a href="#authentication">§ 6 Authentication</a> step of the Open Screen
@@ -3558,8 +3674,8 @@ prevent brute force attacks.</p>
    </ul>
    <p>The active attacker may also attempt to disrupt data exchanged over the QUIC
 connection by injecting or modifying traffic.  These attacks should be mitigated
-by a correct implementation of TLS 1.3.</p>
-   <p class="issue" id="issue-84520e29①"><a class="self-link" href="#issue-84520e29①"></a> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a></p>
+by a correct implementation of TLS 1.3.  See Appendix E of <a data-link-type="biblio" href="#biblio-rfc846">[RFC846]</a> for a
+detailed security analysis of the TLS 1.3 protocol.</p>
    <h4 class="heading settled" data-level="12.5.3" id="remote-active-mitigations"><span class="secno">12.5.3. </span><span class="content">Remote active network attackers</span><a class="self-link" href="#remote-active-mitigations"></a></h4>
    <p>Unfortunately, we cannot rely on network devices to fully protect OSP agents,
 because a misconfigured firewall or NAT could expose a LAN-connected agent to
@@ -4562,6 +4678,8 @@ extensions.</p>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#advertising-agent">advertising agent</a><span>, in §3</span>
+   <li><a href="#agent-certificate">agent certificate</a><span>, in §4.2</span>
+   <li><a href="#agent-fingerprint">agent fingerprint</a><span>, in §3</span>
    <li><a href="#agent-info">agent-info</a><span>, in §Unnumbered section</span>
    <li><a href="#agent-info-event">agent-info-event</a><span>, in §Unnumbered section</span>
    <li><a href="#agent-info-request">agent-info-request</a><span>, in §Unnumbered section</span>
@@ -4732,7 +4850,7 @@ extensions.</p>
   <aside class="dfn-panel" data-for="term-for-section-2">
    <a href="https://tools.ietf.org/html/rfc5646#section-2">https://tools.ietf.org/html/rfc5646#section-2</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-section-2">4. Transport and metadata discovery with QUIC</a>
+    <li><a href="#ref-for-section-2">4.3. Metadata Discovery</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-section-3">
@@ -4882,8 +5000,16 @@ extensions.</p>
    <dd>P. Leach; M. Mealling; R. Salz. <a href="https://tools.ietf.org/html/rfc4122">A Universally Unique IDentifier (UUID) URN Namespace</a>. July 2005. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc4122">https://tools.ietf.org/html/rfc4122</a>
    <dt id="biblio-rfc5122">[RFC5122]
    <dd>P. Saint-Andre. <a href="https://tools.ietf.org/html/rfc5122">Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)</a>. February 2008. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc5122">https://tools.ietf.org/html/rfc5122</a>
+   <dt id="biblio-rfc5280">[RFC5280]
+   <dd>D. Cooper; et al. <a href="https://tools.ietf.org/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>. May 2008. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc5280">https://tools.ietf.org/html/rfc5280</a>
    <dt id="biblio-rfc7049">[RFC7049]
    <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc7049">Concise Binary Object Representation (CBOR)</a>. October 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7049">https://tools.ietf.org/html/rfc7049</a>
+   <dt id="biblio-rfc8446">[RFC8446]
+   <dd>E. Rescorla. <a href="https://tools.ietf.org/html/rfc8446">The Transport Layer Security (TLS) Protocol Version 1.3</a>. August 2018. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8446">https://tools.ietf.org/html/rfc8446</a>
+   <dt id="biblio-rfc846">[RFC846]
+   <dd>A. Westine; D. Smallberg; J. Postel. <a href="https://tools.ietf.org/html/rfc847">Summary of Smallberg surveys</a>. February 1983. Unknown. URL: <a href="https://tools.ietf.org/html/rfc847">https://tools.ietf.org/html/rfc847</a>
+   <dt id="biblio-rfc8466">[RFC8466]
+   <dd>B. Wen; et al. <a href="https://tools.ietf.org/html/rfc8466">A YANG Data Model for Layer 2 Virtual Private Network (L2VPN) Service Delivery</a>. October 2018. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8466">https://tools.ietf.org/html/rfc8466</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
    <dd>Lukasz Olejnik; Jason Novak. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 23 May 2019. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
   </dl>
@@ -4893,6 +5019,11 @@ extensions.</p>
    <div class="issue"> Can autolinks to HTML51 be automatically generated?<a href="#issue-a8c8d59b"> ↵ </a></div>
    <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a><a href="#issue-56c2cd35"> ↵ </a></div>
    <div class="issue"> Add examples of sample mDNS records.<a href="#issue-49bdd4e6"> ↵ </a></div>
+   <div class="issue"> Determine if there is an advantage to session resumption outside of early
+data. If we allow session resumption, do we allow early data too?<a href="#issue-eb53583c"> ↵ </a></div>
+   <div class="issue"> Do agents need to support the Cookies extension (used in HelloRetryRequest)?<a href="#issue-983764c9"> ↵ </a></div>
+   <div class="issue"> Make recommendations for cipher and signature algorithm preference list
+based on hardware characteristics of agents.<a href="#issue-08dfa2ca"> ↵ </a></div>
    <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a><a href="#issue-e0955a17"> ↵ </a></div>
    <div class="issue"> What do "client" and "server" mean here?<a href="#issue-492f86ab"> ↵ </a></div>
    <div class="issue"> Once the Presentation API has text about reconnecting via an
@@ -4902,21 +5033,20 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/webscreens/openscreenprotocol/issues/146">&lt;https://github.com/webscreens/openscreenprotocol/issues/146></a><a href="#issue-9145071e"> ↵ </a></div>
    <div class="issue"> Add a table for whether it’s required and what the default is.<a href="#issue-6098c204"> ↵ </a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
-   <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29"> ↵ </a></div>
-   <div class="issue"> Review attack and mitigation considerations for TLS 1.3 <a href="https://github.com/webscreens/openscreenprotocol/issues/130">&lt;https://github.com/webscreens/openscreenprotocol/issues/130></a><a href="#issue-84520e29①"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="open-screen-protocol-agent">
    <b><a href="#open-screen-protocol-agent">#open-screen-protocol-agent</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-open-screen-protocol-agent">2.1. General Requirements</a>
     <li><a href="#ref-for-open-screen-protocol-agent①">3. Discovery with mDNS</a>
-    <li><a href="#ref-for-open-screen-protocol-agent②">5. Messages delivery using CBOR and QUIC streams</a>
-    <li><a href="#ref-for-open-screen-protocol-agent③">6. Authentication</a>
-    <li><a href="#ref-for-open-screen-protocol-agent④">7.1. Presentation API</a> <a href="#ref-for-open-screen-protocol-agent⑤">(2)</a>
-    <li><a href="#ref-for-open-screen-protocol-agent⑥">8.2. Remote Playback API</a> <a href="#ref-for-open-screen-protocol-agent⑦">(2)</a>
-    <li><a href="#ref-for-open-screen-protocol-agent⑧">9. Streaming Protocol</a>
-    <li><a href="#ref-for-open-screen-protocol-agent⑨">11. Protocol Extensions</a>
-    <li><a href="#ref-for-open-screen-protocol-agent①⓪">12. Security and Privacy</a>
+    <li><a href="#ref-for-open-screen-protocol-agent②">4.1. TLS 1.3</a>
+    <li><a href="#ref-for-open-screen-protocol-agent③">5. Messages delivery using CBOR and QUIC streams</a>
+    <li><a href="#ref-for-open-screen-protocol-agent④">6. Authentication</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑤">7.1. Presentation API</a> <a href="#ref-for-open-screen-protocol-agent⑥">(2)</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑦">8.2. Remote Playback API</a> <a href="#ref-for-open-screen-protocol-agent⑧">(2)</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑨">9. Streaming Protocol</a>
+    <li><a href="#ref-for-open-screen-protocol-agent①⓪">11. Protocol Extensions</a>
+    <li><a href="#ref-for-open-screen-protocol-agent①①">12. Security and Privacy</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="controller">
@@ -4956,10 +5086,11 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <ul>
     <li><a href="#ref-for-advertising-agent">2.4. Non-Functional Requirements</a>
     <li><a href="#ref-for-advertising-agent①">4. Transport and metadata discovery with QUIC</a>
-    <li><a href="#ref-for-advertising-agent②">6. Authentication</a>
-    <li><a href="#ref-for-advertising-agent③">7.1. Presentation API</a>
-    <li><a href="#ref-for-advertising-agent④">8.2. Remote Playback API</a>
-    <li><a href="#ref-for-advertising-agent⑤">9. Streaming Protocol</a>
+    <li><a href="#ref-for-advertising-agent②">4.2. Agent Certificates</a>
+    <li><a href="#ref-for-advertising-agent③">6. Authentication</a>
+    <li><a href="#ref-for-advertising-agent④">7.1. Presentation API</a>
+    <li><a href="#ref-for-advertising-agent⑤">8.2. Remote Playback API</a>
+    <li><a href="#ref-for-advertising-agent⑥">9. Streaming Protocol</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="display-name">
@@ -4973,9 +5104,24 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
    <ul>
     <li><a href="#ref-for-listening-agent">2.4. Non-Functional Requirements</a>
     <li><a href="#ref-for-listening-agent①">4. Transport and metadata discovery with QUIC</a>
-    <li><a href="#ref-for-listening-agent②">7.1. Presentation API</a>
-    <li><a href="#ref-for-listening-agent③">8.2. Remote Playback API</a>
-    <li><a href="#ref-for-listening-agent④">9. Streaming Protocol</a>
+    <li><a href="#ref-for-listening-agent②">4.2. Agent Certificates</a>
+    <li><a href="#ref-for-listening-agent③">7.1. Presentation API</a>
+    <li><a href="#ref-for-listening-agent④">8.2. Remote Playback API</a>
+    <li><a href="#ref-for-listening-agent⑤">9. Streaming Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="agent-fingerprint">
+   <b><a href="#agent-fingerprint">#agent-fingerprint</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-agent-fingerprint">4.1. TLS 1.3</a>
+    <li><a href="#ref-for-agent-fingerprint①">4.2. Agent Certificates</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="agent-certificate">
+   <b><a href="#agent-certificate">#agent-certificate</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-agent-certificate">3. Discovery with mDNS</a>
+    <li><a href="#ref-for-agent-certificate①">4.2. Agent Certificates</a> <a href="#ref-for-agent-certificate②">(2)</a> <a href="#ref-for-agent-certificate③">(3)</a> <a href="#ref-for-agent-certificate④">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="suspicious-agent">
@@ -4993,7 +5139,7 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="agent-info-request">
    <b><a href="#agent-info-request">#agent-info-request</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-agent-info-request">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info-request①">(2)</a>
+    <li><a href="#ref-for-agent-info-request">4.3. Metadata Discovery</a> <a href="#ref-for-agent-info-request①">(2)</a>
     <li><a href="#ref-for-agent-info-request②">7.1. Presentation API</a>
     <li><a href="#ref-for-agent-info-request③">8.2. Remote Playback API</a>
    </ul>
@@ -5001,19 +5147,19 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="agent-info-response">
    <b><a href="#agent-info-response">#agent-info-response</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-agent-info-response">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info-response①">(2)</a>
+    <li><a href="#ref-for-agent-info-response">4.3. Metadata Discovery</a> <a href="#ref-for-agent-info-response①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="agent-info-event">
    <b><a href="#agent-info-event">#agent-info-event</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-agent-info-event">4. Transport and metadata discovery with QUIC</a>
+    <li><a href="#ref-for-agent-info-event">4.3. Metadata Discovery</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="agent-info">
    <b><a href="#agent-info">#agent-info</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-agent-info">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-info①">(2)</a> <a href="#ref-for-agent-info②">(3)</a> <a href="#ref-for-agent-info③">(4)</a> <a href="#ref-for-agent-info④">(5)</a>
+    <li><a href="#ref-for-agent-info">4.3. Metadata Discovery</a> <a href="#ref-for-agent-info①">(2)</a> <a href="#ref-for-agent-info②">(3)</a> <a href="#ref-for-agent-info③">(4)</a> <a href="#ref-for-agent-info④">(5)</a>
     <li><a href="#ref-for-agent-info⑤">11. Protocol Extensions</a>
     <li><a href="#ref-for-agent-info⑥">11.1. Protocol Extension Fields</a>
     <li><a href="#ref-for-agent-info⑦">12.2.1. Personally Identifiable Information &amp; High-Value Data</a>
@@ -5023,13 +5169,13 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
   <aside class="dfn-panel" data-for="agent-status-request">
    <b><a href="#agent-status-request">#agent-status-request</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-agent-status-request">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-status-request①">(2)</a> <a href="#ref-for-agent-status-request②">(3)</a>
+    <li><a href="#ref-for-agent-status-request">4.3. Metadata Discovery</a> <a href="#ref-for-agent-status-request①">(2)</a> <a href="#ref-for-agent-status-request②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="agent-status-response">
    <b><a href="#agent-status-response">#agent-status-response</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-agent-status-response">4. Transport and metadata discovery with QUIC</a> <a href="#ref-for-agent-status-response①">(2)</a>
+    <li><a href="#ref-for-agent-status-response">4.3. Metadata Discovery</a> <a href="#ref-for-agent-status-response①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="auth-capabilities">
