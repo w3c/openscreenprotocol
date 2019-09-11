@@ -1158,7 +1158,7 @@ example, to pause, resume, skip, etc), it may send a
 :: The ID of the remote playback to be modified.
 
 : controls
-:: Updated controls as defined in {#remote-playback-state-and-controls}
+:: Updated controls as defined in [[#remote-playback-state-and-controls]].
 
 When a receiver receives a [=remote-playback-modify-request=] it should send a
 [=remote-playback-modify-response=] message in reply with the following values:

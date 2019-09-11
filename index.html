@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
+  <meta content="Bikeshed version cb5a17652cb33dffd20b8b6a876bb811c1f749a9" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="762696d32f614db821c9b3dae599413b042f59f5" name="document-revision">
+  <meta content="737f9d312ca43f0452c3ddd6bb358b9c7dbb2725" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1927,10 +1927,10 @@ QUIC connection.</p>
       <td>One of the values listed above.
      <tr>
       <td>Issuer Name
-      <td>CN = The <code>model-name</code> from the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br> 
+      <td>CN = The <code>model-name</code> from the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br>
      <tr>
       <td>Subject Name
-      <td>CN = <code>&lt;fp></code>._openscreen._udp.local<br> O = See note.<br> 
+      <td>CN = <code>&lt;fp></code>._openscreen._udp.local<br> O = See note.<br>
      <tr>
       <td>Subject Public Key Algorithm
       <td>Elliptic Curve Public Key
@@ -2538,7 +2538,7 @@ example, to pause, resume, skip, etc), it may send a <a data-link-type="dfn" hre
      <p>The ID of the remote playback to be modified.</p>
     <dt data-md>controls
     <dd data-md>
-     <p>Updated controls as defined in {#remote-playback-state-and-controls}</p>
+     <p>Updated controls as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
    </dl>
    <p>When a receiver receives a <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request①">remote-playback-modify-request</a> it should send a <a data-link-type="dfn" href="#remote-playback-modify-response" id="ref-for-remote-playback-modify-response">remote-playback-modify-response</a> message in reply with the following values:</p>
    <dl>
@@ -2877,7 +2877,7 @@ sender and a media receiver.</p>
    <h3 class="heading settled" data-level="9.1" id="streaming-protocol-capabilities"><span class="secno">9.1. </span><span class="content">Streaming Protocol Capabilities</span><a class="self-link" href="#streaming-protocol-capabilities"></a></h3>
     If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an <a data-link-type="dfn" href="#streaming-capabilities-request" id="ref-for-streaming-capabilities-request">streaming-capabilities-request</a> message, and receive back a <a data-link-type="dfn" href="#streaming-capabilities-response" id="ref-for-streaming-capabilities-response">streaming-capabilities-response</a> message with the
-following fields: 
+following fields:
    <dl>
     <dt data-md>receive-audio (required)
     <dd data-md>
@@ -3741,7 +3741,7 @@ display names from DNS-SD.  A truncated display name should be verified as above
 before being shown in full as a <a data-link-type="dfn" href="#verified-display-name" id="ref-for-verified-display-name">verified display name</a>.</p>
    <div class="note" role="note">
      This means there are three categories of display names that agents should be
-capable of handling: 
+capable of handling:
     <ol>
      <li>Truncated and unverified DNS-SD Instance Names, which should not be shown to the user.
      <li>Complete but unverified DNS-SD Instance Names, which can be shown as
