@@ -13,7 +13,7 @@ URLs of the presentation page as input. While the current Presentation API spec
 defines the behavior of `https` URLs, it does not forbid the usage of other URLs
 with other schemes.
 
-For example the the `cast` scheme is used in the Presentation API tests as
+For example the `cast` scheme is used in the Presentation API tests as an
 alternative scheme to support [Google Cast](https://developers.google.com/cast/)
 receivers like Chromecast and Android TV. Let us consider the following example
 as input for discussion:
@@ -66,8 +66,13 @@ The mechanism of using schemes in the OSP allows controlling pages to support
 additional receiver application types.  For example, Android TV could implement
 the OSP receiver for native TV applications in the future and advertise them
 using the scheme `android.` A native Android TV app with a native library that
-acts as a presentation receiver could then be controlled through the
-Presentation Controller API.
+acts as a presentation receiver could then be lauched and controlled by a
+controlling web page through the Presentation Controller API.
+
+Or, a controlling web page could open an HbbTV Web application on the OSP
+receiver with an `hbbtv:` URL.  The page would use the `hbbtv` URL scheme to
+pass additional parameters that enable the receiving web page to access
+broadcast-specific functionality.
 
 ## Interoperability
 
@@ -75,7 +80,7 @@ There remain interoperability concerns with supporting non-https schemes through
 the OSP.  A browser may need to support additional features that are not part of
 the core OSP standard to work with a non-https application; this is true of
 `cast:` URLs today, for example.  Browsers that do not have these features may
-believe that a non-https URL as available for presentation (because the
+believe that a non-https URL is available for presentation (because the
 receiving agent reports the URL as supported), but not be able to launch and
 control the presentation successfully via OSP.  If [OSP
 extensions](https://webscreens.github.io/openscreenprotocol/#protocol-extensions)
