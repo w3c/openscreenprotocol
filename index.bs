@@ -984,9 +984,9 @@ controller) may send a [=presentation-start-request=] message to D
 (the receiver), with I for the presentation identifier and presentationUrl for
 the selected presentation URL.
 
-Issue(w3c/presentation-api#471): Once the Presentation
-API has text about reconnecting via an implementation specific mechanism, quote
-that here and map it to a message.
+Issue(w3c/presentation-api#471): Once the Presentation API has text about
+reconnecting via an implementation specific mechanism, quote that here and map
+it to a message.
 
 When [[PRESENTATION-API#sending-a-message-through-presentationconnection|section
 6.5.2]] says "Using an implementation specific mechanism, transmit the contents
