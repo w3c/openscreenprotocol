@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="a0cf020652bc05cbe70b5cd94c245718d0be83b7" name="document-revision">
+  <meta content="c9d9583954d8f779c833bbe7e987460decdc5673" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-08">8 September 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-11">11 September 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1518,7 +1518,11 @@ pre .property::before, pre .property::after {
       <li><a href="#certificates"><span class="secno">4.2</span> <span class="content">Agent Certificates</span></a>
       <li><a href="#metadata"><span class="secno">4.3</span> <span class="content">Metadata Discovery</span></a>
      </ol>
-    <li><a href="#messages"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
+    <li>
+     <a href="#messages"><span class="secno">5</span> <span class="content">Messages delivery using CBOR and QUIC streams</span></a>
+     <ol class="toc">
+      <li><a href="#message-compatibility"><span class="secno">5.1</span> <span class="content">Type Key Backwards Compatibility</span></a>
+     </ol>
     <li>
      <a href="#authentication"><span class="secno">6</span> <span class="content">Authentication</span></a>
      <ol class="toc">
@@ -1542,11 +1546,11 @@ pre .property::before, pre .property::after {
       <li><a href="#streaming-sessions"><span class="secno">9.2</span> <span class="content">Sessions</span></a>
       <li><a href="#streaming-audio"><span class="secno">9.3</span> <span class="content">Audio</span></a>
       <li><a href="#streaming-video"><span class="secno">9.4</span> <span class="content">Video</span></a>
-      <li><a href="#media-streaming-data"><span class="secno">9.5</span> <span class="content">Data</span></a>
+      <li><a href="#streaming-data"><span class="secno">9.5</span> <span class="content">Data</span></a>
       <li><a href="#streaming-feedback"><span class="secno">9.6</span> <span class="content">Feedback</span></a>
       <li><a href="#streaming-stats"><span class="secno">9.7</span> <span class="content">Stats</span></a>
      </ol>
-    <li><a href="#requests-responses--watches"><span class="secno">10</span> <span class="content">Requests, Responses, and Watches</span></a>
+    <li><a href="#requests-responses-watches"><span class="secno">10</span> <span class="content">Requests, Responses, and Watches</span></a>
     <li>
      <a href="#protocol-extensions"><span class="secno">11</span> <span class="content">Protocol Extensions</span></a>
      <ol class="toc">
@@ -1953,7 +1957,7 @@ request at any time to learn about the state and capabilities of another device,
 which are described by the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info">agent-info</a> message in the <a data-link-type="dfn" href="#agent-info-response" id="ref-for-agent-info-response①">agent-info-response</a>.</p>
    <p>If an agent changes any information in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info①">agent-info</a> message, it should
 send an <a data-link-type="dfn" href="#agent-info-event" id="ref-for-agent-info-event">agent-info-event</a> message to all other connected agents with the new <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info②">agent-info</a> (without waiting for an <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request①">agent-info-request</a>).</p>
-   <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info③">agent-info</a> message contains the following properties:</p>
+   <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info③">agent-info</a> message contains the following fields:</p>
    <dl>
     <dt data-md>display-name (required)
     <dd data-md>
@@ -2061,6 +2065,32 @@ code of 404 and should include the unknown type key in the reason phrase
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.</p>
+   <h3 class="heading settled" data-level="5.1" id="message-compatibility"><span class="secno">5.1. </span><span class="content">Type Key Backwards Compatibility</span><a class="self-link" href="#message-compatibility"></a></h3>
+   <p>As messages are modified or extended over time, certain rules must be followed
+to maintain backwards compatibiilty with agents that understand older versions
+of messages.</p>
+   <ol>
+    <li data-md>
+     <p>If a required field is added to or removed from a message (either to/from the
+message directly or indirectly through the field of a field), a new type key
+must be assigned to the message.  Is is effectively a new message and must not
+be sent unless the receiving agent is known to understand the new type key.</p>
+    <li data-md>
+     <p>If an optional field is added to a message (either to the message directly
+or indirectly through the field of a field), the type key may remain unchanged
+if the behavior of older receiving agents that do not understand the added field
+is compatible with newer sending agents that include the field.
+Otherwise, a new type key must be assigned.</p>
+    <li data-md>
+     <p>If an optional field is removed from a message (either from the message
+directly or indirectly through the field of a field), the type key may remain
+unchanged if the behavior of newer receiving agents that do not understand the
+removed field is compatible with older sending agents that include the field.
+Otherwise, a new type key must be assigned.</p>
+    <li data-md>
+     <p>Required fields may not be added or removed from array-based messages, such
+as audio-frame.</p>
+   </ol>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p>Each supported authentication method is implemeted via authentication messages
 specific to that method.  The authentication method is explicitly specified by
@@ -2136,11 +2166,6 @@ and sends the <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-statu
    <p>This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§ 7.1 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
 protocol messages defined in this section.</p>
-   <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑤">Open Screen Protocol agent</a> is a <a data-link-type="dfn" href="#controller" id="ref-for-controller③">controller</a> for the Presentation
-API, it must advertise the <code>control-presentation</code> capability.  If an OSP agent
-is a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver③">receiver</a> for the Presentation API, it must advertise the <code>receive-presentation</code> capability.  The same agent may be a presentation
-controller and receiver.</p>
-   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent④">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent③">listening agent</a> during discovery and connection establishment.</p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation displays</a> for a
 particular <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url④">presentation request URL</a> or set of URLs, the controller may send
 a <a data-link-type="dfn" href="#presentation-url-availability-request" id="ref-for-presentation-url-availability-request">presentation-url-availability-request</a> message with the following values:</p>
@@ -2243,7 +2268,7 @@ presentation URL (after redirects).</p>
 or <code>user-request</code> if the user requested termination. (These are the only
 valid values for <code>reason</code> in a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request①">presentation-termination-request</a>.)</p>
    </dl>
-   <p>When a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver④">receiver</a> receives a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request②">presentation-termination-request</a>, it should
+   <p>When a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver③">receiver</a> receives a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request②">presentation-termination-request</a>, it should
 send back a <a data-link-type="dfn" href="#presentation-termination-response" id="ref-for-presentation-termination-response">presentation-termination-response</a> message to the requesting
 controller.</p>
    <p>It should also notify other controllers about the termination by sending
@@ -2341,10 +2366,14 @@ to that presentation with the values:</p>
 so request and response messages are not needed.  A request to terminate a
 presentation may succeed or fail, so a response message is required.</p>
    <h3 class="heading settled" data-level="7.1" id="presentation-api"><span class="secno">7.1. </span><span class="content">Presentation API</span><a class="self-link" href="#presentation-api"></a></h3>
-   <p>This section defines how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§ 7 Presentation Protocol</a>.</p>
+   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑤">Open Screen Protocol agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>control-presentation</code> capability.
+An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑥">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>receive-presentation</code> capability.
+The same OSP agent may be a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agent</a> and a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving user agent</a>.</p>
+   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent④">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent③">listening agent</a> during discovery and connection establishment.</p>
+   <p>This is how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§ 7 Presentation Protocol</a>:</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "This list of presentation displays ... is populated based on an
-implementation specific discovery mechanism", the <a data-link-type="dfn" href="#controller" id="ref-for-controller④">controller</a> may
+implementation specific discovery mechanism", the <a data-link-type="dfn" href="#controller" id="ref-for-controller③">controller</a> may
 use the mDNS, QUIC, <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request②">agent-info-request</a>, and <a data-link-type="dfn" href="#presentation-url-availability-request" id="ref-for-presentation-url-availability-request①">presentation-url-availability-request</a> messages defined previously in this spec
 to discover receivers.</p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#the-list-of-available-presentation-displays">section
@@ -2388,11 +2417,6 @@ must send a <a data-link-type="dfn" href="#presentation-connection-open-response
 and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>. <a href="#remote-playback-api">§ 8.2 Remote Playback API</a> defines how
 APIs in <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> map to the protocol messages
 defined in this section.</p>
-   <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑥">Open Screen Protocol agent</a> is a <a data-link-type="dfn" href="#controller" id="ref-for-controller⑤">controller</a> for the Remote Playback
-API, it must advertise the <code>control-remote-playback</code> capability.  If an OSP
-agent is a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver⑤">receiver</a> for the Remote Playback API, it must advertise the <code>receive-remote-playback</code> capability.  The same agent may be a remote playback
-controller and receiver.</p>
-   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑤">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent④">listening agent</a> during discovery and connection establishment.</p>
    <p>For all messages defined in this section, see Appendix A for the full
 CDDL definitions.</p>
    <p class="issue" id="issue-58529898"><a class="self-link" href="#issue-58529898"></a> Make a required/default remote playback state table. <a href="https://github.com/webscreens/openscreenprotocol/issues/148">&lt;https://github.com/webscreens/openscreenprotocol/issues/148></a></p>
@@ -2476,6 +2500,10 @@ controls that are optional for the receiver to support before it knows the
 receiver supports them.  If the receiver does not support them, it will
 ignore them and the controller will learn that it does not support them from
 the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response">remote-playback-start-response</a> message.</p>
+    <dt data-md>remoting (optional)
+    <dd data-md>
+     <p>Parameters for starting a streaming session associated with this
+remote playback.  If not included, no streaming session is started.</p>
    </dl>
    <p>When the receiver receives a <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request①">remote-playback-start-request</a> message, it should
 send back a <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①">remote-playback-start-response</a> message.  It should do so quickly,
@@ -2488,7 +2516,18 @@ invalid-url).  Additionally, the response must include the following:</p>
     <dt data-md>state
     <dd data-md>
      <p>The initial state of the remote playback, as defined in <a href="#remote-playback-state-and-controls">§ 8.1 Remote Playback State and Controls</a>.</p>
+    <dt data-md>remoting (optional)
+    <dd data-md>
+     <p>A response to the started streaming session associated with this remote playback.
+If not included, no streaming session is started.</p>
    </dl>
+   <p>If a streaming session is started, streaming messages such a
+streaming-session-modify-request and video-frame can be used for the streaming
+session as if the streaming session had been started with
+streaming-session-start-request and streaming-session-start-response.  The
+streaming session may be terminated before the remote playback is terminated,
+but if the remote playback is terminated first, the streaming session associated
+with it is automatically terminated.</p>
    <p>If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request">remote-playback-modify-request</a> message with the following values:</p>
    <dl>
@@ -2675,7 +2714,7 @@ supported, the receiver will behave as though it were never set.</p>
     <dd data-md>
      <p>Change text tracks by ID.  All other text tracks are left
 unchanged.  Set the mode, add cues, and remove cues by id. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a> for more details.  Note that future specifications or extensions to this
-specifications are expected to add new properties to the <a data-link-type="dfn" href="#text-track-cue" id="ref-for-text-track-cue">text-track-cue</a> (such as text size, alignment, position, etc).  Adding and removing
+specifications are expected to add new fields to the <a data-link-type="dfn" href="#text-track-cue" id="ref-for-text-track-cue">text-track-cue</a> (such as text size, alignment, position, etc).  Adding and removing
 cues is optional for the receiver to support and if not supported, the
 receiver will behave as though no cues were added or removed (both adding
 and removing are indicated via the support for "added-cues").  As specified in <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a>,
@@ -2791,14 +2830,19 @@ which includes a time scale.  This allows time values which work on different
 time scales to be expressed without loss of precision.  The scale is represented
 in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
    <h3 class="heading settled" data-level="8.2" id="remote-playback-api"><span class="secno">8.2. </span><span class="content">Remote Playback API</span><a class="self-link" href="#remote-playback-api"></a></h3>
-   <p>This section defines how the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> uses the
-messages defined in <a href="#remote-playback-protocol">§ 8 Remote Playback Protocol</a>.</p>
+   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑦">Open Screen Protocol agent</a> that implements the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>control-remote-playback</code> capability.  It may support the <code>send-streaming</code> capability so it can send <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑤">HTMLMediaElement</a></code> media data through media
+remoting.</p>
+   <p>An an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑧">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback device</a> for the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>receive-remote-playback</code> capability.  It may support the <code>receive-streaming</code> capability so it can receive <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑥">HTMLMediaElement</a></code> data through media remoting.</p>
+   <p>The same OSP agent may implement both the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> and be a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices②">remote playback device</a> for that API.</p>
+   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑤">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent④">listening agent</a> during discovery and connection establishment.</p>
+   <p>This is how the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> uses the
+messages defined in <a href="#remote-playback-protocol">§ 8 Remote Playback Protocol</a>:</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
-6.2.1.2</a> says "This list contains <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback devices</a> and is populated
+6.2.1.2</a> says "This list contains <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices③">remote playback devices</a> and is populated
 based on an implementation specific discovery mechanism" and <a href="https://www.w3.org/TR/remote-playback/#the-list-of-available-remote-playback-devices">section
 6.2.1.4</a> says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the mDNS, QUIC, <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request③">agent-info-request</a>, and <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request①">remote-playback-availability-request</a> messages
-defined previously in this spec to discover <a data-link-type="dfn" href="#receiver" id="ref-for-receiver⑥">receivers</a>.  The <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request②">remote-playback-availability-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability
+defined previously in this spec to discover <a data-link-type="dfn" href="#receiver" id="ref-for-receiver④">receivers</a>.  The <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request②">remote-playback-availability-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability
 sources set</a>.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 6.2.4</a> says "Request connection of remote to device. The implementation of this
@@ -2824,14 +2868,14 @@ send the <a data-link-type="dfn" href="#remote-playback-termination-request" id=
    <h2 class="heading settled" data-level="9" id="streaming-protocol"><span class="secno">9. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for streaming
 media from a <a data-link-type="dfn" href="#media-sender" id="ref-for-media-sender">media sender</a> to a <a data-link-type="dfn" href="#media-receiver" id="ref-for-media-receiver">media receiver</a>.</p>
-   <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑦">Open Screen Protocol agent</a> is a media sender, it must advertise the <code>send-streaming</code> capability.  If an OSP agent is a media receiver, it must
+   <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑨">Open Screen Protocol agent</a> is a media sender, it must advertise the <code>send-streaming</code> capability.  If an OSP agent is a media receiver, it must
 advertise the <code>receive-streaming</code> capability.  The same agent may be a media
 sender and a media receiver.</p>
    <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑥">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent⑤">listening agent</a> during discovery and connection establishment.</p>
    <h3 class="heading settled" data-level="9.1" id="streaming-protocol-capabilities"><span class="secno">9.1. </span><span class="content">Streaming Protocol Capabilities</span><a class="self-link" href="#streaming-protocol-capabilities"></a></h3>
     If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an <a data-link-type="dfn" href="#streaming-capabilities-request" id="ref-for-streaming-capabilities-request">streaming-capabilities-request</a> message, and receive back a <a data-link-type="dfn" href="#streaming-capabilities-response" id="ref-for-streaming-capabilities-response">streaming-capabilities-response</a> message with the
-following properties: 
+following fields: 
    <dl>
     <dt data-md>receive-audio (required)
     <dd data-md>
@@ -2839,22 +2883,18 @@ following properties:
     <dt data-md>receive-video (required)
     <dd data-md>
      <p>A list of capabilities for receiving video. For an explanation of fields, see below.</p>
-    <dt data-md>receive-data (required)
-    <dd data-md>
-     <p>A list of arbitrary data formats the device supports
-for receiving data.</p>
    </dl>
-   <p>The format type is used as the basis for audio, video, and data capabilities.
-Formats are composed of the following properties:</p>
+   <p>The format type is used as the basis for audio and video capabilities.
+Formats are composed of the following fields:</p>
    <dl>
     <dt data-md>name (required)
     <dd data-md>
-     <p>The name of the format. Expected values include "vp8", "h264", "opus."</p>
+     <p>The name of the codec.   This must be a single-codec RFC 6381 <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codecs parameter</a>.</p>
     <dt data-md>parameters (required)
     <dd data-md>
-     <p>A list of (key, value) parameters that can be used to pass fields that are
-properties of a specific format, and not shared by other formats of that type
-(audio, video, etc.).</p>
+     <p>A list of (key, value) parameters that can be used to describe
+properties of a specific format, and not shared by other formats
+of that type (audio, video, etc.).</p>
    </dl>
    <p>Audio capabilities are composed of the above format type, with the following
 additional fields:</p>
@@ -2908,9 +2948,177 @@ The default value is none.</p>
      <p>A optional boolean field indicating whether the media receiver can scale content
 provided in a video-resolution not listed in the native-resolutions list
 (if provided) or of a different aspect ratio. The default value is true.</p>
+    <dt data-md>supports-rotation (optional)
+    <dd data-md>
+     <p>A optional boolean field indicating whether the media receiver can receive
+video frames with the rotation field set. The default value is true.</p>
    </dl>
    <h3 class="heading settled" data-level="9.2" id="streaming-sessions"><span class="secno">9.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
-   <p>TODO</p>
+   <p>To start a streaming session, a sender may send a
+streaming-session-start-request message with the following fields:</p>
+   <dl>
+    <dt data-md>streaming-session-id
+    <dd data-md>
+     <p>Identifies the streaming session.  Must be unique for the (sender,
+receiver) pair.  Can be used later to modify or terminate a
+streaming session.  These IDs should be treated like other IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
+    <dt data-md>desired-stats-interval
+    <dd data-md>
+     <p>Indicates the frequency the receiver should send stats messages to
+the sender.</p>
+    <dt data-md>stream-offers
+    <dd data-md>
+     <p>Indicates the streams that the receiver can request from the sender.</p>
+   </dl>
+   <p>Each stream offer contains the following fields:</p>
+   <dl>
+    <dt data-md>media-stream-id
+    <dd data-md>
+     <p>Identifies the media stream being offered.  Must be unique within
+the streaming session.  Can be used by the receiver to request the
+media session.  These IDs should be treated like other IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
+    <dt data-md>display-name
+    <dd data-md>
+     <p>An optional name intended to be shown to a user, such that the
+receiver may allow the user to choose which media streams to
+receive, or if they are received automatically by the receiver,
+give the user some information about what the media stream is.</p>
+    <dt data-md>audio
+    <dd data-md>
+     <p>A list of audio encodings offered.  An audio encoding is a series
+of encoded audio frames.  Encodings define fields needed by
+the receiver to know how to decode the encoding, such as codec and
+sample rate.  They can differ by codec and related fields,
+but should be different encodings of the same audio.</p>
+    <dt data-md>video
+    <dd data-md>
+     <p>A list of video encodings offered.  A video encoding is a series of
+encoded video frames.  Encodings define fields needed by the
+receiver to know how to decode the encoding, such as codec and
+default duration.  They can differ by codec and potentially other
+fields, but should be different encodings of the same video.</p>
+    <dt data-md>data
+    <dd data-md>
+     <p>A list of data encodings offered.  A data encoding is a series of
+data frames.  Encodings define fields needed by the
+receiver to know how to interpret the encoding, such as data type and
+default duration.  They can differ by data type and potentially other
+fields, but should be different encodings of the same data.
+(For encodings of different data, use distinct media streams,
+ not distinct encodints with the same media stream).</p>
+   </dl>
+   <p>Each audio encoding offered defines the following fields:</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the audio encoding being offered.  Must be unique within
+the media stream.  These IDs should be treated like request IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
+    <dt data-md>codec-name
+    <dd data-md>
+     <p>The name of the codec used by the encoding.  This must be a single-codec
+RFC 6381 <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3①">codecs parameter</a>.</p>
+    <dt data-md>time-scale
+    <dd data-md>
+     <p>The time scale used by all audio frames.  This allows senders to
+make audio-frame messages smaller by not including the time scale
+in each one.</p>
+    <dt data-md>default-duration:
+    <dd data-md>
+     <p>The duration of an audio frame.  This allows senders to make
+audio-frame messages smaller by not including the duration for
+audio-frame messages that have the default duration.</p>
+   </dl>
+   <p>Each video encoding offered defines the following fields:</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the video encoding being offered.  Must be unique within
+the media stream.  These IDs should be treated like request IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
+    <dt data-md>codec-name
+    <dd data-md>
+     <p>The name of the codec used by the encoding.</p>
+    <dt data-md>time-scale
+    <dd data-md>
+     <p>The time scale used by all video frames.  This allows senders to
+make video-frame messages smaller by not including the time scale
+in each one.</p>
+    <dt data-md>default-duration:
+    <dd data-md>
+     <p>The default duration of a video frame.  This allows senders to make
+video-frame messages smaller by not including the duration for
+video-frame messages that have the default duration.</p>
+    <dt data-md>default-rotation:
+    <dd data-md>
+     <p>The default rotation of a video frame.  This allows senders to make
+video-frame messages smaller by not including the rotation for
+video-frame messages that have the default rotation.</p>
+   </dl>
+   <p>Each data encoding offered defines the following fields:</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>Identifies the data encoding being offered.  Must be unique within
+the media stream.  These IDs should be treated like request IDs
+with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 10 Requests, Responses, and Watches</a>.</p>
+    <dt data-md>data-type-name
+    <dd data-md>
+     <p>The name of the data type used by the encoding.</p>
+    <dt data-md>time-scale
+    <dd data-md>
+     <p>The time scale used by all data frames.  This allows senders to
+make data-frame messages smaller by not including the time scale
+in each one.</p>
+    <dt data-md>default-duration:
+    <dd data-md>
+     <p>The duration of an data frame .  This allows senders to make
+data-frame messages smaller by not including the duration for
+data-frame messages that have the default duration.</p>
+   </dl>
+   <p>After receiving a streaming-session-start-request message, a receiver
+should send back a streaming-session-start-response message with the
+following fields:</p>
+   <dl>
+    <dt data-md>desired-stats-interval
+    <dd data-md>
+     <p>Indicates the frequency the sender should send stats messages to
+the receiver.</p>
+    <dt data-md>stream-requests
+    <dd data-md>
+     <p>Indicates which media streams the receiver would like to receive
+from the sender.</p>
+   </dl>
+   <p>Each stream request contains the following fields:</p>
+   <dl>
+    <dt data-md>media-stream-id
+    <dd data-md>
+     <p>The ID of the stream reqeusted.</p>
+    <dt data-md>audio (optional)
+    <dd data-md>
+     <p>The requested audio encoding, by encoding ID</p>
+    <dt data-md>video (optional)
+    <dd data-md>
+     <p>The requested video encoding, by encoding ID.  It may
+include a target resolution and maximum frame rate.  The sender
+should not exceed the maximum frame rate and should attempt to
+send at the target bitrate, possibly exceeding it by a small amount.</p>
+    <dt data-md>data (optional)
+    <dd data-md>
+     <p>The requested data encoding, by encoding ID</p>
+   </dl>
+   <p>During a streaming session, the receiver can modify the requests it
+made for encodings by sending a <code>streaming-session-modify-request</code> containing a modified list of stream-requests.  When the sender receives
+a <code>streaming-session-modify-request</code>, it should send back a <code>streaming-session-modify-response</code> indicate whether or not the
+application of the new request from the <code>streaming-session-modify-request</code> was successful.</p>
+   <p>Finally, the sender may terminate the streaming session by sending
+a streaming-session-terminate-request command.  When the receiver
+receives the streaming-session-terminate-request, it should send back
+a streaming-session-terminate-response.  The receiver can terminate at
+any point and notify the sender by sending a
+streaming-session-terminate-event message.</p>
    <h3 class="heading settled" data-level="9.3" id="streaming-audio"><span class="secno">9.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
    <p>[Media senders=] may send audio to <a data-link-type="dfn" href="#media-receiver" id="ref-for-media-receiver①">media receivers</a> by sending <a data-link-type="dfn" href="#audio-frame" id="ref-for-audio-frame">audio-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and
 values.  An audio frame message contains a set of encoded audio samples for a
@@ -2931,22 +3139,22 @@ separate QUIC streams.</p>
     <dt data-md>encoding-id
     <dd data-md>
      <p>Identifies the media encoding to which this audio frame belongs.  This can be
-used to reference properties of the encoding (from the
+used to reference fields of the encoding (from the
 audio-encoding-offer message) such as the codec, codec properties,
 time scale (aka clock rate or sample rate), and default duration.
-Referencing properties of the encoding through the encoding id
+Referencing fields of the encoding through the encoding id
 helps to avoid sending duplicate information in every frame.</p>
     <dt data-md>start-time
     <dd data-md>
-     <p>Identifies the beginning of the time range of the audio frame.  The time
-scale is inferred from the properties of the encoding (from the
-audio-encoding-offer).  The end time can be inferred from the
-start time and duration.</p>
+     <p>Identifies the beginning of the time range of the audio frame. The
+end time can be inferred from the start time and duration. The
+time scale is equal to the value in the <code>time-scale</code> field of the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
-     <p>If present, the duration of the audio frame.  The time
-scale is inferred from the properties of the encoding.  Likewise, if not
-present, the duration is inferred from the properties of the encoding.</p>
+     <p>If present, the duration of the audio frame. If not present, the
+duration is equal to the <code>default-duration</code> field of the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.
+The time scale is equal to the value in the <code>time-scale</code> field of
+the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
      <p>If present, a time used to synchronize the start time of this audio frame (and
@@ -2955,7 +3163,8 @@ different timelines.  It may be wall clock time, but it need not
 be; it can be any clock chosen by the media sender.</p>
     <dt data-md>payload
     <dd data-md>
-     <p>The data.  The type of data is inferred from the properties of the encoding.</p>
+     <p>The encoded audio.  The codec and codec parameters are equal to the <code>format</code> field of the <code>audio-encoding-offer</code> message referenced by
+the <code>encoding-id</code></p>
    </dl>
    <h3 class="heading settled" data-level="9.4" id="streaming-video"><span class="secno">9.4. </span><span class="content">Video</span><a class="self-link" href="#streaming-video"></a></h3>
    <p>Media senders may send video to media receivers by sending <a data-link-type="dfn" href="#video-frame" id="ref-for-video-frame">video-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video
@@ -2971,11 +3180,11 @@ ending at the last dependent frame.</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
-     <p>Identifies the media encoding to which this video frame belongs.  This can be
-used to reference properties of the encoding such as the codec, codec
-properties, time scale, and default rotation.  Referencing properties of the
-encoding through the encoding id helps to avoid sending duplicate
-information in every frame.</p>
+     <p>Identifies the media encoding to which this video frame belongs.
+This can be used to reference fields of the encoding such as the
+codec, codec properties, time scale, and default rotation.
+Referencing fields of the encoding through the encoding id helps
+to avoid sending duplicate information in every frame.</p>
     <dt data-md>sequence-number
     <dd data-md>
      <p>Identifies the frame and its order in the encoding.
@@ -2990,15 +3199,15 @@ If empty, this is an independent frame (a key frame).
 If not present, the default value is [-1].</p>
     <dt data-md>start-time
     <dd data-md>
-     <p>Identifies the beginning of the time range of the video frame.  The time
-scale is inferred from the properties of the encoding (from the
-video-encoding-offer).  The end time can be inferred from the
-start time and duration.</p>
+     <p>Identifies the beginning of the time range of the video frame.  The
+end time can be inferred from the start time and duration. The
+time scale is equal to the value in the <code>time-scale</code> field of the <code>video-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
-     <p>If present, the duration of the video frame.  The time
-scale is inferred from the properties of the encoding.  If not
-present, that means duration is unknown.</p>
+     <p>If present, the duration of the video frame. If not present, that
+means duration is unknown.  The time scale is equal to the value
+in the <code>time-scale</code> field of the <code>video-encoding-offer</code> message
+referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
      <p>If present, a time used to synchronize the start time of this frame (and
@@ -3006,30 +3215,28 @@ thus, this encoding) with that of other media encodings on different
 timelines.</p>
     <dt data-md>rotation
     <dd data-md>
-     <p>If present, indicates how the frame should be rotated after decoding but
-before rendering.  Rotation is clockwise in increments of 90 degrees.
-The default is 0 (no rotation).</p>
+     <p>If present, indicates how the frame should be rotated after
+decoding but before rendering.  Rotation is clockwise in
+increments of 90 degrees.  The default is equal to the <code>default-rotation</code> field of the <code>video-encoding-offer</code> message
+referenced by the <code>encoding-id</code>.</p>
     <dt data-md>payload
     <dd data-md>
-     <p>The encoded video frame (encoded image).  The codec and codec parameters are
-inferred from the properties of the encoding.</p>
+     <p>The encoded video frame (encoded image).  The codec and codec
+ parameters are are equal to the <code>format</code> field of the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
    </dl>
-   <h3 class="heading settled" data-level="9.5" id="media-streaming-data"><span class="secno">9.5. </span><span class="content">Data</span><a class="self-link" href="#media-streaming-data"></a></h3>
+   <h3 class="heading settled" data-level="9.5" id="streaming-data"><span class="secno">9.5. </span><span class="content">Data</span><a class="self-link" href="#streaming-data"></a></h3>
    <p>Media senders may send timed data to media receivers by sending <a data-link-type="dfn" href="#data-frame" id="ref-for-data-frame">data-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
-contains an arbitrary payload that can be synchronized with and video, such as
-text track data.  A series of data frames that share a data type and timeline
-form a data encoding.</p>
+contains an arbitrary payload that can be synchronized with audio and video.
+A series of data frames that share a data type and timeline form a data encoding.</p>
    <p>To allow for data frames to be sent out of order, they may be sent in separate
 QUIC streams, but more than one data frame may be sent in one QUIC stream if
 that makes sense for a specific type of data.</p>
-   <p>Text track data uses a payload type of text, a default duration of unknown, and
-a timescale of 1000000 (microseconds).</p>
    <dl>
     <dt data-md>encoding-id
     <dd data-md>
-     <p>Identifies the media encoding to which this data frame belongs.  This can be
-used to reference properties of the encoding such as the type of data and
-time scale.  Referencing properties of the encoding through the encoding id
+     <p>Identifies the data encoding to which this data frame belongs.  This can be
+used to reference fields of the encoding such as the type of data and
+time scale.  Referencing fields of the encoding through the encoding id
 helps to avoid sending duplicate information in every frame.</p>
     <dt data-md>sequence-number
     <dd data-md>
@@ -3038,23 +3245,24 @@ Within an encoding, larger sequence numbers mean later start times.
 Within an encoding, gaps in sequence numbers mean frames are missing.</p>
     <dt data-md>start-time
     <dd data-md>
-     <p>Identifies the beginning of the time range of the data frame.  The time
-scale is inferred from the properties of the encoding.  The end time can be
-inferred from the start time and duration.</p>
+     <p>Identifies the beginning of the time range of the data frame.  The
+end time can be inferred from the start time and duration.  The
+time scale is equal to the value in the <code>time-scale</code> field of the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
-     <p>If present, the duration of the data frame.  The time
-scale is inferred from the properties of the encoding.  Likewise, if not
-present, the duration is inferred from the properties of the encoding.</p>
+     <p>If present, the duration of the data frame. If not present, the
+duration is equal to the <code>default-duration</code> field of the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.
+The time scale is equal to the value in the <code>time-scale</code> field of
+the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
-     <p>If present, a time used to synchronize the start time of this audio frame (and
+     <p>If present, a time used to synchronize the start time of this data frame (and
 thus, this encoding) with that of other media encodings on different
 timelines.</p>
     <dt data-md>payload
     <dd data-md>
-     <p>The data.  The format and parameters are inferred from
-the properties of the encoding.</p>
+     <p>The data.  The data type is equal to the <code>data-type</code> field of the
+the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
    </dl>
    <h3 class="heading settled" data-level="9.6" id="streaming-feedback"><span class="secno">9.6. </span><span class="content">Feedback</span><a class="self-link" href="#streaming-feedback"></a></h3>
    <p>The media receiver can send feedback to the media sender, such as key frame
@@ -3079,8 +3287,125 @@ This it to prevent out-of-order requests from generating more key frames than ne
 frame.  If not set, the media sender must generate an indepdendent (key) frame.</p>
    </dl>
    <h3 class="heading settled" data-level="9.7" id="streaming-stats"><span class="secno">9.7. </span><span class="content">Stats</span><a class="self-link" href="#streaming-stats"></a></h3>
-   <p>TODO</p>
-   <h2 class="heading settled" data-level="10" id="requests-responses--watches"><span class="secno">10. </span><span class="content">Requests, Responses, and Watches</span><a class="self-link" href="#requests-responses--watches"></a></h2>
+   <p>During a streaming session, the sender should send stats with the
+streaming-session-sender-stats-event at the interval the receiver requested.  It
+should send all of the following stats for all of the media streams it is
+sending. The streaming-session-sender-stats-event message contains the following
+fields:</p>
+   <dl>
+    <dt data-md>streaming-session-id
+    <dd data-md>
+     <p>The ID of the streaming session these stats apply to.</p>
+    <dt data-md>system-time
+    <dd data-md>
+     <p>The time when the stats were calculated, using a monotonic system
+clock.</p>
+    <dt data-md>audio
+    <dd data-md>
+     <p>Stats specific to audio.  Stats for multiple encodings can be sent
+at once, but encodings need not be included if the stats haven’t
+changed.  See below.</p>
+    <dt data-md>video
+    <dd data-md>
+     <p>Stats specific to video.  Stats for multiple encodings can be sent
+at once, but encodings need not be included if the stats haven’t
+changed.  See below.</p>
+   </dl>
+   <p>Audio encoding sender stats include the following fields:</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>The ID of the encoding for which the stats apply.</p>
+    <dt data-md>cumulative-sent-frames
+    <dd data-md>
+     <p>The total number of frames sent.</p>
+    <dt data-md>cumulative-encode-delay
+    <dd data-md>
+     <p>The sum of the time spent encoding frames sent.</p>
+   </dl>
+   <p>Video encoding sender stats include the following fields:</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>The ID of the encoding for which the stats apply.</p>
+    <dt data-md>cumulative-sent-duration
+    <dd data-md>
+     <p>The sum of all of the durations of all of the audio frames sent.</p>
+    <dt data-md>cumulative-encode-delay
+    <dd data-md>
+     <p>The sum of the time spent encoding frames sent.</p>
+    <dt data-md>cumulative-dropped frames
+    <dd data-md>
+     <p>The total number of frames that were not sent due to network, CPU,
+or other contraints.</p>
+   </dl>
+   <p>During a streaming session, the receiver should send stats with the
+streaming-session-receiver-stats-event at the interval the sender requested.
+It should send all of the following stats for all of the media streams it is
+receiving.  The streaming-session-receiver-stats-event message contains the
+following fields:</p>
+   <dl>
+    <dt data-md>streaming-session-id
+    <dd data-md>
+     <p>The ID of the streaming session these stats apply to.</p>
+    <dt data-md>system-time
+    <dd data-md>
+     <p>The time when the stats were calculated, using a monotonic system
+clock.</p>
+    <dt data-md>audio
+    <dd data-md>
+     <p>Stats specific to audio.  Stats for multiple encodings can be sent
+at once, but encodings need not be included if the stats haven’t
+changed.  See below.</p>
+    <dt data-md>video
+    <dd data-md>
+     <p>Stats specific to video.  Stats for multiple encodings can be sent
+at once, but encodings need not be included if the stats haven’t
+changed.  See below.</p>
+   </dl>
+   <p>Audio encoding receiver stats include the following fields.  If not
+present, that indicates the value has not changed since the last value.</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>The ID of the encoding for which the stats apply.</p>
+    <dt data-md>cumulative-decoded-frames
+    <dd data-md>
+     <p>The total number of audio frames received and decoded.</p>
+    <dt data-md>cumulative-received-duration
+    <dd data-md>
+     <p>The sum of all of the durations of all of the audio frames received.</p>
+    <dt data-md>cumulative-lost-duration
+    <dd data-md>
+     <p>The sum of all of the durations of all of the audio frames detected as lost.</p>
+    <dt data-md>cumulative-buffer-delay
+    <dd data-md>
+     <p>The sum of the time frames spent buffered between receipt and playout.</p>
+    <dt data-md>cumulative-decode-delay
+    <dd data-md>
+     <p>The sum of the time spent decoding frames received.</p>
+   </dl>
+   <p>Video encoding receiver stats include the following fields.  If not
+present, that indicates the value has not changed since the last
+value.</p>
+   <dl>
+    <dt data-md>encoding-id
+    <dd data-md>
+     <p>The ID of the encoding for which the stats apply.</p>
+    <dt data-md>cumulative-decoded-frames
+    <dd data-md>
+     <p>The total number of video frames received and decoded.</p>
+    <dt data-md>cumulative-lost-frames
+    <dd data-md>
+     <p>The total number of video frames detected as lost.</p>
+    <dt data-md>cumulative-buffer-delay
+    <dd data-md>
+     <p>The sum of the time frames spent buffered between receipt and render.</p>
+    <dt data-md>cumulative-decode-delay
+    <dd data-md>
+     <p>The sum of the time spent decoding frames received.</p>
+   </dl>
+   <h2 class="heading settled" data-level="10" id="requests-responses-watches"><span class="secno">10. </span><span class="content">Requests, Responses, and Watches</span><a class="self-link" href="#requests-responses-watches"></a></h2>
    <p>Multiple sub-protocols in the Open Screen Protocol have messages that act as
 requests, responses, watches, and events. Most requests have a <code>request-id</code>, and
 the agent that receives the request must send exactly one reponse message in
@@ -3093,6 +3418,8 @@ ID.  Whenever an agent changes its <code>state-token</code>, it must reset its c
    <p>When an agent sees that another agent has reset its state (by virtue of
 advertising a new <code>state-token</code>), it should discard any requests, responses,
 watches and events for that agent.</p>
+   <p>Other IDs that must be unique and would cause confusion if one side
+loses state, such as <code>streaming-session-id</code>, <code>media-session-id</code>, and <code>encoding-id</code> should be treated the same.</p>
    <p class="note" role="note"><span>Note:</span> Request and watch IDs are not tied to any particular QUIC connection
 between agents.  If a QUIC connection is closed, an agent should not discard
 requests, responses, watches, or events related to the other party.  This allows
@@ -3101,7 +3428,7 @@ agents to save power by closing unused connections.</p>
 a request ID with a unique identifier for the agent that sent it (like its
 certificate fingerprint) to track requests across multiple agents.</p>
    <h2 class="heading settled" data-level="11" id="protocol-extensions"><span class="secno">11. </span><span class="content">Protocol Extensions</span><a class="self-link" href="#protocol-extensions"></a></h2>
-   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑧">Open Screen Protocol agents</a> may exchange extension messages that are not
+   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent①⓪">Open Screen Protocol agents</a> may exchange extension messages that are not
 defined by this specification.  This could be used for experimentation,
 customization or other purposes.</p>
    <p>To add new extension messages, extension authors must register a capability ID
@@ -3131,7 +3458,7 @@ Instead, they may add them to its nested <code>optional</code> value.</p>
 Open Screen Protocol messages.  An agent should not send extension fields to
 another agent unless that agent advertises an extension capability ID in its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑥">agent-info</a> that indicates that it understands the extension fields.</p>
    <h2 class="heading settled" data-level="12" id="security-privacy"><span class="secno">12. </span><span class="content">Security and Privacy</span><a class="self-link" href="#security-privacy"></a></h2>
-   <p>The Open Screen Protocol allows two <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑨">OSP agents</a> to discover each other and
+   <p>The Open Screen Protocol allows two <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent①①">OSP agents</a> to discover each other and
 exchange user and application data.  As such, its security and privacy
 considerations should be closely examined.  We first evaluate the protocol
 itself using the W3C <a data-link-type="biblio" href="#biblio-security-privacy-questionnaire">Security and Privacy
@@ -3499,6 +3826,7 @@ the wire smaller.</p>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-capabilities">auth-capabilities</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-min-bits-of-entropy</span>
 <span class="p">}</span></p>
 
 <p><span class="nc">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3705,13 +4033,14 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; text-track-urls</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">http-header</span><span class="p">]</span> <span class="c1">; headers</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">{</span><span class="nx">streaming-session-start-request-params</span><span class="p">}</span> <span class="c1">; remoting</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 116</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-start-response">remote-playback-start-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
+<span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="nx">streaming-session-start-response-params</span><span class="p">}</span> <span class="c1">; remoting</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 117</span>
@@ -3918,7 +4247,7 @@ the wire smaller.</p>
   <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
   <span class="mi">5</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; payload</span>
-  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; rotation</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; video-rotation</span>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
 <span class="p">}</span></p>
 
@@ -3944,11 +4273,13 @@ the wire smaller.</p>
   <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
 <span class="p">]</span></p>
 
-<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-capabilities-request">streaming-capabilities-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="c1">; type key 122</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-capabilities-request">streaming-capabilities-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="p">}</span></p>
 
-<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-capabilities-response">streaming-capabilities-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="c1">; type key 123</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-capabilities-response">streaming-capabilities-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
 <span class="p">}</span></p>
@@ -3983,17 +4314,174 @@ the wire smaller.</p>
 <p><span class="nc">receive-video-capability </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="c1">; max-resolution</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-frames-per-second</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">ratio </span><span class="c1">; max-frames-per-second</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-pixels-per-second</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">ratio </span><span class="c1">; aspect-ratio</span>
   <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">string</span><span class="p">]</span> <span class="c1">; color-profiles</span>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-resolution</span><span class="p">]</span> <span class="c1">; native-resolutions</span>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
+  <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-rotation</span>
 <span class="p">}</span></p>
 
 <p><span class="nc">receive-data-capability </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; format</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; data-type</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 124</span>
+<span class="nc">streaming-session-start-request </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">request</span>
+<span class="nx">  streaming-session-start-request-params</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 125</span>
+<span class="nc">streaming-session-start-response </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">response</span>
+<span class="nx">  streaming-session-start-response-params</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; A separate group so it can be used in remote-playback-start-request</span>
+<span class="nc">streaming-session-start-request-params </span><span class="p">=</span> <span class="p">(</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-offer</span><span class="p">]</span> <span class="c1">;  stream-offers</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; desired-stats-interval</span>
+<span class="p">)</span></p>
+
+<p><span class="c1">; type key 126</span>
+<span class="nc">streaming-session-modify-request </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">request</span>
+<span class="nx">  streaming-session-modify-request-params</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; A separate group so it can be used in remote-playback-start-response</span>
+<span class="nc">streaming-session-start-response-params </span><span class="p">=</span> <span class="p">(</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-request</span><span class="p">]</span> <span class="c1">; stream-requests</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; desired-stats-interval  </span>
+<span class="p">)</span></p>
+
+<p><span class="nc">streaming-session-modify-request-params </span><span class="p">=</span> <span class="p">(</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-request</span><span class="p">]</span> <span class="c1">; stream-requests</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 127</span>
+<span class="nc">streaming-session-modify-response </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">response</span>
+<span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 128</span>
+<span class="nc">streaming-session-terminate-request </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">request</span>
+<span class="nx">  1 </span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 129</span>
+<span class="nc">streaming-session-terminate-response </span><span class="p">=</span> <span class="p">{</span>
+  <span class="nx">response</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 130</span>
+<span class="nc">streaming-session-terminate-event </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
+<span class="p">}</span></p>
+
+<p><span class="nc">media-stream-offer </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; media-stream-id</span>
+  <span class="p">?</span> <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
+  <span class="p">?</span> <span class="mi">3</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">audio-encoding-offer</span><span class="p">]</span> <span class="c1">; audio</span>
+  <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">video-encoding-offer</span><span class="p">]</span> <span class="c1">; video</span>
+  <span class="p">?</span> <span class="mi">5</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">data-encoding-offer</span><span class="p">]</span> <span class="c1">; data</span>
+<span class="p">}</span></p>
+
+<p><span class="nc">media-stream-request </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; media-stream-id</span>
+  <span class="p">?</span> <span class="mi">2</span> <span class="p">:</span> <span class="nx">audio-encoding-request </span><span class="c1">; audio</span>
+  <span class="p">?</span> <span class="mi">3</span> <span class="p">:</span> <span class="nx">video-encoding-request </span><span class="c1">; video</span>
+  <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="nx">data-encoding-request </span><span class="c1">; data</span>
+<span class="p">}</span></p>
+
+<p><span class="nc">audio-encoding-offer </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+  <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; codec-name</span>
+  <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
+  <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; default-duration</span>
+<span class="p">}</span></p>
+
+<p><span class="nc">video-encoding-offer </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+  <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; codec-name</span>
+  <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
+  <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; default-duration</span>
+  <span class="p">?</span> <span class="mi">5</span> <span class="p">:</span> <span class="nx">video-rotation </span><span class="c1">; default-rotation</span>
+<span class="p">}</span></p>
+
+<p><span class="nc">data-encoding-offer </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+  <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; data-type-name</span>
+  <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
+  <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; default-duration</span>
+<span class="p">}</span></p>
+
+
+<p><span class="nc">audio-encoding-request </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+<span class="p">}</span></p>
+
+<p><span class="nc">video-encoding-request </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+  <span class="p">?</span> <span class="mi">2</span> <span class="p">:</span> <span class="nx">video-resolution </span><span class="c1">; target-resolution</span>
+  <span class="p">?</span> <span class="mi">3</span> <span class="p">:</span> <span class="nx">ratio </span><span class="c1">; max-frames-per-second</span>
+<span class="p">}</span></p>
+
+<p><span class="nc">data-encoding-request </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+<span class="p">}</span></p>
+
+<p><span class="nc">video-rotation </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="c1">; Degrees clockwise</span>
+  <span class="nx">video-rotation-0</span>
+<span class="nx">  video-rotation-90</span>
+<span class="nx">  video-rotation-180</span>
+<span class="nx">  video-rotation-270</span>
+<span class="p">)</span></p>
+
+<p><span class="c1">; type key 131</span>
+<span class="nc">streaming-session-sender-stats-event </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; system-time</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+    <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-sent-frames</span>
+    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-encode-delay</span>
+  <span class="p">}]</span> <span class="c1">; audio</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+    <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-sent-duration</span>
+    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-encode-delay</span>
+    <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-dropped-frames</span>
+  <span class="p">}]</span> <span class="c1">; video</span>
+<span class="p">}</span></p>
+
+<p><span class="c1">; type key 132</span>
+<span class="nc">streaming-session-receiver-stats-event </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; system-time</span>
+  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+    <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-received-duration</span>
+    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-lost-duration</span>
+    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-buffer-delay</span>
+    <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-decode-delay</span>
+  <span class="p">}]</span> <span class="c1">; audio</span>
+  <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
+    <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-decoded-frames</span>
+    <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-lost-frames</span>
+    <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-buffer-delay</span>
+    <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-decode-delay</span>
+  <span class="p">}]</span> <span class="c1">; video</span>
 <span class="p">}</span></p>
 </pre>
    </div>
@@ -4251,6 +4739,7 @@ extensions.</p>
    <ul>
     <li><a href="#ref-for-htmlmediaelement">2.3. Remote Playback API Requirements</a> <a href="#ref-for-htmlmediaelement①">(2)</a> <a href="#ref-for-htmlmediaelement②">(3)</a> <a href="#ref-for-htmlmediaelement③">(4)</a> <a href="#ref-for-htmlmediaelement④">(5)</a>
     <li><a href="#termref-for-">8.1. Remote Playback State and Controls</a>
+    <li><a href="#ref-for-htmlmediaelement⑤">8.2. Remote Playback API</a> <a href="#ref-for-htmlmediaelement⑥">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-window-postmessage">
@@ -4277,6 +4766,7 @@ extensions.</p>
    <a href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent">https://w3c.github.io/presentation-api/#dfn-controlling-user-agent</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-controlling-user-agent">1.1. Terminology</a>
+    <li><a href="#ref-for-dfn-controlling-user-agent①">7.1. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation">
@@ -4304,6 +4794,7 @@ extensions.</p>
    <a href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent">https://w3c.github.io/presentation-api/#dfn-receiving-user-agent</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-receiving-user-agent">1.1. Terminology</a>
+    <li><a href="#ref-for-dfn-receiving-user-agent①">7.1. Presentation API</a> <a href="#ref-for-dfn-receiving-user-agent②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-availability-sources-set">
@@ -4341,7 +4832,7 @@ extensions.</p>
    <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices">https://w3c.github.io/remote-playback/#dfn-remote-playback-devices</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-remote-playback-devices">1.1. Terminology</a>
-    <li><a href="#ref-for-dfn-remote-playback-devices①">8.2. Remote Playback API</a>
+    <li><a href="#ref-for-dfn-remote-playback-devices①">8.2. Remote Playback API</a> <a href="#ref-for-dfn-remote-playback-devices②">(2)</a> <a href="#ref-for-dfn-remote-playback-devices③">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-source">
@@ -4360,6 +4851,13 @@ extensions.</p>
    <a href="https://tools.ietf.org/html/rfc5646#section-2">https://tools.ietf.org/html/rfc5646#section-2</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-2">4.3. Metadata Discovery</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-section-3">
+   <a href="https://tools.ietf.org/html/rfc6381#section-3">https://tools.ietf.org/html/rfc6381#section-3</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-3">9.1. Streaming Protocol Capabilities</a>
+    <li><a href="#ref-for-section-3①">9.2. Sessions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-section-9">
@@ -4446,6 +4944,11 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-section-2" style="color:initial">language tag</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[rfc6381]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-3" style="color:initial">codecs parameter</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[RFC6762]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-section-9" style="color:initial">conflict resolution</span>
@@ -4478,6 +4981,8 @@ extensions.</p>
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-rfc5646">[RFC5646]
    <dd>A. Phillips, Ed.; M. Davis, Ed.. <a href="https://tools.ietf.org/html/rfc5646">Tags for Identifying Languages</a>. September 2009. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc5646">https://tools.ietf.org/html/rfc5646</a>
+   <dt id="biblio-rfc6381">[RFC6381]
+   <dd>R. Gellens; D. Singer; P. Frojdh. <a href="https://tools.ietf.org/html/rfc6381">The 'Codecs' and 'Profiles' Parameters for "Bucket" Media Types</a>. August 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6381">https://tools.ietf.org/html/rfc6381</a>
    <dt id="biblio-rfc6762">[RFC6762]
    <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
@@ -4537,11 +5042,11 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
     <li><a href="#ref-for-open-screen-protocol-agent②">4.1. TLS 1.3</a>
     <li><a href="#ref-for-open-screen-protocol-agent③">5. Messages delivery using CBOR and QUIC streams</a>
     <li><a href="#ref-for-open-screen-protocol-agent④">6. Authentication</a>
-    <li><a href="#ref-for-open-screen-protocol-agent⑤">7. Presentation Protocol</a>
-    <li><a href="#ref-for-open-screen-protocol-agent⑥">8. Remote Playback Protocol</a>
-    <li><a href="#ref-for-open-screen-protocol-agent⑦">9. Streaming Protocol</a>
-    <li><a href="#ref-for-open-screen-protocol-agent⑧">11. Protocol Extensions</a>
-    <li><a href="#ref-for-open-screen-protocol-agent⑨">12. Security and Privacy</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑤">7.1. Presentation API</a> <a href="#ref-for-open-screen-protocol-agent⑥">(2)</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑦">8.2. Remote Playback API</a> <a href="#ref-for-open-screen-protocol-agent⑧">(2)</a>
+    <li><a href="#ref-for-open-screen-protocol-agent⑨">9. Streaming Protocol</a>
+    <li><a href="#ref-for-open-screen-protocol-agent①⓪">11. Protocol Extensions</a>
+    <li><a href="#ref-for-open-screen-protocol-agent①①">12. Security and Privacy</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="controller">
@@ -4550,9 +5055,7 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
     <li><a href="#ref-for-controller">1.1. Terminology</a>
     <li><a href="#ref-for-controller①">2.2. Presentation API Requirements</a>
     <li><a href="#ref-for-controller②">2.3. Remote Playback API Requirements</a>
-    <li><a href="#ref-for-controller③">7. Presentation Protocol</a>
-    <li><a href="#ref-for-controller④">7.1. Presentation API</a>
-    <li><a href="#ref-for-controller⑤">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-controller③">7.1. Presentation API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="receiver">
@@ -4561,9 +5064,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
     <li><a href="#ref-for-receiver">1.1. Terminology</a>
     <li><a href="#ref-for-receiver①">2.2. Presentation API Requirements</a>
     <li><a href="#ref-for-receiver②">2.3. Remote Playback API Requirements</a>
-    <li><a href="#ref-for-receiver③">7. Presentation Protocol</a> <a href="#ref-for-receiver④">(2)</a>
-    <li><a href="#ref-for-receiver⑤">8. Remote Playback Protocol</a>
-    <li><a href="#ref-for-receiver⑥">8.2. Remote Playback API</a>
+    <li><a href="#ref-for-receiver③">7. Presentation Protocol</a>
+    <li><a href="#ref-for-receiver④">8.2. Remote Playback API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="media-sender">
@@ -4586,8 +5088,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
     <li><a href="#ref-for-advertising-agent①">4. Transport and metadata discovery with QUIC</a>
     <li><a href="#ref-for-advertising-agent②">4.2. Agent Certificates</a>
     <li><a href="#ref-for-advertising-agent③">6. Authentication</a>
-    <li><a href="#ref-for-advertising-agent④">7. Presentation Protocol</a>
-    <li><a href="#ref-for-advertising-agent⑤">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-advertising-agent④">7.1. Presentation API</a>
+    <li><a href="#ref-for-advertising-agent⑤">8.2. Remote Playback API</a>
     <li><a href="#ref-for-advertising-agent⑥">9. Streaming Protocol</a>
    </ul>
   </aside>
@@ -4603,8 +5105,8 @@ implementation specific mechanism, quote that here and map it to a message.<a hr
     <li><a href="#ref-for-listening-agent">2.4. Non-Functional Requirements</a>
     <li><a href="#ref-for-listening-agent①">4. Transport and metadata discovery with QUIC</a>
     <li><a href="#ref-for-listening-agent②">4.2. Agent Certificates</a>
-    <li><a href="#ref-for-listening-agent③">7. Presentation Protocol</a>
-    <li><a href="#ref-for-listening-agent④">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-listening-agent③">7.1. Presentation API</a>
+    <li><a href="#ref-for-listening-agent④">8.2. Remote Playback API</a>
     <li><a href="#ref-for-listening-agent⑤">9. Streaming Protocol</a>
    </ul>
   </aside>

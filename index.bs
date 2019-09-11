@@ -63,6 +63,7 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-512
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md2
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
+url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 </pre>
 
 <h2 class='no-num no-toc no-ref' id='document-status'>Status of this document</h2>
@@ -482,7 +483,7 @@ If an agent changes any information in its [=agent-info=] message, it should
 send an [=agent-info-event=] message to all other connected agents with the new
 [=agent-info=] (without waiting for an [=agent-info-request=]).
 
-The [=agent-info=] message contains the following properties:
+The [=agent-info=] message contains the following fields:
 
 : display-name (required)
 :: The display name of the agent, intended to be displayed to a user by the
@@ -604,6 +605,35 @@ those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
 request they are associated with.
 
+Type Key Backwards Compatibility {#message-compatibility}
+--------------------------------
+
+As messages are modified or extended over time, certain rules must be followed
+to maintain backwards compatibiilty with agents that understand older versions
+of messages.
+
+1. If a required field is added to or removed from a message (either to/from the
+    message directly or indirectly through the field of a field), a new type key
+    must be assigned to the message.  Is is effectively a new message and must not
+    be sent unless the receiving agent is known to understand the new type key.
+
+1. If an optional field is added to a message (either to the message directly
+    or indirectly through the field of a field), the type key may remain unchanged
+    if the behavior of older receiving agents that do not understand the added field
+    is compatible with newer sending agents that include the field.
+    Otherwise, a new type key must be assigned.
+
+1. If an optional field is removed from a message (either from the message
+    directly or indirectly through the field of a field), the type key may remain
+    unchanged if the behavior of newer receiving agents that do not understand the
+    removed field is compatible with older sending agents that include the field.
+    Otherwise, a new type key must be assigned.
+
+1. Required fields may not be added or removed from array-based messages, such
+    as audio-frame.
+
+
+
 Authentication {#authentication}
 ================================
 
@@ -714,15 +744,6 @@ terminating, and controlling presentations as defined by
 [[PRESENTATION-API|Presentation API]]. [[#presentation-api]]
 defines how APIs in [[PRESENTATION-API|Presentation API]] map to the
 protocol messages defined in this section.
-
-If an [=Open Screen Protocol agent=] is a [=controller=] for the Presentation
-API, it must advertise the `control-presentation` capability.  If an OSP agent
-is a [=receiver=] for the Presentation API, it must advertise the
-`receive-presentation` capability.  The same agent may be a presentation
-controller and receiver.
-
-Note: These roles are independent of which agent was the [=advertising agent=]
-or the [=listening agent=] during discovery and connection establishment.
 
 To learn which receivers are [=available presentation displays=] for a
 particular [=presentation request URL=] or set of URLs, the controller may send
@@ -931,8 +952,17 @@ presentation may succeed or fail, so a response message is required.
 Presentation API {#presentation-api}
 ---------------------------------------------
 
-This section defines how the [[PRESENTATION-API|Presentation API]] uses the
-[[#presentation-protocol]].
+An [=Open Screen Protocol agent=] that is a [=controlling user agent=] for the
+[[PRESENTATION-API|Presentation API]] must support the `control-presentation` capability.
+An [=OSP agent=] that is a [=receiving user agent=] for the
+[[PRESENTATION-API|Presentation API]] must support the `receive-presentation` capability.
+The same OSP agent may be a [=controlling user agent=] and a [=receiving user agent=].
+
+Note: These roles are independent of which agent was the [=advertising agent=]
+or the [=listening agent=] during discovery and connection establishment.
+
+This is how the [[PRESENTATION-API|Presentation API]] uses the
+[[#presentation-protocol]]:
 
 When [[PRESENTATION-API#the-list-of-available-presentation-displays|section
 6.4.2]] says "This list of presentation displays ... is populated based on an
@@ -1000,15 +1030,6 @@ and controlling remote playback of media as defined by the
 [[REMOTE-PLAYBACK|Remote Playback API]].  [[#remote-playback-api]] defines how
 APIs in [[REMOTE-PLAYBACK|Remote Playback API]] map to the protocol messages
 defined in this section.
-
-If an [=Open Screen Protocol agent=] is a [=controller=] for the Remote Playback
-API, it must advertise the `control-remote-playback` capability.  If an OSP
-agent is a [=receiver=] for the Remote Playback API, it must advertise the
-`receive-remote-playback` capability.  The same agent may be a remote playback
-controller and receiver.
-
-Note: These roles are independent of which agent was the [=advertising agent=]
-or the [=listening agent=] during discovery and connection establishment.
 
 For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
@@ -1099,6 +1120,10 @@ requirements for a remote-playback-id.
     ignore them and the controller will learn that it does not support them from
     the [=remote-playback-start-response=] message.
 
+: remoting (optional)
+:: Parameters for starting a streaming session associated with this
+    remote playback.  If not included, no streaming session is started.
+
 When the receiver receives a [=remote-playback-start-request=] message, it should
 send back a [=remote-playback-start-response=] message.  It should do so quickly,
 usually before the [=media resource=] has been loaded and instead give updates
@@ -1110,6 +1135,18 @@ invalid-url).  Additionally, the response must include the following:
 : state
 :: The initial state of the remote playback, as defined in
     [[#remote-playback-state-and-controls]].
+
+: remoting (optional)
+:: A response to the started streaming session associated with this remote playback.
+    If not included, no streaming session is started.
+
+If a streaming session is started, streaming messages such a
+streaming-session-modify-request and video-frame can be used for the streaming
+session as if the streaming session had been started with
+streaming-session-start-request and streaming-session-start-response.  The
+streaming session may be terminated before the remote playback is terminated,
+but if the remote playback is terminated first, the streaming session associated
+with it is automatically terminated.
 
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -1314,7 +1351,7 @@ intentionally mirror settable attributes and methods of the
     unchanged.  Set the mode, add cues, and remove cues by id. See
     [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks)
     for more details.  Note that future specifications or extensions to this
-    specifications are expected to add new properties to the [=text-track-cue=]
+    specifications are expected to add new fields to the [=text-track-cue=]
     (such as text size, alignment, position, etc).  Adding and removing
     cues is optional for the receiver to support and if not supported, the
     receiver will behave as though no cues were added or removed (both adding
@@ -1463,8 +1500,25 @@ in hertz, such as 90000 for 90000hz, a common time scale for video.
 Remote Playback API {#remote-playback-api}
 ------------------------------------------
 
-This section defines how the [[REMOTE-PLAYBACK|Remote Playback API]] uses the
-messages defined in [[#remote-playback-protocol]].
+An [=Open Screen Protocol agent=] that implements the
+[[REMOTE-PLAYBACK|Remote Playback API]] must support the
+`control-remote-playback` capability.  It may support the `send-streaming`
+capability so it can send {{HTMLMediaElement}} media data through media
+remoting.
+
+An an [=OSP agent=] that is a [=remote playback device=] for the
+[[REMOTE-PLAYBACK|Remote Playback API]] must support the
+`receive-remote-playback` capability.  It may support the `receive-streaming`
+capability so it can receive {{HTMLMediaElement}} data through media remoting.
+
+The same OSP agent may implement both the [[REMOTE-PLAYBACK|Remote Playback API]]
+and be a [=remote playback device=] for that API.
+
+Note: These roles are independent of which agent was the [=advertising agent=]
+or the [=listening agent=] during discovery and connection establishment.
+
+This is how the [[REMOTE-PLAYBACK|Remote Playback API]] uses the
+messages defined in [[#remote-playback-protocol]]:
 
 When [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
 6.2.1.2]] says "This list contains [=remote playback devices=] and is populated
@@ -1527,7 +1581,7 @@ Streaming Protocol Capabilities {#streaming-protocol-capabilities}
 If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an [=streaming-capabilities-request=]
 message, and receive back a [=streaming-capabilities-response=] message with the
-following properties:
+following fields:
 
 : receive-audio (required)
 :: A list of capabilities for receiving audio. For an explanation of fields, see below.
@@ -1535,24 +1589,19 @@ following properties:
 : receive-video (required)
 :: A list of capabilities for receiving video. For an explanation of fields, see below.
 
-: receive-data (required)
-:: A list of arbitrary data formats the device supports
-    for receiving data.
 
-The format type is used as the basis for audio, video, and data capabilities.
-Formats are composed of the following properties:
-
-<!-- TODO, specify where names are defined. -->
+The format type is used as the basis for audio and video capabilities.
+Formats are composed of the following fields:
 
 : name (required)
-:: The name of the format. Expected values include "vp8", "h264", "opus."
+:: The name of the codec.   This must be a single-codec RFC 6381 [=codecs parameter=].
 
 <!-- TODO, specify where codec-specific parameters are defined. -->
 
 : parameters (required)
-:: A list of (key, value) parameters that can be used to pass fields that are
-    properties of a specific format, and not shared by other formats of that type
-    (audio, video, etc.).
+:: A list of (key, value) parameters that can be used to describe
+    properties of a specific format, and not shared by other formats
+    of that type (audio, video, etc.).
 
 Audio capabilities are composed of the above format type, with the following
 additional fields:
@@ -1605,13 +1654,184 @@ following additional fields:
     provided in a video-resolution not listed in the native-resolutions list
     (if provided) or of a different aspect ratio. The default value is true.
 
+: supports-rotation (optional)
+:: A optional boolean field indicating whether the media receiver can receive 
+    video frames with the rotation field set. The default value is true.
+
 <!-- TODO: Add max-bit-rate, color profiles, HDR -->
 
 Sessions {#streaming-sessions}
 ------------------------------------
 
-TODO
+To start a streaming session, a sender may send a
+streaming-session-start-request message with the following fields:
 
+: streaming-session-id
+:: Identifies the streaming session.  Must be unique for the (sender,
+    receiver) pair.  Can be used later to modify or terminate a
+    streaming session.  These IDs should be treated like other IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
+
+: desired-stats-interval
+:: Indicates the frequency the receiver should send stats messages to
+    the sender.
+
+: stream-offers
+:: Indicates the streams that the receiver can request from the sender.
+
+Each stream offer contains the following fields:
+
+: media-stream-id
+:: Identifies the media stream being offered.  Must be unique within
+    the streaming session.  Can be used by the receiver to request the
+    media session.  These IDs should be treated like other IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
+
+: display-name
+:: An optional name intended to be shown to a user, such that the
+    receiver may allow the user to choose which media streams to
+    receive, or if they are received automatically by the receiver,
+    give the user some information about what the media stream is.
+
+: audio
+:: A list of audio encodings offered.  An audio encoding is a series
+    of encoded audio frames.  Encodings define fields needed by
+    the receiver to know how to decode the encoding, such as codec and
+    sample rate.  They can differ by codec and related fields,
+    but should be different encodings of the same audio.
+
+: video
+:: A list of video encodings offered.  A video encoding is a series of
+    encoded video frames.  Encodings define fields needed by the
+    receiver to know how to decode the encoding, such as codec and
+    default duration.  They can differ by codec and potentially other
+    fields, but should be different encodings of the same video.
+
+: data
+:: A list of data encodings offered.  A data encoding is a series of
+    data frames.  Encodings define fields needed by the
+    receiver to know how to interpret the encoding, such as data type and
+    default duration.  They can differ by data type and potentially other
+    fields, but should be different encodings of the same data.
+    (For encodings of different data, use distinct media streams,
+     not distinct encodints with the same media stream).
+
+
+Each audio encoding offered defines the following fields:
+
+: encoding-id
+:: Identifies the audio encoding being offered.  Must be unique within
+    the media stream.  These IDs should be treated like request IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
+
+: codec-name
+:: The name of the codec used by the encoding.  This must be a single-codec
+    RFC 6381 [=codecs parameter=].
+
+: time-scale
+:: The time scale used by all audio frames.  This allows senders to
+    make audio-frame messages smaller by not including the time scale
+    in each one.
+
+: default-duration:
+:: The duration of an audio frame.  This allows senders to make
+    audio-frame messages smaller by not including the duration for
+    audio-frame messages that have the default duration.
+
+Each video encoding offered defines the following fields:
+
+: encoding-id
+:: Identifies the video encoding being offered.  Must be unique within
+    the media stream.  These IDs should be treated like request IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
+
+: codec-name
+:: The name of the codec used by the encoding.
+
+: time-scale
+:: The time scale used by all video frames.  This allows senders to
+    make video-frame messages smaller by not including the time scale
+    in each one.
+
+: default-duration:
+:: The default duration of a video frame.  This allows senders to make
+    video-frame messages smaller by not including the duration for
+    video-frame messages that have the default duration.
+
+: default-rotation:
+:: The default rotation of a video frame.  This allows senders to make
+    video-frame messages smaller by not including the rotation for
+    video-frame messages that have the default rotation.
+
+Each data encoding offered defines the following fields:
+
+: encoding-id
+:: Identifies the data encoding being offered.  Must be unique within
+    the media stream.  These IDs should be treated like request IDs
+    with regards to the `state-token` as specified in
+    [[#requests-responses-watches]].
+
+: data-type-name
+:: The name of the data type used by the encoding.
+
+: time-scale
+:: The time scale used by all data frames.  This allows senders to
+    make data-frame messages smaller by not including the time scale
+    in each one.
+
+: default-duration:
+:: The duration of an data frame .  This allows senders to make
+    data-frame messages smaller by not including the duration for
+    data-frame messages that have the default duration.
+
+After receiving a streaming-session-start-request message, a receiver
+should send back a streaming-session-start-response message with the
+following fields:
+
+: desired-stats-interval
+:: Indicates the frequency the sender should send stats messages to
+    the receiver.
+
+: stream-requests
+:: Indicates which media streams the receiver would like to receive
+    from the sender.
+
+Each stream request contains the following fields:
+
+: media-stream-id
+:: The ID of the stream reqeusted.
+
+: audio (optional)
+:: The requested audio encoding, by encoding ID
+
+: video (optional)
+:: The requested video encoding, by encoding ID.  It may
+    include a target resolution and maximum frame rate.  The sender
+    should not exceed the maximum frame rate and should attempt to
+    send at the target bitrate, possibly exceeding it by a small amount.
+
+: data (optional)
+:: The requested data encoding, by encoding ID
+
+
+During a streaming session, the receiver can modify the requests it
+made for encodings by sending a `streaming-session-modify-request`
+containing a modified list of stream-requests.  When the sender receives
+a `streaming-session-modify-request`, it should send back a
+`streaming-session-modify-response` indicate whether or not the
+application of the new request from the
+`streaming-session-modify-request` was successful.
+
+Finally, the sender may terminate the streaming session by sending
+a streaming-session-terminate-request command.  When the receiver
+receives the streaming-session-terminate-request, it should send back
+a streaming-session-terminate-response.  The receiver can terminate at
+any point and notify the sender by sending a
+streaming-session-terminate-event message.
 
 Audio {#streaming-audio}
 ------------------------------
@@ -1637,22 +1857,24 @@ separate QUIC streams.
 
 : encoding-id
 :: Identifies the media encoding to which this audio frame belongs.  This can be
-    used to reference properties of the encoding (from the
+    used to reference fields of the encoding (from the
     audio-encoding-offer message) such as the codec, codec properties,
     time scale (aka clock rate or sample rate), and default duration.
-    Referencing properties of the encoding through the encoding id
+    Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : start-time
-:: Identifies the beginning of the time range of the audio frame.  The time
-    scale is inferred from the properties of the encoding (from the
-    audio-encoding-offer).  The end time can be inferred from the
-    start time and duration.
+:: Identifies the beginning of the time range of the audio frame. The
+    end time can be inferred from the start time and duration. The
+    time scale is equal to the value in the `time-scale` field of the
+    `audio-encoding-offer` message referenced by the `encoding-id`.
 
 : duration
-:: If present, the duration of the audio frame.  The time
-    scale is inferred from the properties of the encoding.  Likewise, if not
-    present, the duration is inferred from the properties of the encoding.
+:: If present, the duration of the audio frame. If not present, the
+    duration is equal to the `default-duration` field of the
+    `audio-encoding-offer` message referenced by the `encoding-id`.
+    The time scale is equal to the value in the `time-scale` field of
+    the `audio-encoding-offer` message referenced by the `encoding-id`.
 
 : sync-time
 :: If present, a time used to synchronize the start time of this audio frame (and
@@ -1661,7 +1883,9 @@ separate QUIC streams.
     be; it can be any clock chosen by the media sender.
 
 : payload
-:: The data.  The type of data is inferred from the properties of the encoding.
+:: The encoded audio.  The codec and codec parameters are equal to the
+    `format` field of the `audio-encoding-offer` message referenced by
+    the `encoding-id`
 
 Video {#streaming-video}
 --------------------------------------------
@@ -1680,11 +1904,11 @@ to send them in a single QUIC stream starting at the indepdendent frame and
 ending at the last dependent frame.
 
 : encoding-id
-:: Identifies the media encoding to which this video frame belongs.  This can be
-    used to reference properties of the encoding such as the codec, codec
-    properties, time scale, and default rotation.  Referencing properties of the
-    encoding through the encoding id helps to avoid sending duplicate
-    information in every frame.
+:: Identifies the media encoding to which this video frame belongs.
+    This can be used to reference fields of the encoding such as the
+    codec, codec properties, time scale, and default rotation.
+    Referencing fields of the encoding through the encoding id helps
+    to avoid sending duplicate information in every frame.
 
 : sequence-number
 :: Identifies the frame and its order in the encoding.
@@ -1699,15 +1923,16 @@ ending at the last dependent frame.
     If not present, the default value is [-1].
 
 : start-time
-:: Identifies the beginning of the time range of the video frame.  The time
-    scale is inferred from the properties of the encoding (from the
-    video-encoding-offer).  The end time can be inferred from the
-    start time and duration.
+:: Identifies the beginning of the time range of the video frame.  The
+    end time can be inferred from the start time and duration. The
+    time scale is equal to the value in the `time-scale` field of the
+    `video-encoding-offer` message referenced by the `encoding-id`.
 
 : duration
-:: If present, the duration of the video frame.  The time
-    scale is inferred from the properties of the encoding.  If not
-    present, that means duration is unknown.
+:: If present, the duration of the video frame. If not present, that
+    means duration is unknown.  The time scale is equal to the value
+    in the `time-scale` field of the `video-encoding-offer` message
+    referenced by the `encoding-id`.
 
 : sync-time
 :: If present, a time used to synchronize the start time of this frame (and
@@ -1715,35 +1940,33 @@ ending at the last dependent frame.
     timelines.
 
 : rotation
-:: If present, indicates how the frame should be rotated after decoding but
-    before rendering.  Rotation is clockwise in increments of 90 degrees.
-    The default is 0 (no rotation).
+:: If present, indicates how the frame should be rotated after
+    decoding but before rendering.  Rotation is clockwise in
+    increments of 90 degrees.  The default is equal to the
+    `default-rotation` field of the `video-encoding-offer` message
+    referenced by the `encoding-id`.
 
 : payload
-:: The encoded video frame (encoded image).  The codec and codec parameters are
-    inferred from the properties of the encoding.
+:: The encoded video frame (encoded image).  The codec and codec
+     parameters are are equal to the `format` field of the
+     `audio-encoding-offer` message referenced by the `encoding-id`.
 
-
-Data {#media-streaming-data}
+Data {#streaming-data}
 ------------------------------------
 
 Media senders may send timed data to media receivers by sending [=data-frame=] messages (see
 [[#appendix-a]]) with the following keys and values.  A data frame message
-contains an arbitrary payload that can be synchronized with and video, such as
-text track data.  A series of data frames that share a data type and timeline
-form a data encoding.
+contains an arbitrary payload that can be synchronized with audio and video.
+A series of data frames that share a data type and timeline form a data encoding.
 
 To allow for data frames to be sent out of order, they may be sent in separate
 QUIC streams, but more than one data frame may be sent in one QUIC stream if
 that makes sense for a specific type of data.
 
-Text track data uses a payload type of text, a default duration of unknown, and
-a timescale of 1000000 (microseconds).
-
 : encoding-id
-:: Identifies the media encoding to which this data frame belongs.  This can be
-    used to reference properties of the encoding such as the type of data and
-    time scale.  Referencing properties of the encoding through the encoding id
+:: Identifies the data encoding to which this data frame belongs.  This can be
+    used to reference fields of the encoding such as the type of data and
+    time scale.  Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : sequence-number
@@ -1752,23 +1975,26 @@ a timescale of 1000000 (microseconds).
     Within an encoding, gaps in sequence numbers mean frames are missing.
 
 : start-time
-:: Identifies the beginning of the time range of the data frame.  The time
-    scale is inferred from the properties of the encoding.  The end time can be
-    inferred from the start time and duration.
+:: Identifies the beginning of the time range of the data frame.  The
+    end time can be inferred from the start time and duration.  The
+    time scale is equal to the value in the `time-scale` field of the
+    `data-encoding-offer` message referenced by the `encoding-id`.
 
 : duration
-:: If present, the duration of the data frame.  The time
-    scale is inferred from the properties of the encoding.  Likewise, if not
-    present, the duration is inferred from the properties of the encoding.
+:: If present, the duration of the data frame. If not present, the
+    duration is equal to the `default-duration` field of the
+    `data-encoding-offer` message referenced by the `encoding-id`.
+    The time scale is equal to the value in the `time-scale` field of
+    the `data-encoding-offer` message referenced by the `encoding-id`.
 
 : sync-time
-:: If present, a time used to synchronize the start time of this audio frame (and
+:: If present, a time used to synchronize the start time of this data frame (and
     thus, this encoding) with that of other media encodings on different
     timelines.
 
 : payload
-:: The data.  The format and parameters are inferred from
-    the properties of the encoding.
+:: The data.  The data type is equal to the `data-type` field of the 
+    the `data-encoding-offer` message referenced by the `encoding-id`.
 
 Feedback {#streaming-feedback}
 ------------------------------------
@@ -1798,9 +2024,121 @@ QUIC streams.
 Stats {#streaming-stats}
 ------------------------------
 
-TODO
+During a streaming session, the sender should send stats with the
+streaming-session-sender-stats-event at the interval the receiver requested.  It
+should send all of the following stats for all of the media streams it is
+sending. The streaming-session-sender-stats-event message contains the following
+fields:
 
-Requests, Responses, and Watches {#requests-responses--watches}
+: streaming-session-id
+:: The ID of the streaming session these stats apply to.
+
+: system-time
+:: The time when the stats were calculated, using a monotonic system
+    clock.
+
+: audio
+:: Stats specific to audio.  Stats for multiple encodings can be sent
+    at once, but encodings need not be included if the stats haven't
+    changed.  See below.
+
+: video
+:: Stats specific to video.  Stats for multiple encodings can be sent
+    at once, but encodings need not be included if the stats haven't
+    changed.  See below.
+
+Audio encoding sender stats include the following fields:
+
+: encoding-id
+:: The ID of the encoding for which the stats apply.
+
+: cumulative-sent-frames
+:: The total number of frames sent.
+
+: cumulative-encode-delay
+:: The sum of the time spent encoding frames sent.
+
+Video encoding sender stats include the following fields:
+
+: encoding-id
+:: The ID of the encoding for which the stats apply.
+
+: cumulative-sent-duration
+:: The sum of all of the durations of all of the audio frames sent.
+
+: cumulative-encode-delay
+:: The sum of the time spent encoding frames sent.
+
+: cumulative-dropped frames
+:: The total number of frames that were not sent due to network, CPU,
+    or other contraints.
+
+
+During a streaming session, the receiver should send stats with the
+streaming-session-receiver-stats-event at the interval the sender requested.
+It should send all of the following stats for all of the media streams it is
+receiving.  The streaming-session-receiver-stats-event message contains the
+following fields:
+
+: streaming-session-id
+:: The ID of the streaming session these stats apply to.
+
+: system-time
+:: The time when the stats were calculated, using a monotonic system
+    clock.
+
+: audio
+:: Stats specific to audio.  Stats for multiple encodings can be sent
+    at once, but encodings need not be included if the stats haven't
+    changed.  See below.
+
+: video
+:: Stats specific to video.  Stats for multiple encodings can be sent
+    at once, but encodings need not be included if the stats haven't
+    changed.  See below.
+
+Audio encoding receiver stats include the following fields.  If not
+present, that indicates the value has not changed since the last value.
+
+: encoding-id
+:: The ID of the encoding for which the stats apply.
+
+: cumulative-decoded-frames
+:: The total number of audio frames received and decoded.
+
+: cumulative-received-duration
+:: The sum of all of the durations of all of the audio frames received.
+
+: cumulative-lost-duration
+:: The sum of all of the durations of all of the audio frames detected as lost.
+
+: cumulative-buffer-delay
+:: The sum of the time frames spent buffered between receipt and playout.
+
+: cumulative-decode-delay
+:: The sum of the time spent decoding frames received.
+
+Video encoding receiver stats include the following fields.  If not
+present, that indicates the value has not changed since the last
+value.
+
+: encoding-id
+:: The ID of the encoding for which the stats apply.
+
+: cumulative-decoded-frames
+:: The total number of video frames received and decoded.
+
+: cumulative-lost-frames
+:: The total number of video frames detected as lost.
+
+: cumulative-buffer-delay
+:: The sum of the time frames spent buffered between receipt and render.
+
+: cumulative-decode-delay
+:: The sum of the time spent decoding frames received.
+
+
+Requests, Responses, and Watches {#requests-responses-watches}
 ===============================================================
 
 Multiple sub-protocols in the Open Screen Protocol have messages that act as
@@ -1817,6 +2155,10 @@ ID.  Whenever an agent changes its `state-token`, it must reset its counter to 1
 When an agent sees that another agent has reset its state (by virtue of
 advertising a new `state-token`), it should discard any requests, responses,
 watches and events for that agent.
+
+Other IDs that must be unique and would cause confusion if one side
+loses state, such as `streaming-session-id`, `media-session-id`, and `encoding-id`
+should be treated the same.
 
 Note: Request and watch IDs are not tied to any particular QUIC connection
 between agents.  If a QUIC connection is closed, an agent should not discard
