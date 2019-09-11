@@ -378,13 +378,14 @@ application profile:
 Note: As this is an application-specific profile for TLS 1.3, it is not required
 for OSP agents to interoperate with non-OSP TLS 1.3 endpoints.
 
-Issue: Determine if there is an advantage to session resumption outside of early
-data. If we allow session resumption, do we allow early data too?
+Issue(220): Determine if there is an advantage to session resumption outside of
+early data. If we allow session resumption, do we allow early data too?
 
-Issue: Do agents need to support the Cookies extension (used in HelloRetryRequest)?
+Issue(219): Do agents need to support the Cookies extension (used in
+HelloRetryRequest)?
 
-Issue: Make recommendations for cipher and signature algorithm preference list
-based on hardware characteristics of agents.
+Issue(218): Make recommendations for cipher and signature algorithm preference
+list based on hardware characteristics of agents.
 
 Agent Certificates {#certificates}
 ----------------------------------
@@ -983,8 +984,9 @@ controller) may send a [=presentation-start-request=] message to D
 (the receiver), with I for the presentation identifier and presentationUrl for
 the selected presentation URL.
 
-Issue: Once the Presentation API has text about reconnecting via an
-implementation specific mechanism, quote that here and map it to a message.
+Issue(w3c/presentation-api#471): Once the Presentation
+API has text about reconnecting via an implementation specific mechanism, quote
+that here and map it to a message.
 
 When [[PRESENTATION-API#sending-a-message-through-presentationconnection|section
 6.5.2]] says "Using an implementation specific mechanism, transmit the contents
@@ -1360,7 +1362,7 @@ intentionally mirror settable attributes and methods of the
     if a cue ID is invalid (removing an un-added ID or adding an ID twice, for example),
     the receiver may reject the text track change.
 
-Issue: Add a table for whether it's required and what the default is.
+Issue(148): Add a table for whether it's required and what the default is.
 
 The states sent by the receiver include the following individual state values,
 each of which is optional.  This allows the receiver to update the controller
@@ -1655,7 +1657,7 @@ following additional fields:
     (if provided) or of a different aspect ratio. The default value is true.
 
 : supports-rotation (optional)
-:: A optional boolean field indicating whether the media receiver can receive 
+:: A optional boolean field indicating whether the media receiver can receive
     video frames with the rotation field set. The default value is true.
 
 <!-- TODO: Add max-bit-rate, color profiles, HDR -->
@@ -1993,7 +1995,7 @@ that makes sense for a specific type of data.
     timelines.
 
 : payload
-:: The data.  The data type is equal to the `data-type` field of the 
+:: The data.  The data type is equal to the `data-type` field of the
     the `data-encoding-offer` message referenced by the `encoding-id`.
 
 Feedback {#streaming-feedback}
