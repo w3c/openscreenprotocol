@@ -1361,7 +1361,7 @@ intentionally mirror settable attributes and methods of the
 
 <div class="note">
 <table>
-<tr><th>Field</th>                  <th>Initial value</th>                              <th>Receiver support</th></tr>
+<tr><th>Field</th>                  <th>Default value for initial controls</th>         <th>Receiver support</th></tr>
 <tr><td>source</td>                 <td>`urls` in [=remote-playback-start-request=]</td><td>Required</td></tr>
 <tr><td>preload</td>                <td>Decided by the receiver</td>                    <td>Not required</td></tr>
 <tr><td>loop</td>                   <td>False</td>                                      <td>Required</td></tr>
@@ -1533,7 +1533,7 @@ in hertz, such as 90000 for 90000hz, a common time scale for video.
 
 <div class="note">
 <table>
-<tr><th>Field</th>               <th>Initial value</th>
+<tr><th>Field</th>               <th>Default value for initial state</th>
 <tr><td>supports</td>            <td>Empty</td></tr>
 <tr><td>source</td>              <td>`url` in `state` in [=remote-playback-start-response=] (required field)</td></tr>
 <tr><td>loading</td>             <td>`empty`</td></tr>
