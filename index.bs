@@ -1546,12 +1546,12 @@ in hertz, such as 90000 for 90000hz, a common time scale for video.
 <tr><td>seekable-time-ranges</td><td>Empty array</td></tr>
 <tr><td>position</td>            <td>0</td></tr>
 <tr><td>playbackRate</td>        <td>1.0</td></tr>
-<tr><td>paused</td>              <td>false</td></tr>
-<tr><td>seeking</td>             <td>false</td></tr>
-<tr><td>stalled</td>             <td>false</td></tr>
-<tr><td>ended</td>               <td>false</td></tr>
+<tr><td>paused</td>              <td>False</td></tr>
+<tr><td>seeking</td>             <td>False</td></tr>
+<tr><td>stalled</td>             <td>False</td></tr>
+<tr><td>ended</td>               <td>False</td></tr>
 <tr><td>volume</td>              <td>1.0</td></tr>
-<tr><td>muted</td>               <td>false</td></tr>
+<tr><td>muted</td>               <td>False</td></tr>
 <tr><td>resolution</td>          <td>`unknown`</td></tr>
 <tr><td>audio-tracks</td>        <td>Empty array</td></tr>
 <tr><td>video-tracks</td>        <td>Empty array</td></tr>
