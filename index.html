@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version cb5a17652cb33dffd20b8b6a876bb811c1f749a9" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="67115650dfd3df387ba6a2def81b159dd9238227" name="document-revision">
+  <meta content="99f1e955eded5e2fb85209a971f6c512ae523295" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-11">11 September 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-13">13 September 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2830,64 +2830,80 @@ The default is an unknown duration
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑧">remote-playback-start-response</a> message.</p>
     <dt data-md>buffered-time-ranges
     <dd data-md>
-     <p>The time ranges for which media has been buffered. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">HtmlMediaElement.buffered</a>.</p>
+     <p>The time ranges for which media has been buffered. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">HtmlMediaElement.buffered</a>.
+The default is an empty array
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑨">remote-playback-start-response</a> message.</p>
     <dt data-md>played-time-ranges
     <dd data-md>
-     <p>The time ranges reached by the playback position during normal playback. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played">HtmlMediaElement.played</a>.</p>
+     <p>The time ranges reached by the playback position during normal playback. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played">HtmlMediaElement.played</a>.
+The default is an empty array
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⓪">remote-playback-start-response</a> message.</p>
     <dt data-md>seekable-time-ranges
     <dd data-md>
-     <p>The time ranges for which media is seekable by the controller or the receiver. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable">HtmlMediaElement.seekable</a>.</p>
+     <p>The time ranges for which media is seekable by the controller or the receiver. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable">HtmlMediaElement.seekable</a>.
+The default is an empty array
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①①">remote-playback-start-response</a> message.</p>
     <dt data-md>position
     <dd data-md>
      <p>The playback position. See <a href="https://html.spec.whatwg.org/multipage/media.html#official-playback-position">HtmlMediaElement’s official playback
 position</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">HtmlMediaElement.currentTime</a>.
 The default is 0
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑨">remote-playback-start-response</a> message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①②">remote-playback-start-response</a> message.</p>
     <dt data-md>playbackRate
     <dd data-md>
      <p>The current rate of playback on a scale where 1.0 is "normal speed". See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">HtmlMediaElement.playbackRate</a>.
 The default is 1.0
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⓪">remote-playback-start-response</a> message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①③">remote-playback-start-response</a> message.</p>
     <dt data-md>paused
     <dd data-md>
      <p>Whether media is paused or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused">HtmlMediaElement.paused</a>.
 The default is false
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①①">remote-playback-start-response</a> message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①④">remote-playback-start-response</a> message.</p>
     <dt data-md>seeking
     <dd data-md>
      <p>Whether the receiver is seeking or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking">HtmlMediaElement.seeking</a>.
 The default is false
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①②">remote-playback-start-response</a> message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑤">remote-playback-start-response</a> message.</p>
     <dt data-md>stalled
     <dd data-md>
      <p>If true, media is not playing because not enough media is loaded, and false otherwise. See <a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">HtmlMediaElement.stalled</a>.
 The default is false
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①③">remote-playback-start-response</a> message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑥">remote-playback-start-response</a> message.</p>
     <dt data-md>ended
     <dd data-md>
      <p>Whether media has reached the end or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">HtmlMediaElement.ended</a>.
 The default is false
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①④">remote-playback-start-response</a> message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑦">remote-playback-start-response</a> message.</p>
     <dt data-md>volume
     <dd data-md>
-     <p>The current volume of playback on a scale of 0.0 to 1.0. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a>.</p>
+     <p>The current volume of playback on a scale of 0.0 to 1.0. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a>.
+The default is 1.0
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑧">remote-playback-start-response</a> message.</p>
     <dt data-md>muted
     <dd data-md>
      <p>True if audio is muted (overriding the volume value) and false otherwise.
-See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">HtmlMediaElement.muted</a>.</p>
+See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">HtmlMediaElement.muted</a>.
+The default is false
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑨">remote-playback-start-response</a> message.</p>
     <dt data-md>resolution
     <dd data-md>
-     <p>The "intrinsic width" and "intrinsic width" of the video. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth">HtmlMediaElement.videoWidth</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight">HtmlMediaElement.videoHeight</a>.</p>
+     <p>The "intrinsic width" and "intrinsic width" of the video. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth">HtmlMediaElement.videoWidth</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight">HtmlMediaElement.videoHeight</a>.
+The default is unknown
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②⓪">remote-playback-start-response</a> message.</p>
     <dt data-md>audio-tracks
     <dd data-md>
-     <p>The available audio tracks, which can individually enabled or disabled. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">HtmlMediaElement.audioTracks</a></p>
+     <p>The available audio tracks, which can individually enabled or disabled. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">HtmlMediaElement.audioTracks</a> The default is an empty array
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②①">remote-playback-start-response</a> message.</p>
     <dt data-md>video-tracks
     <dd data-md>
-     <p>The available video tracks.  Only one may be selected. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.videoTracks</a></p>
+     <p>The available video tracks.  Only one may be selected. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.videoTracks</a> The default is an empty array
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②②">remote-playback-start-response</a> message.</p>
     <dt data-md>text-tracks
     <dd data-md>
      <p>The available text tracks, which can be individually shown, hidden, or disabled. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.textTracks</a>.
-The controller can also add cues to and remove cues from text tracks.</p>
+The controller can also add cues to and remove cues from text tracks.
+The default is an empty array
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②③">remote-playback-start-response</a> message.</p>
    </dl>
    <p>All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common <a data-link-type="dfn" href="#media-time" id="ref-for-media-time">media-time</a> value (see Appendix A)
@@ -2905,13 +2921,13 @@ in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
        <td>Empty
       <tr>
        <td>source
-       <td><code>url</code> in <code>state</code> in <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑤">remote-playback-start-response</a>
+       <td><code>url</code> in <code>state</code> in <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②④">remote-playback-start-response</a> (required field)
       <tr>
        <td>loading
-       <td>NETWORK_EMPTY
+       <td><code>empty</code>
       <tr>
        <td>loaded
-       <td>HAVE_NOTHING
+       <td><code>nothing</code>
       <tr>
        <td>error
        <td>No error
@@ -2923,49 +2939,49 @@ in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
        <td><code>unknown</code>
       <tr>
        <td>buffered-time-ranges
-       <td>
+       <td>Empty array
       <tr>
        <td>played-time-ranges
-       <td>
+       <td>Empty array
       <tr>
        <td>seekable-time-ranges
-       <td>
+       <td>Empty array
       <tr>
        <td>position
-       <td>
+       <td>0
       <tr>
        <td>playbackRate
-       <td>
+       <td>1.0
       <tr>
        <td>paused
-       <td>
+       <td>false
       <tr>
        <td>seeking
-       <td>
+       <td>false
       <tr>
        <td>stalled
-       <td>
+       <td>false
       <tr>
        <td>ended
-       <td>
+       <td>false
       <tr>
        <td>volume
-       <td>
+       <td>1.0
       <tr>
        <td>muted
-       <td>
+       <td>false
       <tr>
        <td>resolution
-       <td>
+       <td><code>unknown</code>
       <tr>
        <td>audio-tracks
-       <td>
+       <td>Empty array
       <tr>
        <td>video-tracks
-       <td>
+       <td>Empty array
       <tr>
        <td>text-tracks
-       <td>
+       <td>Empty array
     </table>
    </div>
    <h3 class="heading settled" data-level="8.2" id="remote-playback-api"><span class="secno">8.2. </span><span class="content">Remote Playback API</span><a class="self-link" href="#remote-playback-api"></a></h3>
@@ -5471,7 +5487,7 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&l
    <b><a href="#remote-playback-start-response">#remote-playback-start-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-start-response">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-start-response①">(2)</a>
-    <li><a href="#ref-for-remote-playback-start-response②">8.1. Remote Playback State and Controls</a> <a href="#ref-for-remote-playback-start-response③">(2)</a> <a href="#ref-for-remote-playback-start-response④">(3)</a> <a href="#ref-for-remote-playback-start-response⑤">(4)</a> <a href="#ref-for-remote-playback-start-response⑥">(5)</a> <a href="#ref-for-remote-playback-start-response⑦">(6)</a> <a href="#ref-for-remote-playback-start-response⑧">(7)</a> <a href="#ref-for-remote-playback-start-response⑨">(8)</a> <a href="#ref-for-remote-playback-start-response①⓪">(9)</a> <a href="#ref-for-remote-playback-start-response①①">(10)</a> <a href="#ref-for-remote-playback-start-response①②">(11)</a> <a href="#ref-for-remote-playback-start-response①③">(12)</a> <a href="#ref-for-remote-playback-start-response①④">(13)</a> <a href="#ref-for-remote-playback-start-response①⑤">(14)</a>
+    <li><a href="#ref-for-remote-playback-start-response②">8.1. Remote Playback State and Controls</a> <a href="#ref-for-remote-playback-start-response③">(2)</a> <a href="#ref-for-remote-playback-start-response④">(3)</a> <a href="#ref-for-remote-playback-start-response⑤">(4)</a> <a href="#ref-for-remote-playback-start-response⑥">(5)</a> <a href="#ref-for-remote-playback-start-response⑦">(6)</a> <a href="#ref-for-remote-playback-start-response⑧">(7)</a> <a href="#ref-for-remote-playback-start-response⑨">(8)</a> <a href="#ref-for-remote-playback-start-response①⓪">(9)</a> <a href="#ref-for-remote-playback-start-response①①">(10)</a> <a href="#ref-for-remote-playback-start-response①②">(11)</a> <a href="#ref-for-remote-playback-start-response①③">(12)</a> <a href="#ref-for-remote-playback-start-response①④">(13)</a> <a href="#ref-for-remote-playback-start-response①⑤">(14)</a> <a href="#ref-for-remote-playback-start-response①⑥">(15)</a> <a href="#ref-for-remote-playback-start-response①⑦">(16)</a> <a href="#ref-for-remote-playback-start-response①⑧">(17)</a> <a href="#ref-for-remote-playback-start-response①⑨">(18)</a> <a href="#ref-for-remote-playback-start-response②⓪">(19)</a> <a href="#ref-for-remote-playback-start-response②①">(20)</a> <a href="#ref-for-remote-playback-start-response②②">(21)</a> <a href="#ref-for-remote-playback-start-response②③">(22)</a> <a href="#ref-for-remote-playback-start-response②④">(23)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="remote-playback-termination-request">
