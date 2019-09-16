@@ -347,6 +347,8 @@ connection IDs are chosen, agents are restricted from changing IP or port
 without establishing a new QUIC connection.  In such cases, agents must
 establish a new QUIC connection in order to change IP or port.
 
+The ALPN used must be "osp".
+
 TLS 1.3 {#tls-13}
 -----------------
 
