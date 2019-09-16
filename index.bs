@@ -711,7 +711,6 @@ The client acts as Alice, the server acts as Bob.
 Issue: What do "client" and "server" mean here?
 
 The messages used in this authentication method are: [=auth-spake2-need-psk=],
-[=auth-spake2-message=], [=auth-spake2-confirmation=] and [=auth-status=].
 [=auth-spake2-handshake=], [=auth-spake2-confirmation=] and [=auth-status=].
 SPAKE2 describes in detail how [=auth-spake2-handshake=] and [=auth-spake2-confirmation=]
 are computed.  The values `A` and `B` used in SPAKE2 are the agent certifiate
