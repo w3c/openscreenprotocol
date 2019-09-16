@@ -1702,10 +1702,12 @@ following additional fields:
     display could return this value as 1.6 to indicate its preferred content
     scaling. Default is none.
 
-: color-profiles (optional)
-:: An optional field indicating what color profiles are understood.
-    The listener may use these values to determine how to encode
-    video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.
+: color-spaces (optional)
+:: An optional field indicating what color spaces are understood.
+    The listener may use these values to determine how to encode video. Valid
+    values are defined by [CSS Color Module Level
+    4](https://www.w3.org/TR/css-color-4/#predefined). The default value is
+    "srgb".
 
 : native-resolutions (optional)
 :: An optional field indicating what video-resolutions the media receiver supports and
