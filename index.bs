@@ -1042,8 +1042,9 @@ To learn which receivers are [=compatible remote playback devices=] for a
 particular URL or set of URLs, the controller may send a
 [=remote-playback-availability-request=] message with the following values:
 
-: urls
-:: A list of [=media resources=].  Must not be empty.
+: sources
+:: A list of [=media resources=], the same as specified in the
+    [=remote-playback-start-request message=].  Must not be empty.
 
 Issue(146): Remote Playback HTTP headers.
 
@@ -1104,9 +1105,13 @@ values:
 Note: A version 4 (pseudorandom) [=UUID=] is recommended as it meets the
 requirements for a remote-playback-id.
 
-: urls
-:: The [=media resources=] that the controller has selected for playback on the
-    receiver.
+: sources The [=media resources=] that the controller has selected for playback on the
+    receiver.  Each source must include a URL
+    (see [HTMLSourceElement.src](https://html.spec.whatwg.org/multipage/embedded-content.html#dom-source-src))
+    and may include a CSS media query
+    (see [HTMLSourceElement.media](https://html.spec.whatwg.org/multipage/embedded-content.html#dom-source-media))
+    and may include an extended MIME type
+    ([see HTMLSourceElement.type](https://html.spec.whatwg.org/multipage/embedded-content.html#dom-source-type)).
 
 : text-track-urls
 :: URLs of text tracks associated with the [=media resources=].
