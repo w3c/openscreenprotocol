@@ -1267,7 +1267,7 @@ present control value indicates the change defined below. These controls
 intentionally mirror settable attributes and methods of the
 [HtmlMediaElement](https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement).
 
-: source
+: source-url
 :: Change the [=media resource=] URL. See
     [HtmlMediaElement.src](https://html.spec.whatwg.org/multipage/media.html#dom-media-src)
     for more details. Must not be used in the initial controls of the
@@ -1396,7 +1396,7 @@ changed.
     The default is empty (support for nothing)
     for the initial state in the [=remote-playback-start-response=] message.
 
-: source
+: source-url
 :: The current [=media resource=] URL. See
     [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc).
     Must be present in the initial state in the [=remote-playback-start-response=] message.

@@ -338,7 +338,7 @@ remote-playback-state-event = {
 remote-playback-id = uint
 
 remote-playback-controls = {
-  ? 1: url ; source
+  ? 1: text ; source-url
   ? 2: &(none, metadata, auto) ; preload
   ? 3: bool ; loop
   ? 4: bool ; paused
@@ -347,7 +347,7 @@ remote-playback-controls = {
   ? 7: media-time ; seek
   ? 8: media-time ; fast-seek
   ? 9: float ; playback-rate
-  ? 10: url ; poster
+  ? 10: text ; poster
   ? 11: [* text] ; enabled-audio-track-ids
   ? 12: text ; selected-video-track-id
   ? 13: [* added-text-track] ; added-text-tracks
@@ -361,7 +361,7 @@ remote-playback-state = {
          added-text-track:
          bool,
          added-cues: bool) ; supports
-  ? 2: url ; source
+  ? 2: text ; source-url
   ? 3: &(
     empty: 0
     idle: 1
