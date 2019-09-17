@@ -7,10 +7,7 @@ The Open Screen Protocol spec is maintained with
 installing the necessary tools on common platforms, and the document syntax
 based on Markdown.
 
-After editing `index.bs`, remember to run `make` to regenerate `index.html` from
-the Bikeshed file.
-
-Other things you can do:
+Things you can do:
 
 * `make lint` checks the input document for errors.
 * `make watch` runs in the background and regenerates `index.html` immediately
@@ -28,13 +25,14 @@ and a `Makefile` to generate the spec.
 git fetch upstream
 git merge upstream/gh-pages
 ```
-1. In the `openscreenprotocol` directory, update the spec source `index.bs` with your changes.  Then run `make` to re-generate `index.html`.
+1. In the `openscreenprotocol` directory, update the spec source `index.bs` with your changes.
 1. Review your changes and commit them locally:
 ```bash
 git diff
-git add index.html
+git add index.bs
 git commit -m "Your commit message"
 ```
+[Do **not** add `index.html`]
 [How to write a Git commit message](http://chris.beams.io/posts/git-commit/)
 1. Push your changes up to your GitHub fork, assuming `YOUR_FORK_NAME` is the name of your remote, and you are working off of the default `gh-pages` branch:
 ```bash
