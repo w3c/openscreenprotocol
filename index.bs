@@ -1036,9 +1036,6 @@ defined in this section.
 For all messages defined in this section, see Appendix A for the full
 CDDL definitions.
 
-Issue(148): Make a required/default remote playback state table.
-
-
 Issue(159): Refinements to Remote Playback protocol.
 
 To learn which receivers are [=compatible remote playback devices=] for a
@@ -1337,7 +1334,7 @@ intentionally mirror settable attributes and methods of the
     [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
     for more details.
 
-: select-video-track-id
+: selected-video-track-id
 :: Select the given video track by ID and unselect all other video tracks. See
     [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
     for more details.
@@ -1362,7 +1359,25 @@ intentionally mirror settable attributes and methods of the
     if a cue ID is invalid (removing an un-added ID or adding an ID twice, for example),
     the receiver may reject the text track change.
 
-Issue(148): Add a table for whether it's required and what the default is.
+<div class="note">
+<table>
+<tr><th>Field</th>                  <th>Default value for the initial controls</th>     <th>Receiver support</th></tr>
+<tr><td>source</td>                 <td>`urls` in [=remote-playback-start-request=]</td><td>Required</td></tr>
+<tr><td>preload</td>                <td>Decided by the receiver</td>                    <td>Not required</td></tr>
+<tr><td>loop</td>                   <td>False</td>                                      <td>Required</td></tr>
+<tr><td>paused</td>                 <td>Decided by the receiver</td>                    <td>Required</td></tr>
+<tr><td>muted</td>                  <td>Decided by the receiver</td>                    <td>Required</td></tr>
+<tr><td>volume</td>                 <td>Decided by the receiver</td>                    <td>Required</td></tr>
+<tr><td>seek</td>                   <td>(None)</td>                                     <td>Required</td></tr>
+<tr><td>fast-seek</td>              <td>(None)</td>                                     <td>Required</td></tr>
+<tr><td>playback-rate</td>          <td>Decided by the receiver</td>                    <td>Not required</td></tr>
+<tr><td>poster</td>                 <td>Decided by the receiver</td>                    <td>Not required</td></tr>
+<tr><td>enabled-audio-track-ids</td><td>(None)</td>                                     <td>Required</td></tr>
+<tr><td>selected-video-track-id</td><td>(None)</td>                                     <td>Required</td></tr>
+<tr><td>added-text-tracks</td>      <td>(None)</td>                                     <td>Not required</td></tr>
+<tr><td>changed-text-tracks</td>    <td>(None)</td>                                     <td>Not required</td></tr>
+</table>
+</div>
 
 The states sent by the receiver include the following individual state values,
 each of which is optional.  This allows the receiver to update the controller
@@ -1416,14 +1431,20 @@ changed.
 : buffered-time-ranges
 :: The time ranges for which media has been buffered. See
     [HtmlMediaElement.buffered](https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered).
+    The default is an empty array
+    for the initial state in the [=remote-playback-start-response=] message.
 
 : played-time-ranges
 :: The time ranges reached by the playback position during normal playback. See
     [HtmlMediaElement.played](https://html.spec.whatwg.org/multipage/media.html#dom-media-played).
+    The default is an empty array
+    for the initial state in the [=remote-playback-start-response=] message.
 
 : seekable-time-ranges
 :: The time ranges for which media is seekable by the controller or the receiver. See
     [HtmlMediaElement.seekable](https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable).
+    The default is an empty array
+    for the initial state in the [=remote-playback-start-response=] message.
 
 : position
 :: The playback position. See
@@ -1467,36 +1488,76 @@ changed.
 : volume
 :: The current volume of playback on a scale of 0.0 to 1.0. See
     [HtmlMediaElement.volume](https://html.spec.whatwg.org/multipage/media.html#dom-media-volume).
+    The default is 1.0
+    for the initial state in the [=remote-playback-start-response=] message.
 
 : muted
 :: True if audio is muted (overriding the volume value) and false otherwise.
     See
     [HtmlMediaElement.muted](https://html.spec.whatwg.org/multipage/media.html#dom-media-muted).
+    The default is false
+    for the initial state in the [=remote-playback-start-response=] message.
 
 : resolution
 :: The "intrinsic width" and "intrinsic width" of the video. See
     [HtmlMediaElement.videoWidth](https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth)
     and
     [HtmlMediaElement.videoHeight](https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight).
+    The default is unknown
+    for the initial state in the [=remote-playback-start-response=] message.
 
 : audio-tracks
 :: The available audio tracks, which can individually enabled or disabled. See
     [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
+    The default is an empty array
+    for the initial state in the [=remote-playback-start-response=] message.
 
 : video-tracks
 :: The available video tracks.  Only one may be selected. See
     [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
+    The default is an empty array
+    for the initial state in the [=remote-playback-start-response=] message.
 
 : text-tracks
 :: The available text tracks, which can be individually shown, hidden, or disabled. See
     [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks).
     The controller can also add cues to and remove cues from text tracks.
+    The default is an empty array
+    for the initial state in the [=remote-playback-start-response=] message.
 
 All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common [=media-time=] value (see Appendix A)
 which includes a time scale.  This allows time values which work on different
 time scales to be expressed without loss of precision.  The scale is represented
 in hertz, such as 90000 for 90000hz, a common time scale for video.
+
+<div class="note">
+<table>
+<tr><th>Field</th>               <th>Default value for the initial state</th>
+<tr><td>supports</td>            <td>Empty</td></tr>
+<tr><td>source</td>              <td>`url` in `state` in [=remote-playback-start-response=] (required field)</td></tr>
+<tr><td>loading</td>             <td>`empty`</td></tr>
+<tr><td>loaded</td>              <td>`nothing`</td></tr>
+<tr><td>error</td>               <td>No error</td></tr>
+<tr><td>epoch</td>               <td>`unknown`</td></tr>
+<tr><td>duration</td>            <td>`unknown`</td></tr>
+<tr><td>buffered-time-ranges</td><td>Empty array</td></tr>
+<tr><td>played-time-ranges</td>  <td>Empty array</td></tr>
+<tr><td>seekable-time-ranges</td><td>Empty array</td></tr>
+<tr><td>position</td>            <td>0</td></tr>
+<tr><td>playbackRate</td>        <td>1.0</td></tr>
+<tr><td>paused</td>              <td>False</td></tr>
+<tr><td>seeking</td>             <td>False</td></tr>
+<tr><td>stalled</td>             <td>False</td></tr>
+<tr><td>ended</td>               <td>False</td></tr>
+<tr><td>volume</td>              <td>1.0</td></tr>
+<tr><td>muted</td>               <td>False</td></tr>
+<tr><td>resolution</td>          <td>`unknown`</td></tr>
+<tr><td>audio-tracks</td>        <td>Empty array</td></tr>
+<tr><td>video-tracks</td>        <td>Empty array</td></tr>
+<tr><td>text-tracks</td>         <td>Empty array</td></tr>
+</table>
+</div>
 
 
 Remote Playback API {#remote-playback-api}
@@ -1652,12 +1713,13 @@ following additional fields:
     The default value is none.
 
 : supports-scaling (optional)
-:: A optional boolean field indicating whether the media receiver can scale content
-    provided in a video-resolution not listed in the native-resolutions list
-    (if provided) or of a different aspect ratio. The default value is true.
+:: An optional boolean field indicating whether the media receiver can scale
+    content provided in a video-resolution not listed in the native-resolutions
+    list (if provided) or of a different aspect ratio. The default value is
+    true.
 
 : supports-rotation (optional)
-:: A optional boolean field indicating whether the media receiver can receive
+:: An optional boolean field indicating whether the media receiver can receive
     video frames with the rotation field set. The default value is true.
 
 <!-- TODO: Add max-bit-rate, color profiles, HDR -->
