@@ -1105,9 +1105,10 @@ values:
 Note: A version 4 (pseudorandom) [=UUID=] is recommended as it meets the
 requirements for a remote-playback-id.
 
-: sources The [=media resources=] that the controller has selected for playback
-    on the receiver.  Each source must include a source URL (see <{source/src}>
-    and should include an extended MIME type (see <{source/type}>.
+: sources
+:: The [=media resources=] that the controller has selected for playback
+    on the receiver.  Each source must include a <{source/src|source URL}>
+    and should include an <{source/type|extended MIME type}>.
 
 : text-track-urls
 :: URLs of text tracks associated with the [=media resources=].
