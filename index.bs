@@ -1106,10 +1106,8 @@ Note: A version 4 (pseudorandom) [=UUID=] is recommended as it meets the
 requirements for a remote-playback-id.
 
 : sources The [=media resources=] that the controller has selected for playback
-    on the receiver.  Each source must include a source URL (see
-    [HTMLSourceElement.src](https://html.spec.whatwg.org/multipage/embedded-content.html#dom-source-src)
-    and should include an extended MIME type (see
-    [HTMLSourceElement.type](https://html.spec.whatwg.org/multipage/embedded-content.html#dom-source-type)).
+    on the receiver.  Each source must include a source URL (see <{source/src}>
+    and should include an extended MIME type (see <{source/type}>.
 
 : text-track-urls
 :: URLs of text tracks associated with the [=media resources=].
