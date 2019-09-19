@@ -347,8 +347,6 @@ connection IDs are chosen, agents are restricted from changing IP or port
 without establishing a new QUIC connection.  In such cases, agents must
 establish a new QUIC connection in order to change IP or port.
 
-The ALPN used must be "osp".
-
 TLS 1.3 {#tls-13}
 -----------------
 
@@ -356,6 +354,7 @@ When an [=OSP Agent=] makes a QUIC connection to another agent, it must use
 [[RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 must be used in the following
 application profile:
 
+* The [[RFC7301|ALPN]] used must be "osp".
 * Only constant-time AEAD ciphers are allowed.
     * OSP agents must support [[RFC8446|TLS_AES_128_GCM_SHA256]].
     * OSP agents should support [[RFC8466|TLS_CHACHA20_POLY1305_SHA256]] and
@@ -379,6 +378,8 @@ application profile:
 
 Note: As this is an application-specific profile for TLS 1.3, it is not required
 for OSP agents to interoperate with non-OSP TLS 1.3 endpoints.
+
+Issue(228): Register ALPN with IANA.
 
 Issue(220): Determine if there is an advantage to session resumption outside of
 early data. If we allow session resumption, do we allow early data too?
