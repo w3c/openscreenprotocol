@@ -275,7 +275,6 @@ remote-playback-start-request = {
 
 remote-playback-source = {
   1: text; url
-  2: text; css-media-query
   3: text; extended-mime-type
 }
 
