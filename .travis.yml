@@ -1,0 +1,19 @@
+language: python
+sudo: false
+python:
+  - "2.7"
+
+install:
+  # Setup bikeshed. See https://tabatkins.github.io/bikeshed/#install-linux
+  - git clone https://github.com/tabatkins/bikeshed.git
+  - pip install --editable $PWD/bikeshed
+  - bikeshed update
+  - pip install Pygments
+ 
+script:
+  - bash ./scripts/deploy.sh
+
+env:
+  global:
+  - ENCRYPTION_LABEL: "6c9ad971e3e1"
+  
