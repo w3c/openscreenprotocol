@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version cb5a17652cb33dffd20b8b6a876bb811c1f749a9" name="generator">
+  <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="8765dcb60e7337d266015ae74c257ef98872005c" name="document-revision">
+  <meta content="4505f1f29eeaf5b3558df5e7ba13192c2112b5fb" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-13">13 September 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-19">19 September 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2425,9 +2425,9 @@ CDDL definitions.</p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device" id="ref-for-dfn-compatible-remote-playback-device">compatible remote playback devices</a> for a
 particular URL or set of URLs, the controller may send a <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request">remote-playback-availability-request</a> message with the following values:</p>
    <dl>
-    <dt data-md>urls
+    <dt data-md>sources
     <dd data-md>
-     <p>A list of <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources">media resources</a>.  Must not be empty.</p>
+     <p>A list of <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources">media resources</a>, the same as specified in the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request">remote-playback-start-request</a> message.  Must not be empty.</p>
    </dl>
    <p class="issue" id="issue-9145071e"><a class="self-link" href="#issue-9145071e"></a> Remote Playback HTTP headers. <a href="https://github.com/webscreens/openscreenprotocol/issues/146">&lt;https://github.com/webscreens/openscreenprotocol/issues/146></a></p>
    <dl>
@@ -2475,7 +2475,7 @@ availability request.</p>
 later reconnect to send availability requests and receive availability
 responses and updates. The QUIC connection ID may or may not be the same
 when reconnecting.</p>
-   <p>To start remote playback, the controller may send a <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request">remote-playback-start-request</a> message to the receiver with the following
+   <p>To start remote playback, the controller may send a <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request①">remote-playback-start-request</a> message to the receiver with the following
 values:</p>
    <dl>
     <dt data-md>remote-playback-id
@@ -2486,10 +2486,8 @@ among all remote playbacks.</p>
    <p class="note" role="note"><span>Note:</span> A version 4 (pseudorandom) <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a> is recommended as it meets the
 requirements for a remote-playback-id.</p>
    <dl>
-    <dt data-md>urls
-    <dd data-md>
-     <p>The <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources①">media resources</a> that the controller has selected for playback on the
-receiver.</p>
+    <dt data-md>sources The <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources①">media resources</a> that the controller has selected for playback
+on the receiver.  Each source must include a source URL (see <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src" id="ref-for-attr-source-src">src</a></code> and should include an extended MIME type (see <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type" id="ref-for-attr-source-type">type</a></code>.
     <dt data-md>text-track-urls
     <dd data-md>
      <p>URLs of text tracks associated with the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources②">media resources</a>.</p>
@@ -2506,7 +2504,7 @@ the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-r
      <p>Parameters for starting a streaming session associated with this
 remote playback.  If not included, no streaming session is started.</p>
    </dl>
-   <p>When the receiver receives a <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request①">remote-playback-start-request</a> message, it should
+   <p>When the receiver receives a <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request②">remote-playback-start-request</a> message, it should
 send back a <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①">remote-playback-start-response</a> message.  It should do so quickly,
 usually before the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources③">media resource</a> has been loaded and instead give updates
 of the progress of  loading with <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event">remote-playback-state-event</a> messages, unless
@@ -2658,18 +2656,18 @@ control values every time.  A non-present control value indicates no change.  A
 present control value indicates the change defined below. These controls
 intentionally mirror settable attributes and methods of the <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="termref-for-">HtmlMediaElement</a>.</p>
    <dl>
-    <dt data-md>source
+    <dt data-md>source-url
     <dd data-md>
-     <p>Change the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources④">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src">HtmlMediaElement.src</a> for more details. Must not be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request②">remote-playback-start-request</a> message (which already contains a list of URLs).</p>
+     <p>Change the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources④">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src">HtmlMediaElement.src</a> for more details. Must not be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request③">remote-playback-start-request</a> message (which already contains a list of URLs).</p>
     <dt data-md>preload
     <dd data-md>
-     <p>Set how aggressively to preload media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload">HtmlMediaElement.preload</a> for more details. Should only be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request③">remote-playback-start-request</a> message or when the source is changed.  If not
+     <p>Set how aggressively to preload media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload">HtmlMediaElement.preload</a> for more details. Should only be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request④">remote-playback-start-request</a> message or when the source is changed.  If not
 set in the initial controls, it is left to the receiver to decide.  This is
 optional for the receiver to support and if not supported, the receiver will
 behave as though it were never set.</p>
     <dt data-md>loop
     <dd data-md>
-     <p>Set whether or not to loop media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop">HtmlMediaElement.loop</a> for more details. Should only be used in the initial control of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request④">remote-playback-start-request</a>.  If not set in the initial controls, it is
+     <p>Set whether or not to loop media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop">HtmlMediaElement.loop</a> for more details. Should only be used in the initial control of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑤">remote-playback-start-request</a>.  If not set in the initial controls, it is
 assumed to be false.</p>
     <dt data-md>paused
     <dd data-md>
@@ -2731,7 +2729,7 @@ the receiver may reject the text track change.</p>
        <th>Receiver support
       <tr>
        <td>source
-       <td><code>urls</code> in <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑤">remote-playback-start-request</a>
+       <td><code>urls</code> in <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑥">remote-playback-start-request</a>
        <td>Required
       <tr>
        <td>preload
@@ -2799,7 +2797,7 @@ changed.</p>
 resource</a>s and should not changes unless the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑥">media resource</a> changes.
 The default is empty (support for nothing)
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②">remote-playback-start-response</a> message.</p>
-    <dt data-md>source
+    <dt data-md>source-url
     <dd data-md>
      <p>The current <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑦">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">HtmlMediaElement.currentSrc</a>.
 Must be present in the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response③">remote-playback-start-response</a> message.</p>
@@ -3002,8 +3000,8 @@ sources set</a>.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 6.2.4</a> says "Request connection of remote to device. The implementation of this
 step is specific to the user agent." and "Synchronize the current media element
-state with the remote playback state", the controller may send the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑥">remote-playback-start-request</a> message to the receiver to start remote
-playback.  The <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑦">remote-playback-start-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote
+state with the remote playback state", the controller may send the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑦">remote-playback-start-request</a> message to the receiver to start remote
+playback.  The <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑧">remote-playback-start-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote
 playback source</a>.  The current <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> only
 allows a single source, but the protocol allows for several and future versions
 of <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> may allow for several.</p>
@@ -4164,7 +4162,7 @@ the wire smaller.</p>
 <p><span class="c1">; type key 17</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-availability-request">remote-playback-availability-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
+<span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">remote-playback-source</span><span class="p">]</span> <span class="c1">; sources</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span></p>
@@ -4185,11 +4183,16 @@ the wire smaller.</p>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-start-request">remote-playback-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">remote-playback-source</span><span class="p">]</span> <span class="c1">; sources</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; text-track-urls</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">http-header</span><span class="p">]</span> <span class="c1">; headers</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
   <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">{</span><span class="nx">streaming-session-start-request-params</span><span class="p">}</span> <span class="c1">; remoting</span>
+<span class="p">}</span></p>
+
+<p><span class="nc">remote-playback-source </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">text</span><span class="c1">; url</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">text</span><span class="c1">; extended-mime-type</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 116</span>
@@ -4251,7 +4254,7 @@ the wire smaller.</p>
 <p><span class="nc">remote-playback-id </span><span class="p">=</span> <span class="kt">uint</span></p>
 
 <p><span class="nc">remote-playback-controls </span><span class="p">=</span> <span class="p">{</span>
-  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">url </span><span class="c1">; source</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; source-url</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span><span class="nx">none</span><span class="p">,</span> <span class="nx">metadata</span><span class="p">,</span> <span class="nx">auto</span><span class="p">)</span> <span class="c1">; preload</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; loop</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; paused</span>
@@ -4260,7 +4263,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; seek</span>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; fast-seek</span>
   <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">float </span><span class="c1">; playback-rate</span>
-  <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="nx">url </span><span class="c1">; poster</span>
+  <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; poster</span>
   <span class="p">?</span> <span class="mi">11</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; enabled-audio-track-ids</span>
   <span class="p">?</span> <span class="mi">12</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; selected-video-track-id</span>
   <span class="p">?</span> <span class="mi">13</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">added-text-track</span><span class="p">]</span> <span class="c1">; added-text-tracks</span>
@@ -4274,7 +4277,7 @@ the wire smaller.</p>
          <span class="nx">added-text-track</span><span class="p">:</span>
          <span class="nx">bool</span><span class="p">,</span>
          <span class="nx">added-cues</span><span class="p">:</span> <span class="nx">bool</span><span class="p">)</span> <span class="c1">; supports</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">url </span><span class="c1">; source</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; source-url</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">empty</span><span class="p">:</span> <span class="mi">0</span>
     <span class="nx">idle</span><span class="p">:</span> <span class="mi">1</span>
@@ -4904,6 +4907,18 @@ extensions.</p>
     <li><a href="#ref-for-dom-window-postmessage">12.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-attr-source-src">
+   <a href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src">https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-attr-source-src">8. Remote Playback Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-attr-source-type">
+   <a href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type">https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-attr-source-type">8. Remote Playback Protocol</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-presentationconnection">
    <a href="https://w3c.github.io/presentation-api/#presentationconnection">https://w3c.github.io/presentation-api/#presentationconnection</a><b>Referenced in:</b>
    <ul>
@@ -5066,6 +5081,8 @@ extensions.</p>
     <ul>
      <li><span class="dfn-paneled" id="term-for-htmlmediaelement" style="color:initial">HTMLMediaElement</span>
      <li><span class="dfn-paneled" id="term-for-dom-window-postmessage" style="color:initial">postMessage(message, targetOrigin, transfer)</span>
+     <li><span class="dfn-paneled" id="term-for-attr-source-src" style="color:initial">src</span>
+     <li><span class="dfn-paneled" id="term-for-attr-source-type" style="color:initial">type</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:
@@ -5167,7 +5184,7 @@ extensions.</p>
    <dt id="biblio-rfc8466">[RFC8466]
    <dd>B. Wen; et al. <a href="https://tools.ietf.org/html/rfc8466">A YANG Data Model for Layer 2 Virtual Private Network (L2VPN) Service Delivery</a>. October 2018. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8466">https://tools.ietf.org/html/rfc8466</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
-   <dd>Lukasz Olejnik; Jason Novak. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 10 September 2019. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
+   <dd>Lukasz Olejnik; Jason Novak. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 23 May 2019. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
@@ -5478,9 +5495,9 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&l
   <aside class="dfn-panel" data-for="remote-playback-start-request">
    <b><a href="#remote-playback-start-request">#remote-playback-start-request</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-remote-playback-start-request">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-start-request①">(2)</a>
-    <li><a href="#ref-for-remote-playback-start-request②">8.1. Remote Playback State and Controls</a> <a href="#ref-for-remote-playback-start-request③">(2)</a> <a href="#ref-for-remote-playback-start-request④">(3)</a> <a href="#ref-for-remote-playback-start-request⑤">(4)</a>
-    <li><a href="#ref-for-remote-playback-start-request⑥">8.2. Remote Playback API</a> <a href="#ref-for-remote-playback-start-request⑦">(2)</a>
+    <li><a href="#ref-for-remote-playback-start-request">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-start-request①">(2)</a> <a href="#ref-for-remote-playback-start-request②">(3)</a>
+    <li><a href="#ref-for-remote-playback-start-request③">8.1. Remote Playback State and Controls</a> <a href="#ref-for-remote-playback-start-request④">(2)</a> <a href="#ref-for-remote-playback-start-request⑤">(3)</a> <a href="#ref-for-remote-playback-start-request⑥">(4)</a>
+    <li><a href="#ref-for-remote-playback-start-request⑦">8.2. Remote Playback API</a> <a href="#ref-for-remote-playback-start-request⑧">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="remote-playback-start-response">

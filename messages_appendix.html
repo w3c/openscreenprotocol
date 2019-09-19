@@ -245,7 +245,7 @@
 <span class="c1">; type key 17</span>
 <span class="nc"><dfn>remote-playback-availability-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
-<span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
+<span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">remote-playback-source</span><span class="p">]</span> <span class="c1">; sources</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
 <span class="p">}</span>
@@ -266,11 +266,16 @@
 <span class="nc"><dfn>remote-playback-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">remote-playback-source</span><span class="p">]</span> <span class="c1">; sources</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; text-track-urls</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">http-header</span><span class="p">]</span> <span class="c1">; headers</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
   <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">{</span><span class="nx">streaming-session-start-request-params</span><span class="p">}</span> <span class="c1">; remoting</span>
+<span class="p">}</span>
+
+<span class="nc">remote-playback-source </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">text</span><span class="c1">; url</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="nx">text</span><span class="c1">; extended-mime-type</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 116</span>
@@ -332,7 +337,7 @@
 <span class="nc">remote-playback-id </span><span class="p">=</span> <span class="kt">uint</span>
 
 <span class="nc">remote-playback-controls </span><span class="p">=</span> <span class="p">{</span>
-  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">url </span><span class="c1">; source</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; source-url</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span><span class="nx">none</span><span class="p">,</span> <span class="nx">metadata</span><span class="p">,</span> <span class="nx">auto</span><span class="p">)</span> <span class="c1">; preload</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; loop</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; paused</span>
@@ -341,7 +346,7 @@
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; seek</span>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; fast-seek</span>
   <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">float </span><span class="c1">; playback-rate</span>
-  <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="nx">url </span><span class="c1">; poster</span>
+  <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; poster</span>
   <span class="p">?</span> <span class="mi">11</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; enabled-audio-track-ids</span>
   <span class="p">?</span> <span class="mi">12</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; selected-video-track-id</span>
   <span class="p">?</span> <span class="mi">13</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">added-text-track</span><span class="p">]</span> <span class="c1">; added-text-tracks</span>
@@ -355,7 +360,7 @@
          <span class="nx">added-text-track</span><span class="p">:</span>
          <span class="nx">bool</span><span class="p">,</span>
          <span class="nx">added-cues</span><span class="p">:</span> <span class="nx">bool</span><span class="p">)</span> <span class="c1">; supports</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">url </span><span class="c1">; source</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; source-url</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">empty</span><span class="p">:</span> <span class="mi">0</span>
     <span class="nx">idle</span><span class="p">:</span> <span class="mi">1</span>
