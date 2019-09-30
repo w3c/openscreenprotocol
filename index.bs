@@ -712,10 +712,12 @@ Issue: What do "client" and "server" mean here?
 
 The messages used in this authentication method are: [=auth-spake2-need-psk=],
 [=auth-spake2-handshake=], [=auth-spake2-confirmation=] and [=auth-status=].
-SPAKE2 describes in detail how [=auth-spake2-handshake=] and [=auth-spake2-confirmation=]
-are computed.  The values `A` and `B` used in SPAKE2 are the agent certifiate
-fingerprints of the client and server, respectively. `K` is the PSK presented to
-the user.  `S` and `T` from SPAKE2 are put into the `random` field of
+SPAKE2 describes in detail how [=auth-spake2-handshake=] and
+[=auth-spake2-confirmation=] are computed.
+
+The values `A` and `B` used in SPAKE2 are the [=agent fingerprints=]  of
+the client and server, respectively. `K` is the PSK presented to the user.  `S`
+and `T` from SPAKE2 are put into the `random` field of
 [=auth-spake2-handshake=].  `F` are from SPAKE2 are put into the
 `transcript-mac` field of [=auth-spake2-confirmation=].
 
