@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 220086d88511a9c99d7a1f9b5447db7e7b99e053" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="13a564b6f1035030a2b9396a91a48e4dfb584464" name="document-revision">
+  <meta content="46fccc2d2f33e83937acf2da6373e6c0d6cbc50b" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -2150,20 +2150,20 @@ phone, a keyboard or a TV remote control.</p>
    <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.</p>
    <p class="issue" id="issue-492f86ab"><a class="self-link" href="#issue-492f86ab"></a> What do "client" and "server" mean here?</p>
-   <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
-SPAKE2 describes in detail how <a data-link-type="dfn">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
+   <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
+SPAKE2 describes in detail how <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake①">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
    <p>The values <code>A</code> and <code>B</code> used in SPAKE2 are the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint②">agent fingerprints</a> of
-the client and server, respectively. <code>K</code> is the PSK presented to the user. <code>S</code> and <code>T</code> from SPAKE2 are put into the <code>random</code> field of <a data-link-type="dfn">auth-spake2-handshake</a>. <code>F</code> are from SPAKE2 are put into the <code>transcript-mac</code> field of <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation②">auth-spake2-confirmation</a>.</p>
+the client and server, respectively. <code>K</code> is the PSK presented to the user. <code>S</code> and <code>T</code> from SPAKE2 are put into the <code>random</code> field of <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake②">auth-spake2-handshake</a>. <code>F</code> are from SPAKE2 are put into the <code>transcript-mac</code> field of <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation②">auth-spake2-confirmation</a>.</p>
    <p>If the PSK presenter wants to authenticate, the PSK presenter starts the
-authentication process by presenting the PSK to the user and sending a <a data-link-type="dfn">auth-spake2-handshake</a> message. When the PSK consumer receives the <a data-link-type="dfn">auth-spake2-handshake</a> message, the PSK consumer prompts the user for the PSK input
+authentication process by presenting the PSK to the user and sending a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake③">auth-spake2-handshake</a> message. When the PSK consumer receives the <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake④">auth-spake2-handshake</a> message, the PSK consumer prompts the user for the PSK input
 if it has not done so yet.</p>
    <p>If the PSK consumer wants to authenticate, the PSK consumer sends a <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk①">auth-spake2-need-psk</a> message to the PSK presenter to start the authentication
 process and prompts the user to input the PSK. If the PSK presenter receives a <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk②">auth-spake2-need-psk</a> message after starting authentication from their side, the
 PSK presenter ignores the <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk③">auth-spake2-need-psk</a> message.</p>
    <p>After the user inputs the PSK into the PSK consumer, the PSK consumer computes
-and sends a <a data-link-type="dfn">auth-spake2-handshake</a>.</p>
-   <p>When either agent both knows the PSK and has received a <a data-link-type="dfn">auth-spake2-handshake</a> message, the agent computes and sends a <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation③">auth-spake2-confirmation</a> message.</p>
-   <p>When either agent has received both <a data-link-type="dfn">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation④">auth-spake2-confirmation</a> messages, the agent validates the confirmation message
+and sends a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑤">auth-spake2-handshake</a>.</p>
+   <p>When either agent both knows the PSK and has received a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑥">auth-spake2-handshake</a> message, the agent computes and sends a <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation③">auth-spake2-confirmation</a> message.</p>
+   <p>When either agent has received both <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑦">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation④">auth-spake2-confirmation</a> messages, the agent validates the confirmation message
 and sends the <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status①">auth-status</a> authenticated message.</p>
    <h2 class="heading settled" data-level="7" id="presentation-protocol"><span class="secno">7. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting,
@@ -4002,7 +4002,7 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 1003</span>
-<span class="nc">auth-spake2-handshake </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-handshake">auth-spake2-handshake</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initation-token</span>
 <span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; random</span>
 <span class="p">}</span></p>
@@ -4848,6 +4848,7 @@ extensions.</p>
    <li><a href="#auth-capabilities">auth-capabilities</a><span>, in §Unnumbered section</span>
    <li><a href="#auth-initiation-token">auth-initiation-token</a><span>, in §Unnumbered section</span>
    <li><a href="#auth-spake2-confirmation">auth-spake2-confirmation</a><span>, in §Unnumbered section</span>
+   <li><a href="#auth-spake2-handshake">auth-spake2-handshake</a><span>, in §Unnumbered section</span>
    <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in §Unnumbered section</span>
    <li><a href="#auth-status">auth-status</a><span>, in §Unnumbered section</span>
    <li><a href="#controller">controller</a><span>, in §1.1</span>
@@ -5352,6 +5353,12 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&l
    <b><a href="#auth-spake2-need-psk">#auth-spake2-need-psk</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-auth-spake2-need-psk">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-spake2-need-psk①">(2)</a> <a href="#ref-for-auth-spake2-need-psk②">(3)</a> <a href="#ref-for-auth-spake2-need-psk③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="auth-spake2-handshake">
+   <b><a href="#auth-spake2-handshake">#auth-spake2-handshake</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-auth-spake2-handshake">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-spake2-handshake①">(2)</a> <a href="#ref-for-auth-spake2-handshake②">(3)</a> <a href="#ref-for-auth-spake2-handshake③">(4)</a> <a href="#ref-for-auth-spake2-handshake④">(5)</a> <a href="#ref-for-auth-spake2-handshake⑤">(6)</a> <a href="#ref-for-auth-spake2-handshake⑥">(7)</a> <a href="#ref-for-auth-spake2-handshake⑦">(8)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="auth-spake2-confirmation">
