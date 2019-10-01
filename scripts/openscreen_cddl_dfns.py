@@ -14,7 +14,7 @@ LINKED_TYPES = frozenset([
   'auth-capabilities',
   'auth-initiation-token',
   'auth-spake2-confirmation',
-  'auth-spake2-message',
+  'auth-spake2-handshake',
   'auth-spake2-need-psk',
   'auth-status',  
   'data-encoding-offer',

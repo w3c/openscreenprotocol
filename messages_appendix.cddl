@@ -81,14 +81,14 @@ auth-spake2-need-psk = {
 }
 
 ; type key 1003
-auth-spake2-message = {
+auth-spake2-handshake = {
   auth-initation-token
-  1 : bytes .size 32 ; message
+  1 : bytes .size 32 ; random
 }
 
 ; type key 1004
 auth-spake2-confirmation = {
-  1 : bytes .size 32 ; confirmation
+  1 : bytes .size 32 ; transcript-mac
 }
 
 ; type key 1005
