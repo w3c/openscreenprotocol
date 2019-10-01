@@ -718,11 +718,11 @@ The messages used in this authentication method are: [=auth-spake2-need-psk=],
 SPAKE2 describes in detail how [=auth-spake2-handshake=] and
 [=auth-spake2-confirmation=] are computed.
 
-The values `A` and `B` used in SPAKE2 are the [=agent fingerprints=]  of
-the client and server, respectively. `K` is the PSK presented to the user.  `S`
-and `T` from SPAKE2 are put into the `random` field of
-[=auth-spake2-handshake=].  `F` are from SPAKE2 are put into the
-`transcript-mac` field of [=auth-spake2-confirmation=].
+The values `A` and `B` used in SPAKE2 are the [=agent fingerprints=] of the
+client and server, respectively. `K` is the PSK presented to the user.  `S` and
+`T` from SPAKE2 are put into the `random` field of [=auth-spake2-handshake=].
+`F` from SPAKE2 is put into the `transcript-mac` field of
+[=auth-spake2-confirmation=].
 
 If the PSK presenter wants to authenticate, the PSK presenter starts the
 authentication process by presenting the PSK to the user and sending a
