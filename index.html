@@ -1212,9 +1212,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version e86d5b1b47a216fa66165c234892adc259212183" name="generator">
+  <meta content="Bikeshed version c80088ef848c5e5446a2eaced80623027d194593" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="5213bd55f8401a4e5294641616ba079708aedc04" name="document-revision">
+  <meta content="a5e70254a8f40c21e77f0afbde21cee692361b5f" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1466,7 +1466,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-23">23 September 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-10-01">1 October 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1613,8 +1613,6 @@ pre .property::before, pre .property::after {
    </ol>
   </nav>
   <main>
-   <p class="issue" id="issue-b711fac3"><a class="self-link" href="#issue-b711fac3"></a> Add short names to Presentation API spec, so that BS autolinking works as designed.</p>
-   <p class="issue" id="issue-a8c8d59b"><a class="self-link" href="#issue-a8c8d59b"></a> Can autolinks to HTML51 be automatically generated?</p>
    <h2 class="no-num no-toc no-ref heading settled" id="document-status"><span class="content">Status of this document</span></h2>
    <p>This specification was published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community
 Group</a>. It is not a W3C Standard nor
@@ -1640,7 +1638,8 @@ that it does not handle all possible ways that browsers and presentation
 displays could support these APIs.  The Open Screen Protocol specifically
 supports browsers and displays that are connected via the same local area
 network.  It allows a browser to present a URL, initiate remote playback of an
-HTML media element, and stream media data to another device.</p>
+HTML <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-element" id="ref-for-media-element">media element</a>, and stream media data to another
+device.</p>
    <p>The Open Screen Protocol is intended to be extensible, so that additional
 capabilities can be added over time.  This may include additions to existing Web
 APIs or new Web APIs.</p>
@@ -1653,11 +1652,10 @@ API allows a <a data-link-type="dfn" href="https://w3c.github.io/presentation-ap
 on another device.  We call this agent a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="controller">controller</dfn> for short.  A <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent">receiving user agent</a> is responsible for rendering the Web content, which we
 will call a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="receiver">receiver</dfn> for short.  The the Web content itself is called
 a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation" id="ref-for-dfn-presentation">presentation</a>.</p>
-   <p>Some OSP agents also support the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>.  That API allows an agent to render a
-media element on a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices">remote playback device</a>.  In this document, we refer to it
-as a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver">receiver</a> because it is shorter and keeps terminology consistent between
-presentations and remote playbacks. Similarly, we use the term <a data-link-type="dfn" href="#controller" id="ref-for-controller">controller</a> to
-refer to the agent that starts, terminates, and controls the remote playback.</p>
+   <p>Some OSP agents also support the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>.  That
+API allows an agent to render a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-element" id="ref-for-media-element①">media element</a> on a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices">remote playback device</a>.  In this document, we refer to it as a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver">receiver</a> because it is shorter and keeps terminology consistent between presentations and
+remote playbacks. Similarly, we use the term <a data-link-type="dfn" href="#controller" id="ref-for-controller">controller</a> to refer to the
+agent that starts, terminates, and controls the remote playback.</p>
    <p>For media streaming, we refer to an OSP agent that sends a media stream
 as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="media-sender">media sender</dfn> and an agent that receives a media stream as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="media-receiver">media receiver</dfn>.  Note that an agent can be both a media sender and a
 media receiver.</p>
@@ -1684,12 +1682,13 @@ capable of rendering a specific <a data-link-type="dfn" href="https://w3c.github
      <p>A controller must be able to start a new <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation" id="ref-for-dfn-presentation①">presentation</a> on a
 receiver given a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id">presentation ID</a>.</p>
     <li data-md>
-     <p>A controller must be able to create a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection">PresentationConnection</a></code> to an existing presentation on the
-receiver, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id①">presentation ID</a>.</p>
+     <p>A controller must be able to create a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection">PresentationConnection</a></code> to an
+existing presentation on the receiver, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request
+URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id①">presentation ID</a>.</p>
     <li data-md>
      <p>It must be possible to close a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection①">PresentationConnection</a></code> between a
-controller and a presentation, and signal both parties with the
-reason why the connection was closed.</p>
+controller and a presentation, and signal both parties with the reason why
+the connection was closed.</p>
     <li data-md>
      <p>Multiple controllers must be able to connect to a single presentation
 simultaneously.</p>
@@ -2463,8 +2462,7 @@ URL availabilities change.  Such events contain the following values:</p>
    <dl>
     <dt data-md>watch-id
     <dd data-md>
-     <p>The watch-id given in the remote-playback-url-availability-response,
-used to refer to the remote playback URLs whose availability has changed.</p>
+     <p>The watch-id given in the <a data-link-type="dfn" href="#remote-playback-availability-response" id="ref-for-remote-playback-availability-response①">remote-playback-availability-response</a> used to refer to the remote playback URLs whose availability has changed.</p>
     <dt data-md>url-availabilities
     <dd data-md>
      <p>A list of URL availability states.  Each state must correspond to the URLs from the
@@ -2525,13 +2523,11 @@ invalid-url).  Additionally, the response must include the following:</p>
      <p>A response to the started streaming session associated with this remote playback.
 If not included, no streaming session is started.</p>
    </dl>
-   <p>If a streaming session is started, streaming messages such a
-streaming-session-modify-request and video-frame can be used for the streaming
-session as if the streaming session had been started with
-streaming-session-start-request and streaming-session-start-response.  The
-streaming session may be terminated before the remote playback is terminated,
-but if the remote playback is terminated first, the streaming session associated
-with it is automatically terminated.</p>
+   <p>If a streaming session is started, streaming messages such a <a data-link-type="dfn" href="#streaming-session-modify-request" id="ref-for-streaming-session-modify-request">streaming-session-modify-request</a> and <a data-link-type="dfn" href="#video-frame" id="ref-for-video-frame">video-frame</a> can be used for the
+streaming session as if the streaming session had been started with <a data-link-type="dfn" href="#streaming-session-start-request" id="ref-for-streaming-session-start-request">streaming-session-start-request</a> and <a data-link-type="dfn" href="#streaming-session-start-response" id="ref-for-streaming-session-start-response">streaming-session-start-response</a>. The streaming session may be terminated
+before the remote playback is terminated, but if the remote playback is
+terminated first, the streaming session associated with it is automatically
+terminated.</p>
    <p>If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request">remote-playback-modify-request</a> message with the following values:</p>
    <dl>
@@ -3113,8 +3109,7 @@ true.</p>
 video frames with the rotation field set. The default value is true.</p>
    </dl>
    <h3 class="heading settled" data-level="9.2" id="streaming-sessions"><span class="secno">9.2. </span><span class="content">Sessions</span><a class="self-link" href="#streaming-sessions"></a></h3>
-   <p>To start a streaming session, a sender may send a
-streaming-session-start-request message with the following fields:</p>
+   <p>To start a streaming session, a sender may send a <a data-link-type="dfn" href="#streaming-session-start-request" id="ref-for-streaming-session-start-request①">streaming-session-start-request</a> message with the following fields:</p>
    <dl>
     <dt data-md>streaming-session-id
     <dd data-md>
@@ -3237,8 +3232,8 @@ in each one.</p>
 data-frame messages smaller by not including the duration for
 data-frame messages that have the default duration.</p>
    </dl>
-   <p>After receiving a streaming-session-start-request message, a receiver
-should send back a streaming-session-start-response message with the
+   <p>After receiving a <a data-link-type="dfn" href="#streaming-session-start-request" id="ref-for-streaming-session-start-request②">streaming-session-start-request</a> message, a receiver
+should send back a <a data-link-type="dfn" href="#streaming-session-start-response" id="ref-for-streaming-session-start-response①">streaming-session-start-response</a> message with the
 following fields:</p>
    <dl>
     <dt data-md>desired-stats-interval
@@ -3269,15 +3264,14 @@ send at the target bitrate, possibly exceeding it by a small amount.</p>
      <p>The requested data encoding, by encoding ID</p>
    </dl>
    <p>During a streaming session, the receiver can modify the requests it
-made for encodings by sending a <code>streaming-session-modify-request</code> containing a modified list of stream-requests.  When the sender receives
-a <code>streaming-session-modify-request</code>, it should send back a <code>streaming-session-modify-response</code> indicate whether or not the
-application of the new request from the <code>streaming-session-modify-request</code> was successful.</p>
+made for encodings by sending a <a data-link-type="dfn" href="#streaming-session-modify-request" id="ref-for-streaming-session-modify-request①">streaming-session-modify-request</a> containing a modified list of stream-requests.  When the sender receives
+a <a data-link-type="dfn" href="#streaming-session-modify-request" id="ref-for-streaming-session-modify-request②">streaming-session-modify-request</a>, it should send back a <a data-link-type="dfn" href="#streaming-session-modify-response" id="ref-for-streaming-session-modify-response">streaming-session-modify-response</a> indicate whether or not the
+application of the new request from the <a data-link-type="dfn" href="#streaming-session-modify-request" id="ref-for-streaming-session-modify-request③">streaming-session-modify-request</a> was successful.</p>
    <p>Finally, the sender may terminate the streaming session by sending
-a streaming-session-terminate-request command.  When the receiver
-receives the streaming-session-terminate-request, it should send back
-a streaming-session-terminate-response.  The receiver can terminate at
-any point and notify the sender by sending a
-streaming-session-terminate-event message.</p>
+a <a data-link-type="dfn" href="#streaming-session-terminate-request" id="ref-for-streaming-session-terminate-request">streaming-session-terminate-request</a> command.  When the receiver
+receives the <a data-link-type="dfn" href="#streaming-session-terminate-request" id="ref-for-streaming-session-terminate-request①">streaming-session-terminate-request</a>, it should send back
+a <a data-link-type="dfn" href="#streaming-session-terminate-response" id="ref-for-streaming-session-terminate-response">streaming-session-terminate-response</a>.  The receiver can terminate at
+any point and notify the sender by sending a <a data-link-type="dfn" href="#streaming-session-terminate-event" id="ref-for-streaming-session-terminate-event">streaming-session-terminate-event</a> message.</p>
    <h3 class="heading settled" data-level="9.3" id="streaming-audio"><span class="secno">9.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
    <p>[Media senders=] may send audio to <a data-link-type="dfn" href="#media-receiver" id="ref-for-media-receiver①">media receivers</a> by sending <a data-link-type="dfn" href="#audio-frame" id="ref-for-audio-frame">audio-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and
 values.  An audio frame message contains a set of encoded audio samples for a
@@ -3298,8 +3292,7 @@ separate QUIC streams.</p>
     <dt data-md>encoding-id
     <dd data-md>
      <p>Identifies the media encoding to which this audio frame belongs.  This can be
-used to reference fields of the encoding (from the
-audio-encoding-offer message) such as the codec, codec properties,
+used to reference fields of the encoding (from the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer">audio-encoding-offer</a> message) such as the codec, codec properties,
 time scale (aka clock rate or sample rate), and default duration.
 Referencing fields of the encoding through the encoding id
 helps to avoid sending duplicate information in every frame.</p>
@@ -3307,13 +3300,13 @@ helps to avoid sending duplicate information in every frame.</p>
     <dd data-md>
      <p>Identifies the beginning of the time range of the audio frame. The
 end time can be inferred from the start time and duration. The
-time scale is equal to the value in the <code>time-scale</code> field of the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
+time scale is equal to the value in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer①">audio-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
      <p>If present, the duration of the audio frame. If not present, the
-duration is equal to the <code>default-duration</code> field of the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.
+duration is equal to the <code>default-duration</code> field of the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer②">audio-encoding-offer</a> message referenced by the <code>encoding-id</code>.
 The time scale is equal to the value in the <code>time-scale</code> field of
-the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
+the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer③">audio-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
      <p>If present, a time used to synchronize the start time of this audio frame (and
@@ -3322,11 +3315,11 @@ different timelines.  It may be wall clock time, but it need not
 be; it can be any clock chosen by the media sender.</p>
     <dt data-md>payload
     <dd data-md>
-     <p>The encoded audio.  The codec and codec parameters are equal to the <code>format</code> field of the <code>audio-encoding-offer</code> message referenced by
+     <p>The encoded audio.  The codec and codec parameters are equal to the <code>format</code> field of the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer④">audio-encoding-offer</a> message referenced by
 the <code>encoding-id</code></p>
    </dl>
    <h3 class="heading settled" data-level="9.4" id="streaming-video"><span class="secno">9.4. </span><span class="content">Video</span><a class="self-link" href="#streaming-video"></a></h3>
-   <p>Media senders may send video to media receivers by sending <a data-link-type="dfn" href="#video-frame" id="ref-for-video-frame">video-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video
+   <p>Media senders may send video to media receivers by sending <a data-link-type="dfn" href="#video-frame" id="ref-for-video-frame①">video-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video
 frame message contains an encoded video frame (an encoded image) at a specific
 point in time or over a specfic time range (if the duration is known).  A series
 of encoded video frames that share a codec, codec parameters and a timeline form
@@ -3360,12 +3353,12 @@ If not present, the default value is [-1].</p>
     <dd data-md>
      <p>Identifies the beginning of the time range of the video frame.  The
 end time can be inferred from the start time and duration. The
-time scale is equal to the value in the <code>time-scale</code> field of the <code>video-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
+time scale is equal to the value in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#video-encoding-offer" id="ref-for-video-encoding-offer">video-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
      <p>If present, the duration of the video frame. If not present, that
 means duration is unknown.  The time scale is equal to the value
-in the <code>time-scale</code> field of the <code>video-encoding-offer</code> message
+in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#video-encoding-offer" id="ref-for-video-encoding-offer①">video-encoding-offer</a> message
 referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
@@ -3376,12 +3369,12 @@ timelines.</p>
     <dd data-md>
      <p>If present, indicates how the frame should be rotated after
 decoding but before rendering.  Rotation is clockwise in
-increments of 90 degrees.  The default is equal to the <code>default-rotation</code> field of the <code>video-encoding-offer</code> message
+increments of 90 degrees.  The default is equal to the <code>default-rotation</code> field of the <a data-link-type="dfn" href="#video-encoding-offer" id="ref-for-video-encoding-offer②">video-encoding-offer</a> message
 referenced by the <code>encoding-id</code>.</p>
     <dt data-md>payload
     <dd data-md>
      <p>The encoded video frame (encoded image).  The codec and codec
- parameters are are equal to the <code>format</code> field of the <code>audio-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
+ parameters are are equal to the <code>format</code> field of the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer⑤">audio-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
    </dl>
    <h3 class="heading settled" data-level="9.5" id="streaming-data"><span class="secno">9.5. </span><span class="content">Data</span><a class="self-link" href="#streaming-data"></a></h3>
    <p>Media senders may send timed data to media receivers by sending <a data-link-type="dfn" href="#data-frame" id="ref-for-data-frame">data-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
@@ -3406,13 +3399,13 @@ Within an encoding, gaps in sequence numbers mean frames are missing.</p>
     <dd data-md>
      <p>Identifies the beginning of the time range of the data frame.  The
 end time can be inferred from the start time and duration.  The
-time scale is equal to the value in the <code>time-scale</code> field of the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
+time scale is equal to the value in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#data-encoding-offer" id="ref-for-data-encoding-offer">data-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
      <p>If present, the duration of the data frame. If not present, the
-duration is equal to the <code>default-duration</code> field of the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.
+duration is equal to the <code>default-duration</code> field of the <a data-link-type="dfn" href="#data-encoding-offer" id="ref-for-data-encoding-offer①">data-encoding-offer</a> message referenced by the <code>encoding-id</code>.
 The time scale is equal to the value in the <code>time-scale</code> field of
-the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
+the <a data-link-type="dfn" href="#data-encoding-offer" id="ref-for-data-encoding-offer②">data-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
      <p>If present, a time used to synchronize the start time of this data frame (and
@@ -3421,7 +3414,7 @@ timelines.</p>
     <dt data-md>payload
     <dd data-md>
      <p>The data.  The data type is equal to the <code>data-type</code> field of the
-the <code>data-encoding-offer</code> message referenced by the <code>encoding-id</code>.</p>
+the <a data-link-type="dfn" href="#data-encoding-offer" id="ref-for-data-encoding-offer③">data-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
    </dl>
    <h3 class="heading settled" data-level="9.6" id="streaming-feedback"><span class="secno">9.6. </span><span class="content">Feedback</span><a class="self-link" href="#streaming-feedback"></a></h3>
    <p>The media receiver can send feedback to the media sender, such as key frame
@@ -3446,10 +3439,9 @@ This it to prevent out-of-order requests from generating more key frames than ne
 frame.  If not set, the media sender must generate an indepdendent (key) frame.</p>
    </dl>
    <h3 class="heading settled" data-level="9.7" id="streaming-stats"><span class="secno">9.7. </span><span class="content">Stats</span><a class="self-link" href="#streaming-stats"></a></h3>
-   <p>During a streaming session, the sender should send stats with the
-streaming-session-sender-stats-event at the interval the receiver requested.  It
+   <p>During a streaming session, the sender should send stats with the <a data-link-type="dfn" href="#streaming-session-sender-stats-event" id="ref-for-streaming-session-sender-stats-event">streaming-session-sender-stats-event</a> at the interval the receiver requested.  It
 should send all of the following stats for all of the media streams it is
-sending. The streaming-session-sender-stats-event message contains the following
+sending. The <a data-link-type="dfn" href="#streaming-session-sender-stats-event" id="ref-for-streaming-session-sender-stats-event①">streaming-session-sender-stats-event</a> message contains the following
 fields:</p>
    <dl>
     <dt data-md>streaming-session-id
@@ -3498,10 +3490,9 @@ changed.  See below.</p>
      <p>The total number of frames that were not sent due to network, CPU,
 or other contraints.</p>
    </dl>
-   <p>During a streaming session, the receiver should send stats with the
-streaming-session-receiver-stats-event at the interval the sender requested.
+   <p>During a streaming session, the receiver should send stats with the <a data-link-type="dfn" href="#streaming-session-receiver-stats-event" id="ref-for-streaming-session-receiver-stats-event">streaming-session-receiver-stats-event</a> at the interval the sender requested.
 It should send all of the following stats for all of the media streams it is
-receiving.  The streaming-session-receiver-stats-event message contains the
+receiving.  The <a data-link-type="dfn" href="#streaming-session-receiver-stats-event" id="ref-for-streaming-session-receiver-stats-event①">streaming-session-receiver-stats-event</a> message contains the
 following fields:</p>
    <dl>
     <dt data-md>streaming-session-id
@@ -3891,7 +3882,7 @@ guidelines.</p>
    <p>Because DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-4.1.1" id="ref-for-section-4.1.1①">Instance Names</a> are the primary information that the user
 sees prior to authentication, careful presentation of these names is necessary.</p>
    <p>Agents must treat Instance Names as unverified information, and should check
-that the Instance Name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an agent has done
+that the Instance Name is a prefix of the display name received through the <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑨">agent-info</a> message after a successful QUIC connection.  Once an agent has done
 this check, it can show the name as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="verified-display-name">verified display name</dfn>.</p>
    <p>Agents should show only complete display names to the user, instead of truncated
 display names from DNS-SD.  A truncated display name should be verified as above
@@ -4493,13 +4484,13 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 124</span>
-<span class="nc">streaming-session-start-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-start-request">streaming-session-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  streaming-session-start-request-params</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 125</span>
-<span class="nc">streaming-session-start-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-start-response">streaming-session-start-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  streaming-session-start-response-params</span>
 <span class="p">}</span></p>
@@ -4512,7 +4503,7 @@ the wire smaller.</p>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 126</span>
-<span class="nc">streaming-session-modify-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-modify-request">streaming-session-modify-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  streaming-session-modify-request-params</span>
 <span class="p">}</span></p>
@@ -4530,24 +4521,24 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 127</span>
-<span class="nc">streaming-session-modify-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-modify-response">streaming-session-modify-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 128</span>
-<span class="nc">streaming-session-terminate-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-terminate-request">streaming-session-terminate-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1 </span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 129</span>
-<span class="nc">streaming-session-terminate-response </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-terminate-response">streaming-session-terminate-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 130</span>
-<span class="nc">streaming-session-terminate-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-terminate-event">streaming-session-terminate-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
 <span class="p">}</span></p>
 
@@ -4566,14 +4557,14 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="nx">data-encoding-request </span><span class="c1">; data</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">audio-encoding-offer </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="audio-encoding-offer">audio-encoding-offer</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; codec-name</span>
   <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
   <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; default-duration</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">video-encoding-offer </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="video-encoding-offer">video-encoding-offer</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; codec-name</span>
   <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
@@ -4581,7 +4572,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">5</span> <span class="p">:</span> <span class="nx">video-rotation </span><span class="c1">; default-rotation</span>
 <span class="p">}</span></p>
 
-<p><span class="nc">data-encoding-offer </span><span class="p">=</span> <span class="p">{</span>
+<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="data-encoding-offer">data-encoding-offer</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; data-type-name</span>
   <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
@@ -4612,7 +4603,7 @@ the wire smaller.</p>
 <span class="p">)</span></p>
 
 <p><span class="c1">; type key 131</span>
-<span class="nc">streaming-session-sender-stats-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-sender-stats-event">streaming-session-sender-stats-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; system-time</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
@@ -4629,7 +4620,7 @@ the wire smaller.</p>
 <span class="p">}</span></p>
 
 <p><span class="c1">; type key 132</span>
-<span class="nc">streaming-session-receiver-stats-event </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-receiver-stats-event">streaming-session-receiver-stats-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; system-time</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
@@ -4850,6 +4841,7 @@ extensions.</p>
    <li><a href="#agent-info-response">agent-info-response</a><span>, in §Unnumbered section</span>
    <li><a href="#agent-status-request">agent-status-request</a><span>, in §Unnumbered section</span>
    <li><a href="#agent-status-response">agent-status-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#audio-encoding-offer">audio-encoding-offer</a><span>, in §Unnumbered section</span>
    <li><a href="#audio-frame">audio-frame</a><span>, in §Unnumbered section</span>
    <li><a href="#auth-capabilities">auth-capabilities</a><span>, in §Unnumbered section</span>
    <li><a href="#auth-initiation-token">auth-initiation-token</a><span>, in §Unnumbered section</span>
@@ -4858,6 +4850,7 @@ extensions.</p>
    <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in §Unnumbered section</span>
    <li><a href="#auth-status">auth-status</a><span>, in §Unnumbered section</span>
    <li><a href="#controller">controller</a><span>, in §1.1</span>
+   <li><a href="#data-encoding-offer">data-encoding-offer</a><span>, in §Unnumbered section</span>
    <li><a href="#data-frame">data-frame</a><span>, in §Unnumbered section</span>
    <li><a href="#display-name">display name</a><span>, in §3</span>
    <li><a href="#listening-agent">listening agent</a><span>, in §3</span>
@@ -4893,9 +4886,19 @@ extensions.</p>
    <li><a href="#remote-playback-termination-response">remote-playback-termination-response</a><span>, in §Unnumbered section</span>
    <li><a href="#streaming-capabilities-request">streaming-capabilities-request</a><span>, in §Unnumbered section</span>
    <li><a href="#streaming-capabilities-response">streaming-capabilities-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-session-modify-request">streaming-session-modify-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-session-modify-response">streaming-session-modify-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-session-receiver-stats-event">streaming-session-receiver-stats-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-session-sender-stats-event">streaming-session-sender-stats-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-session-start-request">streaming-session-start-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-session-start-response">streaming-session-start-response</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-session-terminate-event">streaming-session-terminate-event</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-session-terminate-request">streaming-session-terminate-request</a><span>, in §Unnumbered section</span>
+   <li><a href="#streaming-session-terminate-response">streaming-session-terminate-response</a><span>, in §Unnumbered section</span>
    <li><a href="#suspicious-agent">suspicious agent</a><span>, in §12.5.2</span>
    <li><a href="#text-track-cue">text-track-cue</a><span>, in §Unnumbered section</span>
    <li><a href="#verified-display-name">verified display name</a><span>, in §12.6.1</span>
+   <li><a href="#video-encoding-offer">video-encoding-offer</a><span>, in §Unnumbered section</span>
    <li><a href="#video-frame">video-frame</a><span>, in §Unnumbered section</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-htmlmediaelement">
@@ -4904,6 +4907,13 @@ extensions.</p>
     <li><a href="#ref-for-htmlmediaelement">2.3. Remote Playback API Requirements</a> <a href="#ref-for-htmlmediaelement①">(2)</a> <a href="#ref-for-htmlmediaelement②">(3)</a> <a href="#ref-for-htmlmediaelement③">(4)</a> <a href="#ref-for-htmlmediaelement④">(5)</a>
     <li><a href="#termref-for-">8.1. Remote Playback State and Controls</a>
     <li><a href="#ref-for-htmlmediaelement⑤">8.2. Remote Playback API</a> <a href="#ref-for-htmlmediaelement⑥">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-media-element">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#media-element">https://html.spec.whatwg.org/multipage/media.html#media-element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-media-element">1. Introduction</a>
+    <li><a href="#ref-for-media-element①">1.1. Terminology</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-window-postmessage">
@@ -5085,6 +5095,7 @@ extensions.</p>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-htmlmediaelement" style="color:initial">HTMLMediaElement</span>
+     <li><span class="dfn-paneled" id="term-for-media-element" style="color:initial">media elements</span>
      <li><span class="dfn-paneled" id="term-for-dom-window-postmessage" style="color:initial">postMessage(message, targetOrigin, transfer)</span>
      <li><span class="dfn-paneled" id="term-for-attr-source-src" style="color:initial">src</span>
      <li><span class="dfn-paneled" id="term-for-attr-source-type" style="color:initial">type</span>
@@ -5195,8 +5206,6 @@ extensions.</p>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Add short names to Presentation API spec, so that BS autolinking works as designed.<a href="#issue-b711fac3"> ↵ </a></div>
-   <div class="issue"> Can autolinks to HTML51 be automatically generated?<a href="#issue-a8c8d59b"> ↵ </a></div>
    <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a><a href="#issue-56c2cd35"> ↵ </a></div>
    <div class="issue"> Add examples of sample mDNS records.<a href="#issue-49bdd4e6"> ↵ </a></div>
    <div class="issue"> Register ALPN with IANA. <a href="https://github.com/webscreens/openscreenprotocol/issues/228">&lt;https://github.com/webscreens/openscreenprotocol/issues/228></a><a href="#issue-808efb48"> ↵ </a></div>
@@ -5345,6 +5354,7 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&l
     <li><a href="#ref-for-agent-info⑥">11.1. Protocol Extension Fields</a>
     <li><a href="#ref-for-agent-info⑦">12.2.1. Personally Identifiable Information &amp; High-Value Data</a>
     <li><a href="#ref-for-agent-info⑧">12.5.2. Local active network attackers</a>
+    <li><a href="#ref-for-agent-info⑨">12.6.1. Instance and Display Names</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="agent-status-request">
@@ -5491,7 +5501,7 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&l
   <aside class="dfn-panel" data-for="remote-playback-availability-response">
    <b><a href="#remote-playback-availability-response">#remote-playback-availability-response</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-remote-playback-availability-response">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-remote-playback-availability-response">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-availability-response①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="remote-playback-availability-event">
@@ -5579,7 +5589,8 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&l
   <aside class="dfn-panel" data-for="video-frame">
    <b><a href="#video-frame">#video-frame</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-video-frame">9.4. Video</a>
+    <li><a href="#ref-for-video-frame">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-video-frame①">9.4. Video</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="data-frame">
@@ -5598,6 +5609,82 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&l
    <b><a href="#streaming-capabilities-response">#streaming-capabilities-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-capabilities-response">9.1. Streaming Protocol Capabilities</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-session-start-request">
+   <b><a href="#streaming-session-start-request">#streaming-session-start-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-session-start-request">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-streaming-session-start-request①">9.2. Sessions</a> <a href="#ref-for-streaming-session-start-request②">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-session-start-response">
+   <b><a href="#streaming-session-start-response">#streaming-session-start-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-session-start-response">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-streaming-session-start-response①">9.2. Sessions</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-session-modify-request">
+   <b><a href="#streaming-session-modify-request">#streaming-session-modify-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-session-modify-request">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-streaming-session-modify-request①">9.2. Sessions</a> <a href="#ref-for-streaming-session-modify-request②">(2)</a> <a href="#ref-for-streaming-session-modify-request③">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-session-modify-response">
+   <b><a href="#streaming-session-modify-response">#streaming-session-modify-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-session-modify-response">9.2. Sessions</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-session-terminate-request">
+   <b><a href="#streaming-session-terminate-request">#streaming-session-terminate-request</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-session-terminate-request">9.2. Sessions</a> <a href="#ref-for-streaming-session-terminate-request①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-session-terminate-response">
+   <b><a href="#streaming-session-terminate-response">#streaming-session-terminate-response</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-session-terminate-response">9.2. Sessions</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-session-terminate-event">
+   <b><a href="#streaming-session-terminate-event">#streaming-session-terminate-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-session-terminate-event">9.2. Sessions</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="audio-encoding-offer">
+   <b><a href="#audio-encoding-offer">#audio-encoding-offer</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-audio-encoding-offer">9.3. Audio</a> <a href="#ref-for-audio-encoding-offer①">(2)</a> <a href="#ref-for-audio-encoding-offer②">(3)</a> <a href="#ref-for-audio-encoding-offer③">(4)</a> <a href="#ref-for-audio-encoding-offer④">(5)</a>
+    <li><a href="#ref-for-audio-encoding-offer⑤">9.4. Video</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="video-encoding-offer">
+   <b><a href="#video-encoding-offer">#video-encoding-offer</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-video-encoding-offer">9.4. Video</a> <a href="#ref-for-video-encoding-offer①">(2)</a> <a href="#ref-for-video-encoding-offer②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="data-encoding-offer">
+   <b><a href="#data-encoding-offer">#data-encoding-offer</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-data-encoding-offer">9.5. Data</a> <a href="#ref-for-data-encoding-offer①">(2)</a> <a href="#ref-for-data-encoding-offer②">(3)</a> <a href="#ref-for-data-encoding-offer③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-session-sender-stats-event">
+   <b><a href="#streaming-session-sender-stats-event">#streaming-session-sender-stats-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-session-sender-stats-event">9.7. Stats</a> <a href="#ref-for-streaming-session-sender-stats-event①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="streaming-session-receiver-stats-event">
+   <b><a href="#streaming-session-receiver-stats-event">#streaming-session-receiver-stats-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-streaming-session-receiver-stats-event">9.7. Stats</a> <a href="#ref-for-streaming-session-receiver-stats-event①">(2)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
