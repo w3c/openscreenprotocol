@@ -28,12 +28,6 @@ Markup Shorthands: markdown yes, dfn yes, idl yes, markup yes
   is available.
 </p>
 
-Issue: Add short names to Presentation API spec, so that BS autolinking works as designed.
-
-
-Issue: Can autolinks to HTML51 be automatically generated?
-
-
 <pre class="anchors">
 urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
     text: available presentation display
@@ -52,8 +46,6 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: media resources
     text: remote playback devices
     text: remote playback source
-urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML51
-    text: media element
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
@@ -99,7 +91,8 @@ that it does not handle all possible ways that browsers and presentation
 displays could support these APIs.  The Open Screen Protocol specifically
 supports browsers and displays that are connected via the same local area
 network.  It allows a browser to present a URL, initiate remote playback of an
-HTML media element, and stream media data to another device.
+HTML <l spec=html>[=media element=]</l>, and stream media data to another
+device.
 
 The Open Screen Protocol is intended to be extensible, so that additional
 capabilities can be added over time.  This may include additions to existing Web
@@ -119,12 +112,12 @@ on another device.  We call this agent a <dfn>controller</dfn> for short.  A
 will call a <dfn>receiver</dfn> for short.  The the Web content itself is called
 a [=presentation=].
 
-Some OSP agents also support the
-[[REMOTE-PLAYBACK|Remote Playback API]].  That API allows an agent to render a
-media element on a [=remote playback device=].  In this document, we refer to it
-as a [=receiver=] because it is shorter and keeps terminology consistent between
-presentations and remote playbacks. Similarly, we use the term [=controller=] to
-refer to the agent that starts, terminates, and controls the remote playback.
+Some OSP agents also support the [[REMOTE-PLAYBACK|Remote Playback API]].  That
+API allows an agent to render a <l spec="html">[=media element=]</l> on a
+[=remote playback device=].  In this document, we refer to it as a [=receiver=]
+because it is shorter and keeps terminology consistent between presentations and
+remote playbacks. Similarly, we use the term [=controller=] to refer to the
+agent that starts, terminates, and controls the remote playback.
 
 For media streaming, we refer to an OSP agent that sends a media stream
 as a <dfn>media sender</dfn> and an agent that receives a media stream as a
@@ -159,13 +152,13 @@ Presentation API Requirements {#requirements-presentation-api}
 2.  A controller must be able to start a new [=presentation=] on a
     receiver given a [=presentation request URL=] and [=presentation ID=].
 
-3.  A controller must be able to create a new
-    {{PresentationConnection}} to an existing presentation on the
-    receiver, given its [=presentation request URL=] and [=presentation ID=].
+3.  A controller must be able to create a new {{PresentationConnection}} to an
+    existing presentation on the receiver, given its [=presentation request
+    URL=] and [=presentation ID=].
 
 4.  It must be possible to close a {{PresentationConnection}} between a
-    controller and a presentation, and signal both parties with the
-    reason why the connection was closed.
+    controller and a presentation, and signal both parties with the reason why
+    the connection was closed.
 
 5.  Multiple controllers must be able to connect to a single presentation
     simultaneously.
@@ -1080,7 +1073,7 @@ watch-duration) send [=remote-playback-availability-event=]  messages if
 URL availabilities change.  Such events contain the following values:
 
 : watch-id
-:: The watch-id given in the remote-playback-url-availability-response,
+:: The watch-id given in the [=remote-playback-availability-response=]
     used to refer to the remote playback URLs whose availability has changed.
 
 : url-availabilities
@@ -1145,12 +1138,13 @@ invalid-url).  Additionally, the response must include the following:
     If not included, no streaming session is started.
 
 If a streaming session is started, streaming messages such a
-streaming-session-modify-request and video-frame can be used for the streaming
-session as if the streaming session had been started with
-streaming-session-start-request and streaming-session-start-response.  The
-streaming session may be terminated before the remote playback is terminated,
-but if the remote playback is terminated first, the streaming session associated
-with it is automatically terminated.
+[=streaming-session-modify-request=] and [=video-frame=] can be used for the
+streaming session as if the streaming session had been started with
+[=streaming-session-start-request=] and
+[=streaming-session-start-response=]. The streaming session may be terminated
+before the remote playback is terminated, but if the remote playback is
+terminated first, the streaming session associated with it is automatically
+terminated.
 
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -1733,7 +1727,7 @@ Sessions {#streaming-sessions}
 ------------------------------------
 
 To start a streaming session, a sender may send a
-streaming-session-start-request message with the following fields:
+[=streaming-session-start-request=] message with the following fields:
 
 : streaming-session-id
 :: Identifies the streaming session.  Must be unique for the (sender,
@@ -1857,8 +1851,8 @@ Each data encoding offered defines the following fields:
     data-frame messages smaller by not including the duration for
     data-frame messages that have the default duration.
 
-After receiving a streaming-session-start-request message, a receiver
-should send back a streaming-session-start-response message with the
+After receiving a [=streaming-session-start-request=] message, a receiver
+should send back a [=streaming-session-start-response=] message with the
 following fields:
 
 : desired-stats-interval
@@ -1888,19 +1882,19 @@ Each stream request contains the following fields:
 
 
 During a streaming session, the receiver can modify the requests it
-made for encodings by sending a `streaming-session-modify-request`
+made for encodings by sending a [=streaming-session-modify-request=]
 containing a modified list of stream-requests.  When the sender receives
-a `streaming-session-modify-request`, it should send back a
-`streaming-session-modify-response` indicate whether or not the
+a [=streaming-session-modify-request=], it should send back a
+[=streaming-session-modify-response=] indicate whether or not the
 application of the new request from the
-`streaming-session-modify-request` was successful.
+[=streaming-session-modify-request=] was successful.
 
 Finally, the sender may terminate the streaming session by sending
-a streaming-session-terminate-request command.  When the receiver
-receives the streaming-session-terminate-request, it should send back
-a streaming-session-terminate-response.  The receiver can terminate at
+a [=streaming-session-terminate-request=] command.  When the receiver
+receives the [=streaming-session-terminate-request=], it should send back
+a [=streaming-session-terminate-response=].  The receiver can terminate at
 any point and notify the sender by sending a
-streaming-session-terminate-event message.
+[=streaming-session-terminate-event=] message.
 
 Audio {#streaming-audio}
 ------------------------------
@@ -1927,7 +1921,7 @@ separate QUIC streams.
 : encoding-id
 :: Identifies the media encoding to which this audio frame belongs.  This can be
     used to reference fields of the encoding (from the
-    audio-encoding-offer message) such as the codec, codec properties,
+    [=audio-encoding-offer=] message) such as the codec, codec properties,
     time scale (aka clock rate or sample rate), and default duration.
     Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
@@ -1936,14 +1930,14 @@ separate QUIC streams.
 :: Identifies the beginning of the time range of the audio frame. The
     end time can be inferred from the start time and duration. The
     time scale is equal to the value in the `time-scale` field of the
-    `audio-encoding-offer` message referenced by the `encoding-id`.
+    [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the audio frame. If not present, the
     duration is equal to the `default-duration` field of the
-    `audio-encoding-offer` message referenced by the `encoding-id`.
+    [=audio-encoding-offer=] message referenced by the `encoding-id`.
     The time scale is equal to the value in the `time-scale` field of
-    the `audio-encoding-offer` message referenced by the `encoding-id`.
+    the [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
 :: If present, a time used to synchronize the start time of this audio frame (and
@@ -1953,7 +1947,7 @@ separate QUIC streams.
 
 : payload
 :: The encoded audio.  The codec and codec parameters are equal to the
-    `format` field of the `audio-encoding-offer` message referenced by
+    `format` field of the [=audio-encoding-offer=] message referenced by
     the `encoding-id`
 
 Video {#streaming-video}
@@ -1995,12 +1989,12 @@ ending at the last dependent frame.
 :: Identifies the beginning of the time range of the video frame.  The
     end time can be inferred from the start time and duration. The
     time scale is equal to the value in the `time-scale` field of the
-    `video-encoding-offer` message referenced by the `encoding-id`.
+    [=video-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the video frame. If not present, that
     means duration is unknown.  The time scale is equal to the value
-    in the `time-scale` field of the `video-encoding-offer` message
+    in the `time-scale` field of the [=video-encoding-offer=] message
     referenced by the `encoding-id`.
 
 : sync-time
@@ -2012,13 +2006,13 @@ ending at the last dependent frame.
 :: If present, indicates how the frame should be rotated after
     decoding but before rendering.  Rotation is clockwise in
     increments of 90 degrees.  The default is equal to the
-    `default-rotation` field of the `video-encoding-offer` message
+    `default-rotation` field of the [=video-encoding-offer=] message
     referenced by the `encoding-id`.
 
 : payload
 :: The encoded video frame (encoded image).  The codec and codec
      parameters are are equal to the `format` field of the
-     `audio-encoding-offer` message referenced by the `encoding-id`.
+     [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 Data {#streaming-data}
 ------------------------------------
@@ -2047,14 +2041,14 @@ that makes sense for a specific type of data.
 :: Identifies the beginning of the time range of the data frame.  The
     end time can be inferred from the start time and duration.  The
     time scale is equal to the value in the `time-scale` field of the
-    `data-encoding-offer` message referenced by the `encoding-id`.
+    [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the data frame. If not present, the
     duration is equal to the `default-duration` field of the
-    `data-encoding-offer` message referenced by the `encoding-id`.
+    [=data-encoding-offer=] message referenced by the `encoding-id`.
     The time scale is equal to the value in the `time-scale` field of
-    the `data-encoding-offer` message referenced by the `encoding-id`.
+    the [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
 :: If present, a time used to synchronize the start time of this data frame (and
@@ -2063,7 +2057,7 @@ that makes sense for a specific type of data.
 
 : payload
 :: The data.  The data type is equal to the `data-type` field of the
-    the `data-encoding-offer` message referenced by the `encoding-id`.
+    the [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 Feedback {#streaming-feedback}
 ------------------------------------
@@ -2094,9 +2088,9 @@ Stats {#streaming-stats}
 ------------------------------
 
 During a streaming session, the sender should send stats with the
-streaming-session-sender-stats-event at the interval the receiver requested.  It
+[=streaming-session-sender-stats-event=] at the interval the receiver requested.  It
 should send all of the following stats for all of the media streams it is
-sending. The streaming-session-sender-stats-event message contains the following
+sending. The [=streaming-session-sender-stats-event=] message contains the following
 fields:
 
 : streaming-session-id
@@ -2144,9 +2138,9 @@ Video encoding sender stats include the following fields:
 
 
 During a streaming session, the receiver should send stats with the
-streaming-session-receiver-stats-event at the interval the sender requested.
+[=streaming-session-receiver-stats-event=] at the interval the sender requested.
 It should send all of the following stats for all of the media streams it is
-receiving.  The streaming-session-receiver-stats-event message contains the
+receiving.  The [=streaming-session-receiver-stats-event=] message contains the
 following fields:
 
 : streaming-session-id
@@ -2599,7 +2593,7 @@ sees prior to authentication, careful presentation of these names is necessary.
 
 Agents must treat Instance Names as unverified information, and should check
 that the Instance Name is a prefix of the display name received through the
-`agent-info` message after a successful QUIC connection.  Once an agent has done
+[=agent-info=] message after a successful QUIC connection.  Once an agent has done
 this check, it can show the name as a <dfn noexport>verified display name</dfn>.
 
 Agents should show only complete display names to the user, instead of truncated
