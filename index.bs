@@ -1138,7 +1138,7 @@ invalid-url).  Additionally, the response must include the following:
     If not included, no streaming session is started.
 
 If a streaming session is started, streaming messages such a
-[=streaming-session-modify-request=] and[=video-frame=] can be used for the
+[=streaming-session-modify-request=] and [=video-frame=] can be used for the
 streaming session as if the streaming session had been started with
 [=streaming-session-start-request=] and
 [=streaming-session-start-response=]. The streaming session may be terminated
