@@ -592,13 +592,13 @@ For each message, the [=OSP agent=] must write to the QUIC stream the following:
 
 2.  The message encoded as CBOR.
 
-If an agent receives a message for which it does not recognize a
-type key, it must close the QUIC connection with an application error
-code of 404 and should include the unknown type key in the reason phrase
-(see [=CONNECTION_CLOSE Frames=] in [[QUIC]]).
+If an agent receives a message for which it does not recognize a type key, it
+must close the QUIC connection with an application error code of 404 and should
+include the unknown type key in the reason phrase of the [=CONNECTION_CLOSE
+frame=].
 
-Variable-length integers are encoded in the same format as defined by the
-[=Variable-Length Integer Encoding=] in [[QUIC]].
+Variable-length integers are encoded in the [=Variable-Length Integer Encoding=]
+used by [[QUIC]].
 
 Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
