@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 86a39676f08870ba1210b97fe65ff62bd4e723c9" name="generator">
   <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="4d7838c677d4ae656f5b5502d60f1075ee3e76af" name="document-revision">
+  <meta content="c7cb098a660c13faa52f92e938a57ad93172f78d" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -2058,11 +2058,11 @@ integer (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
     <li data-md>
      <p>The message encoded as CBOR.</p>
    </ol>
-   <p>If an agent receives a message for which it does not recognize a
-type key, it must close the QUIC connection with an application error
-code of 404 and should include the unknown type key in the reason phrase
-(see <a data-link-type="dfn" href="https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-19.19" id="ref-for-section-19.19">CONNECTION_CLOSE Frames</a> in <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a>).</p>
-   <p>Variable-length integers are encoded in the same format as defined by the <a data-link-type="dfn" href="https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-16" id="ref-for-section-16">Variable-Length Integer Encoding</a> in <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a>.</p>
+   <p>If an agent receives a message for which it does not recognize a type key, it
+must close the QUIC connection with an application error code of 404 and should
+include the unknown type key in the reason phrase of the <a data-link-type="dfn" href="https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-19.19" id="ref-for-section-19.19">CONNECTION_CLOSE
+frame</a>.</p>
+   <p>Variable-length integers are encoded in the <a data-link-type="dfn" href="https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-16" id="ref-for-section-16">Variable-Length Integer Encoding</a> used by <a data-link-type="biblio" href="#biblio-quic">[QUIC]</a>.</p>
    <p>Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
