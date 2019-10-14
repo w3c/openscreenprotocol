@@ -46,6 +46,9 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: media resources
     text: remote playback devices
     text: remote playback source
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-19.19; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-16; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
@@ -81,10 +84,10 @@ content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, and smart speakers.
 
 This spec defines a suite of network protocols that enable two user agents to
-implement the [[PRESENTATION-API|Presentation API]] and [[REMOTE-PLAYBACK|Remote
-Playback API]] in an interoperable fashion.  This means that a Web developer can
-expect these APIs to work as intended when connecting two devices from
-independent implementations of the Open Screen Protocol.
+implement the [[PRESENTATION-API|Presentation API]] and
+[[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable fashion.  This means
+that a Web developer can expect these APIs to work as intended when connecting
+two devices from independent implementations of the Open Screen Protocol.
 
 The Open Screen Protocol is a specific implementation of these two APIs, meaning
 that it does not handle all possible ways that browsers and presentation
@@ -295,7 +298,7 @@ keys and values:
 
 : fp
 :: The <dfn>agent fingerprint</dfn> of the advertising agent, computed over the
-    [=agent certificate=]. The format of the fingerprint is defined by [[RFC5122]],
+    [=agent certificate=]. The format of the fingerprint is defined by [[!RFC5122]],
     excluding the "fingerprint:" prefix and including the hash function, space,
     and hex-encoded fingerprint.  The fingerprint value also functions as an ID
     for the agent. All agents must support the following hash functions: [=sha-256=],
@@ -344,17 +347,17 @@ TLS 1.3 {#tls-13}
 -----------------
 
 When an [=OSP Agent=] makes a QUIC connection to another agent, it must use
-[[RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 must be used in the following
+[[!RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 must be used in the following
 application profile:
 
-* The [[RFC7301|ALPN]] used must be "osp".
+* The [[!RFC7301|ALPN]] used must be "osp".
 * Only constant-time AEAD ciphers are allowed.
-    * OSP agents must support [[RFC8446|TLS_AES_128_GCM_SHA256]].
-    * OSP agents should support [[RFC8466|TLS_CHACHA20_POLY1305_SHA256]] and
-        [[RFC8466|TLS_AES_256_GCM_SHA384]].
-* OSP agents must support the [[RFC8446|ecdsa_secp256r1_sha256]] digital signature algorithm.
-    OSP agents should also support [[RFC8466|ecdsa_secp384r1_sha384]] and
-    [[RFC8466|ecdsa_secp521r1_sha512]]. OSP agents must not support additional digital
+    * OSP agents must support [[!RFC8446|TLS_AES_128_GCM_SHA256]].
+    * OSP agents should support [[!RFC8466|TLS_CHACHA20_POLY1305_SHA256]] and
+        [[!RFC8466|TLS_AES_256_GCM_SHA384]].
+* OSP agents must support the [[!RFC8446|ecdsa_secp256r1_sha256]] digital signature algorithm.
+    OSP agents should also support [[!RFC8466|ecdsa_secp384r1_sha384]] and
+    [[!RFC8466|ecdsa_secp521r1_sha512]]. OSP agents must not support additional digital
     signature algorithms.
     * `ecdsa_secp256r1_sha256` must be included in the `signature_algorithms`
         extension.  `ecdsa_secp384r1_sha384` and `ecdsa_secp512r1_sha512` must be
@@ -386,7 +389,7 @@ list based on hardware characteristics of agents.
 Agent Certificates {#certificates}
 ----------------------------------
 
-Each OSP Agent must generate an [[RFC5280|X.509 v3]] <dfn>agent
+Each OSP Agent must generate an [[!RFC5280|X.509 v3]] <dfn>agent
 certificate</dfn> containing a public key to be used with the TLS 1.3
 certificate exchange.  Both [=advertising agents=] and [=listening agents=] must
 use the [=agent certificate=] in TLS 1.3 `Certificate` messages when making a
@@ -448,7 +451,7 @@ The following X.509 v3 fields are to be set as follows:
 </tbody>
 </table>
 
-Mandatory fields not mentioned above should be set according to [[RFC 5280]].
+Mandatory fields not mentioned above should be set according to [[!RFC5280]].
 
 The value `<fp>` above should be substituted with the [=agent fingerprint=] (as
 serialized in mDNS TXT).
@@ -557,7 +560,7 @@ be closed with an error code of 5139.  In order to keep a QUIC connection alive,
 agent may send an [=agent-status-request=] message, and any agent that receives an
 [=agent-status-request=] message should send an [=agent-status-response=] message. Such
 messages should be sent more frequently than the QUIC idle_timeout transport
-parameter (see section 18 of [[QUIC]]) and QUIC PING
+parameter (see [=Transport Parameter Encoding=] in [[QUIC]]) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
 recommended.  The agent should behave as though a timer less than the
 idle_timeout were reset every time a message is sent on a QUIC stream.  If the
@@ -576,7 +579,7 @@ include additional information not defined in this spec, as described in
 Messages delivery using CBOR and QUIC streams {#messages}
 ========================================================
 
-Messages are serialized using [[RFC7049|CBOR]].  To send a group of messages in
+Messages are serialized using [[!RFC7049|CBOR]].  To send a group of messages in
 order, that group of messages must be sent in one QUIC stream.  Independent
 groups of messages (with no ordering dependency across groups) should be sent in
 different QUIC streams.  In order to put multiple CBOR-serialized messages into
@@ -592,10 +595,10 @@ For each message, the [=OSP agent=] must write to the QUIC stream the following:
 If an agent receives a message for which it does not recognize a
 type key, it must close the QUIC connection with an application error
 code of 404 and should include the unknown type key in the reason phrase
-(see [[QUIC#section-19.4|QUIC transport section 19.4]]).
+(see [=CONNECTION_CLOSE Frames=] in [[QUIC]]).
 
-Variable-length integers are encoded in the same format as defined by
-[[QUIC#section-16| QUIC transport section 16]].
+Variable-length integers are encoded in the same format as defined by the
+[=Variable-Length Integer Encoding=] in [[QUIC]].
 
 Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
@@ -2620,7 +2623,7 @@ capable of handling:
 Appendix A: Messages {#appendix-a}
 ====================
 
-The following messages are defined with [[CDDL]]. When integer keys are used, a
+The following messages are defined with [[RFC8610|CDDL]]. When integer keys are used, a
 comment is appended to the line to indicate the name of the field. Object
 definitions in this specification have this unusual syntax to reduce the number
 of bytes-on-the-wire, while maintaining a human-readable name for each
