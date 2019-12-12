@@ -3,30 +3,17 @@ Title: Open Screen Protocol
 Shortname: openscreenprotocol
 Level: 1
 Status: w3c/ED
-ED: https://webscreens.github.io/openscreenprotocol/
+ED: https://w3c.github.io/openscreenprotocol/
 Canonical URL: ED
 Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
-Repository: webscreens/openscreenprotocol
+Repository: w3c/openscreenprotocol
 Abstract: The Open Screen Protocol is a suite of network protocols that allow
           user agents to implement the [[PRESENTATION-API|Presentation API]] and
           the [[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable
           fashion.
-Group: Second Screen Community Group
-Mailing List: public-webscreens@w3c.org
-Mailing List Archives: https://lists.w3.org/Archives/Public/public-webscreens/
+Group: secondscreenwg
 Markup Shorthands: markdown yes, dfn yes, idl yes, markup yes
 </pre>
-
-<p boilerplate="copyright">
-<a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">
-  Copyright</a> © [YEAR] the Contributors to the [TITLE] Specification,
-  published by the <a href="https://www.w3.org/community/webscreens/">
-  Second Screen Community Group</a> under the
-  <a href="https://www.w3.org/community/about/agreements/cla/">
-  W3C Community Contributor License Agreement (CLA)</a>.  A human-readable
-  <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a>
-  is available.
-</p>
 
 <pre class="anchors">
 urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
@@ -60,21 +47,6 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
 url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 </pre>
-
-<h2 class='no-num no-toc no-ref' id='document-status'>Status of this document</h2>
-
-This specification was published by the [Second Screen Community
-Group](https://www.w3.org/community/webscreens/). It is not a W3C Standard nor
-is it on the W3C Standards Track. It should not be viewed as a stable
-specification, and may change in substantial ways at any time. A future version
-of this document will be published as a Community Group Report.
-
-Please note that under the [W3C Community Contributor License Agreement
-(CLA)](https://www.w3.org/community/about/agreements/cla/) there is a limited
-opt-out and other conditions apply.
-
-Learn more about [W3C Community and Business
-Groups](http://www.w3.org/community/).
 
 Introduction {#introduction}
 ============================

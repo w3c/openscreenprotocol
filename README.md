@@ -8,8 +8,11 @@ and [Remote Playback API](https://w3c.github.io/remote-playback/)
 in an interoperable fashion.
 
 This work is in scope for the
-[W3C Second Screen Community Group](https://www.w3.org/community/webscreens/)
-([Charter](https://webscreens.github.io/cg-charter/)).
+[W3C Second Screen Working Group](https://www.w3.org/2014/secondscreen/)
+([Charter](https://www.w3.org/2014/secondscreen/charter-2020.html)).
+
+Please refer to the group's [Work Mode](https://www.w3.org/wiki/Second_Screen/Work_Mode)
+for instructions on how to contribute.
 
 The protocol will meet the
 [functional and non-functional requirements](requirements.md) of the
@@ -18,7 +21,7 @@ for prospective implementations.
 
 ### Submitted Proposals
 
-The community group is currently evaluating proposals to implement different
+The group is currently evaluating proposals to implement different
 aspects of the Open Screen Protocol.  The following proposals have been
 submitted:
 
