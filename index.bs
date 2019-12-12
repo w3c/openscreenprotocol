@@ -519,7 +519,7 @@ The various capabilities have the following meanings:
 :: The agent can send streaming using the streaming protocol.
 
 Note: See the
-[Capabilities Registry](https://webscreens.github.io/openscreenprotocol/capabilities.md)
+[Capabilities Registry](https://w3c.github.io/openscreenprotocol/capabilities.md)
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
 
@@ -2222,7 +2222,7 @@ customization or other purposes.
 
 To add new extension messages, extension authors must register a capability ID
 with a range of message type keys in a
-[public registry](https://webscreens.github.io/openscreenprotocol/capabilites.md).
+[public registry](https://w3c.github.io/openscreenprotocol/capabilites.md).
 Agents may then indicate that they accept an extension by including the
 corresponding capability ID in the `capabilities` field of its [=agent-info=]
 message.
