@@ -1,8 +1,8 @@
 <!doctype html><html lang="en">
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <title>Open Screen Protocol</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Open Screen Protocol</title>
 <style data-fill-with="stylesheet">/******************************************************************************
  *                   Style sheet for the W3C specifications                   *
  *
@@ -1212,9 +1212,10 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 86a39676f08870ba1210b97fe65ff62bd4e723c9" name="generator">
-  <link href="https://webscreens.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="c7cb098a660c13faa52f92e938a57ad93172f78d" name="document-revision">
+  <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
+  <meta content="Bikeshed version 087ea90e1ebd0321c20373d89950d1c6b73d5df1" name="generator">
+  <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
+  <meta content="79c6923c48f07b2b99b41c4c74c7fac9695e7d23" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1464,25 +1465,22 @@ pre .property::before, pre .property::after {
 }</style>
  <body class="h-entry">
   <div class="head">
-   <p data-fill-with="logo"></p>
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-10-14">14 October 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-12-13">13 December 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
-     <dd><a class="u-url" href="https://webscreens.github.io/openscreenprotocol/">https://webscreens.github.io/openscreenprotocol/</a>
-     <dt>Feedback:
-     <dd><span><a href="mailto:public-webscreens@w3c.org?subject=%5Bopenscreenprotocol%5D%20YOUR%20TOPIC%20HERE">public-webscreens@w3c.org</a> with subject line “<kbd>[openscreenprotocol] <i data-lt>… message topic …</i></kbd>” (<a href="https://lists.w3.org/Archives/Public/public-webscreens/" rel="discussion">archives</a>)</span>
+     <dd><a class="u-url" href="https://w3c.github.io/openscreenprotocol/">https://w3c.github.io/openscreenprotocol/</a>
      <dt>Issue Tracking:
-     <dd><a href="https://github.com/webscreens/openscreenprotocol/issues/">GitHub</a>
+     <dd><a href="https://github.com/w3c/openscreenprotocol/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editor:
      <dd class="editor p-author h-card vcard" data-editor-id="68454"><a class="p-name fn u-url url" href="https://github.com/mfoltzgoogle">Mark Foltz</a> (<span class="p-org org">Google</span>)
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright"> Copyright</a> © 2019 the Contributors to the Open Screen Protocol Specification,
-  published by the <a href="https://www.w3.org/community/webscreens/"> Second Screen Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/"> W3C Community Contributor License Agreement (CLA)</a>.  A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2019 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -1492,6 +1490,17 @@ pre .property::before, pre .property::after {
           user agents to implement the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> and
           the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> in an interoperable
           fashion.</p>
+  </div>
+  <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+  <div data-fill-with="status">
+   <p> <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
+   <p> This document was published by the <a href="https://www.w3.org/2014/secondscreen/">Second Screen Working Group</a> as an Editor’s Draft. This document is intended to become a W3C Recommendation. </p>
+   <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/w3c/openscreenprotocol/issues">Github issues</a>. </p>
+   <p> Publication as an Editor’s Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
+   <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential
+    Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
+   <p> This document is governed by the <a href="https://www.w3.org/2019/Process-20190301/" id="w3c_process_revision">1 March 2019 W3C Process Document</a>. </p>
+   <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -1596,7 +1605,6 @@ pre .property::before, pre .property::after {
      </ol>
     <li><a href="#appendix-a"><span class="secno"></span> <span class="content">Appendix A: Messages</span></a>
     <li><a href="#appendix-b"><span class="secno"></span> <span class="content">Appendix B: Message Type Key Ranges</span></a>
-    <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
@@ -1613,17 +1621,6 @@ pre .property::before, pre .property::after {
    </ol>
   </nav>
   <main>
-   <h2 class="no-num no-toc no-ref heading settled" id="document-status"><span class="content">Status of this document</span></h2>
-   <p>This specification was published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community
-Group</a>. It is not a W3C Standard nor
-is it on the W3C Standards Track. It should not be viewed as a stable
-specification, and may change in substantial ways at any time. A future version
-of this document will be published as a Community Group Report.</p>
-   <p>Please note that under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement
-(CLA)</a> there is a limited
-opt-out and other conditions apply.</p>
-   <p>Learn more about <a href="http://www.w3.org/community/">W3C Community and Business
-Groups</a>.</p>
    <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
    <p>The Open Screen Protocol connects browsers to devices capable of rendering Web
 content for a shared audience.  Typically, these are devices like
@@ -1787,7 +1784,7 @@ APIs.</p>
    </ol>
    <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Discovery with mDNS</span><a class="self-link" href="#discovery"></a></h2>
    <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent①">Open Screen Protocol agents</a> must discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.  To do so, OSP agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
-   <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a></p>
+   <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/107">&lt;https://github.com/w3c/openscreenprotocol/issues/107></a></p>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent</dfn> is one that responds to mDNS queries
 for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
 name</dfn> (a non-empty string) that is a human readable description of the
@@ -1878,13 +1875,13 @@ the negotiated signature algoirithm.</p>
    </ul>
    <p class="note" role="note"><span>Note:</span> As this is an application-specific profile for TLS 1.3, it is not required
 for OSP agents to interoperate with non-OSP TLS 1.3 endpoints.</p>
-   <p class="issue" id="issue-808efb48"><a class="self-link" href="#issue-808efb48"></a> Register ALPN with IANA. <a href="https://github.com/webscreens/openscreenprotocol/issues/228">&lt;https://github.com/webscreens/openscreenprotocol/issues/228></a></p>
+   <p class="issue" id="issue-808efb48"><a class="self-link" href="#issue-808efb48"></a> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">&lt;https://github.com/w3c/openscreenprotocol/issues/228></a></p>
    <p class="issue" id="issue-eb53583c"><a class="self-link" href="#issue-eb53583c"></a> Determine if there is an advantage to session resumption outside of
-early data. If we allow session resumption, do we allow early data too? <a href="https://github.com/webscreens/openscreenprotocol/issues/220">&lt;https://github.com/webscreens/openscreenprotocol/issues/220></a></p>
+early data. If we allow session resumption, do we allow early data too? <a href="https://github.com/w3c/openscreenprotocol/issues/220">&lt;https://github.com/w3c/openscreenprotocol/issues/220></a></p>
    <p class="issue" id="issue-983764c9"><a class="self-link" href="#issue-983764c9"></a> Do agents need to support the Cookies extension (used in
-HelloRetryRequest)? <a href="https://github.com/webscreens/openscreenprotocol/issues/219">&lt;https://github.com/webscreens/openscreenprotocol/issues/219></a></p>
+HelloRetryRequest)? <a href="https://github.com/w3c/openscreenprotocol/issues/219">&lt;https://github.com/w3c/openscreenprotocol/issues/219></a></p>
    <p class="issue" id="issue-08dfa2ca"><a class="self-link" href="#issue-08dfa2ca"></a> Make recommendations for cipher and signature algorithm preference
-list based on hardware characteristics of agents. <a href="https://github.com/webscreens/openscreenprotocol/issues/218">&lt;https://github.com/webscreens/openscreenprotocol/issues/218></a></p>
+list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">&lt;https://github.com/w3c/openscreenprotocol/issues/218></a></p>
    <h3 class="heading settled" data-level="4.2" id="certificates"><span class="secno">4.2. </span><span class="content">Agent Certificates</span><a class="self-link" href="#certificates"></a></h3>
    <p>Each OSP Agent must generate an <a data-link-type="biblio" href="#biblio-rfc5280">X.509 v3</a> <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="agent certificate" data-noexport id="agent-certificate">agent
 certificate</dfn> containing a public key to be used with the TLS 1.3
@@ -2024,7 +2021,7 @@ protocol.</p>
     <dd data-md>
      <p>The agent can send streaming using the streaming protocol.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> See the <a href="https://webscreens.github.io/openscreenprotocol/capabilities.md">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
+   <p class="note" role="note"><span>Note:</span> See the <a href="https://w3c.github.io/openscreenprotocol/capabilities.md">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
 through <a href="#protocol-extensions">§ 11 Protocol Extensions</a>).</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
@@ -2041,7 +2038,7 @@ timer expires, a <a data-link-type="dfn" href="#agent-status-request" id="ref-fo
    <p>If a listening agent wishes to send messages to an advertising agent, the
 listening agent can connect to the advertising agent "on demand"; it does not
 need to keep the connection alive.</p>
-   <p class="issue" id="issue-e0955a17"><a class="self-link" href="#issue-e0955a17"></a> Define suspend and resume behavior for connection protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a></p>
+   <p class="issue" id="issue-e0955a17"><a class="self-link" href="#issue-e0955a17"></a> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">&lt;https://github.com/w3c/openscreenprotocol/issues/108></a></p>
    <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info④">agent-info</a> and <a data-link-type="dfn" href="#agent-status-response" id="ref-for-agent-status-response①">agent-status-response</a> messages may be extended to
 include additional information not defined in this spec, as described in <a href="#protocol-extension-fields">§ 11.1 Protocol Extension Fields</a>.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
@@ -2424,7 +2421,7 @@ APIs in <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playbac
 defined in this section.</p>
    <p>For all messages defined in this section, see Appendix A for the full
 CDDL definitions.</p>
-   <p class="issue" id="issue-649c173f"><a class="self-link" href="#issue-649c173f"></a> Refinements to Remote Playback protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/159">&lt;https://github.com/webscreens/openscreenprotocol/issues/159></a></p>
+   <p class="issue" id="issue-649c173f"><a class="self-link" href="#issue-649c173f"></a> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">&lt;https://github.com/w3c/openscreenprotocol/issues/159></a></p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device" id="ref-for-dfn-compatible-remote-playback-device">compatible remote playback devices</a> for a
 particular URL or set of URLs, the controller may send a <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request">remote-playback-availability-request</a> message with the following values:</p>
    <dl>
@@ -2432,7 +2429,7 @@ particular URL or set of URLs, the controller may send a <a data-link-type="dfn"
     <dd data-md>
      <p>A list of <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources">media resources</a>, the same as specified in the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request">remote-playback-start-request</a> message.  Must not be empty.</p>
    </dl>
-   <p class="issue" id="issue-9145071e"><a class="self-link" href="#issue-9145071e"></a> Remote Playback HTTP headers. <a href="https://github.com/webscreens/openscreenprotocol/issues/146">&lt;https://github.com/webscreens/openscreenprotocol/issues/146></a></p>
+   <p class="issue" id="issue-9145071e"><a class="self-link" href="#issue-9145071e"></a> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">&lt;https://github.com/w3c/openscreenprotocol/issues/146></a></p>
    <dl>
     <dt data-md>headers
     <dd data-md>
@@ -3583,7 +3580,7 @@ certificate fingerprint) to track requests across multiple agents.</p>
 defined by this specification.  This could be used for experimentation,
 customization or other purposes.</p>
    <p>To add new extension messages, extension authors must register a capability ID
-with a range of message type keys in a <a href="https://webscreens.github.io/openscreenprotocol/capabilites.md">public registry</a>.
+with a range of message type keys in a <a href="https://w3c.github.io/openscreenprotocol/capabilites.md">public registry</a>.
 Agents may then indicate that they accept an extension by including the
 corresponding capability ID in the <code>capabilities</code> field of its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑤">agent-info</a> message.</p>
    <p>Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
@@ -3723,7 +3720,7 @@ metadata versions, and metadata for those parties.</p>
 UI of the user agent during the display selection or display authentication
 process.  It can be an implementation choice whether the user agent clears or
 retains this data when the user clears browsing data.</p>
-   <p class="issue" id="issue-8bf4aa9f"><a class="self-link" href="#issue-8bf4aa9f"></a> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a></p>
+   <p class="issue" id="issue-8bf4aa9f"><a class="self-link" href="#issue-8bf4aa9f"></a> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">&lt;https://github.com/w3c/openscreenprotocol/issues/132></a></p>
    <h4 class="heading settled" data-level="12.2.6" id="other-considerations"><span class="secno">12.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
    <p>The Open Screen Protocol does not grant to the Web additional access to the
 following:</p>
@@ -4683,153 +4680,9 @@ extensions.</p>
       <td>>= 2<sup>30</sup>
       <td>Reserved for future use
    </table>
+   <p id="back-to-top" role="navigation"><a href="#toc"><abbr title="Back to Top">↑</abbr></a></p>
+<script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
   </main>
-  <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
-   <p> Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
-            The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”
-            in the normative parts of this document
-            are to be interpreted as described in RFC 2119.
-            However, for readability,
-            these words do not appear in all uppercase letters in this specification. </p>
-   <p> All of the text of this specification is normative
-            except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
-   <p> Examples in this specification are introduced with the words “for example”
-            or are set apart from the normative text with <code>class="example"</code>, like this: </p>
-   <div class="example" id="example-example"><a class="self-link" href="#example-example"></a> This is an example of an informative example. </div>
-   <p> Informative notes begin with the word “Note”
-            and are set apart from the normative text with <code>class="note"</code>, like this: </p>
-   <p class="note" role="note"> Note, this is an informative note. </p>
-  </div>
-<script>
-(function() {
-  "use strict";
-  var collapseSidebarText = '<span aria-hidden="true">←</span> '
-                          + '<span>Collapse Sidebar</span>';
-  var expandSidebarText   = '<span aria-hidden="true">→</span> '
-                          + '<span>Pop Out Sidebar</span>';
-  var tocJumpText         = '<span aria-hidden="true">↑</span> '
-                          + '<span>Jump to Table of Contents</span>';
-
-  var sidebarMedia = window.matchMedia('screen and (min-width: 78em)');
-  var autoToggle   = function(e){ toggleSidebar(e.matches) };
-  if(sidebarMedia.addListener) {
-    sidebarMedia.addListener(autoToggle);
-  }
-
-  function toggleSidebar(on) {
-    if (on == undefined) {
-      on = !document.body.classList.contains('toc-sidebar');
-    }
-
-    /* Don’t scroll to compensate for the ToC if we’re above it already. */
-    var headY = 0;
-    var head = document.querySelector('.head');
-    if (head) {
-      // terrible approx of "top of ToC"
-      headY += head.offsetTop + head.offsetHeight;
-    }
-    var skipScroll = window.scrollY < headY;
-
-    var toggle = document.getElementById('toc-toggle');
-    var tocNav = document.getElementById('toc');
-    if (on) {
-      var tocHeight = tocNav.offsetHeight;
-      document.body.classList.add('toc-sidebar');
-      document.body.classList.remove('toc-inline');
-      toggle.innerHTML = collapseSidebarText;
-      if (!skipScroll) {
-        window.scrollBy(0, 0 - tocHeight);
-      }
-      tocNav.focus();
-      sidebarMedia.addListener(autoToggle); // auto-collapse when out of room
-    }
-    else {
-      document.body.classList.add('toc-inline');
-      document.body.classList.remove('toc-sidebar');
-      toggle.innerHTML = expandSidebarText;
-      if (!skipScroll) {
-        window.scrollBy(0, tocNav.offsetHeight);
-      }
-      if (toggle.matches(':hover')) {
-        /* Unfocus button when not using keyboard navigation,
-           because I don’t know where else to send the focus. */
-        toggle.blur();
-      }
-    }
-  }
-
-  function createSidebarToggle() {
-    /* Create the sidebar toggle in JS; it shouldn’t exist when JS is off. */
-    var toggle = document.createElement('a');
-      /* This should probably be a button, but appearance isn’t standards-track.*/
-    toggle.id = 'toc-toggle';
-    toggle.class = 'toc-toggle';
-    toggle.href = '#toc';
-    toggle.innerHTML = collapseSidebarText;
-
-    sidebarMedia.addListener(autoToggle);
-    var toggler = function(e) {
-      e.preventDefault();
-      sidebarMedia.removeListener(autoToggle); // persist explicit off states
-      toggleSidebar();
-      return false;
-    }
-    toggle.addEventListener('click', toggler, false);
-
-
-    /* Get <nav id=toc-nav>, or make it if we don’t have one. */
-    var tocNav = document.getElementById('toc-nav');
-    if (!tocNav) {
-      tocNav = document.createElement('p');
-      tocNav.id = 'toc-nav';
-      /* Prepend for better keyboard navigation */
-      document.body.insertBefore(tocNav, document.body.firstChild);
-    }
-    /* While we’re at it, make sure we have a Jump to Toc link. */
-    var tocJump = document.getElementById('toc-jump');
-    if (!tocJump) {
-      tocJump = document.createElement('a');
-      tocJump.id = 'toc-jump';
-      tocJump.href = '#toc';
-      tocJump.innerHTML = tocJumpText;
-      tocNav.appendChild(tocJump);
-    }
-
-    tocNav.appendChild(toggle);
-  }
-
-  var toc = document.getElementById('toc');
-  if (toc) {
-    createSidebarToggle();
-    toggleSidebar(sidebarMedia.matches);
-
-    /* If the sidebar has been manually opened and is currently overlaying the text
-       (window too small for the MQ to add the margin to body),
-       then auto-close the sidebar once you click on something in there. */
-    toc.addEventListener('click', function(e) {
-      if(e.target.tagName.toLowerCase() == "a" && document.body.classList.contains('toc-sidebar') && !sidebarMedia.matches) {
-        toggleSidebar(false);
-      }
-    }, false);
-  }
-  else {
-    console.warn("Can’t find Table of Contents. Please use <nav id='toc'> around the ToC.");
-  }
-
-  /* Wrap tables in case they overflow */
-  var tables = document.querySelectorAll(':not(.overlarge) > table.data, :not(.overlarge) > table.index');
-  var numTables = tables.length;
-  for (var i = 0; i < numTables; i++) {
-    var table = tables[i];
-    var wrapper = document.createElement('div');
-    wrapper.className = 'overlarge';
-    table.parentNode.insertBefore(wrapper, table);
-    wrapper.appendChild(table);
-  }
-
-})();
-</script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
@@ -5194,8 +5047,6 @@ extensions.</p>
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23">QUIC: A UDP-Based Multiplexed and Secure Transport</a>. 12 September 2019. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23">https://tools.ietf.org/html/draft-ietf-quic-transport-23</a>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
    <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/">Remote Playback API</a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
-   <dt id="biblio-rfc2119">[RFC2119]
-   <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-rfc5122">[RFC5122]
    <dd>P. Saint-Andre. <a href="https://tools.ietf.org/html/rfc5122">Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)</a>. February 2008. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc5122">https://tools.ietf.org/html/rfc5122</a>
    <dt id="biblio-rfc5280">[RFC5280]
@@ -5232,23 +5083,23 @@ extensions.</p>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/107">&lt;https://github.com/webscreens/openscreenprotocol/issues/107></a><a href="#issue-56c2cd35"> ↵ </a></div>
+   <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/107">&lt;https://github.com/w3c/openscreenprotocol/issues/107></a><a href="#issue-56c2cd35"> ↵ </a></div>
    <div class="issue"> Add examples of sample mDNS records.<a href="#issue-49bdd4e6"> ↵ </a></div>
-   <div class="issue"> Register ALPN with IANA. <a href="https://github.com/webscreens/openscreenprotocol/issues/228">&lt;https://github.com/webscreens/openscreenprotocol/issues/228></a><a href="#issue-808efb48"> ↵ </a></div>
+   <div class="issue"> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">&lt;https://github.com/w3c/openscreenprotocol/issues/228></a><a href="#issue-808efb48"> ↵ </a></div>
    <div class="issue"> Determine if there is an advantage to session resumption outside of
-early data. If we allow session resumption, do we allow early data too? <a href="https://github.com/webscreens/openscreenprotocol/issues/220">&lt;https://github.com/webscreens/openscreenprotocol/issues/220></a><a href="#issue-eb53583c"> ↵ </a></div>
+early data. If we allow session resumption, do we allow early data too? <a href="https://github.com/w3c/openscreenprotocol/issues/220">&lt;https://github.com/w3c/openscreenprotocol/issues/220></a><a href="#issue-eb53583c"> ↵ </a></div>
    <div class="issue"> Do agents need to support the Cookies extension (used in
-HelloRetryRequest)? <a href="https://github.com/webscreens/openscreenprotocol/issues/219">&lt;https://github.com/webscreens/openscreenprotocol/issues/219></a><a href="#issue-983764c9"> ↵ </a></div>
+HelloRetryRequest)? <a href="https://github.com/w3c/openscreenprotocol/issues/219">&lt;https://github.com/w3c/openscreenprotocol/issues/219></a><a href="#issue-983764c9"> ↵ </a></div>
    <div class="issue"> Make recommendations for cipher and signature algorithm preference
-list based on hardware characteristics of agents. <a href="https://github.com/webscreens/openscreenprotocol/issues/218">&lt;https://github.com/webscreens/openscreenprotocol/issues/218></a><a href="#issue-08dfa2ca"> ↵ </a></div>
-   <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/108">&lt;https://github.com/webscreens/openscreenprotocol/issues/108></a><a href="#issue-e0955a17"> ↵ </a></div>
+list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">&lt;https://github.com/w3c/openscreenprotocol/issues/218></a><a href="#issue-08dfa2ca"> ↵ </a></div>
+   <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">&lt;https://github.com/w3c/openscreenprotocol/issues/108></a><a href="#issue-e0955a17"> ↵ </a></div>
    <div class="issue"> What do "client" and "server" mean here?<a href="#issue-492f86ab"> ↵ </a></div>
    <div class="issue"> Once the Presentation API has text about
 reconnecting via an implementation specific mechanism, quote that here and map
 it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&lt;https://github.com/w3c/presentation-api/issues/471></a><a href="#issue-733afe74"> ↵ </a></div>
-   <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/webscreens/openscreenprotocol/issues/159">&lt;https://github.com/webscreens/openscreenprotocol/issues/159></a><a href="#issue-649c173f"> ↵ </a></div>
-   <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/webscreens/openscreenprotocol/issues/146">&lt;https://github.com/webscreens/openscreenprotocol/issues/146></a><a href="#issue-9145071e"> ↵ </a></div>
-   <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/webscreens/openscreenprotocol/issues/132">&lt;https://github.com/webscreens/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
+   <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">&lt;https://github.com/w3c/openscreenprotocol/issues/159></a><a href="#issue-649c173f"> ↵ </a></div>
+   <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">&lt;https://github.com/w3c/openscreenprotocol/issues/146></a><a href="#issue-9145071e"> ↵ </a></div>
+   <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">&lt;https://github.com/w3c/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="open-screen-protocol-agent">
    <b><a href="#open-screen-protocol-agent">#open-screen-protocol-agent</a></b><b>Referenced in:</b>
