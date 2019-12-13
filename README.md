@@ -1,7 +1,7 @@
 ## Open Screen Protocol
 
 This repository is used to incubate and develop the
-[Open Screen Protocol](https://webscreens.github.io/openscreenprotocol/),
+[Open Screen Protocol](https://w3c.github.io/openscreenprotocol/),
 which is a suite of network protocols that allow user agents to
 implement the [Presentation API](https://w3c.github.io/presentation-api/)
 and [Remote Playback API](https://w3c.github.io/remote-playback/)
@@ -33,7 +33,7 @@ submitted:
   - [WebRTC Data Channel](archive/datachannel.md)
 - [Control Protocol](archive/control_protocol.md)
 - Authentication
-  ([Issue #13](https://github.com/webscreens/openscreenprotocol/issues/13))
+  ([Issue #13](https://github.com/w3c/openscreenprotocol/issues/13))
 
 ### Background Information
 
