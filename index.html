@@ -1324,7 +1324,7 @@ Possible extra rowspan handling
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
   <meta content="Bikeshed version 89ebb6ab, updated Fri Oct 9 15:32:07 2020 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="4dfc3a56a7e6da34376a64fbb80fb1392b50bfb5" name="document-revision">
+  <meta content="d966069096f2397e215e50f43c4577c4468c8d29" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -3253,7 +3253,7 @@ for the initial state in the <a data-link-type="dfn" href="#remote-playback-star
 seekable-time-ranges) used above use a common <a data-link-type="dfn" href="#media-time" id="ref-for-media-time">media-time</a> value (see Appendix A)
 which includes a time scale.  This allows time values which work on different
 time scales to be expressed without loss of precision.  The scale is represented
-in hertz, such as 90000 for 90000hz, a common time scale for video.</p>
+in hertz, such as 90000 for 90000 Hz, a common time scale for video.</p>
    <div class="note" role="note">
     <table>
      <tbody>
@@ -3618,7 +3618,7 @@ receives the <a data-link-type="dfn" href="#streaming-session-terminate-request"
 a <a data-link-type="dfn" href="#streaming-session-terminate-response" id="ref-for-streaming-session-terminate-response">streaming-session-terminate-response</a>.  The receiver can terminate at
 any point and notify the sender by sending a <a data-link-type="dfn" href="#streaming-session-terminate-event" id="ref-for-streaming-session-terminate-event">streaming-session-terminate-event</a> message.</p>
    <h3 class="heading settled" data-level="9.3" id="streaming-audio"><span class="secno">9.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
-   <p>[Media senders=] may send audio to <a data-link-type="dfn" href="#media-receiver" id="ref-for-media-receiver①">media receivers</a> by sending <a data-link-type="dfn" href="#audio-frame" id="ref-for-audio-frame">audio-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and
+   <p><a data-link-type="dfn" href="#media-sender" id="ref-for-media-sender①">Media senders</a> may send audio to <a data-link-type="dfn" href="#media-receiver" id="ref-for-media-receiver①">media receivers</a> by sending <a data-link-type="dfn" href="#audio-frame" id="ref-for-audio-frame">audio-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and
 values.  An audio frame message contains a set of encoded audio samples for a
 range of time. A series of encoded audio frames that share a codec, codec
 parameters and a timeline form an audio encoding.</p>
@@ -5484,6 +5484,7 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&l
    <b><a href="#media-sender">#media-sender</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-media-sender">9. Streaming Protocol</a>
+    <li><a href="#ref-for-media-sender①">9.3. Audio</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="media-receiver">
