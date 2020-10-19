@@ -1324,7 +1324,7 @@ Possible extra rowspan handling
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
   <meta content="Bikeshed version 89ebb6ab, updated Fri Oct 9 15:32:07 2020 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="d966069096f2397e215e50f43c4577c4468c8d29" name="document-revision">
+  <meta content="ef6f97e22ba39d2526753a51b1eda5e8b3f25874" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -4243,12 +4243,12 @@ capable of handling:
     </ol>
    </div>
    <h2 class="heading settled" id="appendix-a"><span class="content">Appendix A: Messages</span><a class="self-link" href="#appendix-a"></a></h2>
-   <p>The following messages are defined with <span>CDDL</span>. When integer keys are used, a
-comment is appended to the line to indicate the name of the field. Object
-definitions in this specification have this unusual syntax to reduce the number
-of bytes-on-the-wire, while maintaining a human-readable name for each
-key. Integer keys are used instead of object arrays to allow for easy indexing
-of optional fields.</p>
+   <p>The following messages are defined using the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8610#section-3" id="ref-for-section-3②">Concise Data Definition
+Language</a> syntax. When integer keys are used, a comment is appended to the line
+to indicate the name of the field. Object definitions in this specification have
+this unusual syntax to reduce the number of bytes-on-the-wire, while maintaining
+a human-readable name for each key. Integer keys are used instead of object
+arrays to allow for easy indexing of optional fields.</p>
    <p>Each root message (one that can be put into a QUIC stream without being enclosed
 by another message) has a comment indicating the message type key.</p>
    <p>Smaller numbers should be reserved for message that will be sent more frequently
@@ -5308,6 +5308,12 @@ extensions.</p>
     <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-3">
+   <a href="https://tools.ietf.org/html/rfc8610#section-3">https://tools.ietf.org/html/rfc8610#section-3</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-3②">Appendix A: Messages</a>
+   </ul>
+  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
@@ -5381,6 +5387,11 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-section-5①">md5</span>
      <li><span class="dfn-paneled" id="term-for-section-5②">sha-256</span>
      <li><span class="dfn-paneled" id="term-for-section-5③">sha-512</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[rfc8610]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-3①">concise data definition language</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
