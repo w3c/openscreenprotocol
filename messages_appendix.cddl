@@ -706,6 +706,12 @@ streaming-session-sender-stats-event = {
   }] ; video
 }
 
+streaming-buffer-status = &(
+  enough-data: 0
+  insufficient-data: 1
+  too-much-data: 2
+)
+
 ; type key 132
 streaming-session-receiver-stats-event = {
   1: uint; streaming-session-id
@@ -716,6 +722,7 @@ streaming-session-receiver-stats-event = {
     ? 3: microseconds ; cumulative-lost-duration
     ? 3: microseconds ; cumulative-buffer-delay
     ? 4: microseconds ; cumulative-decode-delay
+    ? 5: streaming-buffer-status ; remote-buffer-status
   }] ; audio
   ? 4: [1* {
     1: uint ; encoding-id
@@ -723,6 +730,7 @@ streaming-session-receiver-stats-event = {
     ? 3: uint ; cumulative-lost-frames
     ? 4: microseconds ; cumulative-buffer-delay
     ? 5: microseconds ; cumulative-decode-delay
+    ? 6: streaming-buffer-status ; remote-buffer-status    
   }] ; video
 }
 
