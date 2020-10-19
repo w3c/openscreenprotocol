@@ -1509,7 +1509,7 @@ All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common [=media-time=] value (see Appendix A)
 which includes a time scale.  This allows time values which work on different
 time scales to be expressed without loss of precision.  The scale is represented
-in hertz, such as 90000 for 90000hz, a common time scale for video.
+in hertz, such as 90000 for 90000 Hz, a common time scale for video.
 
 <div class="note">
 <table>
@@ -1880,7 +1880,7 @@ any point and notify the sender by sending a
 Audio {#streaming-audio}
 ------------------------------
 
-[Media senders=] may send audio to [=media receivers=] by sending
+[=Media senders=] may send audio to [=media receivers=] by sending
 [=audio-frame=] messages (see [[#appendix-a]]) with the following keys and
 values.  An audio frame message contains a set of encoded audio samples for a
 range of time. A series of encoded audio frames that share a codec, codec
