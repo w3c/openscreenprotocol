@@ -320,41 +320,19 @@ TLS 1.3 {#tls-13}
 -----------------
 
 When an [=OSP Agent=] makes a QUIC connection to another agent, it must use
-[[!RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 must be used in the following
-application profile:
+[[!RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 should be used with the
+following application-specific parameters to indicate that the connection will
+be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
+refuse incoming connections that lack these parameters.
 
-* The [[!RFC7301|ALPN]] used must be "osp".
-* Only constant-time AEAD ciphers are allowed.
-    * OSP agents must support [[!RFC8446|TLS_AES_128_GCM_SHA256]].
-    * OSP agents should support [[!RFC8466|TLS_CHACHA20_POLY1305_SHA256]] and
-        [[!RFC8466|TLS_AES_256_GCM_SHA384]].
-* OSP agents must support the [[!RFC8446|ecdsa_secp256r1_sha256]] digital signature algorithm.
-    OSP agents should also support [[!RFC8466|ecdsa_secp384r1_sha384]] and
-    [[!RFC8466|ecdsa_secp521r1_sha512]]. OSP agents must not support additional digital
-    signature algorithms.
-    * `ecdsa_secp256r1_sha256` must be included in the `signature_algorithms`
-        extension.  `ecdsa_secp384r1_sha384` and `ecdsa_secp512r1_sha512` must be
-        included if they are supported by the agent.
-    * `secp256r1` must be included in the `supported_groups` extension.
-        `secp384r1` and `secp512r1` must be included if they are supported by the
-        agent.
-    * The `key_share` extension must be set to the cryptographic parameters for
-        the negotiated signature algoirithm.
+* The [[!RFC7301|ALPN]] used should be "osp".
 * The `server_name` extension should be set to the following `host_name`:
     `<fp>._openscreen._udp.local`.
     * `<fp>` should be substituted with the [=agent fingerprint=] as used in mDNS TXT.
-* All other TLS 1.3 extensions must be ignored by OSP agents.
 
-Note: As this is an application-specific profile for TLS 1.3, it is not required
-for OSP agents to interoperate with non-OSP TLS 1.3 endpoints.
+An OSP Agent must not send TLS early data.
 
 Issue(228): Register ALPN with IANA.
-
-Issue(220): Determine if there is an advantage to session resumption outside of
-early data. If we allow session resumption, do we allow early data too?
-
-Issue(219): Do agents need to support the Cookies extension (used in
-HelloRetryRequest)?
 
 Issue(218): Make recommendations for cipher and signature algorithm preference
 list based on hardware characteristics of agents.
