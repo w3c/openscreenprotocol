@@ -33,9 +33,10 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: media resources
     text: remote playback devices
     text: remote playback source
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-19.19; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-16; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-19.19; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: variable-length integer
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
@@ -281,7 +282,8 @@ keys and values:
 :: An unsigned integer value that indicates that
     metadata has changed.   The advertising agent must update it to a greater
     value.  This signals to the listening agent that it should connect to the
-    advertising agent to discover updated metadata.
+    advertising agent to discover updated metadata.  The value should be encoded
+    as a [=variable-length integer=].
 
 : at
 :: An alphanumeric, unguessable token consisting of characters from the set
@@ -560,8 +562,8 @@ the the same QUIC stream, the following is used.
 
 For each message, the [=OSP agent=] must write to the QUIC stream the following:
 
-1.  A type key representing the type of the message, encoded as a variable-length
-    integer (see [[#appendix-a]] for type keys)
+1.  A type key representing the type of the message, encoded as a [=variable-length
+    integer=] (see [[#appendix-a]] for type keys)
 
 2.  The message encoded as CBOR.
 
@@ -2625,7 +2627,7 @@ Appendix B: Message Type Key Ranges {#appendix-b}
 The following appendix describes how the range of message type keys is divided.
 Legal values are 1 to 2<sup>64</sup>.
 
-Each type key is encoded as a variable-length integer on the wire of 1, 2, 4 or
+Each type key is encoded as a [=variable-length integer=] on the wire of 1, 2, 4 or
 8 bytes.  For each wire byte size, 1/4 to 1/2 of the keys are available for
 extensions.
 
