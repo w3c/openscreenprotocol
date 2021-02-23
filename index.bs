@@ -3,36 +3,17 @@ Title: Open Screen Protocol
 Shortname: openscreenprotocol
 Level: 1
 Status: w3c/ED
-ED: https://webscreens.github.io/openscreenprotocol/
+ED: https://w3c.github.io/openscreenprotocol/
 Canonical URL: ED
 Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
-Repository: webscreens/openscreenprotocol
+Repository: w3c/openscreenprotocol
 Abstract: The Open Screen Protocol is a suite of network protocols that allow
           user agents to implement the [[PRESENTATION-API|Presentation API]] and
           the [[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable
           fashion.
-Group: Second Screen Community Group
-Mailing List: public-webscreens@w3c.org
-Mailing List Archives: https://lists.w3.org/Archives/Public/public-webscreens/
-Markup Shorthands: markdown yes, dfn yes, idl yes
+Group: secondscreenwg
+Markup Shorthands: markdown yes, dfn yes, idl yes, markup yes
 </pre>
-
-<p boilerplate="copyright">
-<a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">
-  Copyright</a> © [YEAR] the Contributors to the [TITLE] Specification,
-  published by the <a href="https://www.w3.org/community/webscreens/">
-  Second Screen Community Group</a> under the
-  <a href="https://www.w3.org/community/about/agreements/cla/">
-  W3C Community Contributor License Agreement (CLA)</a>.  A human-readable
-  <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a>
-  is available.
-</p>
-
-Issue: Add short names to Presentation API spec, so that BS autolinking works as designed.
-
-
-Issue: Can autolinks to HTML51 be automatically generated?
-
 
 <pre class="anchors">
 urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
@@ -52,8 +33,9 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: media resources
     text: remote playback devices
     text: remote playback source
-urlPrefix: https://www.w3.org/TR/html51/single-page.html; type: dfn; spec: HTML51
-    text: media element
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-19.19; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-16; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
@@ -64,22 +46,8 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md2
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
 url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
+url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
 </pre>
-
-<h2 class='no-num no-toc no-ref' id='document-status'>Status of this document</h2>
-
-This specification was published by the [Second Screen Community
-Group](https://www.w3.org/community/webscreens/). It is not a W3C Standard nor
-is it on the W3C Standards Track. It should not be viewed as a stable
-specification, and may change in substantial ways at any time. A future version
-of this document will be published as a Community Group Report.
-
-Please note that under the [W3C Community Contributor License Agreement
-(CLA)](https://www.w3.org/community/about/agreements/cla/) there is a limited
-opt-out and other conditions apply.
-
-Learn more about [W3C Community and Business
-Groups](http://www.w3.org/community/).
 
 Introduction {#introduction}
 ============================
@@ -89,17 +57,18 @@ content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, and smart speakers.
 
 This spec defines a suite of network protocols that enable two user agents to
-implement the [[PRESENTATION-API|Presentation API]] and [[REMOTE-PLAYBACK|Remote
-Playback API]] in an interoperable fashion.  This means that a Web developer can
-expect these APIs to work as intended when connecting two devices from
-independent implementations of the Open Screen Protocol.
+implement the [[PRESENTATION-API|Presentation API]] and
+[[REMOTE-PLAYBACK|Remote Playback API]] in an interoperable fashion.  This means
+that a Web developer can expect these APIs to work as intended when connecting
+two devices from independent implementations of the Open Screen Protocol.
 
 The Open Screen Protocol is a specific implementation of these two APIs, meaning
 that it does not handle all possible ways that browsers and presentation
 displays could support these APIs.  The Open Screen Protocol specifically
 supports browsers and displays that are connected via the same local area
 network.  It allows a browser to present a URL, initiate remote playback of an
-HTML media element, and stream media data to another device.
+HTML <l spec=html>[=media element=]</l>, and stream media data to another
+device.
 
 The Open Screen Protocol is intended to be extensible, so that additional
 capabilities can be added over time.  This may include additions to existing Web
@@ -119,12 +88,12 @@ on another device.  We call this agent a <dfn>controller</dfn> for short.  A
 will call a <dfn>receiver</dfn> for short.  The the Web content itself is called
 a [=presentation=].
 
-Some OSP agents also support the
-[[REMOTE-PLAYBACK|Remote Playback API]].  That API allows an agent to render a
-media element on a [=remote playback device=].  In this document, we refer to it
-as a [=receiver=] because it is shorter and keeps terminology consistent between
-presentations and remote playbacks. Similarly, we use the term [=controller=] to
-refer to the agent that starts, terminates, and controls the remote playback.
+Some OSP agents also support the [[REMOTE-PLAYBACK|Remote Playback API]].  That
+API allows an agent to render a <l spec="html">[=media element=]</l> on a
+[=remote playback device=].  In this document, we refer to it as a [=receiver=]
+because it is shorter and keeps terminology consistent between presentations and
+remote playbacks. Similarly, we use the term [=controller=] to refer to the
+agent that starts, terminates, and controls the remote playback.
 
 For media streaming, we refer to an OSP agent that sends a media stream
 as a <dfn>media sender</dfn> and an agent that receives a media stream as a
@@ -159,13 +128,13 @@ Presentation API Requirements {#requirements-presentation-api}
 2.  A controller must be able to start a new [=presentation=] on a
     receiver given a [=presentation request URL=] and [=presentation ID=].
 
-3.  A controller must be able to create a new
-    {{PresentationConnection}} to an existing presentation on the
-    receiver, given its [=presentation request URL=] and [=presentation ID=].
+3.  A controller must be able to create a new {{PresentationConnection}} to an
+    existing presentation on the receiver, given its [=presentation request
+    URL=] and [=presentation ID=].
 
 4.  It must be possible to close a {{PresentationConnection}} between a
-    controller and a presentation, and signal both parties with the
-    reason why the connection was closed.
+    controller and a presentation, and signal both parties with the reason why
+    the connection was closed.
 
 5.  Multiple controllers must be able to connect to a single presentation
     simultaneously.
@@ -302,7 +271,7 @@ keys and values:
 
 : fp
 :: The <dfn>agent fingerprint</dfn> of the advertising agent, computed over the
-    [=agent certificate=]. The format of the fingerprint is defined by [[RFC5122]],
+    [=agent certificate=]. The format of the fingerprint is defined by [[!RFC5122]],
     excluding the "fingerprint:" prefix and including the hash function, space,
     and hex-encoded fingerprint.  The fingerprint value also functions as an ID
     for the agent. All agents must support the following hash functions: [=sha-256=],
@@ -351,16 +320,17 @@ TLS 1.3 {#tls-13}
 -----------------
 
 When an [=OSP Agent=] makes a QUIC connection to another agent, it must use
-[[RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 must be used in the following
+[[!RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 must be used in the following
 application profile:
 
+* The [[!RFC7301|ALPN]] used must be "osp".
 * Only constant-time AEAD ciphers are allowed.
-    * OSP agents must support [[RFC8446|TLS_AES_128_GCM_SHA256]].
-    * OSP agents should support [[RFC8466|TLS_CHACHA20_POLY1305_SHA256]] and
-        [[RFC8466|TLS_AES_256_GCM_SHA384]].
-* OSP agents must support the [[RFC8446|ecdsa_secp256r1_sha256]] digital signature algorithm.
-    OSP agents should also support [[RFC8466|ecdsa_secp384r1_sha384]] and
-    [[RFC8466|ecdsa_secp521r1_sha512]]. OSP agents must not support additional digital
+    * OSP agents must support [[!RFC8446|TLS_AES_128_GCM_SHA256]].
+    * OSP agents should support [[!RFC8466|TLS_CHACHA20_POLY1305_SHA256]] and
+        [[!RFC8466|TLS_AES_256_GCM_SHA384]].
+* OSP agents must support the [[!RFC8446|ecdsa_secp256r1_sha256]] digital signature algorithm.
+    OSP agents should also support [[!RFC8466|ecdsa_secp384r1_sha384]] and
+    [[!RFC8466|ecdsa_secp521r1_sha512]]. OSP agents must not support additional digital
     signature algorithms.
     * `ecdsa_secp256r1_sha256` must be included in the `signature_algorithms`
         extension.  `ecdsa_secp384r1_sha384` and `ecdsa_secp512r1_sha512` must be
@@ -378,6 +348,8 @@ application profile:
 Note: As this is an application-specific profile for TLS 1.3, it is not required
 for OSP agents to interoperate with non-OSP TLS 1.3 endpoints.
 
+Issue(228): Register ALPN with IANA.
+
 Issue(220): Determine if there is an advantage to session resumption outside of
 early data. If we allow session resumption, do we allow early data too?
 
@@ -390,7 +362,7 @@ list based on hardware characteristics of agents.
 Agent Certificates {#certificates}
 ----------------------------------
 
-Each OSP Agent must generate an [[RFC5280|X.509 v3]] <dfn>agent
+Each OSP Agent must generate an [[!RFC5280|X.509 v3]] <dfn>agent
 certificate</dfn> containing a public key to be used with the TLS 1.3
 certificate exchange.  Both [=advertising agents=] and [=listening agents=] must
 use the [=agent certificate=] in TLS 1.3 `Certificate` messages when making a
@@ -452,7 +424,7 @@ The following X.509 v3 fields are to be set as follows:
 </tbody>
 </table>
 
-Mandatory fields not mentioned above should be set according to [[RFC 5280]].
+Mandatory fields not mentioned above should be set according to [[!RFC5280]].
 
 The value `<fp>` above should be substituted with the [=agent fingerprint=] (as
 serialized in mDNS TXT).
@@ -548,7 +520,7 @@ The various capabilities have the following meanings:
 :: The agent can send streaming using the streaming protocol.
 
 Note: See the
-[Capabilities Registry](https://webscreens.github.io/openscreenprotocol/capabilities.md)
+[Capabilities Registry](https://w3c.github.io/openscreenprotocol/capabilities.md)
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
 
@@ -561,7 +533,7 @@ be closed with an error code of 5139.  In order to keep a QUIC connection alive,
 agent may send an [=agent-status-request=] message, and any agent that receives an
 [=agent-status-request=] message should send an [=agent-status-response=] message. Such
 messages should be sent more frequently than the QUIC idle_timeout transport
-parameter (see section 18 of [[QUIC]]) and QUIC PING
+parameter (see [=Transport Parameter Encoding=] in [[QUIC]]) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
 recommended.  The agent should behave as though a timer less than the
 idle_timeout were reset every time a message is sent on a QUIC stream.  If the
@@ -580,7 +552,7 @@ include additional information not defined in this spec, as described in
 Messages delivery using CBOR and QUIC streams {#messages}
 ========================================================
 
-Messages are serialized using [[RFC7049|CBOR]].  To send a group of messages in
+Messages are serialized using [[!RFC7049|CBOR]].  To send a group of messages in
 order, that group of messages must be sent in one QUIC stream.  Independent
 groups of messages (with no ordering dependency across groups) should be sent in
 different QUIC streams.  In order to put multiple CBOR-serialized messages into
@@ -593,13 +565,13 @@ For each message, the [=OSP agent=] must write to the QUIC stream the following:
 
 2.  The message encoded as CBOR.
 
-If an agent receives a message for which it does not recognize a
-type key, it must close the QUIC connection with an application error
-code of 404 and should include the unknown type key in the reason phrase
-(see [[QUIC#section-19.4|QUIC transport section 19.4]]).
+If an agent receives a message for which it does not recognize a type key, it
+must close the QUIC connection with an application error code of 404 and should
+include the unknown type key in the reason phrase of the [=CONNECTION_CLOSE
+frame=].
 
-Variable-length integers are encoded in the same format as defined by
-[[QUIC#section-16| QUIC transport section 16]].
+Variable-length integers are encoded in the [=Variable-Length Integer Encoding=]
+used by [[QUIC]].
 
 Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
@@ -711,14 +683,20 @@ The client acts as Alice, the server acts as Bob.
 Issue: What do "client" and "server" mean here?
 
 The messages used in this authentication method are: [=auth-spake2-need-psk=],
-[=auth-spake2-message=], [=auth-spake2-confirmation=] and [=auth-status=].
-SPAKE2 describes in detail how [=auth-spake2-message=] and [=auth-spake2-confirmation=]
-are computed.
+[=auth-spake2-handshake=], [=auth-spake2-confirmation=] and [=auth-status=].
+SPAKE2 describes in detail how [=auth-spake2-handshake=] and
+[=auth-spake2-confirmation=] are computed.
+
+The values `A` and `B` used in SPAKE2 are the [=agent fingerprints=] of the
+client and server, respectively. `K` is the PSK presented to the user.  `S` and
+`T` from SPAKE2 are put into the `random` field of [=auth-spake2-handshake=].
+`F` from SPAKE2 is put into the `transcript-mac` field of
+[=auth-spake2-confirmation=].
 
 If the PSK presenter wants to authenticate, the PSK presenter starts the
 authentication process by presenting the PSK to the user and sending a
-[=auth-spake2-message=] message. When the PSK consumer receives the
-[=auth-spake2-message=] message, the PSK consumer prompts the user for the PSK input
+[=auth-spake2-handshake=] message. When the PSK consumer receives the
+[=auth-spake2-handshake=] message, the PSK consumer prompts the user for the PSK input
 if it has not done so yet.
 
 If the PSK consumer wants to authenticate, the PSK consumer sends a
@@ -728,12 +706,12 @@ process and prompts the user to input the PSK. If the PSK presenter receives a
 PSK presenter ignores the [=auth-spake2-need-psk=] message.
 
 After the user inputs the PSK into the PSK consumer, the PSK consumer computes
-and sends a [=auth-spake2-message=].
+and sends a [=auth-spake2-handshake=].
 
-When either agent both knows the PSK and has received a [=auth-spake2-message=]
+When either agent both knows the PSK and has received a [=auth-spake2-handshake=]
 message, the agent computes and sends a [=auth-spake2-confirmation=] message.
 
-When either agent has received both [=auth-spake2-message=] and
+When either agent has received both [=auth-spake2-handshake=] and
 [=auth-spake2-confirmation=] messages, the agent validates the confirmation message
 and sends the [=auth-status=] authenticated message.
 
@@ -1042,8 +1020,9 @@ To learn which receivers are [=compatible remote playback devices=] for a
 particular URL or set of URLs, the controller may send a
 [=remote-playback-availability-request=] message with the following values:
 
-: urls
-:: A list of [=media resources=].  Must not be empty.
+: sources
+:: A list of [=media resources=], the same as specified in the
+    [=remote-playback-start-request=] message.  Must not be empty.
 
 Issue(146): Remote Playback HTTP headers.
 
@@ -1076,7 +1055,7 @@ watch-duration) send [=remote-playback-availability-event=]  messages if
 URL availabilities change.  Such events contain the following values:
 
 : watch-id
-:: The watch-id given in the remote-playback-url-availability-response,
+:: The watch-id given in the [=remote-playback-availability-response=]
     used to refer to the remote playback URLs whose availability has changed.
 
 : url-availabilities
@@ -1104,9 +1083,10 @@ values:
 Note: A version 4 (pseudorandom) [=UUID=] is recommended as it meets the
 requirements for a remote-playback-id.
 
-: urls
-:: The [=media resources=] that the controller has selected for playback on the
-    receiver.
+: sources
+:: The [=media resources=] that the controller has selected for playback
+    on the receiver.  Each source must include a <{source/src|source URL}>
+    and should include an <{source/type|extended MIME type}>.
 
 : text-track-urls
 :: URLs of text tracks associated with the [=media resources=].
@@ -1140,12 +1120,13 @@ invalid-url).  Additionally, the response must include the following:
     If not included, no streaming session is started.
 
 If a streaming session is started, streaming messages such a
-streaming-session-modify-request and video-frame can be used for the streaming
-session as if the streaming session had been started with
-streaming-session-start-request and streaming-session-start-response.  The
-streaming session may be terminated before the remote playback is terminated,
-but if the remote playback is terminated first, the streaming session associated
-with it is automatically terminated.
+[=streaming-session-modify-request=] and [=video-frame=] can be used for the
+streaming session as if the streaming session had been started with
+[=streaming-session-start-request=] and
+[=streaming-session-start-response=]. The streaming session may be terminated
+before the remote playback is terminated, but if the remote playback is
+terminated first, the streaming session associated with it is automatically
+terminated.
 
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -1262,7 +1243,7 @@ present control value indicates the change defined below. These controls
 intentionally mirror settable attributes and methods of the
 [HtmlMediaElement](https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement).
 
-: source
+: source-url
 :: Change the [=media resource=] URL. See
     [HtmlMediaElement.src](https://html.spec.whatwg.org/multipage/media.html#dom-media-src)
     for more details. Must not be used in the initial controls of the
@@ -1391,7 +1372,7 @@ changed.
     The default is empty (support for nothing)
     for the initial state in the [=remote-playback-start-response=] message.
 
-: source
+: source-url
 :: The current [=media resource=] URL. See
     [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc).
     Must be present in the initial state in the [=remote-playback-start-response=] message.
@@ -1529,7 +1510,7 @@ All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common [=media-time=] value (see Appendix A)
 which includes a time scale.  This allows time values which work on different
 time scales to be expressed without loss of precision.  The scale is represented
-in hertz, such as 90000 for 90000hz, a common time scale for video.
+in hertz, such as 90000 for 90000 Hz, a common time scale for video.
 
 <div class="note">
 <table>
@@ -1730,7 +1711,7 @@ Sessions {#streaming-sessions}
 ------------------------------------
 
 To start a streaming session, a sender may send a
-streaming-session-start-request message with the following fields:
+[=streaming-session-start-request=] message with the following fields:
 
 : streaming-session-id
 :: Identifies the streaming session.  Must be unique for the (sender,
@@ -1854,8 +1835,8 @@ Each data encoding offered defines the following fields:
     data-frame messages smaller by not including the duration for
     data-frame messages that have the default duration.
 
-After receiving a streaming-session-start-request message, a receiver
-should send back a streaming-session-start-response message with the
+After receiving a [=streaming-session-start-request=] message, a receiver
+should send back a [=streaming-session-start-response=] message with the
 following fields:
 
 : desired-stats-interval
@@ -1885,24 +1866,24 @@ Each stream request contains the following fields:
 
 
 During a streaming session, the receiver can modify the requests it
-made for encodings by sending a `streaming-session-modify-request`
+made for encodings by sending a [=streaming-session-modify-request=]
 containing a modified list of stream-requests.  When the sender receives
-a `streaming-session-modify-request`, it should send back a
-`streaming-session-modify-response` indicate whether or not the
+a [=streaming-session-modify-request=], it should send back a
+[=streaming-session-modify-response=] indicate whether or not the
 application of the new request from the
-`streaming-session-modify-request` was successful.
+[=streaming-session-modify-request=] was successful.
 
 Finally, the sender may terminate the streaming session by sending
-a streaming-session-terminate-request command.  When the receiver
-receives the streaming-session-terminate-request, it should send back
-a streaming-session-terminate-response.  The receiver can terminate at
+a [=streaming-session-terminate-request=] command.  When the receiver
+receives the [=streaming-session-terminate-request=], it should send back
+a [=streaming-session-terminate-response=].  The receiver can terminate at
 any point and notify the sender by sending a
-streaming-session-terminate-event message.
+[=streaming-session-terminate-event=] message.
 
 Audio {#streaming-audio}
 ------------------------------
 
-[Media senders=] may send audio to [=media receivers=] by sending
+[=Media senders=] may send audio to [=media receivers=] by sending
 [=audio-frame=] messages (see [[#appendix-a]]) with the following keys and
 values.  An audio frame message contains a set of encoded audio samples for a
 range of time. A series of encoded audio frames that share a codec, codec
@@ -1924,7 +1905,7 @@ separate QUIC streams.
 : encoding-id
 :: Identifies the media encoding to which this audio frame belongs.  This can be
     used to reference fields of the encoding (from the
-    audio-encoding-offer message) such as the codec, codec properties,
+    [=audio-encoding-offer=] message) such as the codec, codec properties,
     time scale (aka clock rate or sample rate), and default duration.
     Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
@@ -1933,14 +1914,14 @@ separate QUIC streams.
 :: Identifies the beginning of the time range of the audio frame. The
     end time can be inferred from the start time and duration. The
     time scale is equal to the value in the `time-scale` field of the
-    `audio-encoding-offer` message referenced by the `encoding-id`.
+    [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the audio frame. If not present, the
     duration is equal to the `default-duration` field of the
-    `audio-encoding-offer` message referenced by the `encoding-id`.
+    [=audio-encoding-offer=] message referenced by the `encoding-id`.
     The time scale is equal to the value in the `time-scale` field of
-    the `audio-encoding-offer` message referenced by the `encoding-id`.
+    the [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
 :: If present, a time used to synchronize the start time of this audio frame (and
@@ -1950,7 +1931,7 @@ separate QUIC streams.
 
 : payload
 :: The encoded audio.  The codec and codec parameters are equal to the
-    `format` field of the `audio-encoding-offer` message referenced by
+    `format` field of the [=audio-encoding-offer=] message referenced by
     the `encoding-id`
 
 Video {#streaming-video}
@@ -1992,12 +1973,12 @@ ending at the last dependent frame.
 :: Identifies the beginning of the time range of the video frame.  The
     end time can be inferred from the start time and duration. The
     time scale is equal to the value in the `time-scale` field of the
-    `video-encoding-offer` message referenced by the `encoding-id`.
+    [=video-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the video frame. If not present, that
     means duration is unknown.  The time scale is equal to the value
-    in the `time-scale` field of the `video-encoding-offer` message
+    in the `time-scale` field of the [=video-encoding-offer=] message
     referenced by the `encoding-id`.
 
 : sync-time
@@ -2009,13 +1990,13 @@ ending at the last dependent frame.
 :: If present, indicates how the frame should be rotated after
     decoding but before rendering.  Rotation is clockwise in
     increments of 90 degrees.  The default is equal to the
-    `default-rotation` field of the `video-encoding-offer` message
+    `default-rotation` field of the [=video-encoding-offer=] message
     referenced by the `encoding-id`.
 
 : payload
 :: The encoded video frame (encoded image).  The codec and codec
      parameters are are equal to the `format` field of the
-     `audio-encoding-offer` message referenced by the `encoding-id`.
+     [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 Data {#streaming-data}
 ------------------------------------
@@ -2044,14 +2025,14 @@ that makes sense for a specific type of data.
 :: Identifies the beginning of the time range of the data frame.  The
     end time can be inferred from the start time and duration.  The
     time scale is equal to the value in the `time-scale` field of the
-    `data-encoding-offer` message referenced by the `encoding-id`.
+    [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the data frame. If not present, the
     duration is equal to the `default-duration` field of the
-    `data-encoding-offer` message referenced by the `encoding-id`.
+    [=data-encoding-offer=] message referenced by the `encoding-id`.
     The time scale is equal to the value in the `time-scale` field of
-    the `data-encoding-offer` message referenced by the `encoding-id`.
+    the [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
 :: If present, a time used to synchronize the start time of this data frame (and
@@ -2060,7 +2041,7 @@ that makes sense for a specific type of data.
 
 : payload
 :: The data.  The data type is equal to the `data-type` field of the
-    the `data-encoding-offer` message referenced by the `encoding-id`.
+    the [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 Feedback {#streaming-feedback}
 ------------------------------------
@@ -2091,9 +2072,9 @@ Stats {#streaming-stats}
 ------------------------------
 
 During a streaming session, the sender should send stats with the
-streaming-session-sender-stats-event at the interval the receiver requested.  It
+[=streaming-session-sender-stats-event=] at the interval the receiver requested.  It
 should send all of the following stats for all of the media streams it is
-sending. The streaming-session-sender-stats-event message contains the following
+sending. The [=streaming-session-sender-stats-event=] message contains the following
 fields:
 
 : streaming-session-id
@@ -2141,9 +2122,9 @@ Video encoding sender stats include the following fields:
 
 
 During a streaming session, the receiver should send stats with the
-streaming-session-receiver-stats-event at the interval the sender requested.
+[=streaming-session-receiver-stats-event=] at the interval the sender requested.
 It should send all of the following stats for all of the media streams it is
-receiving.  The streaming-session-receiver-stats-event message contains the
+receiving.  The [=streaming-session-receiver-stats-event=] message contains the
 following fields:
 
 : streaming-session-id
@@ -2244,7 +2225,7 @@ customization or other purposes.
 
 To add new extension messages, extension authors must register a capability ID
 with a range of message type keys in a
-[public registry](https://webscreens.github.io/openscreenprotocol/capabilites.md).
+[public registry](https://w3c.github.io/openscreenprotocol/capabilites.md).
 Agents may then indicate that they accept an extension by including the
 corresponding capability ID in the `capabilities` field of its [=agent-info=]
 message.
@@ -2596,7 +2577,7 @@ sees prior to authentication, careful presentation of these names is necessary.
 
 Agents must treat Instance Names as unverified information, and should check
 that the Instance Name is a prefix of the display name received through the
-`agent-info` message after a successful QUIC connection.  Once an agent has done
+[=agent-info=] message after a successful QUIC connection.  Once an agent has done
 this check, it can show the name as a <dfn noexport>verified display name</dfn>.
 
 Agents should show only complete display names to the user, instead of truncated
@@ -2617,12 +2598,12 @@ capable of handling:
 Appendix A: Messages {#appendix-a}
 ====================
 
-The following messages are defined with [[CDDL]]. When integer keys are used, a
-comment is appended to the line to indicate the name of the field. Object
-definitions in this specification have this unusual syntax to reduce the number
-of bytes-on-the-wire, while maintaining a human-readable name for each
-key. Integer keys are used instead of object arrays to allow for easy indexing
-of optional fields.
+The following messages are defined using the [=Concise Data Definition
+Language=] syntax. When integer keys are used, a comment is appended to the line
+to indicate the name of the field. Object definitions in this specification have
+this unusual syntax to reduce the number of bytes-on-the-wire, while maintaining
+a human-readable name for each key. Integer keys are used instead of object
+arrays to allow for easy indexing of optional fields.
 
 Each root message (one that can be put into a QUIC stream without being enclosed
 by another message) has a comment indicating the message type key.

@@ -81,14 +81,14 @@ auth-spake2-need-psk = {
 }
 
 ; type key 1003
-auth-spake2-message = {
+auth-spake2-handshake = {
   auth-initation-token
-  1 : bytes .size 32 ; message
+  1 : bytes .size 32 ; random
 }
 
 ; type key 1004
 auth-spake2-confirmation = {
-  1 : bytes .size 32 ; confirmation
+  1 : bytes .size 32 ; transcript-mac
 }
 
 ; type key 1005
@@ -245,7 +245,7 @@ result = (
 ; type key 17
 remote-playback-availability-request = {
   request
-  1: [* text] ; urls
+  1: [* remote-playback-source] ; sources
   2: microseconds ; watch-duration
   3: watch-id ; watch-id
 }
@@ -266,11 +266,16 @@ remote-playback-availability-event = {
 remote-playback-start-request = {
   request
   1: remote-playback-id ; remote-playback-id
-  2: [* text] ; urls
+  2: [* remote-playback-source] ; sources
   ? 3: [* text] ; text-track-urls
   ? 4: [* http-header] ; headers
   ? 5: remote-playback-controls ; controls
   ? 6: {streaming-session-start-request-params} ; remoting
+}
+
+remote-playback-source = {
+  1: text; url
+  3: text; extended-mime-type
 }
 
 ; type key 116
@@ -332,7 +337,7 @@ remote-playback-state-event = {
 remote-playback-id = uint
 
 remote-playback-controls = {
-  ? 1: url ; source
+  ? 1: text ; source-url
   ? 2: &(none, metadata, auto) ; preload
   ? 3: bool ; loop
   ? 4: bool ; paused
@@ -341,7 +346,7 @@ remote-playback-controls = {
   ? 7: media-time ; seek
   ? 8: media-time ; fast-seek
   ? 9: float ; playback-rate
-  ? 10: url ; poster
+  ? 10: text ; poster
   ? 11: [* text] ; enabled-audio-track-ids
   ? 12: text ; selected-video-track-id
   ? 13: [* added-text-track] ; added-text-tracks
@@ -355,7 +360,7 @@ remote-playback-state = {
          added-text-track:
          bool,
          added-cues: bool) ; supports
-  ? 2: url ; source
+  ? 2: text ; source-url
   ? 3: &(
     empty: 0
     idle: 1
