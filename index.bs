@@ -325,10 +325,10 @@ following application-specific parameters to indicate that the connection will
 be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
 refuse incoming connections that lack these parameters.
 
-* The [[!RFC7301|ALPN]] used should be "osp".
-* The `server_name` extension should be set to the following `host_name`:
+* The [[!RFC7301|ALPN]] used must be "osp".
+* The `server_name` extension must be set to the following `host_name`:
     `<fp>._openscreen._udp.local`.
-    * `<fp>` should be substituted with the [=agent fingerprint=] as used in mDNS TXT.
+    * `<fp>` must be substituted with the [=agent fingerprint=] as used in mDNS TXT.
 
 An OSP Agent must not send TLS early data.
 
