@@ -326,7 +326,7 @@ be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
 refuse incoming connections that lack these parameters.
 
 * The [[!RFC7301|ALPN]] used must be "osp".
-* The `server_name` extension must be set to the following `host_name`:
+* The [[!RFC6066|server_name extension]] must be set to the following `host_name`: 
     `<fp>._openscreen._udp.local`.
     * `<fp>` must be substituted with the [=agent fingerprint=] as used in mDNS TXT.
 
