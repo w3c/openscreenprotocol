@@ -496,7 +496,7 @@ The various capabilities have the following meanings:
 :: The agent can send streaming using the streaming protocol.
 
 Note: See the
-[Capabilities Registry](https://w3c.github.io/openscreenprotocol/capabilities.md)
+[Capabilities Registry](https://github.com/w3c/openscreenprotocol/blob/master/capabilities.md)
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
 
