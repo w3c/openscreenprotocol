@@ -2592,7 +2592,7 @@ or are very small or both and larger numbers should be reserved for messages
 that are infrequently sent or large or both because smaller type keys encode on
 the wire smaller.
 
-<pre class=include>
+<pre class=include-raw>
 path: messages_appendix.html
 </pre>
 
