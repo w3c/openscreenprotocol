@@ -11,6 +11,8 @@ Screen Protocol](https://webscreens.github.io/openscreenprotocol/#transport).
 
 ## Open Screen Protocol Capabilities
 
+[TODO(Issue #254): Finish the capabilities table.](issues/254)
+
 | Id |     Name                  |         Description         | Message Type IDs      |
 |----|---------------------------|-----------------------------|-----------------------|
 | 1  | `receive-audio`           | Audio Receiver              | 22                    |
@@ -21,6 +23,8 @@ Screen Protocol](https://webscreens.github.io/openscreenprotocol/#transport).
 | 6  | `control-remote-playback` | Remote Playback Controller  | 18,20,21,114,116,118  |
 | 7  | `receive-streaming`       | Streaming Receiver          | 24                    |
 | 8  | `send-streaming`          | Streaming Sender            |                       |
+
+
 
 
 ## Extension Capabilities
