@@ -1,0 +1,31 @@
+name: Build, Validate, and Deploy
+on:
+  pull_request: {}
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  main:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install Pygments
+
+      - name: Generate messages_appendix.html
+        run: python scripts/pygmentize_dir.py
+
+      - name: Build and validate index.html, push to gh-pages branch if needed
+        uses: w3c/spec-prod@v2
+        with:
+          GH_PAGES_BRANCH: gh-pages
