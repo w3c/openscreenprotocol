@@ -195,7 +195,8 @@ Non-Functional Requirements {#requirements-non-functional}
 1.  It should be possible to implement an OSP agent using modest
     hardware requirements, similar to what is found in a low end smartphone,
     smart TV or streaming device. See the [Device
-    Specifications](device_specs.md) document for agent hardware specifications.
+    Specifications](https://github.com/w3c/openscreenprotocol/blob/master/device_specs.md)
+    document for agent hardware specifications.
 
 2.  The discovery and connection protocols should minimize power consumption,
     especially on a [=listening agent=] which is likely to be battery
@@ -500,7 +501,7 @@ The various capabilities have the following meanings:
 :: The agent can send streaming using the streaming protocol.
 
 Note: See the
-[Capabilities Registry](https://w3c.github.io/openscreenprotocol/capabilities.md)
+[Capabilities Registry](https://github.com/w3c/openscreenprotocol/blob/master/capabilities.md)
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
 
@@ -2203,7 +2204,7 @@ customization or other purposes.
 
 To add new extension messages, extension authors must register a capability ID
 with a range of message type keys in a
-[public registry](https://w3c.github.io/openscreenprotocol/capabilites.md).
+[public registry](https://github.com/w3c/openscreenprotocol/blob/master/capabilities.md).
 Agents may then indicate that they accept an extension by including the
 corresponding capability ID in the `capabilities` field of its [=agent-info=]
 message.
