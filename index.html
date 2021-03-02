@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
   <meta content="Bikeshed version b94c7e755, updated Fri Feb 19 16:28:59 2021 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="776ccc8f359492f551fd6a1583433e2477ba2c6a" name="document-revision">
+  <meta content="5b7189fde472e45b59b507f5f0d410ea2af98b1b" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -984,7 +984,7 @@ displayed to the user of the requesting agent.</p>
 Presence indicates a capability and absence indicates lack of a
 capability.  Capabilities should should affect how an agent is
 presented to a user, such as drawing a different icon depending on
-the media types it supports.</p>
+the whether it receives audio, video or both.</p>
     <dt data-md>state-token (required)
     <dd data-md>
      <p>A random alphanumeric value consisting of 8 characters in the range
@@ -1000,16 +1000,14 @@ of user preference.  Each entry is an RFC5646 <a data-link-type="dfn" href="http
    <dl>
     <dt data-md>receive-audio
     <dd data-md>
-     <p>The agent can generally receive audio for the control protocols it
-supports.  Each control protocol can have more specific capability
-mechanisms, such as support for specific URLs in the presentation
-protocol.</p>
+     <p>The agent can render audio via the other protocols it supports.  Those other
+protocols may report more specific capabilities, such as support for
+certain audio codecs in the streaming protocol.</p>
     <dt data-md>receive-video
     <dd data-md>
-     <p>The agent can generally receive video for the control protocols it
-supports.  Each control protocol can have more specific capability
-mechanisms, such as support for specific URLs in the presentation
-protocol.</p>
+     <p>The agent can receive video via the other protocols it supports.  Those other
+protocols may report more specific capabilities, such as support for
+certain video codecs in the streaming protocol.</p>
     <dt data-md>receive-presentation
     <dd data-md>
      <p>The agent can receive presentations using the presentation protocol.</p>
@@ -1031,7 +1029,7 @@ protocol.</p>
     <dd data-md>
      <p>The agent can send streaming using the streaming protocol.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> See the <a href="https://w3c.github.io/openscreenprotocol/capabilities.md">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
+   <p class="note" role="note"><span>Note:</span> See the <a href="https://github.com/w3c/openscreenprotocol/blob/master/capabilities.md">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
 through <a href="#protocol-extensions">§ 11 Protocol Extensions</a>).</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
