@@ -1632,12 +1632,14 @@ Formats are composed of the following fields:
 : name (required)
 :: The name of the codec.   This must be a single-codec RFC 6381 [=codecs parameter=].
 
-Issue(266): Specify where codec-specific parameters are defined or drop them.
+Issue(233): Use the same codec names as the media APIs.
 
 : parameters (required)
 :: A list of (key, value) parameters that can be used to describe
     properties of a specific format, and not shared by other formats
     of that type (audio, video, etc.).
+
+Issue(266): Specify where codec-specific parameters are defined or drop them.
 
 Audio capabilities are composed of the above format type, with the following
 additional fields:
