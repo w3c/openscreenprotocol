@@ -454,7 +454,7 @@ The [=agent-info=] message contains the following fields:
     Presence indicates a capability and absence indicates lack of a
     capability.  Capabilities should should affect how an agent is
     presented to a user, such as drawing a different icon depending on
-    the media types it supports.
+    the whether it receives audio, video or both.
 
 : state-token (required)
 :: A random alphanumeric value consisting of 8 characters in the range
@@ -469,16 +469,14 @@ The [=agent-info=] message contains the following fields:
 The various capabilities have the following meanings:
 
 : receive-audio
-:: The agent can generally receive audio for the control protocols it
-    supports.  Each control protocol can have more specific capability
-    mechanisms, such as support for specific URLs in the presentation
-    protocol.
+:: The agent can render audio via the other protocols it supports.  Those other
+    protocols may report more specific capabilities, such as support for
+    certain audio codecs in the streaming protocol.
 
-: receive-video
-:: The agent can generally receive video for the control protocols it
-    supports.  Each control protocol can have more specific capability
-    mechanisms, such as support for specific URLs in the presentation
-    protocol.
+: receive-video 
+:: The agent can receive video via the other protocols it supports.  Those other
+    protocols may report more specific capabilities, such as support for
+    certain video codecs in the streaming protocol.
 
 : receive-presentation
 :: The agent can receive presentations using the presentation protocol.
@@ -1248,7 +1246,7 @@ intentionally mirror settable attributes and methods of the
 
 : paused
 :: If true, pause; if false, resume. See
-    [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause).
+    [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause)
     and
     [HtmlMediaElement.play()](https://html.spec.whatwg.org/multipage/media.html#dom-media-play)
     for more details.  If not set in the initial controls, it is left to the
@@ -1348,26 +1346,27 @@ state values every time.  A non-present state value indicates the state has not
 changed.
 
 : supports
-:: The controls the receiver supports.  These may differ for different [=media
-    resource=]s and should not changes unless the [=media resource=] changes.
+:: The controls the receiver supports.  These may differ according to the [=media
+    resource=] and should not change unless the [=media resource=] also changes.
     The default is empty (support for nothing)
     for the initial state in the [=remote-playback-start-response=] message.
 
 : source-url
-:: The current [=media resource=] URL. See
+:: The current [=media resource=] URL. See 
     [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc).
-    Must be present in the initial state in the [=remote-playback-start-response=] message.
+    Must be present in the initial state in the [=remote-playback-start-response=] message
+    so the controller knows what [=media resource=] was selected for playback.
 
 : loading
 :: The state of network activity for loading the [=media resource=]. See
     [HtmlMediaElement.networkState](https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate).
-    The default is empty (NETWORK_EMPTY)
+    The default is empty ({{NETWORK_EMPTY}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : loaded
 :: The state of the loaded media (whether enough is loaded to play). See
     [HtmlMediaElement.readyState](https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate).
-    The default is nothing (HAVE_NOTHING)
+    The default is nothing ({{HAVE_NOTHING}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : error
