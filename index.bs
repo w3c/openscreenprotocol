@@ -293,7 +293,7 @@ Note: `at` prevents off-LAN parties from attempting authentication; see
 [[#remote-active-mitigations]].  `at` should have at least 32 bits of true
 entropy to make brute force attacks impractical.
 
-Issue: Add examples of sample mDNS records.
+<!-- TODO: Add examples of sample mDNS records. -->
 
 Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
@@ -632,6 +632,10 @@ that may lead to authentication failures.
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
 
+Issue(235): Update SPAKE2 section according to current IETF draft
+
+Issue(242): [Meta] Track CFRG PAKE competition outcome
+
 For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.
 
@@ -655,10 +659,12 @@ This authentication method assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.
 
+Issue(210): [Security] Describe encoding/decoding of PSK into numeric and QR codes.
+
 SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.
 
-Issue: What do "client" and "server" mean here?
+<!-- TODO: What do "client" and "server" mean here? -->
 
 The messages used in this authentication method are: [=auth-spake2-need-psk=],
 [=auth-spake2-handshake=], [=auth-spake2-confirmation=] and [=auth-status=].
@@ -1065,6 +1071,8 @@ requirements for a remote-playback-id.
 :: The [=media resources=] that the controller has selected for playback
     on the receiver.  Each source must include a <{source/src|source URL}>
     and should include an <{source/type|extended MIME type}>.
+    
+Issue(265): Should media resource URLs be optional?
 
 : text-track-urls
 :: URLs of text tracks associated with the [=media resources=].
@@ -1105,6 +1113,8 @@ streaming session as if the streaming session had been started with
 before the remote playback is terminated, but if the remote playback is
 terminated first, the streaming session associated with it is automatically
 terminated.
+
+Issue(241): Add a back pressure signal for media remoting
 
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
@@ -1226,6 +1236,8 @@ intentionally mirror settable attributes and methods of the
     [HtmlMediaElement.src](https://html.spec.whatwg.org/multipage/media.html#dom-media-src)
     for more details. Must not be used in the initial controls of the
     [=remote-playback-start-request=] message (which already contains a list of URLs).
+    
+Issue(223): Codec switching when remoting.
 
 : preload
 :: Set how aggressively to preload media. See
@@ -1619,7 +1631,7 @@ Formats are composed of the following fields:
 : name (required)
 :: The name of the codec.   This must be a single-codec RFC 6381 [=codecs parameter=].
 
-<!-- TODO, specify where codec-specific parameters are defined. -->
+Issue(266): Specify where codec-specific parameters are defined or drop them.
 
 : parameters (required)
 :: A list of (key, value) parameters that can be used to describe
@@ -1662,6 +1674,8 @@ following additional fields:
     display could return this value as 1.6 to indicate its preferred content
     scaling. Default is none.
 
+Issue(194): Align capabilities for HDR rendering and display with Media Capabilities.
+
 : color-profiles (optional)
 :: An optional field indicating what color profiles are understood.
     The listener may use these values to determine how to encode
@@ -1681,8 +1695,8 @@ following additional fields:
 : supports-rotation (optional)
 :: An optional boolean field indicating whether the media receiver can receive
     video frames with the rotation field set. The default value is true.
-
-<!-- TODO: Add max-bit-rate, color profiles, HDR -->
+    
+<!-- TODO: Add max-bit-rate -->
 
 Sessions {#streaming-sessions}
 ------------------------------------
