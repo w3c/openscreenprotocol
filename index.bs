@@ -1245,7 +1245,7 @@ intentionally mirror settable attributes and methods of the
 
 : paused
 :: If true, pause; if false, resume. See
-    [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause).
+    [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause)
     and
     [HtmlMediaElement.play()](https://html.spec.whatwg.org/multipage/media.html#dom-media-play)
     for more details.  If not set in the initial controls, it is left to the
@@ -1345,26 +1345,27 @@ state values every time.  A non-present state value indicates the state has not
 changed.
 
 : supports
-:: The controls the receiver supports.  These may differ for different [=media
-    resource=]s and should not changes unless the [=media resource=] changes.
+:: The controls the receiver supports.  These may differ according to the [=media
+    resource=] and should not change unless the [=media resource=] also changes.
     The default is empty (support for nothing)
     for the initial state in the [=remote-playback-start-response=] message.
 
 : source-url
-:: The current [=media resource=] URL. See
+:: The current [=media resource=] URL. See 
     [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc).
-    Must be present in the initial state in the [=remote-playback-start-response=] message.
+    Must be present in the initial state in the [=remote-playback-start-response=] message
+    so the controller knows what [=media resource=] was selected for playback.
 
 : loading
 :: The state of network activity for loading the [=media resource=]. See
     [HtmlMediaElement.networkState](https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate).
-    The default is empty (NETWORK_EMPTY)
+    The default is empty ({{NETWORK_EMPTY}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : loaded
 :: The state of the loaded media (whether enough is loaded to play). See
     [HtmlMediaElement.readyState](https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate).
-    The default is nothing (HAVE_NOTHING)
+    The default is nothing ({{HAVE_NOTHING}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : error
