@@ -75,6 +75,10 @@ The Open Screen Protocol is intended to be extensible, so that additional
 capabilities can be added over time.  This may include additions to existing Web
 APIs or new Web APIs.
 
+The accompanying
+[explainer](https://w3c.github.io/openscreenprotocol/explainer.html) provides
+more background on the protocol.
+
 Terminology {#terminology}
 --------------------------
 
