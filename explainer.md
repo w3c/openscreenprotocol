@@ -2,7 +2,9 @@
 
 The Open Screen Protocol allows one networked device to discover another on the
 local network, create a secure connection, and request that the other device
-render an application or streaming media using Web APIs.
+render an application or streaming media using Web APIs such as the
+[Presentation API](https://w3c.github.io/presentation-api/) and [Remote Playback
+API](https://w3c.github.io/remote-playback/).
 
 We call devices that implement this protocol Open Screen Agents.
 
@@ -71,8 +73,8 @@ specific URL or media type.
 We considered adopting an existing protocol like [Google
 Cast](https://developers.google.com/cast/) or [HbbTV
 2.0](https://www.hbbtv.org/news-events/hbbtv-2-0-specification-released/)
-instead of inventing a new protocol from scratch.  However these had limitations
-that made them less than ideal:
+instead of inventing a new protocol from scratch.  However these have significant
+limitations that motivated the development of a new protocol:
 
   * They were not free to implement by other vendors.
   * They did not fully support the Web APIs as written.
