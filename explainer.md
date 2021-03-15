@@ -70,9 +70,10 @@ specific URL or media type.
 
 ## Alternatives Considered
 
-We considered adopting an existing protocol like [Google
-Cast](https://developers.google.com/cast/) or [HbbTV
-2.0](https://www.hbbtv.org/news-events/hbbtv-2-0-specification-released/)
+We considered adopting an existing protocol like
+[Google Cast](https://developers.google.com/cast/),
+[DIAL](http://www.dial-multiscreen.org/home),
+or [HbbTV 2.0](https://www.hbbtv.org/news-events/hbbtv-2-0-specification-released/)
 instead of inventing a new protocol from scratch.  However these have significant
 limitations that motivated the development of a new protocol:
 
