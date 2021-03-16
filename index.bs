@@ -16,6 +16,12 @@ Markup Shorthands: markdown yes, dfn yes, idl yes, markup yes
 </pre>
 
 <pre class="anchors">
+url: https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code; type: dfn; spec: html
+    text: media error code
+urlPrefix: https://html.spec.whatwg.org/multipage/media.html#; type: dfn; spec: html
+    text: official playback position
+    text: poster frame
+    text: timeline offset
 urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
     text: available presentation display
     text: controlling user agent
@@ -33,9 +39,10 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: media resources
     text: remote playback devices
     text: remote playback source
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-19.19; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-23#section-16; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-19.19; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
+url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: variable-length integer
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
@@ -46,6 +53,7 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md2
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
 url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
+url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
 </pre>
 
 Introduction {#introduction}
@@ -72,6 +80,10 @@ device.
 The Open Screen Protocol is intended to be extensible, so that additional
 capabilities can be added over time.  This may include additions to existing Web
 APIs or new Web APIs.
+
+The accompanying
+[explainer](https://w3c.github.io/openscreenprotocol/explainer.html) provides
+more background on the protocol.
 
 Terminology {#terminology}
 --------------------------
@@ -193,7 +205,8 @@ Non-Functional Requirements {#requirements-non-functional}
 1.  It should be possible to implement an OSP agent using modest
     hardware requirements, similar to what is found in a low end smartphone,
     smart TV or streaming device. See the [Device
-    Specifications](device_specs.md) document for agent hardware specifications.
+    Specifications](https://w3c.github.io/openscreenprotocol/device_specs.html)
+    document for agent hardware specifications.
 
 2.  The discovery and connection protocols should minimize power consumption,
     especially on a [=listening agent=] which is likely to be battery
@@ -280,7 +293,8 @@ keys and values:
 :: An unsigned integer value that indicates that
     metadata has changed.   The advertising agent must update it to a greater
     value.  This signals to the listening agent that it should connect to the
-    advertising agent to discover updated metadata.
+    advertising agent to discover updated metadata.  The value should be encoded
+    as a [=variable-length integer=].
 
 : at
 :: An alphanumeric, unguessable token consisting of characters from the set
@@ -290,7 +304,7 @@ Note: `at` prevents off-LAN parties from attempting authentication; see
 [[#remote-active-mitigations]].  `at` should have at least 32 bits of true
 entropy to make brute force attacks impractical.
 
-Issue: Add examples of sample mDNS records.
+<!-- TODO: Add examples of sample mDNS records. -->
 
 Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
@@ -319,41 +333,19 @@ TLS 1.3 {#tls-13}
 -----------------
 
 When an [=OSP Agent=] makes a QUIC connection to another agent, it must use
-[[!RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 must be used in the following
-application profile:
+[[!RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 should be used with the
+following application-specific parameters to indicate that the connection will
+be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
+refuse incoming connections that lack these parameters.
 
 * The [[!RFC7301|ALPN]] used must be "osp".
-* Only constant-time AEAD ciphers are allowed.
-    * OSP agents must support [[!RFC8446|TLS_AES_128_GCM_SHA256]].
-    * OSP agents should support [[!RFC8466|TLS_CHACHA20_POLY1305_SHA256]] and
-        [[!RFC8466|TLS_AES_256_GCM_SHA384]].
-* OSP agents must support the [[!RFC8446|ecdsa_secp256r1_sha256]] digital signature algorithm.
-    OSP agents should also support [[!RFC8466|ecdsa_secp384r1_sha384]] and
-    [[!RFC8466|ecdsa_secp521r1_sha512]]. OSP agents must not support additional digital
-    signature algorithms.
-    * `ecdsa_secp256r1_sha256` must be included in the `signature_algorithms`
-        extension.  `ecdsa_secp384r1_sha384` and `ecdsa_secp512r1_sha512` must be
-        included if they are supported by the agent.
-    * `secp256r1` must be included in the `supported_groups` extension.
-        `secp384r1` and `secp512r1` must be included if they are supported by the
-        agent.
-    * The `key_share` extension must be set to the cryptographic parameters for
-        the negotiated signature algoirithm.
-* The `server_name` extension should be set to the following `host_name`:
+* The [[!RFC6066|server_name extension]] must be set to the following `host_name`: 
     `<fp>._openscreen._udp.local`.
-    * `<fp>` should be substituted with the [=agent fingerprint=] as used in mDNS TXT.
-* All other TLS 1.3 extensions must be ignored by OSP agents.
+    * `<fp>` must be substituted with the [=agent fingerprint=] as used in mDNS TXT.
 
-Note: As this is an application-specific profile for TLS 1.3, it is not required
-for OSP agents to interoperate with non-OSP TLS 1.3 endpoints.
+An OSP Agent must not send TLS early data.
 
 Issue(228): Register ALPN with IANA.
-
-Issue(220): Determine if there is an advantage to session resumption outside of
-early data. If we allow session resumption, do we allow early data too?
-
-Issue(219): Do agents need to support the Cookies extension (used in
-HelloRetryRequest)?
 
 Issue(218): Make recommendations for cipher and signature algorithm preference
 list based on hardware characteristics of agents.
@@ -472,7 +464,7 @@ The [=agent-info=] message contains the following fields:
     Presence indicates a capability and absence indicates lack of a
     capability.  Capabilities should should affect how an agent is
     presented to a user, such as drawing a different icon depending on
-    the media types it supports.
+    the whether it receives audio, video or both.
 
 : state-token (required)
 :: A random alphanumeric value consisting of 8 characters in the range
@@ -487,16 +479,14 @@ The [=agent-info=] message contains the following fields:
 The various capabilities have the following meanings:
 
 : receive-audio
-:: The agent can generally receive audio for the control protocols it
-    supports.  Each control protocol can have more specific capability
-    mechanisms, such as support for specific URLs in the presentation
-    protocol.
+:: The agent can render audio via the other protocols it supports.  Those other
+    protocols may report more specific capabilities, such as support for
+    certain audio codecs in the streaming protocol.
 
-: receive-video
-:: The agent can generally receive video for the control protocols it
-    supports.  Each control protocol can have more specific capability
-    mechanisms, such as support for specific URLs in the presentation
-    protocol.
+: receive-video 
+:: The agent can receive video via the other protocols it supports.  Those other
+    protocols may report more specific capabilities, such as support for
+    certain video codecs in the streaming protocol.
 
 : receive-presentation
 :: The agent can receive presentations using the presentation protocol.
@@ -519,7 +509,7 @@ The various capabilities have the following meanings:
 :: The agent can send streaming using the streaming protocol.
 
 Note: See the
-[Capabilities Registry](https://w3c.github.io/openscreenprotocol/capabilities.md)
+[Capabilities Registry](https://w3c.github.io/openscreenprotocol/capabilities.html)
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
 
@@ -551,7 +541,7 @@ include additional information not defined in this spec, as described in
 Messages delivery using CBOR and QUIC streams {#messages}
 ========================================================
 
-Messages are serialized using [[!RFC7049|CBOR]].  To send a group of messages in
+Messages are serialized using [[!RFC8949|CBOR]].  To send a group of messages in
 order, that group of messages must be sent in one QUIC stream.  Independent
 groups of messages (with no ordering dependency across groups) should be sent in
 different QUIC streams.  In order to put multiple CBOR-serialized messages into
@@ -559,8 +549,8 @@ the the same QUIC stream, the following is used.
 
 For each message, the [=OSP agent=] must write to the QUIC stream the following:
 
-1.  A type key representing the type of the message, encoded as a variable-length
-    integer (see [[#appendix-a]] for type keys)
+1.  A type key representing the type of the message, encoded as a [=variable-length
+    integer=] (see [[#appendix-a]] for type keys)
 
 2.  The message encoded as CBOR.
 
@@ -653,6 +643,10 @@ that may lead to authentication failures.
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
 
+Issue(235): Update SPAKE2 section according to current IETF draft
+
+Issue(242): [Meta] Track CFRG PAKE competition outcome
+
 For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.
 
@@ -676,10 +670,12 @@ This authentication method assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.
 
+Issue(210): [Security] Describe encoding/decoding of PSK into numeric and QR codes.
+
 SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.
 
-Issue: What do "client" and "server" mean here?
+<!-- TODO: What do "client" and "server" mean here? -->
 
 The messages used in this authentication method are: [=auth-spake2-need-psk=],
 [=auth-spake2-handshake=], [=auth-spake2-confirmation=] and [=auth-status=].
@@ -1086,6 +1082,8 @@ requirements for a remote-playback-id.
 :: The [=media resources=] that the controller has selected for playback
     on the receiver.  Each source must include a <{source/src|source URL}>
     and should include an <{source/type|extended MIME type}>.
+    
+Issue(265): Should media resource URLs be optional?
 
 : text-track-urls
 :: URLs of text tracks associated with the [=media resources=].
@@ -1127,6 +1125,8 @@ before the remote playback is terminated, but if the remote playback is
 terminated first, the streaming session associated with it is automatically
 terminated.
 
+Issue(241): Add a back pressure signal for media remoting
+
 If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a
 [=remote-playback-modify-request=] message with the following values:
@@ -1153,40 +1153,42 @@ The receiver should send a [=remote-playback-state-event=] message whenever:
 
 Any of the following methods are called:
 
-* [HtmlMediaElement.fastSeek()](https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek)
-* [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause)
-* [HtmlMediaElement.play()](https://html.spec.whatwg.org/multipage/media.html#dom-media-play)
+* {{HTMLMediaElement/fastSeek()|HTMLMediaElement.fastSeek()}}
+* {{HTMLMediaElement/pause()|HTMLMediaElement.pause()}}
+* {{HTMLMediaElement/play()|HTMLMediaElement.play()}}
 
 Any of the following attributes observably change since the last sent [=remote-playback-state-event=] message:
 
-* [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc)
-* [HtmlMediaElement.networkState](https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate)
-* [HtmlMediaElement.readyState](https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate)
-* [HtmlMediaElement.error](https://html.spec.whatwg.org/multipage/media.html#dom-media-error)
-* [HtmlMediaElement's timeline offset](https://html.spec.whatwg.org/multipage/media.html#timeline-offset)
-* [HtmlMediaElement.duration](https://html.spec.whatwg.org/multipage/media.html#dom-media-duration)
-* [HtmlMediaElement.buffered](https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered)
-* [HtmlMediaElement.seekable](https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable)
-* [HtmlMediaElement.playbackRate](https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate)
-* [HtmlMediaElement.paused](https://html.spec.whatwg.org/multipage/media.html#dom-media-paused)
-* [HtmlMediaElement.seeking](https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking)
-* [HtmlMediaElement.stalled](https://html.spec.whatwg.org/multipage/media.html#event-media-stalled)
-* [HtmlMediaElement.ended](https://html.spec.whatwg.org/multipage/media.html#dom-media-ended)
-* [HtmlMediaElement.volume](https://html.spec.whatwg.org/multipage/media.html#dom-media-volume)
-* [HtmlMediaElement.muted](https://html.spec.whatwg.org/multipage/media.html#dom-media-muted)
-* [HtmlMediaElement.videoWidth](https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth)
-* [HtmlMediaElement.videoHeight](https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight)
-* [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
-* [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
-* [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
+* {{HTMLMediaElement/currentSrc|HTMLMediaElement.currentSrc}}
+* {{HTMLMediaElement/networkState|HTMLMediaElement.networkState}}
+* {{HTMLMediaElement/readyState|HTMLMediaElement.readyState}}
+* {{HTMLMediaElement/error!!attribute|HTMLMediaElement.error}}
+* {{HTMLMediaElement/duration|HTMLMediaElement.duration}}
+* {{HTMLMediaElement/buffered|HTMLMediaElement.buffered}}
+* {{HTMLMediaElement/seekable|HTMLMediaElement.seekable}}
+* {{HTMLMediaElement/playbackRate|HTMLMediaElement.playbackRate}}
+* {{HTMLMediaElement/paused|HTMLMediaElement.paused}}
+* {{HTMLMediaElement/seeking!!attribute|HTMLMediaElement.seeking}}
+* {{HTMLMediaElement/ended!!attribute|HTMLMediaElement.ended}}
+* {{HTMLMediaElement/volume|HTMLMediaElement.volume}}
+* {{HTMLMediaElement/muted|HTMLMediaElement.muted}}
+* {{HTMLMediaElement/audioTracks|HTMLMediaElement.audioTracks}}
+* {{HTMLMediaElement/videoTracks|HTMLMediaElement.videoTracks}}
+* {{HTMLMediaElement/textTracks|HTMLMediaElement.textTracks}}
+* {{HTMLVideoElement/videoWidth|HTMLVideoElement.videoWidth}}
+* {{HTMLVideoElement/videoHeight|HTMLVideoElement.videoHeight}}
+
+The [=timeline offset=] associated with the playback changes since the last sent [=remote-playback-state-event=] message:
+
+The {{stalled}} event needs to fire at the associated {{HTMLMediaElement}} instance.
 
 More than 350ms pass since the last [=remote-playback-state-event=] message
   and any of the following attributes observably change since the last
   [=remote-playback-state-event=] message. Any new continuously changing
   attributes fall under this rule.
 
-* [HtmlMediaElement.played](https://html.spec.whatwg.org/multipage/media.html#dom-media-played)
-* [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime)
+* {{HTMLMediaElement/played|HTMLMediaElement.played}}
+* {{HTMLMediaElement/currentTime|HTMLMediaElement.currentTime}}
 
 : remote-playback-id
 :: The ID of the remote playback whose state has changed.
@@ -1240,17 +1242,19 @@ control value or many control values at once without having to specify all
 control values every time.  A non-present control value indicates no change.  A
 present control value indicates the change defined below. These controls
 intentionally mirror settable attributes and methods of the
-[HtmlMediaElement](https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement).
+{{HTMLMediaElement}}.
 
 : source-url
 :: Change the [=media resource=] URL. See
-    [HtmlMediaElement.src](https://html.spec.whatwg.org/multipage/media.html#dom-media-src)
+    {{HTMLMediaElement/src|HTMLMediaElement.src}}
     for more details. Must not be used in the initial controls of the
     [=remote-playback-start-request=] message (which already contains a list of URLs).
+    
+Issue(223): Codec switching when remoting.
 
 : preload
 :: Set how aggressively to preload media. See
-    [HtmlMediaElement.preload](https://html.spec.whatwg.org/multipage/media.html#dom-media-preload)
+    {{HTMLMediaElement/preload|HTMLMediaElement.preload}}
     for more details. Should only be used in the initial controls of the
     [=remote-playback-start-request=] message or when the source is changed.  If not
     set in the initial controls, it is left to the receiver to decide.  This is
@@ -1259,51 +1263,51 @@ intentionally mirror settable attributes and methods of the
 
 : loop
 :: Set whether or not to loop media. See
-    [HtmlMediaElement.loop](https://html.spec.whatwg.org/multipage/media.html#dom-media-loop)
+    {{HTMLMediaElement/loop|HTMLMediaElement.loop}}
     for more details. Should only be used in the initial control of the
     [=remote-playback-start-request=].  If not set in the initial controls, it is
     assumed to be false.
 
 : paused
 :: If true, pause; if false, resume. See
-    [HtmlMediaElement.pause()](https://html.spec.whatwg.org/multipage/media.html#dom-media-pause).
+    {{HTMLMediaElement/pause()|HTMLMediaElement.pause()}}
     and
-    [HtmlMediaElement.play()](https://html.spec.whatwg.org/multipage/media.html#dom-media-play)
+    {{HTMLMediaElement/play()|HTMLMediaElement.play()}}
     for more details.  If not set in the initial controls, it is left to the
     receiver to decide.
 
 : muted
 :: If true, mute; if false, unmute. See
-    [HtmlMediaElement.muted](https://html.spec.whatwg.org/multipage/media.html#dom-media-muted)
+    {{HTMLMediaElement/muted|HTMLMediaElement.muted}}
     for more details.  If not set in the initial controls, it is left to the
     receiver to decide.
 
 : volume
 :: Set the audio volume in the range from 0.0 to 1.0 inclusive. See
-    [HtmlMediaElement.volume](https://html.spec.whatwg.org/multipage/media.html#dom-media-volume)
+    {{HTMLMediaElement/volume|HTMLMediaElement.volume}}
     for more details.  If not set in the initial controls, it is left to the
     receiver to decide.
 
 : seek
 :: Seek to a precise time. See
-    [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime)
+    {{HTMLMediaElement/currentTime|HTMLMediaElement.currentTime}}
     for more details.
 
 : fast-seek
 :: Seek to an approximate time as fast as possible. See
-    [HtmlMediaElement.fastSeek()](https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek)
+    {{HTMLMediaElement/fastSeek()|HTMLMediaElement.fastSeek()}}
     for more details.
 
 : playback-rate
 :: Set the rate a which the media plays. See
-    [HtmlMediaElement.playbackRate](https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate)
+    {{HTMLMediaElement/playbackRate|HTMLMediaElement.playbackRate}}
     for more details.  If not set in the initial controls, it is left to the
     receiver to decide.  This is optional for the receiver to support and if not
     supported, the receiver will behave as though it were never set.
 
 : poster
 :: Set the URL of an image to show when video data is not available. See
-    [HtmlMediaElement.poster](https://html.spec.whatwg.org/multipage/media.html#dom-media-poster)
+    [=poster frame=]
     for more details. If not set in the initial controls, no poster is used and
     the receiver can choose what to render when video data is unavailable.  This
     is optional for the receiver to support and if not supported, the receiver
@@ -1311,31 +1315,31 @@ intentionally mirror settable attributes and methods of the
 
 : enabled-audio-track-ids
 :: Enable included audio tracks by ID and disable all other audio tracks. See
-    [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
+    {{HTMLMediaElement/audioTracks|HTMLMediaElement.audioTracks}}
     for more details.
 
 : selected-video-track-id
 :: Select the given video track by ID and unselect all other video tracks. See
-    [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
+    {{HTMLMediaElement/videoTracks|HTMLMediaElement.videoTracks}}
     for more details.
 
 : added-text-tracks
 :: Add text tracks with the given kinds, labels, and languages. See
-    [HtmlMediaElement.addTextTrack](https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack)
+    {{HTMLMediaElement/addTextTrack()|HTMLMediaElement.addTextTrack()}}
     for more details.  This is optional for the receiver to support and if not
     supported, the receiver will behave as though it were never set.
 
 : changed-text-tracks
 :: Change text tracks by ID.  All other text tracks are left
     unchanged.  Set the mode, add cues, and remove cues by id. See
-    [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks)
+    {{HTMLMediaElement/textTracks|HTMLMediaElement.textTracks}}
     for more details.  Note that future specifications or extensions to this
     specifications are expected to add new fields to the [=text-track-cue=]
     (such as text size, alignment, position, etc).  Adding and removing
     cues is optional for the receiver to support and if not supported, the
     receiver will behave as though no cues were added or removed (both adding
     and removing are indicated via the support for "added-cues").  As specified in
-    [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks),
+    {{HTMLMediaElement/textTracks|HTMLMediaElement.textTracks}},
     if a cue ID is invalid (removing an un-added ID or adding an ID twice, for example),
     the receiver may reject the text track change.
 
@@ -1366,141 +1370,141 @@ state values every time.  A non-present state value indicates the state has not
 changed.
 
 : supports
-:: The controls the receiver supports.  These may differ for different [=media
-    resource=]s and should not changes unless the [=media resource=] changes.
+:: The controls the receiver supports.  These may differ according to the [=media
+    resource=] and should not change unless the [=media resource=] also changes.
     The default is empty (support for nothing)
     for the initial state in the [=remote-playback-start-response=] message.
 
 : source-url
 :: The current [=media resource=] URL. See
-    [HtmlMediaElement.currentSrc](https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc).
-    Must be present in the initial state in the [=remote-playback-start-response=] message.
+    {{HTMLMediaElement/currentSrc|HTMLMediaElement.currentSrc}}.
+    Must be present in the initial state in the [=remote-playback-start-response=] message
+    so the controller knows what [=media resource=] was selected for playback.
 
 : loading
 :: The state of network activity for loading the [=media resource=]. See
-    [HtmlMediaElement.networkState](https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate).
-    The default is empty (NETWORK_EMPTY)
+    {{HTMLMediaElement/networkState|HTMLMediaElement.networkState}}.
+    The default is empty ({{NETWORK_EMPTY}}
     for the initial state in the [=remote-playback-start-response=] message.
 
 : loaded
 :: The state of the loaded media (whether enough is loaded to play). See
-    [HtmlMediaElement.readyState](https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate).
-    The default is nothing (HAVE_NOTHING)
+    {{HTMLMediaElement/readyState|HTMLMediaElement.readyState}}.
+    The default is nothing ({{HAVE_NOTHING}}
     for the initial state in the [=remote-playback-start-response=] message.
 
 : error
 :: A major error occurred which prevents the remote playback from continuing. See
-    [HtmlMediaElement.error](https://html.spec.whatwg.org/multipage/media.html#dom-media-error) and
-    [HtmlMediaElement media error codes](https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code).
+    {{HTMLMediaElement/error!!attribute|HTMLMediaElement.error}} and
+    [=media error codes=].
     The default is no error
     for the initial state in the [=remote-playback-start-response=] message.
 
 : epoch
 :: The "zero time" of the media timeline. See
-    [HtmlMediaElement's timeline offset](https://html.spec.whatwg.org/multipage/media.html#timeline-offset) and
-    [HtmlMediaElement.getStartDate()](https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate).
+    [=timeline offset=] and
+    {{HTMLMediaElement/getStartDate()|HTMLMediaElement.getStartDate()}}.
     The default is an unknown epoch
     for the initial state in the [=remote-playback-start-response=] message.
 
 : duration
 :: The duration of the media timeline. See
-    [HtmlMediaElement.duration](https://html.spec.whatwg.org/multipage/media.html#dom-media-duration).
+    {{HTMLMediaElement/duration|HTMLMediaElement.duration}}.
     The default is an unknown duration
     for the initial state in the [=remote-playback-start-response=] message.
 
 : buffered-time-ranges
 :: The time ranges for which media has been buffered. See
-    [HtmlMediaElement.buffered](https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered).
+    {{HTMLMediaElement/buffered|HTMLMediaElement.buffered}}.
     The default is an empty array
     for the initial state in the [=remote-playback-start-response=] message.
 
 : played-time-ranges
 :: The time ranges reached by the playback position during normal playback. See
-    [HtmlMediaElement.played](https://html.spec.whatwg.org/multipage/media.html#dom-media-played).
+    {{HTMLMediaElement/played|HTMLMediaElement.played}}.
     The default is an empty array
     for the initial state in the [=remote-playback-start-response=] message.
 
 : seekable-time-ranges
 :: The time ranges for which media is seekable by the controller or the receiver. See
-    [HtmlMediaElement.seekable](https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable).
+    {{HTMLMediaElement/seekable|HTMLMediaElement.seekable}}.
     The default is an empty array
     for the initial state in the [=remote-playback-start-response=] message.
 
 : position
 :: The playback position. See
-    [HtmlMediaElement's official playback
-    position](https://html.spec.whatwg.org/multipage/media.html#official-playback-position)
+    [=official playback position=]
     and
-    [HtmlMediaElement.currentTime](https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime).
+    {{HTMLMediaElement/currentTime|HTMLMediaElement.currentTime}}.
     The default is 0
     for the initial state in the [=remote-playback-start-response=] message.
 
 : playbackRate
 :: The current rate of playback on a scale where 1.0 is "normal speed". See
-    [HtmlMediaElement.playbackRate](https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate).
+    {{HTMLMediaElement/playbackRate|HTMLMediaElement.playbackRate}}.
     The default is 1.0
     for the initial state in the [=remote-playback-start-response=] message.
 
 : paused
 :: Whether media is paused or not. See
-    [HtmlMediaElement.paused](https://html.spec.whatwg.org/multipage/media.html#dom-media-paused).
+    {{HTMLMediaElement/paused|HTMLMediaElement.paused}}.
     The default is false
     for the initial state in the [=remote-playback-start-response=] message.
 
 : seeking
 :: Whether the receiver is seeking or not. See
-    [HtmlMediaElement.seeking](https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking).
+    {{HTMLMediaElement/seeking!!attribute|HTMLMediaElement.seeking}}.
     The default is false
     for the initial state in the [=remote-playback-start-response=] message.
 
 : stalled
 :: If true, media is not playing because not enough media is loaded, and false otherwise. See
-    [HtmlMediaElement.stalled](https://html.spec.whatwg.org/multipage/media.html#event-media-stalled).
+    the {{stalled}} event.
     The default is false
     for the initial state in the [=remote-playback-start-response=] message.
 
 : ended
 :: Whether media has reached the end or not. See
-    [HtmlMediaElement.ended](https://html.spec.whatwg.org/multipage/media.html#dom-media-ended).
+    {{HTMLMediaElement/ended!!attribute|HTMLMediaElement.ended}}.
     The default is false
     for the initial state in the [=remote-playback-start-response=] message.
 
 : volume
 :: The current volume of playback on a scale of 0.0 to 1.0. See
-    [HtmlMediaElement.volume](https://html.spec.whatwg.org/multipage/media.html#dom-media-volume).
+    {{HTMLMediaElement/volume|HTMLMediaElement.volume}}.
     The default is 1.0
     for the initial state in the [=remote-playback-start-response=] message.
 
 : muted
 :: True if audio is muted (overriding the volume value) and false otherwise.
     See
-    [HtmlMediaElement.muted](https://html.spec.whatwg.org/multipage/media.html#dom-media-muted).
+    {{HTMLMediaElement/muted|HTMLMediaElement.muted}}.
     The default is false
     for the initial state in the [=remote-playback-start-response=] message.
 
 : resolution
 :: The "intrinsic width" and "intrinsic width" of the video. See
-    [HtmlMediaElement.videoWidth](https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth)
+    {{HTMLVideoElement/videoWidth|HTMLVideoElement.videoWidth}}
     and
-    [HtmlMediaElement.videoHeight](https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight).
+    {{HTMLVideoElement/videoHeight|HTMLVideoElement.videoHeight}}.
     The default is unknown
     for the initial state in the [=remote-playback-start-response=] message.
 
 : audio-tracks
 :: The available audio tracks, which can individually enabled or disabled. See
-    [HtmlMediaElement.audioTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks)
+    {{HTMLMediaElement/audioTracks|HTMLMediaElement.audioTracks}}.
     The default is an empty array
     for the initial state in the [=remote-playback-start-response=] message.
 
 : video-tracks
 :: The available video tracks.  Only one may be selected. See
-    [HtmlMediaElement.videoTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks)
+    {{HTMLMediaElement/videoTracks|HTMLMediaElement.videoTracks}}.
     The default is an empty array
     for the initial state in the [=remote-playback-start-response=] message.
 
 : text-tracks
 :: The available text tracks, which can be individually shown, hidden, or disabled. See
-    [HtmlMediaElement.textTracks](https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks).
+    {{HTMLMediaElement/textTracks|HTMLMediaElement.textTracks}}.
     The controller can also add cues to and remove cues from text tracks.
     The default is an empty array
     for the initial state in the [=remote-playback-start-response=] message.
@@ -1639,12 +1643,14 @@ Formats are composed of the following fields:
 : name (required)
 :: The name of the codec.   This must be a single-codec RFC 6381 [=codecs parameter=].
 
-<!-- TODO, specify where codec-specific parameters are defined. -->
+Issue(233): Use the same codec names as the media APIs.
 
 : parameters (required)
 :: A list of (key, value) parameters that can be used to describe
     properties of a specific format, and not shared by other formats
     of that type (audio, video, etc.).
+
+Issue(266): Specify where codec-specific parameters are defined or drop them.
 
 Audio capabilities are composed of the above format type, with the following
 additional fields:
@@ -1682,6 +1688,8 @@ following additional fields:
     display could return this value as 1.6 to indicate its preferred content
     scaling. Default is none.
 
+Issue(194): Align capabilities for HDR rendering and display with Media Capabilities.
+
 : color-profiles (optional)
 :: An optional field indicating what color profiles are understood.
     The listener may use these values to determine how to encode
@@ -1701,8 +1709,8 @@ following additional fields:
 : supports-rotation (optional)
 :: An optional boolean field indicating whether the media receiver can receive
     video frames with the rotation field set. The default value is true.
-
-<!-- TODO: Add max-bit-rate, color profiles, HDR -->
+    
+<!-- TODO: Add max-bit-rate -->
 
 Sessions {#streaming-sessions}
 ------------------------------------
@@ -2247,7 +2255,7 @@ customization or other purposes.
 
 To add new extension messages, extension authors must register a capability ID
 with a range of message type keys in a
-[public registry](https://w3c.github.io/openscreenprotocol/capabilites.md).
+[public registry](https://w3c.github.io/openscreenprotocol/capabilities.html).
 Agents may then indicate that they accept an extension by including the
 corresponding capability ID in the `capabilities` field of its [=agent-info=]
 message.
@@ -2620,12 +2628,12 @@ capable of handling:
 Appendix A: Messages {#appendix-a}
 ====================
 
-The following messages are defined with [[RFC8610|CDDL]]. When integer keys are used, a
-comment is appended to the line to indicate the name of the field. Object
-definitions in this specification have this unusual syntax to reduce the number
-of bytes-on-the-wire, while maintaining a human-readable name for each
-key. Integer keys are used instead of object arrays to allow for easy indexing
-of optional fields.
+The following messages are defined using the [=Concise Data Definition
+Language=] syntax. When integer keys are used, a comment is appended to the line
+to indicate the name of the field. Object definitions in this specification have
+this unusual syntax to reduce the number of bytes-on-the-wire, while maintaining
+a human-readable name for each key. Integer keys are used instead of object
+arrays to allow for easy indexing of optional fields.
 
 Each root message (one that can be put into a QUIC stream without being enclosed
 by another message) has a comment indicating the message type key.
@@ -2635,7 +2643,7 @@ or are very small or both and larger numbers should be reserved for messages
 that are infrequently sent or large or both because smaller type keys encode on
 the wire smaller.
 
-<pre class=include>
+<pre class=include-raw>
 path: messages_appendix.html
 </pre>
 
@@ -2649,7 +2657,7 @@ Appendix B: Message Type Key Ranges {#appendix-b}
 The following appendix describes how the range of message type keys is divided.
 Legal values are 1 to 2<sup>64</sup>.
 
-Each type key is encoded as a variable-length integer on the wire of 1, 2, 4 or
+Each type key is encoded as a [=variable-length integer=] on the wire of 1, 2, 4 or
 8 bytes.  For each wire byte size, 1/4 to 1/2 of the keys are available for
 extensions.
 
