@@ -2132,7 +2132,7 @@ It should send all of the following stats for all of the media streams it is
 receiving.
 
 If the receiver is using a buffer to hold frames before playing them out, it
-should also sends the status of that buffer using the `remote-buffer-status` field.
+should also send the status of that buffer using the `remote-buffer-status` field.
 It can have one of three values:
 
 - `enough-data`: The buffer has neither too much data nor insufficient data.
