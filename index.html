@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
   <meta content="Bikeshed version b94c7e755, updated Fri Feb 19 16:28:59 2021 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="776ccc8f359492f551fd6a1583433e2477ba2c6a" name="document-revision">
+  <meta content="2c071caf0aa5bbdb406db8ba139d7f830bf40e1a" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -504,7 +504,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-03-02">2 March 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-03-16">16 March 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -676,6 +676,8 @@ device.</p>
    <p>The Open Screen Protocol is intended to be extensible, so that additional
 capabilities can be added over time.  This may include additions to existing Web
 APIs or new Web APIs.</p>
+   <p>The accompanying <a href="https://w3c.github.io/openscreenprotocol/explainer.html">explainer</a> provides
+more background on the protocol.</p>
    <h3 class="heading settled" data-level="1.1" id="terminology"><span class="secno">1.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="open screen protocol agent|osp agent" data-noexport id="open-screen-protocol-agent">Open Screen Protocol
 agent</dfn> (or OSP agent) is any implementation of this protocol (browser,
@@ -775,7 +777,7 @@ to the receiver to assist in rendering text during remote playback.</p>
     <li data-md>
      <p>It should be possible to implement an OSP agent using modest
 hardware requirements, similar to what is found in a low end smartphone,
-smart TV or streaming device. See the <a href="device_specs.md">Device
+smart TV or streaming device. See the <a href="https://w3c.github.io/openscreenprotocol/device_specs.html">Device
 Specifications</a> document for agent hardware specifications.</p>
     <li data-md>
      <p>The discovery and connection protocols should minimize power consumption,
@@ -856,7 +858,6 @@ as a <a data-link-type="dfn" href="https://tools.ietf.org/html/draft-ietf-quic-t
    </dl>
    <p class="note" role="note"><span>Note:</span> <code>at</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 12.5.3 Remote active network attackers</a>. <code>at</code> should have at least 32 bits of true
 entropy to make brute force attacks impractical.</p>
-   <p class="issue" id="issue-49bdd4e6"><a class="self-link" href="#issue-49bdd4e6"></a> Add examples of sample mDNS records.</p>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
 capabilities mechanism to be determined. If a future version of the Open Screen
@@ -984,7 +985,7 @@ displayed to the user of the requesting agent.</p>
 Presence indicates a capability and absence indicates lack of a
 capability.  Capabilities should should affect how an agent is
 presented to a user, such as drawing a different icon depending on
-the media types it supports.</p>
+the whether it receives audio, video or both.</p>
     <dt data-md>state-token (required)
     <dd data-md>
      <p>A random alphanumeric value consisting of 8 characters in the range
@@ -1000,16 +1001,14 @@ of user preference.  Each entry is an RFC5646 <a data-link-type="dfn" href="http
    <dl>
     <dt data-md>receive-audio
     <dd data-md>
-     <p>The agent can generally receive audio for the control protocols it
-supports.  Each control protocol can have more specific capability
-mechanisms, such as support for specific URLs in the presentation
-protocol.</p>
+     <p>The agent can render audio via the other protocols it supports.  Those other
+protocols may report more specific capabilities, such as support for
+certain audio codecs in the streaming protocol.</p>
     <dt data-md>receive-video
     <dd data-md>
-     <p>The agent can generally receive video for the control protocols it
-supports.  Each control protocol can have more specific capability
-mechanisms, such as support for specific URLs in the presentation
-protocol.</p>
+     <p>The agent can receive video via the other protocols it supports.  Those other
+protocols may report more specific capabilities, such as support for
+certain video codecs in the streaming protocol.</p>
     <dt data-md>receive-presentation
     <dd data-md>
      <p>The agent can receive presentations using the presentation protocol.</p>
@@ -1031,7 +1030,7 @@ protocol.</p>
     <dd data-md>
      <p>The agent can send streaming using the streaming protocol.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> See the <a href="https://w3c.github.io/openscreenprotocol/capabilities.md">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
+   <p class="note" role="note"><span>Note:</span> See the <a href="https://w3c.github.io/openscreenprotocol/capabilities.html">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
 through <a href="#protocol-extensions">§ 11 Protocol Extensions</a>).</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
@@ -1132,6 +1131,8 @@ QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
+   <p class="issue" id="issue-3b9ff3bd"><a class="self-link" href="#issue-3b9ff3bd"></a> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">&lt;https://github.com/w3c/openscreenprotocol/issues/235></a></p>
+   <p class="issue" id="issue-dc398825"><a class="self-link" href="#issue-dc398825"></a> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">&lt;https://github.com/w3c/openscreenprotocol/issues/242></a></p>
    <p>For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.</p>
    <p>The default authentication method is <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08">SPAKE2</a> with
@@ -1155,9 +1156,9 @@ is not stored in any form.</p>
    <p>This authentication method assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.</p>
+   <p class="issue" id="issue-619e4cec"><a class="self-link" href="#issue-619e4cec"></a> [Security] Describe encoding/decoding of PSK into numeric and QR codes. <a href="https://github.com/w3c/openscreenprotocol/issues/210">&lt;https://github.com/w3c/openscreenprotocol/issues/210></a></p>
    <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.</p>
-   <p class="issue" id="issue-492f86ab"><a class="self-link" href="#issue-492f86ab"></a> What do "client" and "server" mean here?</p>
    <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
 SPAKE2 describes in detail how <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake①">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
    <p>The values <code>A</code> and <code>B</code> used in SPAKE2 are the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint②">agent fingerprints</a> of the
@@ -1499,6 +1500,9 @@ requirements for a remote-playback-id.</p>
     <dd data-md>
      <p>The <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources①">media resources</a> that the controller has selected for playback
 on the receiver.  Each source must include a <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src" id="ref-for-attr-source-src">source URL</a></code> and should include an <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type" id="ref-for-attr-source-type">extended MIME type</a></code>.</p>
+   </dl>
+   <p class="issue" id="issue-74827562"><a class="self-link" href="#issue-74827562"></a> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">&lt;https://github.com/w3c/openscreenprotocol/issues/265></a></p>
+   <dl>
     <dt data-md>text-track-urls
     <dd data-md>
      <p>URLs of text tracks associated with the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources②">media resources</a>.</p>
@@ -1536,6 +1540,7 @@ streaming session as if the streaming session had been started with <a data-link
 before the remote playback is terminated, but if the remote playback is
 terminated first, the streaming session associated with it is automatically
 terminated.</p>
+   <p class="issue" id="issue-9717419d"><a class="self-link" href="#issue-9717419d"></a> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">&lt;https://github.com/w3c/openscreenprotocol/issues/241></a></p>
    <p>If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request">remote-playback-modify-request</a> message with the following values:</p>
    <dl>
@@ -1560,63 +1565,61 @@ controller.</p>
    <p>Any of the following methods are called:</p>
    <ul>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek">HtmlMediaElement.fastSeek()</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek" id="ref-for-dom-media-fastseek">HTMLMediaElement.fastSeek()</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-pause">HtmlMediaElement.pause()</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-pause" id="ref-for-dom-media-pause">HTMLMediaElement.pause()</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-play">HtmlMediaElement.play()</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-play" id="ref-for-dom-media-play">HTMLMediaElement.play()</a></code></p>
    </ul>
    <p>Any of the following attributes observably change since the last sent <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event③">remote-playback-state-event</a> message:</p>
    <ul>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">HtmlMediaElement.currentSrc</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc" id="ref-for-dom-media-currentsrc">HTMLMediaElement.currentSrc</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">HtmlMediaElement.networkState</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate" id="ref-for-dom-media-networkstate">HTMLMediaElement.networkState</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate">HtmlMediaElement.readyState</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate" id="ref-for-dom-media-readystate">HTMLMediaElement.readyState</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error">HtmlMediaElement.error</a></p>
+     <p><code class="idl"><a class="idl-code" data-link-type="attribute" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error" id="ref-for-dom-media-error">HTMLMediaElement.error</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset">HtmlMediaElement’s timeline offset</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration" id="ref-for-dom-media-duration">HTMLMediaElement.duration</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration">HtmlMediaElement.duration</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered" id="ref-for-dom-media-buffered">HTMLMediaElement.buffered</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">HtmlMediaElement.buffered</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable" id="ref-for-dom-media-seekable">HTMLMediaElement.seekable</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable">HtmlMediaElement.seekable</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate" id="ref-for-dom-media-playbackrate">HTMLMediaElement.playbackRate</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">HtmlMediaElement.playbackRate</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused" id="ref-for-dom-media-paused">HTMLMediaElement.paused</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused">HtmlMediaElement.paused</a></p>
+     <p><code class="idl"><a class="idl-code" data-link-type="attribute" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking" id="ref-for-dom-media-seeking">HTMLMediaElement.seeking</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking">HtmlMediaElement.seeking</a></p>
+     <p><code class="idl"><a class="idl-code" data-link-type="attribute" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended" id="ref-for-dom-media-ended">HTMLMediaElement.ended</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">HtmlMediaElement.stalled</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume" id="ref-for-dom-media-volume">HTMLMediaElement.volume</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">HtmlMediaElement.ended</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted" id="ref-for-dom-media-muted">HTMLMediaElement.muted</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks" id="ref-for-dom-media-audiotracks">HTMLMediaElement.audioTracks</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">HtmlMediaElement.muted</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks" id="ref-for-dom-media-videotracks">HTMLMediaElement.videoTracks</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth">HtmlMediaElement.videoWidth</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks" id="ref-for-dom-media-texttracks">HTMLMediaElement.textTracks</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight">HtmlMediaElement.videoHeight</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth" id="ref-for-dom-video-videowidth">HTMLVideoElement.videoWidth</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">HtmlMediaElement.audioTracks</a></p>
-    <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.videoTracks</a></p>
-    <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.textTracks</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight" id="ref-for-dom-video-videoheight">HTMLVideoElement.videoHeight</a></code></p>
    </ul>
-   <p>More than 350ms pass since the last <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event④">remote-playback-state-event</a> message
-  and any of the following attributes observably change since the last <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑤">remote-playback-state-event</a> message. Any new continuously changing
+   <p>The <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset" id="ref-for-timeline-offset">timeline offset</a> associated with the playback changes since the last sent <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event④">remote-playback-state-event</a> message:</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled" id="ref-for-event-media-stalled">stalled</a></code> event needs to fire at the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑤">HTMLMediaElement</a></code> instance.</p>
+   <p>More than 350ms pass since the last <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑤">remote-playback-state-event</a> message
+  and any of the following attributes observably change since the last <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑥">remote-playback-state-event</a> message. Any new continuously changing
   attributes fall under this rule.</p>
    <ul>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played">HtmlMediaElement.played</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played" id="ref-for-dom-media-played">HTMLMediaElement.played</a></code></p>
     <li data-md>
-     <p><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">HtmlMediaElement.currentTime</a></p>
+     <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime" id="ref-for-dom-media-currenttime">HTMLMediaElement.currentTime</a></code></p>
    </ul>
    <dl>
     <dt data-md>remote-playback-id
@@ -1657,75 +1660,77 @@ upon the implementation of the receiver.</p>
    <p>In order for the controller and receiver to stay in sync with regards to the
 state of the remote playback, the controller may send controls to modify the state
 (for example, via the <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request②">remote-playback-modify-request</a> message) and the receiver
-may send updates about state changes (for example, via the <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑥">remote-playback-state-event</a> message).</p>
+may send updates about state changes (for example, via the <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑦">remote-playback-state-event</a> message).</p>
    <p>The controls sent by the controller include the following individual control
 values, each of which is optional.  This allows the controller to change one
 control value or many control values at once without having to specify all
 control values every time.  A non-present control value indicates no change.  A
 present control value indicates the change defined below. These controls
-intentionally mirror settable attributes and methods of the <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="termref-for-htmlmediaelement">HtmlMediaElement</a>.</p>
+intentionally mirror settable attributes and methods of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑥">HTMLMediaElement</a></code>.</p>
    <dl>
     <dt data-md>source-url
     <dd data-md>
-     <p>Change the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources④">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src">HtmlMediaElement.src</a> for more details. Must not be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request③">remote-playback-start-request</a> message (which already contains a list of URLs).</p>
+     <p>Change the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources④">media resource</a> URL. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src" id="ref-for-dom-media-src">HTMLMediaElement.src</a></code> for more details. Must not be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request③">remote-playback-start-request</a> message (which already contains a list of URLs).</p>
+   </dl>
+   <p class="issue" id="issue-791c621c"><a class="self-link" href="#issue-791c621c"></a> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">&lt;https://github.com/w3c/openscreenprotocol/issues/223></a></p>
+   <dl>
     <dt data-md>preload
     <dd data-md>
-     <p>Set how aggressively to preload media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload">HtmlMediaElement.preload</a> for more details. Should only be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request④">remote-playback-start-request</a> message or when the source is changed.  If not
+     <p>Set how aggressively to preload media. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload" id="ref-for-dom-media-preload">HTMLMediaElement.preload</a></code> for more details. Should only be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request④">remote-playback-start-request</a> message or when the source is changed.  If not
 set in the initial controls, it is left to the receiver to decide.  This is
 optional for the receiver to support and if not supported, the receiver will
 behave as though it were never set.</p>
     <dt data-md>loop
     <dd data-md>
-     <p>Set whether or not to loop media. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop">HtmlMediaElement.loop</a> for more details. Should only be used in the initial control of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑤">remote-playback-start-request</a>.  If not set in the initial controls, it is
+     <p>Set whether or not to loop media. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop" id="ref-for-dom-media-loop">HTMLMediaElement.loop</a></code> for more details. Should only be used in the initial control of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑤">remote-playback-start-request</a>.  If not set in the initial controls, it is
 assumed to be false.</p>
     <dt data-md>paused
     <dd data-md>
-     <p>If true, pause; if false, resume. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-pause">HtmlMediaElement.pause()</a>.
-and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-play">HtmlMediaElement.play()</a> for more details.  If not set in the initial controls, it is left to the
+     <p>If true, pause; if false, resume. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-pause" id="ref-for-dom-media-pause①">HTMLMediaElement.pause()</a></code> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-play" id="ref-for-dom-media-play①">HTMLMediaElement.play()</a></code> for more details.  If not set in the initial controls, it is left to the
 receiver to decide.</p>
     <dt data-md>muted
     <dd data-md>
-     <p>If true, mute; if false, unmute. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">HtmlMediaElement.muted</a> for more details.  If not set in the initial controls, it is left to the
+     <p>If true, mute; if false, unmute. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted" id="ref-for-dom-media-muted①">HTMLMediaElement.muted</a></code> for more details.  If not set in the initial controls, it is left to the
 receiver to decide.</p>
     <dt data-md>volume
     <dd data-md>
-     <p>Set the audio volume in the range from 0.0 to 1.0 inclusive. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a> for more details.  If not set in the initial controls, it is left to the
+     <p>Set the audio volume in the range from 0.0 to 1.0 inclusive. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume" id="ref-for-dom-media-volume①">HTMLMediaElement.volume</a></code> for more details.  If not set in the initial controls, it is left to the
 receiver to decide.</p>
     <dt data-md>seek
     <dd data-md>
-     <p>Seek to a precise time. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">HtmlMediaElement.currentTime</a> for more details.</p>
+     <p>Seek to a precise time. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime" id="ref-for-dom-media-currenttime①">HTMLMediaElement.currentTime</a></code> for more details.</p>
     <dt data-md>fast-seek
     <dd data-md>
-     <p>Seek to an approximate time as fast as possible. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek">HtmlMediaElement.fastSeek()</a> for more details.</p>
+     <p>Seek to an approximate time as fast as possible. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek" id="ref-for-dom-media-fastseek①">HTMLMediaElement.fastSeek()</a></code> for more details.</p>
     <dt data-md>playback-rate
     <dd data-md>
-     <p>Set the rate a which the media plays. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">HtmlMediaElement.playbackRate</a> for more details.  If not set in the initial controls, it is left to the
+     <p>Set the rate a which the media plays. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate" id="ref-for-dom-media-playbackrate①">HTMLMediaElement.playbackRate</a></code> for more details.  If not set in the initial controls, it is left to the
 receiver to decide.  This is optional for the receiver to support and if not
 supported, the receiver will behave as though it were never set.</p>
     <dt data-md>poster
     <dd data-md>
-     <p>Set the URL of an image to show when video data is not available. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-poster">HtmlMediaElement.poster</a> for more details. If not set in the initial controls, no poster is used and
+     <p>Set the URL of an image to show when video data is not available. See <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#poster-frame" id="ref-for-poster-frame">poster frame</a> for more details. If not set in the initial controls, no poster is used and
 the receiver can choose what to render when video data is unavailable.  This
 is optional for the receiver to support and if not supported, the receiver
 will behave as though it were never set.</p>
     <dt data-md>enabled-audio-track-ids
     <dd data-md>
-     <p>Enable included audio tracks by ID and disable all other audio tracks. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">HtmlMediaElement.audioTracks</a> for more details.</p>
+     <p>Enable included audio tracks by ID and disable all other audio tracks. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks" id="ref-for-dom-media-audiotracks①">HTMLMediaElement.audioTracks</a></code> for more details.</p>
     <dt data-md>selected-video-track-id
     <dd data-md>
-     <p>Select the given video track by ID and unselect all other video tracks. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.videoTracks</a> for more details.</p>
+     <p>Select the given video track by ID and unselect all other video tracks. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks" id="ref-for-dom-media-videotracks①">HTMLMediaElement.videoTracks</a></code> for more details.</p>
     <dt data-md>added-text-tracks
     <dd data-md>
-     <p>Add text tracks with the given kinds, labels, and languages. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack">HtmlMediaElement.addTextTrack</a> for more details.  This is optional for the receiver to support and if not
+     <p>Add text tracks with the given kinds, labels, and languages. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack" id="ref-for-dom-media-addtexttrack">HTMLMediaElement.addTextTrack()</a></code> for more details.  This is optional for the receiver to support and if not
 supported, the receiver will behave as though it were never set.</p>
     <dt data-md>changed-text-tracks
     <dd data-md>
      <p>Change text tracks by ID.  All other text tracks are left
-unchanged.  Set the mode, add cues, and remove cues by id. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a> for more details.  Note that future specifications or extensions to this
+unchanged.  Set the mode, add cues, and remove cues by id. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks" id="ref-for-dom-media-texttracks①">HTMLMediaElement.textTracks</a></code> for more details.  Note that future specifications or extensions to this
 specifications are expected to add new fields to the <a data-link-type="dfn" href="#text-track-cue" id="ref-for-text-track-cue">text-track-cue</a> (such as text size, alignment, position, etc).  Adding and removing
 cues is optional for the receiver to support and if not supported, the
 receiver will behave as though no cues were added or removed (both adding
-and removing are indicated via the support for "added-cues").  As specified in <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">HtmlMediaElement.textTracks</a>,
+and removing are indicated via the support for "added-cues").  As specified in <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks" id="ref-for-dom-media-texttracks②">HTMLMediaElement.textTracks</a></code>,
 if a cue ID is invalid (removing an un-added ID or adding an ID twice, for example),
 the receiver may reject the text track change.</p>
    </dl>
@@ -1802,112 +1807,113 @@ changed.</p>
    <dl>
     <dt data-md>supports
     <dd data-md>
-     <p>The controls the receiver supports.  These may differ for different <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑤">media
-resource</a>s and should not changes unless the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑥">media resource</a> changes.
+     <p>The controls the receiver supports.  These may differ according to the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑤">media
+resource</a> and should not change unless the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑥">media resource</a> also changes.
 The default is empty (support for nothing)
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②">remote-playback-start-response</a> message.</p>
     <dt data-md>source-url
     <dd data-md>
-     <p>The current <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑦">media resource</a> URL. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">HtmlMediaElement.currentSrc</a>.
-Must be present in the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response③">remote-playback-start-response</a> message.</p>
+     <p>The current <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑦">media resource</a> URL. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc" id="ref-for-dom-media-currentsrc①">HTMLMediaElement.currentSrc</a></code>.
+Must be present in the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response③">remote-playback-start-response</a> message
+so the controller knows what <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑧">media resource</a> was selected for playback.</p>
     <dt data-md>loading
     <dd data-md>
-     <p>The state of network activity for loading the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑧">media resource</a>. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">HtmlMediaElement.networkState</a>.
-The default is empty (NETWORK_EMPTY)
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response④">remote-playback-start-response</a> message.</p>
+     <p>The state of network activity for loading the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑨">media resource</a>. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate" id="ref-for-dom-media-networkstate①">HTMLMediaElement.networkState</a></code>.
+The default is empty (<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty" id="ref-for-dom-media-network_empty">NETWORK_EMPTY</a></code> for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response④">remote-playback-start-response</a> message.</p>
     <dt data-md>loaded
     <dd data-md>
-     <p>The state of the loaded media (whether enough is loaded to play). See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate">HtmlMediaElement.readyState</a>.
-The default is nothing (HAVE_NOTHING)
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑤">remote-playback-start-response</a> message.</p>
+     <p>The state of the loaded media (whether enough is loaded to play). See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate" id="ref-for-dom-media-readystate①">HTMLMediaElement.readyState</a></code>.
+The default is nothing (<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing" id="ref-for-dom-media-have_nothing">HAVE_NOTHING</a></code> for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑤">remote-playback-start-response</a> message.</p>
     <dt data-md>error
     <dd data-md>
-     <p>A major error occurred which prevents the remote playback from continuing. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error">HtmlMediaElement.error</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code">HtmlMediaElement media error codes</a>.
+     <p>A major error occurred which prevents the remote playback from continuing. See <code class="idl"><a class="idl-code" data-link-type="attribute" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error" id="ref-for-dom-media-error①">HTMLMediaElement.error</a></code> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code" id="ref-for-concept-mediaerror-code">media error codes</a>.
 The default is no error
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑥">remote-playback-start-response</a> message.</p>
     <dt data-md>epoch
     <dd data-md>
-     <p>The "zero time" of the media timeline. See <a href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset">HtmlMediaElement’s timeline offset</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate">HtmlMediaElement.getStartDate()</a>.
+     <p>The "zero time" of the media timeline. See <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset" id="ref-for-timeline-offset①">timeline offset</a> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate" id="ref-for-dom-media-getstartdate">HTMLMediaElement.getStartDate()</a></code>.
 The default is an unknown epoch
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑦">remote-playback-start-response</a> message.</p>
     <dt data-md>duration
     <dd data-md>
-     <p>The duration of the media timeline. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration">HtmlMediaElement.duration</a>.
+     <p>The duration of the media timeline. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration" id="ref-for-dom-media-duration①">HTMLMediaElement.duration</a></code>.
 The default is an unknown duration
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑧">remote-playback-start-response</a> message.</p>
     <dt data-md>buffered-time-ranges
     <dd data-md>
-     <p>The time ranges for which media has been buffered. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">HtmlMediaElement.buffered</a>.
+     <p>The time ranges for which media has been buffered. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered" id="ref-for-dom-media-buffered①">HTMLMediaElement.buffered</a></code>.
 The default is an empty array
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑨">remote-playback-start-response</a> message.</p>
     <dt data-md>played-time-ranges
     <dd data-md>
-     <p>The time ranges reached by the playback position during normal playback. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played">HtmlMediaElement.played</a>.
+     <p>The time ranges reached by the playback position during normal playback. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played" id="ref-for-dom-media-played①">HTMLMediaElement.played</a></code>.
 The default is an empty array
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⓪">remote-playback-start-response</a> message.</p>
     <dt data-md>seekable-time-ranges
     <dd data-md>
-     <p>The time ranges for which media is seekable by the controller or the receiver. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable">HtmlMediaElement.seekable</a>.
+     <p>The time ranges for which media is seekable by the controller or the receiver. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable" id="ref-for-dom-media-seekable①">HTMLMediaElement.seekable</a></code>.
 The default is an empty array
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①①">remote-playback-start-response</a> message.</p>
     <dt data-md>position
     <dd data-md>
-     <p>The playback position. See <a href="https://html.spec.whatwg.org/multipage/media.html#official-playback-position">HtmlMediaElement’s official playback
-position</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">HtmlMediaElement.currentTime</a>.
+     <p>The playback position. See <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#official-playback-position" id="ref-for-official-playback-position">official playback position</a> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime" id="ref-for-dom-media-currenttime②">HTMLMediaElement.currentTime</a></code>.
 The default is 0
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①②">remote-playback-start-response</a> message.</p>
     <dt data-md>playbackRate
     <dd data-md>
-     <p>The current rate of playback on a scale where 1.0 is "normal speed". See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">HtmlMediaElement.playbackRate</a>.
+     <p>The current rate of playback on a scale where 1.0 is "normal speed". See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate" id="ref-for-dom-media-playbackrate②">HTMLMediaElement.playbackRate</a></code>.
 The default is 1.0
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①③">remote-playback-start-response</a> message.</p>
     <dt data-md>paused
     <dd data-md>
-     <p>Whether media is paused or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused">HtmlMediaElement.paused</a>.
+     <p>Whether media is paused or not. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused" id="ref-for-dom-media-paused①">HTMLMediaElement.paused</a></code>.
 The default is false
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①④">remote-playback-start-response</a> message.</p>
     <dt data-md>seeking
     <dd data-md>
-     <p>Whether the receiver is seeking or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking">HtmlMediaElement.seeking</a>.
+     <p>Whether the receiver is seeking or not. See <code class="idl"><a class="idl-code" data-link-type="attribute" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking" id="ref-for-dom-media-seeking①">HTMLMediaElement.seeking</a></code>.
 The default is false
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑤">remote-playback-start-response</a> message.</p>
     <dt data-md>stalled
     <dd data-md>
-     <p>If true, media is not playing because not enough media is loaded, and false otherwise. See <a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">HtmlMediaElement.stalled</a>.
+     <p>If true, media is not playing because not enough media is loaded, and false otherwise. See
+the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled" id="ref-for-event-media-stalled①">stalled</a></code> event.
 The default is false
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑥">remote-playback-start-response</a> message.</p>
     <dt data-md>ended
     <dd data-md>
-     <p>Whether media has reached the end or not. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">HtmlMediaElement.ended</a>.
+     <p>Whether media has reached the end or not. See <code class="idl"><a class="idl-code" data-link-type="attribute" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended" id="ref-for-dom-media-ended①">HTMLMediaElement.ended</a></code>.
 The default is false
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑦">remote-playback-start-response</a> message.</p>
     <dt data-md>volume
     <dd data-md>
-     <p>The current volume of playback on a scale of 0.0 to 1.0. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">HtmlMediaElement.volume</a>.
+     <p>The current volume of playback on a scale of 0.0 to 1.0. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume" id="ref-for-dom-media-volume②">HTMLMediaElement.volume</a></code>.
 The default is 1.0
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑧">remote-playback-start-response</a> message.</p>
     <dt data-md>muted
     <dd data-md>
      <p>True if audio is muted (overriding the volume value) and false otherwise.
-See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">HtmlMediaElement.muted</a>.
+See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted" id="ref-for-dom-media-muted②">HTMLMediaElement.muted</a></code>.
 The default is false
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①⑨">remote-playback-start-response</a> message.</p>
     <dt data-md>resolution
     <dd data-md>
-     <p>The "intrinsic width" and "intrinsic width" of the video. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videowidth">HtmlMediaElement.videoWidth</a> and <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videoheight">HtmlMediaElement.videoHeight</a>.
+     <p>The "intrinsic width" and "intrinsic width" of the video. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth" id="ref-for-dom-video-videowidth①">HTMLVideoElement.videoWidth</a></code> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight" id="ref-for-dom-video-videoheight①">HTMLVideoElement.videoHeight</a></code>.
 The default is unknown
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②⓪">remote-playback-start-response</a> message.</p>
     <dt data-md>audio-tracks
     <dd data-md>
-     <p>The available audio tracks, which can individually enabled or disabled. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">HtmlMediaElement.audioTracks</a> The default is an empty array
+     <p>The available audio tracks, which can individually enabled or disabled. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks" id="ref-for-dom-media-audiotracks②">HTMLMediaElement.audioTracks</a></code>.
+The default is an empty array
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②①">remote-playback-start-response</a> message.</p>
     <dt data-md>video-tracks
     <dd data-md>
-     <p>The available video tracks.  Only one may be selected. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.videoTracks</a> The default is an empty array
+     <p>The available video tracks.  Only one may be selected. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks" id="ref-for-dom-media-videotracks②">HTMLMediaElement.videoTracks</a></code>.
+The default is an empty array
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②②">remote-playback-start-response</a> message.</p>
     <dt data-md>text-tracks
     <dd data-md>
-     <p>The available text tracks, which can be individually shown, hidden, or disabled. See <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">HtmlMediaElement.textTracks</a>.
+     <p>The available text tracks, which can be individually shown, hidden, or disabled. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks" id="ref-for-dom-media-texttracks③">HTMLMediaElement.textTracks</a></code>.
 The controller can also add cues to and remove cues from text tracks.
 The default is an empty array
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②③">remote-playback-start-response</a> message.</p>
@@ -1992,9 +1998,9 @@ in hertz, such as 90000 for 90000 Hz, a common time scale for video.</p>
     </table>
    </div>
    <h3 class="heading settled" data-level="8.2" id="remote-playback-api"><span class="secno">8.2. </span><span class="content">Remote Playback API</span><a class="self-link" href="#remote-playback-api"></a></h3>
-   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑦">Open Screen Protocol agent</a> that implements the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>control-remote-playback</code> capability.  It may support the <code>send-streaming</code> capability so it can send <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑤">HTMLMediaElement</a></code> media data through media
+   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑦">Open Screen Protocol agent</a> that implements the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>control-remote-playback</code> capability.  It may support the <code>send-streaming</code> capability so it can send <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑦">HTMLMediaElement</a></code> media data through media
 remoting.</p>
-   <p>An an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑧">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback device</a> for the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>receive-remote-playback</code> capability.  It may support the <code>receive-streaming</code> capability so it can receive <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑥">HTMLMediaElement</a></code> data through media remoting.</p>
+   <p>An an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑧">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback device</a> for the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> must support the <code>receive-remote-playback</code> capability.  It may support the <code>receive-streaming</code> capability so it can receive <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑧">HTMLMediaElement</a></code> data through media remoting.</p>
    <p>The same OSP agent may implement both the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> and be a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices②">remote playback device</a> for that API.</p>
    <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑤">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent④">listening agent</a> during discovery and connection establishment.</p>
    <p>This is how the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> uses the
@@ -2021,7 +2027,7 @@ choice of the user agent. The connection will likely have to provide a two-way
 messaging abstraction capable of carrying media commands to the remote playback
 device and receiving media playback state in order to keep the media element
 state and remote playback state in sync", the controller may send <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request③">remote-playback-modify-request</a> messages to the receiver to change the remote playback state
-based on changes to the local media element and receive <a data-link-type="dfn" href="#remote-playback-modify-response" id="ref-for-remote-playback-modify-response①">remote-playback-modify-response</a> and <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑦">remote-playback-state-event</a> messages to
+based on changes to the local media element and receive <a data-link-type="dfn" href="#remote-playback-modify-response" id="ref-for-remote-playback-modify-response①">remote-playback-modify-response</a> and <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑧">remote-playback-state-event</a> messages to
 change the local media element based on changes to the remote playback state.</p>
    <p>When <a href="https://www.w3.org/TR/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 6.2.7</a> says "Request disconnection of remote from the device. The
@@ -2052,12 +2058,16 @@ Formats are composed of the following fields:</p>
     <dt data-md>name (required)
     <dd data-md>
      <p>The name of the codec.   This must be a single-codec RFC 6381 <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codecs parameter</a>.</p>
+   </dl>
+   <p class="issue" id="issue-43c1a192"><a class="self-link" href="#issue-43c1a192"></a> Use the same codec names as the media APIs. <a href="https://github.com/w3c/openscreenprotocol/issues/233">&lt;https://github.com/w3c/openscreenprotocol/issues/233></a></p>
+   <dl>
     <dt data-md>parameters (required)
     <dd data-md>
      <p>A list of (key, value) parameters that can be used to describe
 properties of a specific format, and not shared by other formats
 of that type (audio, video, etc.).</p>
    </dl>
+   <p class="issue" id="issue-263f992a"><a class="self-link" href="#issue-263f992a"></a> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">&lt;https://github.com/w3c/openscreenprotocol/issues/266></a></p>
    <p>Audio capabilities are composed of the above format type, with the following
 additional fields:</p>
    <dl>
@@ -2095,6 +2105,9 @@ capable of processing, in kilobits per second. Default is no minimum.</p>
      <p>An optional field indicating what its ideal aspect ratio is, e.g. a 16:10
 display could return this value as 1.6 to indicate its preferred content
 scaling. Default is none.</p>
+   </dl>
+   <p class="issue" id="issue-a057c285"><a class="self-link" href="#issue-a057c285"></a> Align capabilities for HDR rendering and display with Media Capabilities. <a href="https://github.com/w3c/openscreenprotocol/issues/194">&lt;https://github.com/w3c/openscreenprotocol/issues/194></a></p>
+   <dl>
     <dt data-md>color-profiles (optional)
     <dd data-md>
      <p>An optional field indicating what color profiles are understood.
@@ -2500,7 +2513,26 @@ or other contraints.</p>
    </dl>
    <p>During a streaming session, the receiver should send stats with the <a data-link-type="dfn" href="#streaming-session-receiver-stats-event" id="ref-for-streaming-session-receiver-stats-event">streaming-session-receiver-stats-event</a> at the interval the sender requested.
 It should send all of the following stats for all of the media streams it is
-receiving.  The <a data-link-type="dfn" href="#streaming-session-receiver-stats-event" id="ref-for-streaming-session-receiver-stats-event①">streaming-session-receiver-stats-event</a> message contains the
+receiving.</p>
+   <p>If the receiver is using a buffer to hold frames before playing them out, it
+should also send the status of that buffer using the <code>remote-buffer-status</code> field.
+It can have one of three values:</p>
+   <ul>
+    <li data-md>
+     <p><code>enough-data</code>: The buffer has neither too much data nor insufficient data.</p>
+    <li data-md>
+     <p><code>insufficient-data</code>: The buffer will underrun and not have sufficient frame
+data at the time it is scheduled to be played out.</p>
+    <li data-md>
+     <p><code>too-much-data</code>: At the current send rate, the buffer will overrun and future
+frame data will be discarded before it can be played out.</p>
+   </ul>
+   <p>A sender that receives a status of <code>insufficient-data</code> should increase its send
+rate, or switch to a more efficient encoding for future frames.  A sender that
+receives a status of <code>too-much-data</code> should decrease its send rate.</p>
+   <p>If the receiver is playing frames immediately without buffering, it should always
+report a buffering status of <code>enough-data</code>.</p>
+   <p>The <a data-link-type="dfn" href="#streaming-session-receiver-stats-event" id="ref-for-streaming-session-receiver-stats-event①">streaming-session-receiver-stats-event</a> message contains the
 following fields:</p>
    <dl>
     <dt data-md>streaming-session-id
@@ -2542,6 +2574,9 @@ present, that indicates the value has not changed since the last value.</p>
     <dt data-md>cumulative-decode-delay
     <dd data-md>
      <p>The sum of the time spent decoding frames received.</p>
+    <dt data-md>remote-buffer-status : streaming-buffer-status
+    <dd data-md>
+     <p>The status of the remote buffer for this encoding.</p>
    </dl>
    <p>Video encoding receiver stats include the following fields.  If not
 present, that indicates the value has not changed since the last
@@ -2562,6 +2597,9 @@ value.</p>
     <dt data-md>cumulative-decode-delay
     <dd data-md>
      <p>The sum of the time spent decoding frames received.</p>
+    <dt data-md>remote-buffer-status : streaming-buffer-status
+    <dd data-md>
+     <p>The status of the remote buffer for this encoding.</p>
    </dl>
    <h2 class="heading settled" data-level="10" id="requests-responses-watches"><span class="secno">10. </span><span class="content">Requests, Responses, and Watches</span><a class="self-link" href="#requests-responses-watches"></a></h2>
    <p>Multiple sub-protocols in the Open Screen Protocol have messages that act as
@@ -2590,7 +2628,7 @@ certificate fingerprint) to track requests across multiple agents.</p>
 defined by this specification.  This could be used for experimentation,
 customization or other purposes.</p>
    <p>To add new extension messages, extension authors must register a capability ID
-with a range of message type keys in a <a href="https://w3c.github.io/openscreenprotocol/capabilites.md">public registry</a>.
+with a range of message type keys in a <a href="https://w3c.github.io/openscreenprotocol/capabilities.html">public registry</a>.
 Agents may then indicate that they accept an extension by including the
 corresponding capability ID in the <code>capabilities</code> field of its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑤">agent-info</a> message.</p>
    <p>Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
@@ -2924,18 +2962,18 @@ the wire smaller.</p>
   <span class="nx">request</span>
 <span class="p">}</span>
 
-<p><span class="c1">; type key 11</span>
+<span class="c1">; type key 11</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-info-response">agent-info-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 122</span>
+<span class="c1">; type key 122</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-info-event">agent-info-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">agent-info </span><span class="c1">; agent-info</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<span class="nc">agent-capability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">receive-audio</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">receive-video</span><span class="p">:</span> <span class="mi">2</span>
   <span class="nx">receive-presentation</span><span class="p">:</span> <span class="mi">3</span>
@@ -2944,145 +2982,145 @@ the wire smaller.</p>
   <span class="nx">control-remote-playback</span><span class="p">:</span> <span class="mi">6</span>
   <span class="nx">receive-streaming</span><span class="p">:</span> <span class="mi">7</span>
   <span class="nx">send-streaming</span><span class="p">:</span> <span class="mi">8</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-info">agent-info</dfn> </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-info">agent-info</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; model-name</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">agent-capability</span><span class="p">]</span> <span class="c1">; capabilities</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; state-token</span>
   <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; locales</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 12</span>
+<span class="c1">; type key 12</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-status-request">agent-status-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 13</span>
+<span class="c1">; type key 13</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-status-response">agent-status-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">status </span><span class="c1">; status</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">status </span><span class="p">=</span> <span class="p">{}</span></p>
+<span class="nc">status </span><span class="p">=</span> <span class="p">{}</span>
 
-<p><span class="nc">request </span><span class="p">=</span> <span class="p">(</span>
+<span class="nc">request </span><span class="p">=</span> <span class="p">(</span>
  <span class="mi">0</span><span class="p">:</span> <span class="nx">request-id </span><span class="c1">; request-id</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="nc">response </span><span class="p">=</span> <span class="p">(</span>
+<span class="nc">response </span><span class="p">=</span> <span class="p">(</span>
  <span class="mi">0</span><span class="p">:</span> <span class="nx">request-id </span><span class="c1">; request-id</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="nc">request-id </span><span class="p">=</span> <span class="kt">uint</span></p>
+<span class="nc">request-id </span><span class="p">=</span> <span class="kt">uint</span>
 
-<p><span class="nc">microseconds </span><span class="p">=</span> <span class="kt">uint</span></p>
+<span class="nc">microseconds </span><span class="p">=</span> <span class="kt">uint</span>
 
-<p><span class="c1">; type key 1001</span>
+<span class="c1">; type key 1001</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-capabilities">auth-capabilities</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-min-bits-of-entropy</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<span class="nc">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-initiation-token">auth-initiation-token</dfn> </span><span class="p">=</span> <span class="p">(</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-initiation-token">auth-initiation-token</dfn> </span><span class="p">=</span> <span class="p">(</span>
   <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; token</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="c1">; type key 1002</span>
+<span class="c1">; type key 1002</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-need-psk">auth-spake2-need-psk</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initiation-token</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 1003</span>
+<span class="c1">; type key 1003</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-handshake">auth-spake2-handshake</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">auth-initation-token</span>
 <span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; random</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 1004</span>
+<span class="c1">; type key 1004</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-confirmation">auth-spake2-confirmation</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; transcript-mac</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 1005</span>
+<span class="c1">; type key 1005</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-status">auth-status</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">auth-status-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<span class="nc">auth-status-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">authenticated</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">timeout</span><span class="p">:</span> <span class="mi">2</span>
   <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
   <span class="nx">validation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="nc">watch-id </span><span class="p">=</span> <span class="kt">uint</span></p>
+<span class="nc">watch-id </span><span class="p">=</span> <span class="kt">uint</span>
 
-<p><span class="c1">; type key 14</span>
+<span class="c1">; type key 14</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-url-availability-request">presentation-url-availability-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; urls</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 15</span>
+<span class="c1">; type key 15</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-url-availability-response">presentation-url-availability-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 103</span>
+<span class="c1">; type key 103</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-url-availability-event">presentation-url-availability-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; idea: use HTTP response codes?</span>
+<span class="c1">; idea: use HTTP response codes?</span>
 <span class="nc">url-availability </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">available</span><span class="p">:</span> <span class="mi">0</span>
   <span class="nx">unavailable</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">invalid</span><span class="p">:</span> <span class="mi">10</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="c1">; type key 104</span>
+<span class="c1">; type key 104</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-start-request">presentation-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; url</span>
   <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">http-header</span><span class="p">]</span> <span class="c1">; headers</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">http-header </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc">http-header </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">key</span><span class="p">:</span> <span class="nx">text</span>
 <span class="nx">  value</span><span class="p">:</span> <span class="nx">text</span>
-<span class="p">]</span></p>
+<span class="p">]</span>
 
-<p><span class="c1">; type key 105</span>
+<span class="c1">; type key 105</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-start-response">presentation-start-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
   <span class="mi">3</span><span class="p">:</span> <span class="p">?</span> <span class="kt">uint</span> <span class="c1">; http-response-code</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">presentation-termination-source </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<span class="nc">presentation-termination-source </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">controller</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">receiver</span><span class="p">:</span> <span class="mi">2</span>
   <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="nc">presentation-termination-reason </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<span class="nc">presentation-termination-reason </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">application-request</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">user-request</span><span class="p">:</span> <span class="mi">2</span>
   <span class="nx">receiver-replaced-presentation</span><span class="p">:</span> <span class="mi">20</span>
@@ -3091,44 +3129,44 @@ the wire smaller.</p>
   <span class="nx">receiver-powering-down</span><span class="p">:</span> <span class="mi">100</span>
   <span class="nx">receiver-error</span><span class="p">:</span> <span class="mi">101</span>
   <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="c1">; type key 106</span>
+<span class="c1">; type key 106</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-request">presentation-termination-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">presentation-termination-reason </span><span class="c1">; reason</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 107</span>
+<span class="c1">; type key 107</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-response">presentation-termination-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 108</span>
+<span class="c1">; type key 108</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-termination-event">presentation-termination-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">presentation-termination-source </span><span class="c1">; source</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">presentation-termination-reason </span><span class="c1">; reason</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 109</span>
+<span class="c1">; type key 109</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-connection-open-request">presentation-connection-open-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; url</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 110</span>
+<span class="c1">; type key 110</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-connection-open-response">presentation-connection-open-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
   <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 113</span>
+<span class="c1">; type key 113</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-connection-close-event">presentation-connection-close-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3138,21 +3176,21 @@ the wire smaller.</p>
   <span class="p">)</span> <span class="c1">; reason</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; error-message</span>
   <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; connection-count</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 121</span>
+<span class="c1">; type key 121</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-change-event">presentation-change-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; presentation-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-count</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 16</span>
+<span class="c1">; type key 16</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-connection-message">presentation-connection-message</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; connection-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">bytes </span><span class="o">/</span> <span class="nx">text </span><span class="c1">; message</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">result </span><span class="p">=</span> <span class="p">(</span>
+<span class="nc">result </span><span class="p">=</span> <span class="p">(</span>
   <span class="nx">success</span><span class="p">:</span> <span class="mi">1</span>
   <span class="nx">invalid-url</span><span class="p">:</span> <span class="mi">10</span>
   <span class="nx">invalid-presentation-id</span><span class="p">:</span> <span class="mi">11</span>
@@ -3161,29 +3199,29 @@ the wire smaller.</p>
   <span class="nx">permanent-error</span><span class="p">:</span> <span class="mi">102</span>
   <span class="nx">terminating</span><span class="p">:</span> <span class="mi">103</span>
   <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">199</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="c1">; type key 17</span>
+<span class="c1">; type key 17</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-availability-request">remote-playback-availability-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">remote-playback-source</span><span class="p">]</span> <span class="c1">; sources</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; watch-duration</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 18</span>
+<span class="c1">; type key 18</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-availability-response">remote-playback-availability-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  url-availabilities</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 114</span>
+<span class="c1">; type key 114</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-availability-event">remote-playback-availability-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">watch-id </span><span class="c1">; watch-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">url-availability</span><span class="p">]</span> <span class="c1">; url-availabilities</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 115</span>
+<span class="c1">; type key 115</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-start-request">remote-playback-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
@@ -3192,21 +3230,21 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">http-header</span><span class="p">]</span> <span class="c1">; headers</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
   <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">{</span><span class="nx">streaming-session-start-request-params</span><span class="p">}</span> <span class="c1">; remoting</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">remote-playback-source </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">remote-playback-source </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text</span><span class="c1">; url</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text</span><span class="c1">; extended-mime-type</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 116</span>
+<span class="c1">; type key 116</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-start-response">remote-playback-start-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="nx">streaming-session-start-response-params</span><span class="p">}</span> <span class="c1">; remoting</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 117</span>
+<span class="c1">; type key 117</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-termination-request">remote-playback-termination-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
@@ -3214,15 +3252,15 @@ the wire smaller.</p>
     <span class="nx">user-terminated-via-controller</span><span class="p">:</span> <span class="mi">11</span>
     <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
   <span class="p">)</span> <span class="c1">; reason</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 118</span>
+<span class="c1">; type key 118</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-termination-response">remote-playback-termination-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 119</span>
+<span class="c1">; type key 119</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-termination-event">remote-playback-termination-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
  <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
  <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3233,31 +3271,31 @@ the wire smaller.</p>
     <span class="nx">receiver-crashed</span><span class="p">:</span> <span class="mi">101</span>
     <span class="nx">unknown</span><span class="p">:</span> <span class="mi">255</span>
   <span class="p">)</span> <span class="c1">; reason</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 19</span>
+<span class="c1">; type key 19</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-modify-request">remote-playback-modify-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="c1">; type key 20</span>
+<span class="c1">; type key 20</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-modify-response">remote-playback-modify-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 21</span>
+<span class="c1">; type key 21</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-state-event">remote-playback-state-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-state </span><span class="c1">; state</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">remote-playback-id </span><span class="p">=</span> <span class="kt">uint</span></p>
+<span class="nc">remote-playback-id </span><span class="p">=</span> <span class="kt">uint</span>
 
-<p><span class="nc">remote-playback-controls </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">remote-playback-controls </span><span class="p">=</span> <span class="p">{</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; source-url</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span><span class="nx">none</span><span class="p">,</span> <span class="nx">metadata</span><span class="p">,</span> <span class="nx">auto</span><span class="p">)</span> <span class="c1">; preload</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; loop</span>
@@ -3272,9 +3310,9 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">12</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; selected-video-track-id</span>
   <span class="p">?</span> <span class="mi">13</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">added-text-track</span><span class="p">]</span> <span class="c1">; added-text-tracks</span>
   <span class="p">?</span> <span class="mi">14</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">changed-text-track</span><span class="p">]</span> <span class="c1">; changed-text-tracks</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">remote-playback-state </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">remote-playback-state </span><span class="p">=</span> <span class="p">{</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span><span class="nx">rate</span><span class="p">:</span> <span class="nx">bool</span><span class="p">,</span>
          <span class="nx">preload</span><span class="p">:</span> <span class="nx">bool</span><span class="p">,</span>
          <span class="nx">poster</span><span class="p">:</span> <span class="nx">bool</span><span class="p">,</span>
@@ -3313,9 +3351,9 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">20</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">audio-track-state</span><span class="p">]</span> <span class="nx">audio-tracks</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">21</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-track-state</span><span class="p">]</span> <span class="nx">video-tracks</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">22</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text-track-state</span><span class="p">]</span> <span class="nx">text-tracks</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">added-text-track </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">added-text-track </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">subtitles</span>
 <span class="nx">    captions</span>
@@ -3325,41 +3363,41 @@ the wire smaller.</p>
 <span class="nx">  </span><span class="p">)</span> <span class="c1">; kind</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; label</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; language</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">changed-text-track </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">changed-text-track </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">mode </span><span class="c1">; mode</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text-track-cue</span><span class="p">]</span> <span class="c1">; added-cues</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; removed-cue-ids</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">text-track-mode </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<span class="nc">text-track-mode </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="nx">disabled</span>
 <span class="nx">  showing</span>
 <span class="nx">  hidden</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="text-track-cue">text-track-cue</dfn> </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="text-track-cue">text-track-cue</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">media-time-range </span><span class="c1">; range</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; text</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">media-time-range </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc">media-time-range </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">start</span><span class="p">:</span> <span class="nx">media-time</span><span class="p">,</span>
   <span class="nx">end</span><span class="p">:</span> <span class="nx">media-time</span>
-<span class="p">]</span></p>
+<span class="p">]</span>
 
-<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="media-time">media-time</dfn> </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="media-time">media-time</dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">value</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">scale</span><span class="p">:</span> <span class="kt">uint</span>
-<span class="p">]</span></p>
+<span class="p">]</span>
 
-<p><span class="nc">unknown </span><span class="p">=</span> <span class="mi">0</span>
-<span class="nc">forever </span><span class="p">=</span> <span class="mi">1</span></p>
+<span class="nc">unknown </span><span class="p">=</span> <span class="mi">0</span>
+<span class="nc">forever </span><span class="p">=</span> <span class="mi">1</span>
 
-<p><span class="nc">media-error </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc">media-error </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">code</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">user-aborted</span><span class="p">:</span> <span class="mi">1</span>
     <span class="nx">network-error</span><span class="p">:</span> <span class="mi">2</span>
@@ -3368,30 +3406,30 @@ the wire smaller.</p>
     <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">5</span>
   <span class="p">)</span>
   <span class="nx">message</span><span class="p">:</span> <span class="nx">text</span>
-<span class="p">]</span></p>
+<span class="p">]</span>
 
-<p><span class="nc">track-state </span><span class="p">=</span> <span class="p">(</span>
+<span class="nc">track-state </span><span class="p">=</span> <span class="p">(</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; label</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; language</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="nc">audio-track-state </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">audio-track-state </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">track-state</span>
 <span class="nx">  4</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; enabled</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">video-track-state </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">video-track-state </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">track-state</span>
 <span class="nx">  5 </span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; selected</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">text-track-state </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">text-track-state </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">track-state</span>
 <span class="nx">  6 </span><span class="p">:</span> <span class="nx">mode </span><span class="c1">; text-track-mode</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 22</span>
+<span class="c1">; type key 22</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="audio-frame">audio-frame</dfn> </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">encoding-id</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">start-time</span><span class="p">:</span> <span class="kt">uint</span>
@@ -3400,9 +3438,9 @@ the wire smaller.</p>
     <span class="p">?</span> <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
     <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
   <span class="p">}</span>
-<span class="p">]</span></p>
+<span class="p">]</span>
 
-<p><span class="c1">; type key 23</span>
+<span class="c1">; type key 23</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="video-frame">video-frame</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
@@ -3412,9 +3450,9 @@ the wire smaller.</p>
   <span class="mi">5</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; payload</span>
   <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; video-rotation</span>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 24</span>
+<span class="c1">; type key 24</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="data-frame">data-frame</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; sequence-number</span>
@@ -3422,59 +3460,59 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
   <span class="mi">4</span><span class="p">:</span> <span class="nx">any</span><span class="c1">; payload</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 120</span>
+<span class="c1">; type key 120</span>
 <span class="nc">video-frame-request </span><span class="p">=</span> <span class="p">{</span>
  <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
  <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; sequence-number</span>
  <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; highest-decoded-frame-sequence-number</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">ratio </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc">ratio </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">antecedent</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
-<span class="p">]</span></p>
+<span class="p">]</span>
 
-<p><span class="c1">; type key 122</span>
+<span class="c1">; type key 122</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-capabilities-request">streaming-capabilities-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 123</span>
+<span class="c1">; type key 123</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-capabilities-response">streaming-capabilities-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">streaming-capabilities </span><span class="c1">; streaming-capabilities</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">streaming-capabilities </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">streaming-capabilities </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-audio-capability</span><span class="p">]</span> <span class="c1">; receive-audio</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-video-capability</span><span class="p">]</span> <span class="c1">; receive-video</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">receive-data-capability</span><span class="p">]</span> <span class="c1">; receive-data</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">format </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">format </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; name</span>
   <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">format-parameter</span><span class="p">]</span> <span class="c1">; parameters</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">format-parameter </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">format-parameter </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; key</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; value</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">receive-audio-capability </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">receive-audio-capability </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-audio-channels</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">video-resolution </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">video-resolution </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; height</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; width</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">receive-video-capability </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">receive-video-capability </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="c1">; max-resolution</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">ratio </span><span class="c1">; max-frames-per-second</span>
@@ -3485,132 +3523,132 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-resolution</span><span class="p">]</span> <span class="c1">; native-resolutions</span>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
   <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-rotation</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">receive-data-capability </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">receive-data-capability </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; data-type</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 124</span>
+<span class="c1">; type key 124</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-start-request">streaming-session-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  streaming-session-start-request-params</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 125</span>
+<span class="c1">; type key 125</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-start-response">streaming-session-start-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  streaming-session-start-response-params</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; A separate group so it can be used in remote-playback-start-request</span>
+<span class="c1">; A separate group so it can be used in remote-playback-start-request</span>
 <span class="nc">streaming-session-start-request-params </span><span class="p">=</span> <span class="p">(</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-offer</span><span class="p">]</span> <span class="c1">;  stream-offers</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; desired-stats-interval</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="c1">; type key 126</span>
+<span class="c1">; type key 126</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-modify-request">streaming-session-modify-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  streaming-session-modify-request-params</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; A separate group so it can be used in remote-playback-start-response</span>
+<span class="c1">; A separate group so it can be used in remote-playback-start-response</span>
 <span class="nc">streaming-session-start-response-params </span><span class="p">=</span> <span class="p">(</span>
   <span class="mi">1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-request</span><span class="p">]</span> <span class="c1">; stream-requests</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; desired-stats-interval  </span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="nc">streaming-session-modify-request-params </span><span class="p">=</span> <span class="p">(</span>
+<span class="nc">streaming-session-modify-request-params </span><span class="p">=</span> <span class="p">(</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-request</span><span class="p">]</span> <span class="c1">; stream-requests</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 127</span>
+<span class="c1">; type key 127</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-modify-response">streaming-session-modify-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">result </span><span class="c1">; result</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 128</span>
+<span class="c1">; type key 128</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-terminate-request">streaming-session-terminate-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1 </span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 129</span>
+<span class="c1">; type key 129</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-terminate-response">streaming-session-terminate-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">response</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 130</span>
+<span class="c1">; type key 130</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-terminate-event">streaming-session-terminate-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">media-stream-offer </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">media-stream-offer </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; media-stream-id</span>
   <span class="p">?</span> <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; display-name</span>
   <span class="p">?</span> <span class="mi">3</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">audio-encoding-offer</span><span class="p">]</span> <span class="c1">; audio</span>
   <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">video-encoding-offer</span><span class="p">]</span> <span class="c1">; video</span>
   <span class="p">?</span> <span class="mi">5</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="nx">data-encoding-offer</span><span class="p">]</span> <span class="c1">; data</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">media-stream-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">media-stream-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; media-stream-id</span>
   <span class="p">?</span> <span class="mi">2</span> <span class="p">:</span> <span class="nx">audio-encoding-request </span><span class="c1">; audio</span>
   <span class="p">?</span> <span class="mi">3</span> <span class="p">:</span> <span class="nx">video-encoding-request </span><span class="c1">; video</span>
   <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="nx">data-encoding-request </span><span class="c1">; data</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="audio-encoding-offer">audio-encoding-offer</dfn> </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="audio-encoding-offer">audio-encoding-offer</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; codec-name</span>
   <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
   <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; default-duration</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="video-encoding-offer">video-encoding-offer</dfn> </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="video-encoding-offer">video-encoding-offer</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; codec-name</span>
   <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
   <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; default-duration</span>
   <span class="p">?</span> <span class="mi">5</span> <span class="p">:</span> <span class="nx">video-rotation </span><span class="c1">; default-rotation</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="data-encoding-offer">data-encoding-offer</dfn> </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="data-encoding-offer">data-encoding-offer</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="mi">2</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; data-type-name</span>
   <span class="mi">3</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; time-scale</span>
   <span class="p">?</span> <span class="mi">4</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; default-duration</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
 
-<p><span class="nc">audio-encoding-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">audio-encoding-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">video-encoding-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">video-encoding-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
   <span class="p">?</span> <span class="mi">2</span> <span class="p">:</span> <span class="nx">video-resolution </span><span class="c1">; target-resolution</span>
   <span class="p">?</span> <span class="mi">3</span> <span class="p">:</span> <span class="nx">ratio </span><span class="c1">; max-frames-per-second</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">data-encoding-request </span><span class="p">=</span> <span class="p">{</span>
+<span class="nc">data-encoding-request </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="nc">video-rotation </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+<span class="nc">video-rotation </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
   <span class="c1">; Degrees clockwise</span>
   <span class="nx">video-rotation-0</span>
 <span class="nx">  video-rotation-90</span>
 <span class="nx">  video-rotation-180</span>
 <span class="nx">  video-rotation-270</span>
-<span class="p">)</span></p>
+<span class="p">)</span>
 
-<p><span class="c1">; type key 131</span>
+<span class="c1">; type key 131</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-sender-stats-event">streaming-session-sender-stats-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; system-time</span>
@@ -3625,9 +3663,15 @@ the wire smaller.</p>
     <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-encode-delay</span>
     <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-dropped-frames</span>
   <span class="p">}]</span> <span class="c1">; video</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 
-<p><span class="c1">; type key 132</span>
+<span class="nc">streaming-buffer-status </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">enough-data</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">insufficient-data</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">too-much-data</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="c1">; type key 132</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-receiver-stats-event">streaming-session-receiver-stats-event</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; streaming-session-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; system-time</span>
@@ -3637,6 +3681,7 @@ the wire smaller.</p>
     <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-lost-duration</span>
     <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-buffer-delay</span>
     <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-decode-delay</span>
+    <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">streaming-buffer-status </span><span class="c1">; remote-buffer-status</span>
   <span class="p">}]</span> <span class="c1">; audio</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span> <span class="p">{</span>
     <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; encoding-id</span>
@@ -3644,8 +3689,9 @@ the wire smaller.</p>
     <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; cumulative-lost-frames</span>
     <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-buffer-delay</span>
     <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">microseconds </span><span class="c1">; cumulative-decode-delay</span>
+    <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="nx">streaming-buffer-status </span><span class="c1">; remote-buffer-status    </span>
   <span class="p">}]</span> <span class="c1">; video</span>
-<span class="p">}</span></p>
+<span class="p">}</span>
 </pre>
    </div>
    <h2 class="heading settled" id="appendix-b"><span class="content">Appendix B: Message Type Key Ranges</span><a class="self-link" href="#appendix-b"></a></h2>
@@ -3765,12 +3811,99 @@ extensions.</p>
    <li><a href="#video-encoding-offer">video-encoding-offer</a><span>, in §Unnumbered section</span>
    <li><a href="#video-frame">video-frame</a><span>, in §Unnumbered section</span>
   </ul>
+  <aside class="dfn-panel" data-for="term-for-dom-media-have_nothing">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing">https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-have_nothing">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-htmlmediaelement">
    <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-htmlmediaelement">2.3. Remote Playback API Requirements</a> <a href="#ref-for-htmlmediaelement①">(2)</a> <a href="#ref-for-htmlmediaelement②">(3)</a> <a href="#ref-for-htmlmediaelement③">(4)</a> <a href="#ref-for-htmlmediaelement④">(5)</a>
-    <li><a href="#termref-for-htmlmediaelement">8.1. Remote Playback State and Controls</a>
-    <li><a href="#ref-for-htmlmediaelement⑤">8.2. Remote Playback API</a> <a href="#ref-for-htmlmediaelement⑥">(2)</a>
+    <li><a href="#ref-for-htmlmediaelement⑤">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-htmlmediaelement⑥">8.1. Remote Playback State and Controls</a>
+    <li><a href="#ref-for-htmlmediaelement⑦">8.2. Remote Playback API</a> <a href="#ref-for-htmlmediaelement⑧">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-network_empty">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty">https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-network_empty">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-addtexttrack">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack">https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-addtexttrack">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-audiotracks">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-audiotracks">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-audiotracks①">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-audiotracks②">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-buffered">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-buffered">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-buffered①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-currentsrc">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-currentsrc">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-currentsrc①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-currenttime">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-currenttime">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-currenttime①">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-currenttime②">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-duration">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration">https://html.spec.whatwg.org/multipage/media.html#dom-media-duration</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-duration">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-duration①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-ended">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">https://html.spec.whatwg.org/multipage/media.html#dom-media-ended</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-ended">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-ended①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-error">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error">https://html.spec.whatwg.org/multipage/media.html#dom-media-error</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-error">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-error①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-fastseek">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek">https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-fastseek">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-fastseek①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-getstartdate">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate">https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-getstartdate">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-loop">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop">https://html.spec.whatwg.org/multipage/media.html#dom-media-loop</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-loop">8.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-media-element">
@@ -3780,10 +3913,104 @@ extensions.</p>
     <li><a href="#ref-for-media-element①">1.1. Terminology</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-mediaerror-code">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code">https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-mediaerror-code">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-muted">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">https://html.spec.whatwg.org/multipage/media.html#dom-media-muted</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-muted">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-muted①">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-muted②">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-networkstate">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-networkstate">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-networkstate①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-official-playback-position">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#official-playback-position">https://html.spec.whatwg.org/multipage/media.html#official-playback-position</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-official-playback-position">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-pause">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-pause">https://html.spec.whatwg.org/multipage/media.html#dom-media-pause</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-pause">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-pause①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-paused">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused">https://html.spec.whatwg.org/multipage/media.html#dom-media-paused</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-paused">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-paused①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-play">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-play">https://html.spec.whatwg.org/multipage/media.html#dom-media-play</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-play">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-play①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-playbackrate">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-playbackrate">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-playbackrate①">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-playbackrate②">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-played">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played">https://html.spec.whatwg.org/multipage/media.html#dom-media-played</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-played">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-played①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-dom-window-postmessage">
    <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-postmessage">12.1.4. Same-Origin Policy Violations</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-poster-frame">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#poster-frame">https://html.spec.whatwg.org/multipage/media.html#poster-frame</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-poster-frame">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-preload">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload">https://html.spec.whatwg.org/multipage/media.html#dom-media-preload</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-preload">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-readystate">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate">https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-readystate">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-readystate①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-seekable">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable">https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-seekable">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-seekable①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-seeking">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking">https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-seeking">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-seeking①">8.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-attr-source-src">
@@ -3792,10 +4019,59 @@ extensions.</p>
     <li><a href="#ref-for-attr-source-src">8. Remote Playback Protocol</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-event-media-stalled">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">https://html.spec.whatwg.org/multipage/media.html#event-media-stalled</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-event-media-stalled">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-event-media-stalled①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-texttracks">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-texttracks">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-texttracks①">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-texttracks②">(2)</a> <a href="#ref-for-dom-media-texttracks③">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-timeline-offset">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset">https://html.spec.whatwg.org/multipage/media.html#timeline-offset</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-timeline-offset">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-timeline-offset①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-attr-source-type">
    <a href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type">https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-attr-source-type">8. Remote Playback Protocol</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-video-videoheight">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight">https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-video-videoheight">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-video-videoheight①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-videotracks">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-videotracks">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-videotracks①">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-videotracks②">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-video-videowidth">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth">https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-video-videowidth">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-video-videowidth①">8.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-volume">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">https://html.spec.whatwg.org/multipage/media.html#dom-media-volume</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-volume">8. Remote Playback Protocol</a>
+    <li><a href="#ref-for-dom-media-volume①">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-volume②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-presentationconnection">
@@ -3903,7 +4179,7 @@ extensions.</p>
    <a href="https://w3c.github.io/remote-playback/#dfn-media-resources">https://w3c.github.io/remote-playback/#dfn-media-resources</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-media-resources">8. Remote Playback Protocol</a> <a href="#ref-for-dfn-media-resources①">(2)</a> <a href="#ref-for-dfn-media-resources②">(3)</a> <a href="#ref-for-dfn-media-resources③">(4)</a>
-    <li><a href="#ref-for-dfn-media-resources④">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dfn-media-resources⑤">(2)</a> <a href="#ref-for-dfn-media-resources⑥">(3)</a> <a href="#ref-for-dfn-media-resources⑦">(4)</a> <a href="#ref-for-dfn-media-resources⑧">(5)</a>
+    <li><a href="#ref-for-dfn-media-resources④">8.1. Remote Playback State and Controls</a> <a href="#ref-for-dfn-media-resources⑤">(2)</a> <a href="#ref-for-dfn-media-resources⑥">(3)</a> <a href="#ref-for-dfn-media-resources⑦">(4)</a> <a href="#ref-for-dfn-media-resources⑧">(5)</a> <a href="#ref-for-dfn-media-resources⑨">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-devices">
@@ -3992,11 +4268,45 @@ extensions.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-dom-media-have_nothing">HAVE_NOTHING</span>
      <li><span class="dfn-paneled" id="term-for-htmlmediaelement">HTMLMediaElement</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-network_empty">NETWORK_EMPTY</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-addtexttrack">addTextTrack(kind)</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-audiotracks">audioTracks</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-buffered">buffered</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-currentsrc">currentSrc</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-currenttime">currentTime</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-duration">duration</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-ended">ended</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-error">error</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-fastseek">fastSeek()</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-getstartdate">getStartDate()</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-loop">loop</span>
      <li><span class="dfn-paneled" id="term-for-media-element">media elements</span>
+     <li><span class="dfn-paneled" id="term-for-concept-mediaerror-code">media error code</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-muted">muted</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-networkstate">networkState</span>
+     <li><span class="dfn-paneled" id="term-for-official-playback-position">official playback position</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-pause">pause()</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-paused">paused</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-play">play()</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-playbackrate">playbackRate</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-played">played</span>
      <li><span class="dfn-paneled" id="term-for-dom-window-postmessage">postMessage(message, targetOrigin, transfer)</span>
-     <li><span class="dfn-paneled" id="term-for-attr-source-src">src</span>
+     <li><span class="dfn-paneled" id="term-for-poster-frame">poster frame</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-preload">preload</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-readystate">readyState</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-seekable">seekable</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-seeking">seeking</span>
+     <li><span class="dfn-paneled" id="term-for-attr-source-src">src <small>(for source)</small></span>
+     <li><span class="dfn-paneled" id="term-for-event-media-stalled">stalled</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-texttracks">textTracks</span>
+     <li><span class="dfn-paneled" id="term-for-timeline-offset">timeline offset</span>
      <li><span class="dfn-paneled" id="term-for-attr-source-type">type</span>
+     <li><span class="dfn-paneled" id="term-for-dom-video-videoheight">videoHeight</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-videotracks">videoTracks</span>
+     <li><span class="dfn-paneled" id="term-for-dom-video-videowidth">videoWidth</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-volume">volume</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:
@@ -4080,53 +4390,60 @@ extensions.</p>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
    <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/">Remote Playback API</a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
    <dt id="biblio-rfc5122">[RFC5122]
-   <dd>P. Saint-Andre. <a href="https://tools.ietf.org/html/rfc5122">Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)</a>. February 2008. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc5122">https://tools.ietf.org/html/rfc5122</a>
+   <dd>P. Saint-Andre. <a href="https://datatracker.ietf.org/doc/html/rfc5122">Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)</a>. February 2008. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc5122">https://datatracker.ietf.org/doc/html/rfc5122</a>
    <dt id="biblio-rfc5280">[RFC5280]
-   <dd>D. Cooper; et al. <a href="https://tools.ietf.org/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>. May 2008. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc5280">https://tools.ietf.org/html/rfc5280</a>
+   <dd>D. Cooper; et al. <a href="https://datatracker.ietf.org/doc/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>. May 2008. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc5280">https://datatracker.ietf.org/doc/html/rfc5280</a>
    <dt id="biblio-rfc5646">[RFC5646]
-   <dd>A. Phillips, Ed.; M. Davis, Ed.. <a href="https://tools.ietf.org/html/rfc5646">Tags for Identifying Languages</a>. September 2009. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc5646">https://tools.ietf.org/html/rfc5646</a>
+   <dd>A. Phillips, Ed.; M. Davis, Ed.. <a href="https://datatracker.ietf.org/doc/html/rfc5646">Tags for Identifying Languages</a>. September 2009. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc5646">https://datatracker.ietf.org/doc/html/rfc5646</a>
    <dt id="biblio-rfc6066">[RFC6066]
-   <dd>D. Eastlake 3rd. <a href="https://tools.ietf.org/html/rfc6066">Transport Layer Security (TLS) Extensions: Extension Definitions</a>. January 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6066">https://tools.ietf.org/html/rfc6066</a>
+   <dd>D. Eastlake 3rd. <a href="https://datatracker.ietf.org/doc/html/rfc6066">Transport Layer Security (TLS) Extensions: Extension Definitions</a>. January 2011. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc6066">https://datatracker.ietf.org/doc/html/rfc6066</a>
    <dt id="biblio-rfc6381">[RFC6381]
-   <dd>R. Gellens; D. Singer; P. Frojdh. <a href="https://tools.ietf.org/html/rfc6381">The 'Codecs' and 'Profiles' Parameters for "Bucket" Media Types</a>. August 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6381">https://tools.ietf.org/html/rfc6381</a>
+   <dd>R. Gellens; D. Singer; P. Frojdh. <a href="https://datatracker.ietf.org/doc/html/rfc6381">The 'Codecs' and 'Profiles' Parameters for "Bucket" Media Types</a>. August 2011. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc6381">https://datatracker.ietf.org/doc/html/rfc6381</a>
    <dt id="biblio-rfc6762">[RFC6762]
-   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6762">https://tools.ietf.org/html/rfc6762</a>
+   <dd>S. Cheshire; M. Krochmal. <a href="https://datatracker.ietf.org/doc/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc6762">https://datatracker.ietf.org/doc/html/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
-   <dd>S. Cheshire; M. Krochmal. <a href="https://tools.ietf.org/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6763">https://tools.ietf.org/html/rfc6763</a>
+   <dd>S. Cheshire; M. Krochmal. <a href="https://datatracker.ietf.org/doc/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc6763">https://datatracker.ietf.org/doc/html/rfc6763</a>
    <dt id="biblio-rfc7301">[RFC7301]
-   <dd>S. Friedl; et al. <a href="https://tools.ietf.org/html/rfc7301">Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension</a>. July 2014. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc7301">https://tools.ietf.org/html/rfc7301</a>
+   <dd>S. Friedl; et al. <a href="https://datatracker.ietf.org/doc/html/rfc7301">Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension</a>. July 2014. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc7301">https://datatracker.ietf.org/doc/html/rfc7301</a>
    <dt id="biblio-rfc8122">[RFC8122]
-   <dd>J. Lennox; C. Holmberg. <a href="https://tools.ietf.org/html/rfc8122">Connection-Oriented Media Transport over the Transport Layer Security (TLS) Protocol in the Session Description Protocol (SDP)</a>. March 2017. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8122">https://tools.ietf.org/html/rfc8122</a>
+   <dd>J. Lennox; C. Holmberg. <a href="https://datatracker.ietf.org/doc/html/rfc8122">Connection-Oriented Media Transport over the Transport Layer Security (TLS) Protocol in the Session Description Protocol (SDP)</a>. March 2017. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc8122">https://datatracker.ietf.org/doc/html/rfc8122</a>
    <dt id="biblio-rfc8446">[RFC8446]
-   <dd>E. Rescorla. <a href="https://tools.ietf.org/html/rfc8446">The Transport Layer Security (TLS) Protocol Version 1.3</a>. August 2018. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8446">https://tools.ietf.org/html/rfc8446</a>
+   <dd>E. Rescorla. <a href="https://datatracker.ietf.org/doc/html/rfc8446">The Transport Layer Security (TLS) Protocol Version 1.3</a>. August 2018. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc8446">https://datatracker.ietf.org/doc/html/rfc8446</a>
    <dt id="biblio-rfc8610">[RFC8610]
-   <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://tools.ietf.org/html/rfc8610">Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures</a>. June 2019. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8610">https://tools.ietf.org/html/rfc8610</a>
+   <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://datatracker.ietf.org/doc/html/rfc8610">Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures</a>. June 2019. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc8610">https://datatracker.ietf.org/doc/html/rfc8610</a>
    <dt id="biblio-rfc8949">[RFC8949]
-   <dd>C. Bormann; P. Hoffman. <a href="https://tools.ietf.org/html/rfc8949">Concise Binary Object Representation (CBOR)</a>. December 2020. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc8949">https://tools.ietf.org/html/rfc8949</a>
+   <dd>C. Bormann; P. Hoffman. <a href="https://datatracker.ietf.org/doc/html/rfc8949">Concise Binary Object Representation (CBOR)</a>. December 2020. Internet Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc8949">https://datatracker.ietf.org/doc/html/rfc8949</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-rfc4122">[RFC4122]
-   <dd>P. Leach; M. Mealling; R. Salz. <a href="https://tools.ietf.org/html/rfc4122">A Universally Unique IDentifier (UUID) URN Namespace</a>. July 2005. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc4122">https://tools.ietf.org/html/rfc4122</a>
+   <dd>P. Leach; M. Mealling; R. Salz. <a href="https://datatracker.ietf.org/doc/html/rfc4122">A Universally Unique IDentifier (UUID) URN Namespace</a>. July 2005. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc4122">https://datatracker.ietf.org/doc/html/rfc4122</a>
    <dt id="biblio-rfc846">[RFC846]
-   <dd>A. Westine; D. Smallberg; J. Postel. <a href="https://tools.ietf.org/html/rfc847">Summary of Smallberg surveys</a>. February 1983. Unknown. URL: <a href="https://tools.ietf.org/html/rfc847">https://tools.ietf.org/html/rfc847</a>
+   <dd>A. Westine; D. Smallberg; J. Postel. <a href="https://datatracker.ietf.org/doc/html/rfc847">Summary of Smallberg surveys</a>. February 1983. Unknown. URL: <a href="https://datatracker.ietf.org/doc/html/rfc847">https://datatracker.ietf.org/doc/html/rfc847</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
    <dd>Theresa O'Connor; Peter Snyder. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 8 May 2020. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/107">&lt;https://github.com/w3c/openscreenprotocol/issues/107></a><a href="#issue-56c2cd35"> ↵ </a></div>
-   <div class="issue"> Add examples of sample mDNS records.<a href="#issue-49bdd4e6"> ↵ </a></div>
    <div class="issue"> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">&lt;https://github.com/w3c/openscreenprotocol/issues/228></a><a href="#issue-808efb48"> ↵ </a></div>
    <div class="issue"> Make recommendations for cipher and signature algorithm preference
 list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">&lt;https://github.com/w3c/openscreenprotocol/issues/218></a><a href="#issue-08dfa2ca"> ↵ </a></div>
    <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">&lt;https://github.com/w3c/openscreenprotocol/issues/108></a><a href="#issue-e0955a17"> ↵ </a></div>
-   <div class="issue"> What do "client" and "server" mean here?<a href="#issue-492f86ab"> ↵ </a></div>
+   <div class="issue"> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">&lt;https://github.com/w3c/openscreenprotocol/issues/235></a><a href="#issue-3b9ff3bd"> ↵ </a></div>
+   <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">&lt;https://github.com/w3c/openscreenprotocol/issues/242></a><a href="#issue-dc398825"> ↵ </a></div>
+   <div class="issue"> [Security] Describe encoding/decoding of PSK into numeric and QR codes. <a href="https://github.com/w3c/openscreenprotocol/issues/210">&lt;https://github.com/w3c/openscreenprotocol/issues/210></a><a href="#issue-619e4cec"> ↵ </a></div>
    <div class="issue"> Once the Presentation API has text about
 reconnecting via an implementation specific mechanism, quote that here and map
 it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&lt;https://github.com/w3c/presentation-api/issues/471></a><a href="#issue-733afe74"> ↵ </a></div>
    <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">&lt;https://github.com/w3c/openscreenprotocol/issues/159></a><a href="#issue-649c173f"> ↵ </a></div>
    <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">&lt;https://github.com/w3c/openscreenprotocol/issues/146></a><a href="#issue-9145071e"> ↵ </a></div>
+   <div class="issue"> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">&lt;https://github.com/w3c/openscreenprotocol/issues/265></a><a href="#issue-74827562"> ↵ </a></div>
+   <div class="issue"> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">&lt;https://github.com/w3c/openscreenprotocol/issues/241></a><a href="#issue-9717419d"> ↵ </a></div>
+   <div class="issue"> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">&lt;https://github.com/w3c/openscreenprotocol/issues/223></a><a href="#issue-791c621c"> ↵ </a></div>
+   <div class="issue"> Use the same codec names as the media APIs. <a href="https://github.com/w3c/openscreenprotocol/issues/233">&lt;https://github.com/w3c/openscreenprotocol/issues/233></a><a href="#issue-43c1a192"> ↵ </a></div>
+   <div class="issue"> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">&lt;https://github.com/w3c/openscreenprotocol/issues/266></a><a href="#issue-263f992a"> ↵ </a></div>
+   <div class="issue"> Align capabilities for HDR rendering and display with Media Capabilities. <a href="https://github.com/w3c/openscreenprotocol/issues/194">&lt;https://github.com/w3c/openscreenprotocol/issues/194></a><a href="#issue-a057c285"> ↵ </a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">&lt;https://github.com/w3c/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="open-screen-protocol-agent">
@@ -4469,9 +4786,9 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&l
   <aside class="dfn-panel" data-for="remote-playback-state-event">
    <b><a href="#remote-playback-state-event">#remote-playback-state-event</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-remote-playback-state-event">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-state-event①">(2)</a> <a href="#ref-for-remote-playback-state-event②">(3)</a> <a href="#ref-for-remote-playback-state-event③">(4)</a> <a href="#ref-for-remote-playback-state-event④">(5)</a> <a href="#ref-for-remote-playback-state-event⑤">(6)</a>
-    <li><a href="#ref-for-remote-playback-state-event⑥">8.1. Remote Playback State and Controls</a>
-    <li><a href="#ref-for-remote-playback-state-event⑦">8.2. Remote Playback API</a>
+    <li><a href="#ref-for-remote-playback-state-event">8. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-state-event①">(2)</a> <a href="#ref-for-remote-playback-state-event②">(3)</a> <a href="#ref-for-remote-playback-state-event③">(4)</a> <a href="#ref-for-remote-playback-state-event④">(5)</a> <a href="#ref-for-remote-playback-state-event⑤">(6)</a> <a href="#ref-for-remote-playback-state-event⑥">(7)</a>
+    <li><a href="#ref-for-remote-playback-state-event⑦">8.1. Remote Playback State and Controls</a>
+    <li><a href="#ref-for-remote-playback-state-event⑧">8.2. Remote Playback API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="text-track-cue">
