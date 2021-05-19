@@ -51,7 +51,7 @@ the spec.
 1. Before doing any local changes, it is a good idea to ensure your fork is up-to-date with the upstream repository:
     ```bash
     git fetch upstream
-    git merge upstream/master
+    git merge upstream/main
     ```
 1. In the `openscreenprotocol` directory, update the spec source `index.bs` with your changes.
 1. Review your changes and commit them locally:
@@ -61,11 +61,11 @@ the spec.
     git commit -m "Your commit message"
    ```
 [How to write a Git commit message](http://chris.beams.io/posts/git-commit/)
-1. Push your changes up to your GitHub fork, assuming `YOUR_FORK_NAME` is the name of your remote, and you are working off of the default `gh-pages` branch:
+1. Push your changes up to your GitHub fork, assuming `YOUR_FORK_NAME` is the name of your remote, and you are working off of the default `main` branch:
     ```bash
-    git push YOUR_FORK_NAME master
+    git push YOUR_FORK_NAME main
     ```
-Note: use the default `master` branch for minor changes only. For more significant
+Note: use the default `main` branch for minor changes only. For more significant
 changes, please create a new branch instead.
 1. On GitHub, navigate to your fork `https://github.com/YOUR_GITHUB_USERNAME/openscreenprotocol`
 and create a pull request with your changes.
