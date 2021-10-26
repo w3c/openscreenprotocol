@@ -1,0 +1,48 @@
+# Workflow based on the main w3c/spec-prod action example:
+# https://github.com/w3c/spec-prod/#basic-usage
+#
+# Custom code added to generate the CDDL messages appendix for inclusion in the
+# generated specification file.
+
+name: Build, Validate, and Deploy
+
+on:
+  # Worflow runs on pull requests where it makes sure that the spec can still be
+  # generated, that markup is valid and that there are no broken links, as
+  # well as on pushes to the default branch where it also deploys the generated
+  # spec to the gh-pages branch. The "workflow_dispatch" hook allows admins to
+  # also trigger the workflow manually from GitHub's UI.
+  pull_request: {}
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  main:
+    runs-on: ubuntu-20.04
+    steps:
+      # See doc at https://github.com/actions/checkout#checkout-v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # See doc at https://github.com/actions/setup-python/#setup-python-v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install Pygments
+
+      - name: Generate messages_appendix.html
+        run: python scripts/pygmentize_dir.py
+
+      # See doc at https://github.com/w3c/spec-prod/#spec-prod
+      # The action only deploys the generated spec to the gh-pages branch when
+      # the workflow was triggered by a push to the default branch.
+      - name: Build and validate index.html, push to gh-pages branch if needed
+        uses: w3c/spec-prod@v2
+        with:
+          GH_PAGES_BRANCH: gh-pages
