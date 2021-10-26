@@ -1712,7 +1712,6 @@ Issue(194): Align capabilities for HDR rendering and display with Media Capabili
 : supports-rotation (optional)
 :: An optional boolean field indicating whether the media receiver can receive
     video frames with the rotation field set. The default value is true.
-
     
 <!-- TODO: Add max-bit-rate -->
 
