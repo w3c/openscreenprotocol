@@ -55,6 +55,8 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
 url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
+url: https://tools.ietf.org/html/rfc5280#section-4.2.1.3; type: dfn; spec: RFC5280; text: digitalSignature
+url: https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3; type: dfn; spec: RFC8446; text: signature scheme
 </pre>
 
 Introduction {#introduction}
@@ -367,16 +369,43 @@ QUIC connection.
 
 The [=agent certificate=] must have the following characteristics:
 
-* 256-bit, 384-bit, or 521-bit ECDSA public key
-* Self-signed
-* Supporting the at least one of the following signature algorithms:
-    * secp256r1_sha256
-    * secp384r1_sha384
-    * secp521r1_sha512
-* Valid for signing
+* 256-bit, 384-bit, or 521-bit ECDSA public key.
+* Self-signed.
+* Supporting the at least one of the [=certificate algorithms=] listed below.
+    * The `AlgorithmIdentifiers` are defined in [[!RFC5480]].
+* Valid for signing.
+
+<table id="algorithms" class="data">
+<caption><dfn lt="certificate algorithms">Agent Certificate Algorithms</dfn></caption>
+<thead>
+<tr>
+  <th>TLS 1.3 [=Signature Scheme=]</th>
+  <th>Public Key `AlgorithmIdentifier`</th>
+  <th>Signature `AlgorithmIdentifier`</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>`secp256r1_sha256`</td>
+  <td>`301306072a8648ce3d020106082a8648ce3d030107`</td>
+  <td>`300a06082a8648ce3d040302`</td>
+</tr>
+<tr>
+  <td>`secp384r1_sha384`</td>
+  <td>`301006072a8648ce3d020106052b81040022`</td>
+  <td>`300a06082a8648ce3d040303`</td>
+</tr>
+<tr>
+  <td>`secp521r1_sha512`</td>
+  <td>TBD</td>
+  <td>TBD</td>
+</tr>
+</tbody>
+</table>
 
 The following X.509 v3 fields are to be set as follows:
 
+<div class="assertion">
 <table>
 <thead>
  <th>Field</th>
@@ -392,8 +421,12 @@ The following X.509 v3 fields are to be set as follows:
    <td>`<fp>`</td>
  </tr>
  <tr>
-   <td>Signature Algorithm ID</td>
-   <td>One of the values listed above.</td>
+   <td>Public Key `AlgorithmIdentifier`</td>
+   <td>One of the supported  [=certificate algorithms=].</td>
+ </tr>
+ <tr>
+   <td>Signature `AlgorithmIdentifier`</td>
+   <td>One of the supported  [=certificate algorithms=].</td>
  </tr>
  <tr>
    <td>Issuer Name</td>
@@ -416,10 +449,11 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Certificate Key usage</td>
-   <td>Signing</td>
+   <td>[=digitalSignature=]</td>
  </tr>
 </tbody>
 </table>
+</div>
 
 Mandatory fields not mentioned above should be set according to [[!RFC5280]].
 
