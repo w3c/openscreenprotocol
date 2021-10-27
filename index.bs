@@ -1699,9 +1699,9 @@ Issue(194): Align capabilities for HDR rendering and display with Media Capabili
 : color-gamut (optional)
 :: An optional field indicating what color spaces can be understood by the media
     receiver. The media sender may use these values to determine how to encode
-    video. Valid values correspond to
-    [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]] in the Media Capabilities API.
-    The default value is "srgb".
+    video. Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
+    in the  [[!MEDIA-CAPABILITIES|Media Capabilities]] API.  The default value is
+    "srgb".
 
 : native-resolutions (optional)
 :: An optional field indicating what video-resolutions the media receiver supports and
