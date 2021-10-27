@@ -254,9 +254,14 @@ Non-Functional Requirements {#requirements-non-functional}
 Discovery with mDNS {#discovery}
 ===============================
 
-[=Open Screen Protocol agents=] must discover one another using
-[[RFC6763|DNS-SD]] over [[RFC6762|mDNS]].  To do so, OSP agents must use the
-[=Service Name=] `_openscreen._udp.local`.
+[=Open Screen Protocol agents=] discover one another by advertising and
+listening for information identifying themselves along with an IP service
+endpoint.  Agent advertisement and discovery through [[RFC6763|DNS-SD]] and
+[[RFC6762|mDNS]] is defined by this specification and is mandatory to implement
+by all agents. However, agents are free to implement additional discovery
+mechanisms, such as querying for the same DNS-SD records via unicast DNS.
+
+OSP agents must use the DNS-SD [=Service Name=] `_openscreen._udp`.
 
 Issue(107): Define suspend and resume behavior for discovery protocol.
 
@@ -341,7 +346,7 @@ refuse incoming connections that lack these parameters.
 
 * The [[!RFC7301|ALPN]] used must be "osp".
 * The [[!RFC6066|server_name extension]] must be set to the following `host_name`: 
-    `<fp>._openscreen._udp.local`.
+    `<fp>._openscreen._udp`.
     * `<fp>` must be substituted with the [=agent fingerprint=] as used in mDNS TXT.
 
 An OSP Agent must not send TLS early data.
@@ -401,7 +406,7 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Subject Name</td>
-   <td>CN = `<fp>`._openscreen._udp.local<br/>
+   <td>CN = `<fp>`._openscreen._udp<br/>
        O = See note.<br/>
    </td>
  </tr>
