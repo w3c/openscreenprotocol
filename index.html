@@ -4,9 +4,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Open Screen Protocol</title>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 800b43329, updated Tue May 25 14:13:32 2021 -0700" name="generator">
+  <meta content="Bikeshed version d7036035b, updated Fri Oct 8 17:07:11 2021 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="3d2f397c03b25a5fdde239e79d8258e6df90abd5" name="document-revision">
+  <meta content="73051117248191de11e20e511dc48de35eef0ecc" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -311,6 +311,16 @@ figcaption:not(.no-marker)::before {
 
 .dfn-paneled { cursor: pointer; }
 </style>
+<style>/* style-issues */
+
+a[href].issue-return {
+    float: right;
+    float: inline-end;
+    color: var(--issueheading-text);
+    font-weight: bold;
+    text-decoration: none;
+}
+</style>
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -504,7 +514,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-06-04">4 June 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-10-27">27 October 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -824,8 +834,13 @@ specification, to facilitate experimentation and enhancement of the base
 APIs.</p>
    </ol>
    <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Discovery with mDNS</span><a class="self-link" href="#discovery"></a></h2>
-   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent①">Open Screen Protocol agents</a> must discover one another using <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> over <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a>.  To do so, OSP agents must use the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp.local</code>.</p>
-   <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/107">&lt;https://github.com/w3c/openscreenprotocol/issues/107></a></p>
+   <p><a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent①">Open Screen Protocol agents</a> discover one another by advertising and
+listening for information identifying themselves along with an IP service
+endpoint.  Agent advertisement and discovery through <a data-link-type="biblio" href="#biblio-rfc6763">DNS-SD</a> and <a data-link-type="biblio" href="#biblio-rfc6762">mDNS</a> is defined by this specification and is mandatory to implement
+by all agents. However, agents are free to implement additional discovery
+mechanisms, such as querying for the same DNS-SD records via unicast DNS.</p>
+   <p>OSP agents must use the DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp</code>.</p>
+   <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/107">[Issue #107]</a></p>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent</dfn> is one that responds to mDNS queries
 for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
 name</dfn> (a non-empty string) that is a human readable description of the
@@ -885,16 +900,16 @@ refuse incoming connections that lack these parameters.</p>
     <li data-md>
      <p>The <a data-link-type="biblio" href="#biblio-rfc7301">ALPN</a> used must be "osp".</p>
     <li data-md>
-     <p>The <a data-link-type="biblio" href="#biblio-rfc6066">server_name extension</a> must be set to the following <code>host_name</code>: <code>&lt;fp>._openscreen._udp.local</code>.</p>
+     <p>The <a data-link-type="biblio" href="#biblio-rfc6066">server_name extension</a> must be set to the following <code>host_name</code>: <code>&lt;fp>._openscreen._udp</code>.</p>
      <ul>
       <li data-md>
        <p><code>&lt;fp></code> must be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint">agent fingerprint</a> as used in mDNS TXT.</p>
      </ul>
    </ul>
    <p>An OSP Agent must not send TLS early data.</p>
-   <p class="issue" id="issue-808efb48"><a class="self-link" href="#issue-808efb48"></a> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">&lt;https://github.com/w3c/openscreenprotocol/issues/228></a></p>
+   <p class="issue" id="issue-808efb48"><a class="self-link" href="#issue-808efb48"></a> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">[Issue #228]</a></p>
    <p class="issue" id="issue-08dfa2ca"><a class="self-link" href="#issue-08dfa2ca"></a> Make recommendations for cipher and signature algorithm preference
-list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">&lt;https://github.com/w3c/openscreenprotocol/issues/218></a></p>
+list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">[Issue #218]</a></p>
    <h3 class="heading settled" data-level="4.2" id="certificates"><span class="secno">4.2. </span><span class="content">Agent Certificates</span><a class="self-link" href="#certificates"></a></h3>
    <p>Each OSP Agent must generate an <a data-link-type="biblio" href="#biblio-rfc5280">X.509 v3</a> <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="agent certificate" data-noexport id="agent-certificate">agent
 certificate</dfn> containing a public key to be used with the TLS 1.3
@@ -941,7 +956,7 @@ QUIC connection.</p>
       <td>CN = The <code>model-name</code> from the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br> 
      <tr>
       <td>Subject Name
-      <td>CN = <code>&lt;fp></code>._openscreen._udp.local<br> O = See note.<br> 
+      <td>CN = <code>&lt;fp></code>._openscreen._udp<br> O = See note.<br> 
      <tr>
       <td>Subject Public Key Algorithm
       <td>Elliptic Curve Public Key
@@ -1049,7 +1064,7 @@ timer expires, a <a data-link-type="dfn" href="#agent-status-request" id="ref-fo
    <p>If a listening agent wishes to send messages to an advertising agent, the
 listening agent can connect to the advertising agent "on demand"; it does not
 need to keep the connection alive.</p>
-   <p class="issue" id="issue-e0955a17"><a class="self-link" href="#issue-e0955a17"></a> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">&lt;https://github.com/w3c/openscreenprotocol/issues/108></a></p>
+   <p class="issue" id="issue-e0955a17"><a class="self-link" href="#issue-e0955a17"></a> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">[Issue #108]</a></p>
    <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info④">agent-info</a> and <a data-link-type="dfn" href="#agent-status-response" id="ref-for-agent-status-response①">agent-status-response</a> messages may be extended to
 include additional information not defined in this spec, as described in <a href="#protocol-extension-fields">§ 11.1 Protocol Extension Fields</a>.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
@@ -1133,8 +1148,8 @@ QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
-   <p class="issue" id="issue-3b9ff3bd"><a class="self-link" href="#issue-3b9ff3bd"></a> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">&lt;https://github.com/w3c/openscreenprotocol/issues/235></a></p>
-   <p class="issue" id="issue-dc398825"><a class="self-link" href="#issue-dc398825"></a> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">&lt;https://github.com/w3c/openscreenprotocol/issues/242></a></p>
+   <p class="issue" id="issue-3b9ff3bd"><a class="self-link" href="#issue-3b9ff3bd"></a> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a></p>
+   <p class="issue" id="issue-dc398825"><a class="self-link" href="#issue-dc398825"></a> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a></p>
    <p>For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.</p>
    <p>The default authentication method is <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08">SPAKE2</a> with
@@ -1158,7 +1173,7 @@ is not stored in any form.</p>
    <p>This authentication method assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.</p>
-   <p class="issue" id="issue-619e4cec"><a class="self-link" href="#issue-619e4cec"></a> [Security] Describe encoding/decoding of PSK into numeric and QR codes. <a href="https://github.com/w3c/openscreenprotocol/issues/210">&lt;https://github.com/w3c/openscreenprotocol/issues/210></a></p>
+   <p class="issue" id="issue-619e4cec"><a class="self-link" href="#issue-619e4cec"></a> [Security] Describe encoding/decoding of PSK into numeric and QR codes. <a href="https://github.com/w3c/openscreenprotocol/issues/210">[Issue #210]</a></p>
    <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.</p>
    <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
@@ -1402,7 +1417,7 @@ controller) may send a <a data-link-type="dfn" href="#presentation-start-request
 the selected presentation URL.</p>
    <p class="issue" id="issue-733afe74"><a class="self-link" href="#issue-733afe74"></a> Once the Presentation API has text about
 reconnecting via an implementation specific mechanism, quote that here and map
-it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&lt;https://github.com/w3c/presentation-api/issues/471></a></p>
+it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[Issue #w3c/presentation-api#471]</a></p>
    <p>When <a href="https://www.w3.org/TR/presentation-api/#sending-a-message-through-presentationconnection">section
 6.5.2</a> says "Using an implementation specific mechanism, transmit the contents
 of messageOrData as the presentation message data and messageType as the
@@ -1434,7 +1449,7 @@ APIs in <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playbac
 defined in this section.</p>
    <p>For all messages defined in this section, see Appendix A for the full
 CDDL definitions.</p>
-   <p class="issue" id="issue-649c173f"><a class="self-link" href="#issue-649c173f"></a> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">&lt;https://github.com/w3c/openscreenprotocol/issues/159></a></p>
+   <p class="issue" id="issue-649c173f"><a class="self-link" href="#issue-649c173f"></a> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">[Issue #159]</a></p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device" id="ref-for-dfn-compatible-remote-playback-device">compatible remote playback devices</a> for a
 particular URL or set of URLs, the controller may send a <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request">remote-playback-availability-request</a> message with the following values:</p>
    <dl>
@@ -1442,7 +1457,7 @@ particular URL or set of URLs, the controller may send a <a data-link-type="dfn"
     <dd data-md>
      <p>A list of <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources">media resources</a>, the same as specified in the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request">remote-playback-start-request</a> message.  Must not be empty.</p>
    </dl>
-   <p class="issue" id="issue-9145071e"><a class="self-link" href="#issue-9145071e"></a> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">&lt;https://github.com/w3c/openscreenprotocol/issues/146></a></p>
+   <p class="issue" id="issue-9145071e"><a class="self-link" href="#issue-9145071e"></a> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">[Issue #146]</a></p>
    <dl>
     <dt data-md>headers
     <dd data-md>
@@ -1503,7 +1518,7 @@ requirements for a remote-playback-id.</p>
      <p>The <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources①">media resources</a> that the controller has selected for playback
 on the receiver.  Each source must include a <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src" id="ref-for-attr-source-src">source URL</a></code> and should include an <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type" id="ref-for-attr-source-type">extended MIME type</a></code>.</p>
    </dl>
-   <p class="issue" id="issue-74827562"><a class="self-link" href="#issue-74827562"></a> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">&lt;https://github.com/w3c/openscreenprotocol/issues/265></a></p>
+   <p class="issue" id="issue-74827562"><a class="self-link" href="#issue-74827562"></a> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">[Issue #265]</a></p>
    <dl>
     <dt data-md>text-track-urls
     <dd data-md>
@@ -1542,7 +1557,7 @@ streaming session as if the streaming session had been started with <a data-link
 before the remote playback is terminated, but if the remote playback is
 terminated first, the streaming session associated with it is automatically
 terminated.</p>
-   <p class="issue" id="issue-9717419d"><a class="self-link" href="#issue-9717419d"></a> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">&lt;https://github.com/w3c/openscreenprotocol/issues/241></a></p>
+   <p class="issue" id="issue-9717419d"><a class="self-link" href="#issue-9717419d"></a> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">[Issue #241]</a></p>
    <p>If the controller wishes to modify the state of the remote playback (for
 example, to pause, resume, skip, etc), it may send a <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request">remote-playback-modify-request</a> message with the following values:</p>
    <dl>
@@ -1674,7 +1689,7 @@ intentionally mirror settable attributes and methods of the <code class="idl"><a
     <dd data-md>
      <p>Change the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources④">media resource</a> URL. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src" id="ref-for-dom-media-src">HTMLMediaElement.src</a></code> for more details. Must not be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request③">remote-playback-start-request</a> message (which already contains a list of URLs).</p>
    </dl>
-   <p class="issue" id="issue-791c621c"><a class="self-link" href="#issue-791c621c"></a> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">&lt;https://github.com/w3c/openscreenprotocol/issues/223></a></p>
+   <p class="issue" id="issue-791c621c"><a class="self-link" href="#issue-791c621c"></a> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">[Issue #223]</a></p>
    <dl>
     <dt data-md>preload
     <dd data-md>
@@ -2061,7 +2076,7 @@ Formats are composed of the following fields:</p>
     <dd data-md>
      <p>The name of the codec.   This must be a single-codec RFC 6381 <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codecs parameter</a>.</p>
    </dl>
-   <p class="issue" id="issue-43c1a192"><a class="self-link" href="#issue-43c1a192"></a> Use the same codec names as the media APIs. <a href="https://github.com/w3c/openscreenprotocol/issues/233">&lt;https://github.com/w3c/openscreenprotocol/issues/233></a></p>
+   <p class="issue" id="issue-43c1a192"><a class="self-link" href="#issue-43c1a192"></a> Use the same codec names as the media APIs. <a href="https://github.com/w3c/openscreenprotocol/issues/233">[Issue #233]</a></p>
    <dl>
     <dt data-md>parameters (required)
     <dd data-md>
@@ -2069,7 +2084,7 @@ Formats are composed of the following fields:</p>
 properties of a specific format, and not shared by other formats
 of that type (audio, video, etc.).</p>
    </dl>
-   <p class="issue" id="issue-263f992a"><a class="self-link" href="#issue-263f992a"></a> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">&lt;https://github.com/w3c/openscreenprotocol/issues/266></a></p>
+   <p class="issue" id="issue-263f992a"><a class="self-link" href="#issue-263f992a"></a> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">[Issue #266]</a></p>
    <p>Audio capabilities are composed of the above format type, with the following
 additional fields:</p>
    <dl>
@@ -2108,7 +2123,7 @@ capable of processing, in kilobits per second. Default is no minimum.</p>
 display could return this value as 1.6 to indicate its preferred content
 scaling. Default is none.</p>
    </dl>
-   <p class="issue" id="issue-a057c285"><a class="self-link" href="#issue-a057c285"></a> Align capabilities for HDR rendering and display with Media Capabilities. <a href="https://github.com/w3c/openscreenprotocol/issues/194">&lt;https://github.com/w3c/openscreenprotocol/issues/194></a></p>
+   <p class="issue" id="issue-a057c285"><a class="self-link" href="#issue-a057c285"></a> Align capabilities for HDR rendering and display with Media Capabilities. <a href="https://github.com/w3c/openscreenprotocol/issues/194">[Issue #194]</a></p>
    <dl>
     <dt data-md>color-profiles (optional)
     <dd data-md>
@@ -2746,9 +2761,9 @@ preferred locales.</p>
    <h4 class="heading settled" data-level="12.2.2" id="cross-origin-state"><span class="secno">12.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
    <p>Access to origin state across browsing sessions is possible through the
 Presentation API by reconnecting to a presentation that was started by a
-previous session. This scenario is addressed in <a href="https://www.w3.org/TR/presentation-api/#cross-origin-access">Presentation API §cross-origin-access</a>.</p>
+previous session. This scenario is addressed in <a href="https://www.w3.org/TR/presentation-api/#cross-origin-access">Presentation API § cross-origin-access</a>.</p>
    <p>Receiver availability is available cross-origin depending on the user’s network
-context.  Exposure of this data to the Web is also discussed in <a href="https://www.w3.org/TR/presentation-api/#personally-identifiable-information">Presentation API §personally-identifiable-information</a> and <a href="https://www.w3.org/TR/remote-playback/#personally-identifiable-information">Remote Playback API §personally-identifiable-information</a>.</p>
+context.  Exposure of this data to the Web is also discussed in <a href="https://www.w3.org/TR/presentation-api/#personally-identifiable-information">Presentation API § personally-identifiable-information</a> and <a href="https://www.w3.org/TR/remote-playback/#personally-identifiable-information">Remote Playback API § personally-identifiable-information</a>.</p>
    <h4 class="heading settled" data-level="12.2.3" id="origin-access-devices"><span class="secno">12.2.3. </span><span class="content">Origin Access to Other Devices</span><a class="self-link" href="#origin-access-devices"></a></h4>
    <p>By design, the Open Screen Protocol allows access to receivers from the Web.  By
 implementing the protocol, these devices are knowingly making themselves
@@ -2770,7 +2785,7 @@ metadata versions, and metadata for those parties.</p>
 UI of the user agent during the display selection or display authentication
 process.  It can be an implementation choice whether the user agent clears or
 retains this data when the user clears browsing data.</p>
-   <p class="issue" id="issue-8bf4aa9f"><a class="self-link" href="#issue-8bf4aa9f"></a> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">&lt;https://github.com/w3c/openscreenprotocol/issues/132></a></p>
+   <p class="issue" id="issue-8bf4aa9f"><a class="self-link" href="#issue-8bf4aa9f"></a> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a></p>
    <h4 class="heading settled" data-level="12.2.6" id="other-considerations"><span class="secno">12.2.6. </span><span class="content">Other Considerations</span><a class="self-link" href="#other-considerations"></a></h4>
    <p>The Open Screen Protocol does not grant to the Web additional access to the
 following:</p>
@@ -2789,7 +2804,7 @@ following:</p>
      <p>Security characteristics of the user agent</p>
    </ul>
    <h3 class="heading settled" data-level="12.3" id="presentation-api-considerations"><span class="secno">12.3. </span><span class="content">Presentation API Considerations</span><a class="self-link" href="#presentation-api-considerations"></a></h3>
-   <p><a href="https://www.w3.org/TR/presentation-api/#security-and-privacy-considerations">Presentation API §security-and-privacy-considerations</a> place these
+   <p><a href="https://www.w3.org/TR/presentation-api/#security-and-privacy-considerations">Presentation API § security-and-privacy-considerations</a> place these
 requirements on the Open Screen Protocol:</p>
    <ol>
     <li data-md>
@@ -2815,7 +2830,7 @@ connections.</p>
  the number of active connections.</p>
    </ol>
    <h3 class="heading settled" data-level="12.4" id="remote-playback-considerations"><span class="secno">12.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
-   <p>The <a href="https://www.w3.org/TR/remote-playback/#security-and-privacy-considerations">Remote Playback API §security-and-privacy-considerations</a> also state that
+   <p>The <a href="https://www.w3.org/TR/remote-playback/#security-and-privacy-considerations">Remote Playback API § security-and-privacy-considerations</a> also state that
 messaging between controllers and receivers should also be authenticated and
 confidential.</p>
    <p>This consideration is handled by requiring mutual authentication and a
@@ -3744,74 +3759,74 @@ extensions.</p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#advertising-agent">advertising agent</a><span>, in §3</span>
-   <li><a href="#agent-certificate">agent certificate</a><span>, in §4.2</span>
-   <li><a href="#agent-fingerprint">agent fingerprint</a><span>, in §3</span>
-   <li><a href="#agent-info">agent-info</a><span>, in §Unnumbered section</span>
-   <li><a href="#agent-info-event">agent-info-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#agent-info-request">agent-info-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#agent-info-response">agent-info-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#agent-status-request">agent-status-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#agent-status-response">agent-status-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#audio-encoding-offer">audio-encoding-offer</a><span>, in §Unnumbered section</span>
-   <li><a href="#audio-frame">audio-frame</a><span>, in §Unnumbered section</span>
-   <li><a href="#auth-capabilities">auth-capabilities</a><span>, in §Unnumbered section</span>
-   <li><a href="#auth-initiation-token">auth-initiation-token</a><span>, in §Unnumbered section</span>
-   <li><a href="#auth-spake2-confirmation">auth-spake2-confirmation</a><span>, in §Unnumbered section</span>
-   <li><a href="#auth-spake2-handshake">auth-spake2-handshake</a><span>, in §Unnumbered section</span>
-   <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in §Unnumbered section</span>
-   <li><a href="#auth-status">auth-status</a><span>, in §Unnumbered section</span>
-   <li><a href="#controller">controller</a><span>, in §1.1</span>
-   <li><a href="#data-encoding-offer">data-encoding-offer</a><span>, in §Unnumbered section</span>
-   <li><a href="#data-frame">data-frame</a><span>, in §Unnumbered section</span>
-   <li><a href="#display-name">display name</a><span>, in §3</span>
-   <li><a href="#listening-agent">listening agent</a><span>, in §3</span>
-   <li><a href="#media-receiver">media receiver</a><span>, in §1.1</span>
-   <li><a href="#media-sender">media sender</a><span>, in §1.1</span>
-   <li><a href="#media-time">media-time</a><span>, in §Unnumbered section</span>
-   <li><a href="#open-screen-protocol-agent">open screen protocol agent</a><span>, in §1.1</span>
-   <li><a href="#open-screen-protocol-agent">osp agent</a><span>, in §1.1</span>
-   <li><a href="#presentation-change-event">presentation-change-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-connection-close-event">presentation-connection-close-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-connection-message">presentation-connection-message</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-connection-open-request">presentation-connection-open-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-connection-open-response">presentation-connection-open-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-start-request">presentation-start-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-start-response">presentation-start-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-termination-event">presentation-termination-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-termination-request">presentation-termination-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-termination-response">presentation-termination-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-url-availability-event">presentation-url-availability-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-url-availability-request">presentation-url-availability-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#presentation-url-availability-response">presentation-url-availability-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#receiver">receiver</a><span>, in §1.1</span>
-   <li><a href="#remote-playback-availability-event">remote-playback-availability-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-availability-request">remote-playback-availability-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-availability-response">remote-playback-availability-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-modify-request">remote-playback-modify-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-modify-response">remote-playback-modify-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-start-request">remote-playback-start-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-start-response">remote-playback-start-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-state-event">remote-playback-state-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-termination-event">remote-playback-termination-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-termination-request">remote-playback-termination-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#remote-playback-termination-response">remote-playback-termination-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-capabilities-request">streaming-capabilities-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-capabilities-response">streaming-capabilities-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-session-modify-request">streaming-session-modify-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-session-modify-response">streaming-session-modify-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-session-receiver-stats-event">streaming-session-receiver-stats-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-session-sender-stats-event">streaming-session-sender-stats-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-session-start-request">streaming-session-start-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-session-start-response">streaming-session-start-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-session-terminate-event">streaming-session-terminate-event</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-session-terminate-request">streaming-session-terminate-request</a><span>, in §Unnumbered section</span>
-   <li><a href="#streaming-session-terminate-response">streaming-session-terminate-response</a><span>, in §Unnumbered section</span>
-   <li><a href="#suspicious-agent">suspicious agent</a><span>, in §12.5.2</span>
-   <li><a href="#text-track-cue">text-track-cue</a><span>, in §Unnumbered section</span>
-   <li><a href="#verified-display-name">verified display name</a><span>, in §12.6.1</span>
-   <li><a href="#video-encoding-offer">video-encoding-offer</a><span>, in §Unnumbered section</span>
-   <li><a href="#video-frame">video-frame</a><span>, in §Unnumbered section</span>
+   <li><a href="#advertising-agent">advertising agent</a><span>, in § 3</span>
+   <li><a href="#agent-certificate">agent certificate</a><span>, in § 4.2</span>
+   <li><a href="#agent-fingerprint">agent fingerprint</a><span>, in § 3</span>
+   <li><a href="#agent-info">agent-info</a><span>, in § Unnumbered section</span>
+   <li><a href="#agent-info-event">agent-info-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#agent-info-request">agent-info-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#agent-info-response">agent-info-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#agent-status-request">agent-status-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#agent-status-response">agent-status-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#audio-encoding-offer">audio-encoding-offer</a><span>, in § Unnumbered section</span>
+   <li><a href="#audio-frame">audio-frame</a><span>, in § Unnumbered section</span>
+   <li><a href="#auth-capabilities">auth-capabilities</a><span>, in § Unnumbered section</span>
+   <li><a href="#auth-initiation-token">auth-initiation-token</a><span>, in § Unnumbered section</span>
+   <li><a href="#auth-spake2-confirmation">auth-spake2-confirmation</a><span>, in § Unnumbered section</span>
+   <li><a href="#auth-spake2-handshake">auth-spake2-handshake</a><span>, in § Unnumbered section</span>
+   <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in § Unnumbered section</span>
+   <li><a href="#auth-status">auth-status</a><span>, in § Unnumbered section</span>
+   <li><a href="#controller">controller</a><span>, in § 1.1</span>
+   <li><a href="#data-encoding-offer">data-encoding-offer</a><span>, in § Unnumbered section</span>
+   <li><a href="#data-frame">data-frame</a><span>, in § Unnumbered section</span>
+   <li><a href="#display-name">display name</a><span>, in § 3</span>
+   <li><a href="#listening-agent">listening agent</a><span>, in § 3</span>
+   <li><a href="#media-receiver">media receiver</a><span>, in § 1.1</span>
+   <li><a href="#media-sender">media sender</a><span>, in § 1.1</span>
+   <li><a href="#media-time">media-time</a><span>, in § Unnumbered section</span>
+   <li><a href="#open-screen-protocol-agent">open screen protocol agent</a><span>, in § 1.1</span>
+   <li><a href="#open-screen-protocol-agent">osp agent</a><span>, in § 1.1</span>
+   <li><a href="#presentation-change-event">presentation-change-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-connection-close-event">presentation-connection-close-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-connection-message">presentation-connection-message</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-connection-open-request">presentation-connection-open-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-connection-open-response">presentation-connection-open-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-start-request">presentation-start-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-start-response">presentation-start-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-termination-event">presentation-termination-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-termination-request">presentation-termination-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-termination-response">presentation-termination-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-url-availability-event">presentation-url-availability-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-url-availability-request">presentation-url-availability-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#presentation-url-availability-response">presentation-url-availability-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#receiver">receiver</a><span>, in § 1.1</span>
+   <li><a href="#remote-playback-availability-event">remote-playback-availability-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-availability-request">remote-playback-availability-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-availability-response">remote-playback-availability-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-modify-request">remote-playback-modify-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-modify-response">remote-playback-modify-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-start-request">remote-playback-start-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-start-response">remote-playback-start-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-state-event">remote-playback-state-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-termination-event">remote-playback-termination-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-termination-request">remote-playback-termination-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#remote-playback-termination-response">remote-playback-termination-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-capabilities-request">streaming-capabilities-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-capabilities-response">streaming-capabilities-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-session-modify-request">streaming-session-modify-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-session-modify-response">streaming-session-modify-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-session-receiver-stats-event">streaming-session-receiver-stats-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-session-sender-stats-event">streaming-session-sender-stats-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-session-start-request">streaming-session-start-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-session-start-response">streaming-session-start-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-session-terminate-event">streaming-session-terminate-event</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-session-terminate-request">streaming-session-terminate-request</a><span>, in § Unnumbered section</span>
+   <li><a href="#streaming-session-terminate-response">streaming-session-terminate-response</a><span>, in § Unnumbered section</span>
+   <li><a href="#suspicious-agent">suspicious agent</a><span>, in § 12.5.2</span>
+   <li><a href="#text-track-cue">text-track-cue</a><span>, in § Unnumbered section</span>
+   <li><a href="#verified-display-name">verified display name</a><span>, in § 12.6.1</span>
+   <li><a href="#video-encoding-offer">video-encoding-offer</a><span>, in § Unnumbered section</span>
+   <li><a href="#video-frame">video-frame</a><span>, in § Unnumbered section</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-dom-media-have_nothing">
    <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing">https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing</a><b>Referenced in:</b>
@@ -4281,7 +4296,7 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-dom-media-duration">duration</span>
      <li><span class="dfn-paneled" id="term-for-dom-media-ended">ended</span>
      <li><span class="dfn-paneled" id="term-for-dom-media-error">error</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-fastseek">fastSeek()</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-fastseek">fastSeek(time)</span>
      <li><span class="dfn-paneled" id="term-for-dom-media-getstartdate">getStartDate()</span>
      <li><span class="dfn-paneled" id="term-for-dom-media-loop">loop</span>
      <li><span class="dfn-paneled" id="term-for-media-element">media elements</span>
@@ -4384,69 +4399,69 @@ extensions.</p>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-html">[HTML]
-   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
-   <dd>Mark Foltz; Dominik Röttsches. <a href="https://www.w3.org/TR/presentation-api/">Presentation API</a>. 5 November 2020. CR. URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
+   <dd>Mark Foltz; Dominik Röttsches. <a href="https://www.w3.org/TR/presentation-api/"><cite>Presentation API</cite></a>. 5 November 2020. CR. URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
    <dt id="biblio-quic">[QUIC]
-   <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23">QUIC: A UDP-Based Multiplexed and Secure Transport</a>. 12 September 2019. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23">https://tools.ietf.org/html/draft-ietf-quic-transport-23</a>
+   <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23"><cite>QUIC: A UDP-Based Multiplexed and Secure Transport</cite></a>. 12 September 2019. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23">https://tools.ietf.org/html/draft-ietf-quic-transport-23</a>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
-   <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/">Remote Playback API</a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
+   <dd>Mounir Lamouri; Anton Vayvod. <a href="https://www.w3.org/TR/remote-playback/"><cite>Remote Playback API</cite></a>. 19 October 2017. CR. URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
    <dt id="biblio-rfc5122">[RFC5122]
-   <dd>P. Saint-Andre. <a href="https://datatracker.ietf.org/doc/html/rfc5122">Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)</a>. February 2008. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc5122">https://datatracker.ietf.org/doc/html/rfc5122</a>
+   <dd>P. Saint-Andre. <a href="https://www.rfc-editor.org/rfc/rfc5122"><cite>Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)</cite></a>. February 2008. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc5122">https://www.rfc-editor.org/rfc/rfc5122</a>
    <dt id="biblio-rfc5280">[RFC5280]
-   <dd>D. Cooper; et al. <a href="https://datatracker.ietf.org/doc/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>. May 2008. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc5280">https://datatracker.ietf.org/doc/html/rfc5280</a>
+   <dd>D. Cooper; et al. <a href="https://www.rfc-editor.org/rfc/rfc5280"><cite>Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</cite></a>. May 2008. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc5280">https://www.rfc-editor.org/rfc/rfc5280</a>
    <dt id="biblio-rfc5646">[RFC5646]
-   <dd>A. Phillips, Ed.; M. Davis, Ed.. <a href="https://datatracker.ietf.org/doc/html/rfc5646">Tags for Identifying Languages</a>. September 2009. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc5646">https://datatracker.ietf.org/doc/html/rfc5646</a>
+   <dd>A. Phillips, Ed.; M. Davis, Ed.. <a href="https://www.rfc-editor.org/rfc/rfc5646"><cite>Tags for Identifying Languages</cite></a>. September 2009. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc5646">https://www.rfc-editor.org/rfc/rfc5646</a>
    <dt id="biblio-rfc6066">[RFC6066]
-   <dd>D. Eastlake 3rd. <a href="https://datatracker.ietf.org/doc/html/rfc6066">Transport Layer Security (TLS) Extensions: Extension Definitions</a>. January 2011. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc6066">https://datatracker.ietf.org/doc/html/rfc6066</a>
+   <dd>D. Eastlake 3rd. <a href="https://www.rfc-editor.org/rfc/rfc6066"><cite>Transport Layer Security (TLS) Extensions: Extension Definitions</cite></a>. January 2011. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc6066">https://www.rfc-editor.org/rfc/rfc6066</a>
    <dt id="biblio-rfc6381">[RFC6381]
-   <dd>R. Gellens; D. Singer; P. Frojdh. <a href="https://datatracker.ietf.org/doc/html/rfc6381">The 'Codecs' and 'Profiles' Parameters for "Bucket" Media Types</a>. August 2011. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc6381">https://datatracker.ietf.org/doc/html/rfc6381</a>
+   <dd>R. Gellens; D. Singer; P. Frojdh. <a href="https://www.rfc-editor.org/rfc/rfc6381"><cite>The 'Codecs' and 'Profiles' Parameters for "Bucket" Media Types</cite></a>. August 2011. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc6381">https://www.rfc-editor.org/rfc/rfc6381</a>
    <dt id="biblio-rfc6762">[RFC6762]
-   <dd>S. Cheshire; M. Krochmal. <a href="https://datatracker.ietf.org/doc/html/rfc6762">Multicast DNS</a>. February 2013. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc6762">https://datatracker.ietf.org/doc/html/rfc6762</a>
+   <dd>S. Cheshire; M. Krochmal. <a href="https://www.rfc-editor.org/rfc/rfc6762"><cite>Multicast DNS</cite></a>. February 2013. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc6762">https://www.rfc-editor.org/rfc/rfc6762</a>
    <dt id="biblio-rfc6763">[RFC6763]
-   <dd>S. Cheshire; M. Krochmal. <a href="https://datatracker.ietf.org/doc/html/rfc6763">DNS-Based Service Discovery</a>. February 2013. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc6763">https://datatracker.ietf.org/doc/html/rfc6763</a>
+   <dd>S. Cheshire; M. Krochmal. <a href="https://www.rfc-editor.org/rfc/rfc6763"><cite>DNS-Based Service Discovery</cite></a>. February 2013. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc6763">https://www.rfc-editor.org/rfc/rfc6763</a>
    <dt id="biblio-rfc7301">[RFC7301]
-   <dd>S. Friedl; et al. <a href="https://datatracker.ietf.org/doc/html/rfc7301">Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension</a>. July 2014. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc7301">https://datatracker.ietf.org/doc/html/rfc7301</a>
+   <dd>S. Friedl; et al. <a href="https://www.rfc-editor.org/rfc/rfc7301"><cite>Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension</cite></a>. July 2014. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc7301">https://www.rfc-editor.org/rfc/rfc7301</a>
    <dt id="biblio-rfc8122">[RFC8122]
-   <dd>J. Lennox; C. Holmberg. <a href="https://datatracker.ietf.org/doc/html/rfc8122">Connection-Oriented Media Transport over the Transport Layer Security (TLS) Protocol in the Session Description Protocol (SDP)</a>. March 2017. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc8122">https://datatracker.ietf.org/doc/html/rfc8122</a>
+   <dd>J. Lennox; C. Holmberg. <a href="https://www.rfc-editor.org/rfc/rfc8122"><cite>Connection-Oriented Media Transport over the Transport Layer Security (TLS) Protocol in the Session Description Protocol (SDP)</cite></a>. March 2017. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8122">https://www.rfc-editor.org/rfc/rfc8122</a>
    <dt id="biblio-rfc8446">[RFC8446]
-   <dd>E. Rescorla. <a href="https://datatracker.ietf.org/doc/html/rfc8446">The Transport Layer Security (TLS) Protocol Version 1.3</a>. August 2018. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc8446">https://datatracker.ietf.org/doc/html/rfc8446</a>
+   <dd>E. Rescorla. <a href="https://www.rfc-editor.org/rfc/rfc8446"><cite>The Transport Layer Security (TLS) Protocol Version 1.3</cite></a>. August 2018. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>
    <dt id="biblio-rfc8610">[RFC8610]
-   <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://datatracker.ietf.org/doc/html/rfc8610">Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures</a>. June 2019. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc8610">https://datatracker.ietf.org/doc/html/rfc8610</a>
+   <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://www.rfc-editor.org/rfc/rfc8610"><cite>Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures</cite></a>. June 2019. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>
    <dt id="biblio-rfc8949">[RFC8949]
-   <dd>C. Bormann; P. Hoffman. <a href="https://datatracker.ietf.org/doc/html/rfc8949">Concise Binary Object Representation (CBOR)</a>. December 2020. Internet Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc8949">https://datatracker.ietf.org/doc/html/rfc8949</a>
+   <dd>C. Bormann; P. Hoffman. <a href="https://www.rfc-editor.org/rfc/rfc8949"><cite>Concise Binary Object Representation (CBOR)</cite></a>. December 2020. Internet Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-rfc4122">[RFC4122]
-   <dd>P. Leach; M. Mealling; R. Salz. <a href="https://datatracker.ietf.org/doc/html/rfc4122">A Universally Unique IDentifier (UUID) URN Namespace</a>. July 2005. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc4122">https://datatracker.ietf.org/doc/html/rfc4122</a>
+   <dd>P. Leach; M. Mealling; R. Salz. <a href="https://www.rfc-editor.org/rfc/rfc4122"><cite>A Universally Unique IDentifier (UUID) URN Namespace</cite></a>. July 2005. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc4122">https://www.rfc-editor.org/rfc/rfc4122</a>
    <dt id="biblio-rfc846">[RFC846]
-   <dd>A. Westine; D. Smallberg; J. Postel. <a href="https://datatracker.ietf.org/doc/html/rfc847">Summary of Smallberg surveys</a>. February 1983. Unknown. URL: <a href="https://datatracker.ietf.org/doc/html/rfc847">https://datatracker.ietf.org/doc/html/rfc847</a>
+   <dd>A. Westine; D. Smallberg; J. Postel. <a href="https://www.rfc-editor.org/rfc/rfc847"><cite>Summary of Smallberg surveys</cite></a>. February 1983. Unknown. URL: <a href="https://www.rfc-editor.org/rfc/rfc847">https://www.rfc-editor.org/rfc/rfc847</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
-   <dd>Theresa O'Connor; Peter Snyder. <a href="https://www.w3.org/TR/security-privacy-questionnaire/">Self-Review Questionnaire: Security and Privacy</a>. 23 March 2021. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
+   <dd>Theresa O'Connor; Peter Snyder. <a href="https://www.w3.org/TR/security-privacy-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. 23 September 2021. NOTE. URL: <a href="https://www.w3.org/TR/security-privacy-questionnaire/">https://www.w3.org/TR/security-privacy-questionnaire/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/107">&lt;https://github.com/w3c/openscreenprotocol/issues/107></a><a href="#issue-56c2cd35"> ↵ </a></div>
-   <div class="issue"> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">&lt;https://github.com/w3c/openscreenprotocol/issues/228></a><a href="#issue-808efb48"> ↵ </a></div>
+   <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/107">[Issue #107]</a> <a class="issue-return" href="#issue-56c2cd35" title="Jump to section">↵</a></div>
+   <div class="issue"> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">[Issue #228]</a> <a class="issue-return" href="#issue-808efb48" title="Jump to section">↵</a></div>
    <div class="issue"> Make recommendations for cipher and signature algorithm preference
-list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">&lt;https://github.com/w3c/openscreenprotocol/issues/218></a><a href="#issue-08dfa2ca"> ↵ </a></div>
-   <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">&lt;https://github.com/w3c/openscreenprotocol/issues/108></a><a href="#issue-e0955a17"> ↵ </a></div>
-   <div class="issue"> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">&lt;https://github.com/w3c/openscreenprotocol/issues/235></a><a href="#issue-3b9ff3bd"> ↵ </a></div>
-   <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">&lt;https://github.com/w3c/openscreenprotocol/issues/242></a><a href="#issue-dc398825"> ↵ </a></div>
-   <div class="issue"> [Security] Describe encoding/decoding of PSK into numeric and QR codes. <a href="https://github.com/w3c/openscreenprotocol/issues/210">&lt;https://github.com/w3c/openscreenprotocol/issues/210></a><a href="#issue-619e4cec"> ↵ </a></div>
+list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">[Issue #218]</a> <a class="issue-return" href="#issue-08dfa2ca" title="Jump to section">↵</a></div>
+   <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">[Issue #108]</a> <a class="issue-return" href="#issue-e0955a17" title="Jump to section">↵</a></div>
+   <div class="issue"> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a> <a class="issue-return" href="#issue-3b9ff3bd" title="Jump to section">↵</a></div>
+   <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a> <a class="issue-return" href="#issue-dc398825" title="Jump to section">↵</a></div>
+   <div class="issue"> [Security] Describe encoding/decoding of PSK into numeric and QR codes. <a href="https://github.com/w3c/openscreenprotocol/issues/210">[Issue #210]</a> <a class="issue-return" href="#issue-619e4cec" title="Jump to section">↵</a></div>
    <div class="issue"> Once the Presentation API has text about
 reconnecting via an implementation specific mechanism, quote that here and map
-it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">&lt;https://github.com/w3c/presentation-api/issues/471></a><a href="#issue-733afe74"> ↵ </a></div>
-   <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">&lt;https://github.com/w3c/openscreenprotocol/issues/159></a><a href="#issue-649c173f"> ↵ </a></div>
-   <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">&lt;https://github.com/w3c/openscreenprotocol/issues/146></a><a href="#issue-9145071e"> ↵ </a></div>
-   <div class="issue"> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">&lt;https://github.com/w3c/openscreenprotocol/issues/265></a><a href="#issue-74827562"> ↵ </a></div>
-   <div class="issue"> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">&lt;https://github.com/w3c/openscreenprotocol/issues/241></a><a href="#issue-9717419d"> ↵ </a></div>
-   <div class="issue"> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">&lt;https://github.com/w3c/openscreenprotocol/issues/223></a><a href="#issue-791c621c"> ↵ </a></div>
-   <div class="issue"> Use the same codec names as the media APIs. <a href="https://github.com/w3c/openscreenprotocol/issues/233">&lt;https://github.com/w3c/openscreenprotocol/issues/233></a><a href="#issue-43c1a192"> ↵ </a></div>
-   <div class="issue"> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">&lt;https://github.com/w3c/openscreenprotocol/issues/266></a><a href="#issue-263f992a"> ↵ </a></div>
-   <div class="issue"> Align capabilities for HDR rendering and display with Media Capabilities. <a href="https://github.com/w3c/openscreenprotocol/issues/194">&lt;https://github.com/w3c/openscreenprotocol/issues/194></a><a href="#issue-a057c285"> ↵ </a></div>
-   <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">&lt;https://github.com/w3c/openscreenprotocol/issues/132></a><a href="#issue-8bf4aa9f"> ↵ </a></div>
+it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[Issue #w3c/presentation-api#471]</a> <a class="issue-return" href="#issue-733afe74" title="Jump to section">↵</a></div>
+   <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">[Issue #159]</a> <a class="issue-return" href="#issue-649c173f" title="Jump to section">↵</a></div>
+   <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">[Issue #146]</a> <a class="issue-return" href="#issue-9145071e" title="Jump to section">↵</a></div>
+   <div class="issue"> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">[Issue #265]</a> <a class="issue-return" href="#issue-74827562" title="Jump to section">↵</a></div>
+   <div class="issue"> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">[Issue #241]</a> <a class="issue-return" href="#issue-9717419d" title="Jump to section">↵</a></div>
+   <div class="issue"> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">[Issue #223]</a> <a class="issue-return" href="#issue-791c621c" title="Jump to section">↵</a></div>
+   <div class="issue"> Use the same codec names as the media APIs. <a href="https://github.com/w3c/openscreenprotocol/issues/233">[Issue #233]</a> <a class="issue-return" href="#issue-43c1a192" title="Jump to section">↵</a></div>
+   <div class="issue"> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">[Issue #266]</a> <a class="issue-return" href="#issue-263f992a" title="Jump to section">↵</a></div>
+   <div class="issue"> Align capabilities for HDR rendering and display with Media Capabilities. <a href="https://github.com/w3c/openscreenprotocol/issues/194">[Issue #194]</a> <a class="issue-return" href="#issue-a057c285" title="Jump to section">↵</a></div>
+   <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a> <a class="issue-return" href="#issue-8bf4aa9f" title="Jump to section">↵</a></div>
   </div>
   <aside class="dfn-panel" data-for="open-screen-protocol-agent">
    <b><a href="#open-screen-protocol-agent">#open-screen-protocol-agent</a></b><b>Referenced in:</b>
