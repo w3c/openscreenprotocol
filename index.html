@@ -4,9 +4,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Open Screen Protocol</title>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version d7036035b, updated Fri Oct 8 17:07:11 2021 -0700" name="generator">
+  <meta content="Bikeshed version 83b904c2e, updated Wed Nov 3 17:20:53 2021 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="73051117248191de11e20e511dc48de35eef0ecc" name="document-revision">
+  <meta content="e63d9580c2b61f5f50d3680fd222122fcb3e70a6" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -514,7 +514,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-10-27">27 October 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-11-09">9 November 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2181,9 +2181,9 @@ give the user some information about what the media stream is.</p>
     <dd data-md>
      <p>A list of audio encodings offered.  An audio encoding is a series
 of encoded audio frames.  Encodings define fields needed by
-the receiver to know how to decode the encoding, such as codec and
-sample rate.  They can differ by codec and related fields,
-but should be different encodings of the same audio.</p>
+the receiver to know how to decode the encoding, such as codec. 
+They can differ by codec and related fields, but should be different
+encodings of the same audio.</p>
     <dt data-md>video
     <dd data-md>
      <p>A list of video encodings offered.  A video encoding is a series of
@@ -2331,7 +2331,7 @@ separate QUIC streams.</p>
     <dd data-md>
      <p>Identifies the media encoding to which this audio frame belongs.  This can be
 used to reference fields of the encoding (from the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer">audio-encoding-offer</a> message) such as the codec, codec properties,
-time scale (aka clock rate or sample rate), and default duration.
+time scale (aka clock rate), and default duration.
 Referencing fields of the encoding through the encoding id
 helps to avoid sending duplicate information in every frame.</p>
     <dt data-md>start-time
@@ -2681,8 +2681,7 @@ mitigations that agents can use to meet these security and privacy requirements.
    <h3 class="heading settled" data-level="12.1" id="threat-models"><span class="secno">12.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
    <h4 class="heading settled" data-level="12.1.1" id="passive-network-attackers"><span class="secno">12.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
    <p>The Open Screen Protocol should assume that all parties that are connected to
-the same LAN, either through a wired connection or through WiFi, are able to
-observe all data flowing between OSP agents.</p>
+the same LAN are able to observe all data flowing between OSP agents.</p>
    <p>These parties will be able collect any data exposed through unencrypted
 messages, such as mDNS records and the QUIC handshakes.</p>
    <p>These parties may attempt to learn cryptographic parameters by observing data
