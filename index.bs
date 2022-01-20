@@ -1942,7 +1942,7 @@ separate QUIC streams.
 
 : payload
 :: The encoded audio.  The codec and codec parameters are equal to the
-    `format` field of the [=audio-encoding-offer=] message referenced by
+    `codec-name` field of the [=audio-encoding-offer=] message referenced by
     the `encoding-id`
 
 Video {#streaming-video}
@@ -2006,8 +2006,8 @@ ending at the last dependent frame.
 
 : payload
 :: The encoded video frame (encoded image).  The codec and codec
-     parameters are are equal to the `format` field of the
-     [=audio-encoding-offer=] message referenced by the `encoding-id`.
+     parameters are equal to the `codec-name` field of the
+     [=video-encoding-offer=] message referenced by the `encoding-id`.
 
 Data {#streaming-data}
 ------------------------------------
