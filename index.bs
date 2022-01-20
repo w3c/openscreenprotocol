@@ -2051,7 +2051,7 @@ that makes sense for a specific type of data.
     timelines.
 
 : payload
-:: The data.  The data type is equal to the `data-type` field of the
+:: The data.  The data type is equal to the `data-type-name` field of the
     the [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 Feedback {#streaming-feedback}
