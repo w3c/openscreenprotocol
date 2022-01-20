@@ -1943,7 +1943,7 @@ separate QUIC streams.
 : payload
 :: The encoded audio.  The codec and codec parameters are equal to the
     `codec-name` field of the [=audio-encoding-offer=] message referenced by
-    the `encoding-id`
+    the `encoding-id`.
 
 Video {#streaming-video}
 --------------------------------------------
