@@ -4,7 +4,7 @@ import os
 import re
 from glob import glob
 
-from pygments.formatters.html import HtmlFormatter
+from pygments.formatters import HtmlFormatter
 from pygments import highlight
 
 from cddl_lexer import CustomLexer as CddlLexer
