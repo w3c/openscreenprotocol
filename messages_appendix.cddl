@@ -560,7 +560,7 @@ receive-video-capability = {
   ? 3: uint ; max-pixels-per-second
   ? 4: uint ; min-bit-rate
   ? 5: ratio ; aspect-ratio
-  ? 6: [* string] ; color-spaces
+  ? 6: [* string] ; color-gamuts
   ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling
   ? 9: bool ; supports-rotation
