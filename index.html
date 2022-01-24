@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 2e3c4c68b, updated Fri Jan 14 14:49:00 2022 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="33533bdcba226cc5e3d28b3067f2d3075a654f24" name="document-revision">
+  <meta content="5d682cc5acfead7c08211781c0ef0afca6f021b1" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -516,7 +516,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-01-21">21 January 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-01-24">24 January 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2134,13 +2134,14 @@ capable of processing, in kilobits per second. Default is no minimum.</p>
 display could return this value as 1.6 to indicate its preferred content
 scaling. Default is none.</p>
    </dl>
-   <p class="issue" id="issue-a057c285"><a class="self-link" href="#issue-a057c285"></a> Align capabilities for HDR rendering and display with Media Capabilities. <a href="https://github.com/w3c/openscreenprotocol/issues/194">[Issue #194]</a></p>
+   <p class="issue" id="issue-ee6238c6"><a class="self-link" href="#issue-ee6238c6"></a> Expose capabilities for decoding HDR transfer functions and metadata formats. <a href="https://github.com/w3c/openscreenprotocol/issues/194">[Issue #194]</a></p>
    <dl>
-    <dt data-md>color-profiles (optional)
+    <dt data-md>color-gamuts (optional)
     <dd data-md>
-     <p>An optional field indicating what color profiles are understood.
-The listener may use these values to determine how to encode
-video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.</p>
+     <p>An optional field indicating what color spaces can be decoded and rendered by
+the media receiver.  The media sender may use these values to determine how
+to encode video. Valid values correspond to <a href="https://www.w3.org/TR/media-capabilities/#colorgamut">ColorGamut</a> in the <a data-link-type="biblio" href="#biblio-media-capabilities">Media Capabilities</a> API.  The default value is
+a list with the single entry "srgb".</p>
     <dt data-md>native-resolutions (optional)
     <dd data-md>
      <p>An optional field indicating what video-resolutions the media receiver supports and
@@ -3546,7 +3547,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-pixels-per-second</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">ratio </span><span class="c1">; aspect-ratio</span>
-  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">string</span><span class="p">]</span> <span class="c1">; color-profiles</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">string</span><span class="p">]</span> <span class="c1">; color-gamuts</span>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-resolution</span><span class="p">]</span> <span class="c1">; native-resolutions</span>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
   <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-rotation</span>
@@ -4450,6 +4451,8 @@ extensions.</p>
   <dl>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-media-capabilities">[MEDIA-CAPABILITIES]
+   <dd>Mounir Lamouri; Chris Cunningham; Vi Nguyen. <a href="https://www.w3.org/TR/media-capabilities/"><cite>Media Capabilities</cite></a>. 11 January 2022. WD. URL: <a href="https://www.w3.org/TR/media-capabilities/">https://www.w3.org/TR/media-capabilities/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
    <dd>Mark Foltz; Dominik Röttsches. <a href="https://www.w3.org/TR/presentation-api/"><cite>Presentation API</cite></a>. 5 November 2020. CR. URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
    <dt id="biblio-quic">[QUIC]
@@ -4512,7 +4515,7 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
    <div class="issue"> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">[Issue #223]</a> <a class="issue-return" href="#issue-791c621c" title="Jump to section">↵</a></div>
    <div class="issue"> Use the same codec names as the media APIs. <a href="https://github.com/w3c/openscreenprotocol/issues/233">[Issue #233]</a> <a class="issue-return" href="#issue-43c1a192" title="Jump to section">↵</a></div>
    <div class="issue"> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">[Issue #266]</a> <a class="issue-return" href="#issue-263f992a" title="Jump to section">↵</a></div>
-   <div class="issue"> Align capabilities for HDR rendering and display with Media Capabilities. <a href="https://github.com/w3c/openscreenprotocol/issues/194">[Issue #194]</a> <a class="issue-return" href="#issue-a057c285" title="Jump to section">↵</a></div>
+   <div class="issue"> Expose capabilities for decoding HDR transfer functions and metadata formats. <a href="https://github.com/w3c/openscreenprotocol/issues/194">[Issue #194]</a> <a class="issue-return" href="#issue-ee6238c6" title="Jump to section">↵</a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a> <a class="issue-return" href="#issue-8bf4aa9f" title="Jump to section">↵</a></div>
   </div>
   <aside class="dfn-panel" data-for="open-screen-protocol-agent">
