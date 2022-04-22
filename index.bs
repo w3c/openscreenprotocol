@@ -1,7 +1,7 @@
 <pre class='metadata'>
 Title: Open Screen Protocol
 Shortname: openscreenprotocol
-Level: 1
+Level: None
 Status: w3c/ED
 ED: https://w3c.github.io/openscreenprotocol/
 TR: https://www.w3.org/TR/openscreenprotocol/
