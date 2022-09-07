@@ -1,7 +1,7 @@
 <pre class='metadata'>
 Title: Open Screen Protocol
 Shortname: openscreenprotocol
-Level: 1
+Level: None
 Status: w3c/ED
 ED: https://w3c.github.io/openscreenprotocol/
 TR: https://www.w3.org/TR/openscreenprotocol/
@@ -1728,12 +1728,14 @@ following additional fields:
     display could return this value as 1.6 to indicate its preferred content
     scaling. Default is none.
 
-Issue(194): Align capabilities for HDR rendering and display with Media Capabilities.
+Issue(194): Expose capabilities for decoding HDR transfer functions and metadata formats.
 
-: color-profiles (optional)
-:: An optional field indicating what color profiles are understood.
-    The listener may use these values to determine how to encode
-    video. Some examples include: sRGBv4, Rec709, DciP3. The default value is sRGBv4.
+: color-gamuts (optional)
+:: An optional field indicating what color spaces can be decoded and rendered by
+    the media receiver.  The media sender may use these values to determine how
+    to encode video. Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
+    in the [[!MEDIA-CAPABILITIES|Media Capabilities]] API.  The default value is
+    a list with the single entry "srgb".
 
 : native-resolutions (optional)
 :: An optional field indicating what video-resolutions the media receiver supports and
@@ -1749,7 +1751,7 @@ Issue(194): Align capabilities for HDR rendering and display with Media Capabili
 : supports-rotation (optional)
 :: An optional boolean field indicating whether the media receiver can receive
     video frames with the rotation field set. The default value is true.
-    
+
 <!-- TODO: Add max-bit-rate -->
 
 Sessions {#streaming-sessions}
@@ -1790,9 +1792,9 @@ Each stream offer contains the following fields:
 : audio
 :: A list of audio encodings offered.  An audio encoding is a series
     of encoded audio frames.  Encodings define fields needed by
-    the receiver to know how to decode the encoding, such as codec and
-    sample rate.  They can differ by codec and related fields,
-    but should be different encodings of the same audio.
+    the receiver to know how to decode the encoding, such as codec. 
+    They can differ by codec and related fields, but should be different
+    encodings of the same audio.
 
 : video
 :: A list of video encodings offered.  A video encoding is a series of
@@ -1951,7 +1953,7 @@ separate QUIC streams.
 :: Identifies the media encoding to which this audio frame belongs.  This can be
     used to reference fields of the encoding (from the
     [=audio-encoding-offer=] message) such as the codec, codec properties,
-    time scale (aka clock rate or sample rate), and default duration.
+    time scale (aka clock rate), and default duration.
     Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
@@ -1976,8 +1978,8 @@ separate QUIC streams.
 
 : payload
 :: The encoded audio.  The codec and codec parameters are equal to the
-    `format` field of the [=audio-encoding-offer=] message referenced by
-    the `encoding-id`
+    `codec-name` field of the [=audio-encoding-offer=] message referenced by
+    the `encoding-id`.
 
 Video {#streaming-video}
 --------------------------------------------
@@ -2040,8 +2042,8 @@ ending at the last dependent frame.
 
 : payload
 :: The encoded video frame (encoded image).  The codec and codec
-     parameters are are equal to the `format` field of the
-     [=audio-encoding-offer=] message referenced by the `encoding-id`.
+     parameters are equal to the `codec-name` field of the
+     [=video-encoding-offer=] message referenced by the `encoding-id`.
 
 Data {#streaming-data}
 ------------------------------------
@@ -2085,7 +2087,7 @@ that makes sense for a specific type of data.
     timelines.
 
 : payload
-:: The data.  The data type is equal to the `data-type` field of the
+:: The data.  The data type is equal to the `data-type-name` field of the
     the [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 Feedback {#streaming-feedback}
@@ -2352,8 +2354,7 @@ Threat Models {#threat-models}
 ### Passive Network Attackers ### {#passive-network-attackers}
 
 The Open Screen Protocol should assume that all parties that are connected to
-the same LAN, either through a wired connection or through WiFi, are able to
-observe all data flowing between OSP agents.
+the same LAN are able to observe all data flowing between OSP agents.
 
 These parties will be able collect any data exposed through unencrypted
 messages, such as mDNS records and the QUIC handshakes.
