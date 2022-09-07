@@ -15,7 +15,7 @@ OUTPUT_EXTENSION = ".html"
 CDDL_TYPE_KEY_RE = re.compile(r'(<span class="nc">)([A-Za-z0-9-]+)');
 
 class OSPHtmlFormatter(HtmlFormatter):
-  def wrap(self, source, outfile):
+  def wrap(self, source):
     return self._wrap_code(source)
 
   def _wrap_code(self, source):
