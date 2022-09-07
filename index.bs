@@ -55,7 +55,6 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
 url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
-url: https://datatracker.ietf.org/doc/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: version 4 uuid
 </pre>
 
 Introduction {#introduction}
@@ -381,17 +380,17 @@ Let the <dfn>certificate serial number</dfn> be the result of the following step
 <ol>
   <li>If the agent has never generated an agent certificate:
   <ol>
-    <li>Let the `certificate serial number base` be a 96-bit integer value.</il>
-    <li>Assign the upper 40 bits of the [=certificate serial number base=] to the IEEE 802 MAC address of one of the agent's network interfaces, or a pseudorandom number if no interfaces are available.</li>
-    <li>Assign the lower 56 bits of the [=certificate serial number base=] to a pseudorandom number.</li>
-    <li>Let the `certificate serial number counter` be a 32-bit unsigned integer.</li>
+    <li>Let the <dfn>certificate serial number base</dfn> be a 32-bit
+        pseudorandom integer value.</il>
+    <li>Let the <dfn>certificate serial number counter</dfn> be a 32-bit
+        unsigned integer.</li>
     <li>Assign the [=certificate serial number counter=] to 0.</li>
   </ol>
   </li>
-  <li>Generate an 128-bit value as follows:
+  <li>Generate a 64-bit value as follows:
   <ol>
-    <li>Increment the [=agent serial number counter=] by one.</li>
-    <li>Assign the upper 96 bits to the [=certificate serial number base=].</li>
+    <li>Increment the [=certificate serial number counter=] by one.</li>
+    <li>Assign the upper 32 bits to the [=certificate serial number base=].</li>
     <li>Assign the lower 32 bits to the [=certificate serial number counter=].</il>
   </ol>
 </ol>
@@ -444,7 +443,8 @@ The following X.509 v3 fields are to be set as follows:
 
 Mandatory fields not mentioned above should be set according to [[!RFC5280]].
 
-The value `<sn>` above should be substituted with the [=agent serial number=].
+The value `<sn>` above should be substituted with the [=certificate serial
+number=].
 
 Note: The OSP agent may use the implementer or device model name as the value
 for the `O` key for user interface and debugging purposes. It may use the agent
