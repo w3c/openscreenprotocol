@@ -2747,6 +2747,8 @@ device and the user inputting it on another device.
 Base-10 Numeric {#appendix-c-base-10}
 ---------------
 
+To encode `P` into a numeric string, follow these steps:
+
 1. Convert `P` to a base-10 integer `N`.
 2. If `N` has fewer than 9 digits:
     * Zero-pad `N` on the left with 3 - len(N) mod 3 digits.
@@ -2759,6 +2761,11 @@ Base-10 Numeric {#appendix-c-base-10}
 For PSK `61488548833`, the steps would produce the string `0614-8854-8833`.
 </div>
 
+To decode a string `N` into a PSK `P`, follow these steps:
+
+1. Remove dashes and leading zeros from `N`.
+2. Parse `N` as a base-10 decimal number to obtain `P`.
+
 Note: `P` values between approximately 2^30 and 2^40 will produce values between
 10 and 12 digits in length.  Values over 12 digits are inconvenient to input
 and have limited additional security value.
@@ -2769,6 +2776,8 @@ alphanumeric input.
 
 QR Code {#appendix-c-qr-code}
 -------
+
+To encode a PSK into a QR code, follow these steps:
 
 1. Set `N` to the value of `P` converted to an ASCII-encoded, hexadecimal string.
 2. Construct a text [=QR code=] with the value of `N`.
@@ -2783,3 +2792,12 @@ For PSK `61488548833`, the steps would produce the following QR code:
 </svg>
 </p>
 </div>
+
+To decode a PSK `P` given a QR code, follow these steps:
+
+1. Obtain the string `N` by decoding the QR code.
+2. Parse `N` as a hexadecimal number to obtain `P`.
+
+
+
+
