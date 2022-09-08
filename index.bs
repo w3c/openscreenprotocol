@@ -395,11 +395,6 @@ The [=agent certificate=] must have the following characteristics:
   <td>`301006072a8648ce3d020106052b81040022`</td>
   <td>`300a06082a8648ce3d040303`</td>
 </tr>
-<tr>
-  <td>`secp521r1_sha512`</td>
-  <td>TBD</td>
-  <td>TBD</td>
-</tr>
 </tbody>
 </table>
 
