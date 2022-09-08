@@ -690,7 +690,7 @@ role of Alice in SPAKE2).
 
 If the PSK presenter wants to initiate authentication, it starts the
 authentication process by presenting the PSK to the user and sending a
-[=auth-spake2-handshake=] message.  The `public` field of the
+[=auth-spake2-handshake=] message.  The `public-value` field of the
 [=auth-spake2-handshake=] message must be set to the value of `pA` from SPAKE2
 and the `psk-status` field must be set to `psk-shown`.
 
@@ -700,21 +700,22 @@ receives the PSK, it sends an [=auth-spake2-handshake=] message with the
 `public-value` field set to the value of `pB` from SPAKE2 and the `psk-status`
 field set to `psk-input`.
 
-If the PSK consumer wants to authenticate, the PSK consumer sends a
+If the PSK consumer wants to initiate authentication, the PSK consumer sends a
 [=auth-spake2-handshake=] message to the PSK presenter with the `psk-status`
 field set to `psk-needs-presentation` and the `public-value` field set to
-`pA`. The PSK presenter, on receiving this message, prompts the user to input
-the PSK.  Once the user inputs the PSK, it sends an [=auth-spake2-handshake=]
-message with `psk-status` set to `psk-input` and the `public-value` field set to
-`pB`.
+`pA`. The PSK presenter, on receiving this message, creates a PSK and presents
+it to the the user.  Once that is done, it sends an [=auth-spake2-handshake=]
+message to the PSK consumer with `psk-status` set to `psk-input` and the
+`public-value` field set to `pB`.
 
-Once an agent knows `pA` and `pB` from [=auth-spake2-handshake=] messages, it
-computes and sends a [=auth-spake2-confirmation=] with the `transcript-mac`
+Once an agent knows both `pA` and `pB` from [=auth-spake2-handshake=] messages,
+it computes and sends a [=auth-spake2-confirmation=] with the `transcript-mac`
 field set to `cA` (for Alice) or `cB` (for Bob) to the other agent.
 
 Once an agent receives an [=auth-spake2-confirmation=] message, it validates
-that message and send an [=auth-status=] authenticated message to the other
-agent.  Any value of `result` other than `authenticated` means that failed.
+that message using the procedure in \[SPAKE2] and send an [=auth-status=]
+authenticated message to the other agent.  Any value of `result` other than
+`authenticated` means that authentication failed.
 
 Note that this message is merely informative as each agent independently
 computes the outcome of SPAKE2 through key confirmation verification.
