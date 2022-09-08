@@ -369,7 +369,7 @@ QUIC connection.
 
 The [=agent certificate=] must have the following characteristics:
 
-* 256-bit, 384-bit, or 521-bit ECDSA public key.
+* 256-bit or 384-bit ECDSA public key.
 * Self-signed.
 * Supporting at least one of the [=certificate algorithms=] listed below.
     * The `AlgorithmIdentifiers` are defined in [[!RFC5480]] (for public keys) and
