@@ -353,9 +353,6 @@ An OSP Agent must not send TLS early data.
 
 Issue(228): Register ALPN with IANA.
 
-Issue(218): Make recommendations for cipher and signature algorithm preference
-list based on hardware characteristics of agents.
-
 Agent Certificates {#certificates}
 ----------------------------------
 
