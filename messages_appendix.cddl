@@ -75,23 +75,24 @@ auth-initiation-token = (
   ? 0 : text ; token
 )
 
+auth-spake2-psk-status = &(
+ psk-needs-presentation: 0
+ psk-shown: 1
+ psk-input: 2
+)
+
 ; type key 1002
-auth-spake2-need-psk = {
-  auth-initiation-token
+auth-spake2-handshake = {
+  0: auth-spake2-psk-status ; psk-status
+  1: bytes ; public-value
 }
 
 ; type key 1003
-auth-spake2-handshake = {
-  auth-initation-token
-  1 : bytes .size 32 ; random
+auth-spake2-confirmation = {
+  1 : bytes .size 64 ; transcript-mac
 }
 
 ; type key 1004
-auth-spake2-confirmation = {
-  1 : bytes .size 32 ; transcript-mac
-}
-
-; type key 1005
 auth-status = {
   1 : auth-status-result ; result
 }
