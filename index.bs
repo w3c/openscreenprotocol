@@ -55,7 +55,7 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
 url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
-url: https://www.iso.org/standard/62021.html#; type: dfn; spec: ISO/IEC18004; text: QR code
+url: https://www.iso.org/standard/62021.html#; type: dfn; spec: iso18004; text: QR code
 </pre>
 
 Introduction {#introduction}
