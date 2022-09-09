@@ -371,7 +371,7 @@ The [=agent certificate=] must have the following characteristics:
 
 * 256-bit, 384-bit, or 521-bit ECDSA public key.
 * Self-signed.
-* Supporting the at least one of the [=certificate algorithms=] listed below.
+* Supporting at least one of the [=certificate algorithms=] listed below.
     * The `AlgorithmIdentifiers` are defined in [[!RFC5480]].
 * Valid for signing.
 
