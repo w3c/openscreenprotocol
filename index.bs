@@ -364,13 +364,10 @@ QUIC connection.
 
 The [=agent certificate=] must have the following characteristics:
 
-* 256-bit, 384-bit, or 521-bit ECDSA public key
-* Self-signed
-* Supporting the at least one of the following signature algorithms:
-    * secp256r1_sha256
-    * secp384r1_sha384
-    * secp521r1_sha512
-* Valid for signing
+* 256-bit ECDSA public key.
+* Self-signed.
+* Support the `secp256r1_sha256` signature algorithm.
+* Valid for signing.
 
 The following X.509 v3 fields are to be set as follows:
 
