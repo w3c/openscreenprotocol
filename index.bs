@@ -1703,14 +1703,17 @@ The format type is used as the basis for audio and video capabilities.
 Formats are composed of the following fields:
 
 : name (required)
-:: The name of the codec.   This must be a single-codec RFC 6381 [=codecs parameter=].
-
-Issue(233): Use the same codec names as the media APIs.
+:: A fully qualified codec string listed in the [[WEBCODECS-CODEC-REGISTRY]] and further
+     specified by the codec-specific registrations referenced in that registry.
 
 : parameters (required)
 :: A list of (key, value) parameters that can be used to describe
     properties of a specific format, and not shared by other formats
     of that type (audio, video, etc.).
+
+For `name`, Open Screen agents may also accept a single-codec [=codec
+parameter=] as described in [[!RFC6381]] for codecs not listed in the
+[[WEBCODECS-CODEC-REGISTRY]].
 
 Issue(266): Specify where codec-specific parameters are defined or drop them.
 
