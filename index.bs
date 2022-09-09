@@ -2604,7 +2604,7 @@ authentication:
 
 The active attacker may also attempt to disrupt data exchanged over the QUIC
 connection by injecting or modifying traffic.  These attacks should be mitigated
-by a correct implementation of TLS 1.3.  See Appendix E of [[RFC846]] for a
+by a correct implementation of TLS 1.3.  See Appendix E of [[RFC8446]] for a
 detailed security analysis of the TLS 1.3 protocol.
 
 ### Remote active network attackers ### {#remote-active-mitigations}
