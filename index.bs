@@ -372,7 +372,8 @@ The [=agent certificate=] must have the following characteristics:
 * 256-bit, 384-bit, or 521-bit ECDSA public key.
 * Self-signed.
 * Supporting at least one of the [=certificate algorithms=] listed below.
-    * The `AlgorithmIdentifiers` are defined in [[!RFC5480]].
+    * The `AlgorithmIdentifiers` are defined in [[!RFC5480]] (for public keys) and
+      [[!RFC5758]] (for signature schemes).
 * Valid for signing.
 
 <table id="algorithms" class="data">
@@ -387,8 +388,25 @@ The [=agent certificate=] must have the following characteristics:
 <tbody>
 <tr>
   <td>`secp256r1_sha256`</td>
-  <td>`301306072a8648ce3d020106082a8648ce3d030107`</td>
-  <td>`300a06082a8648ce3d040302`</td>
+  <td>`secp256r1`
+     <p>
+      Object Identifiers:
+      <ol>
+        <li>`1.2.840.10045.2.1` (ECC)</li>
+        <li>`1.2.840.10045.3.1.7` (ECDSA P256)</li>
+      </ol>
+      DER representation: `301306072a8648ce3d020106082a8648ce3d030107`
+      </p>
+  </td>
+  <td>`ecdsaWithSha256`
+    <p>
+      Object identifier:
+      <ol>
+        <li>`1.2.840.10045.4.3.2`</li>
+      </ol>
+      DER representation: `300a06082a8648ce3d040302`
+    </p>
+  </td>
 </tr>
 <tr>
   <td>`secp384r1_sha384`</td>
