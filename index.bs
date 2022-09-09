@@ -373,7 +373,7 @@ The [=agent certificate=] must have the following characteristics:
 * Self-signed.
 * Supporting at least one of the [=certificate algorithms=] listed below.
     * The `AlgorithmIdentifiers` are defined in [[!RFC5480]] (for public keys) and
-      [[!RFC5758]] (for signature schemes).
+        [[!RFC5758]] (for signature schemes).
 * Valid for signing.
 
 <table id="algorithms" class="data">
