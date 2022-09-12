@@ -1003,6 +1003,16 @@ must send a [=presentation-connection-open-response=] message and
 [=presentation-change-event=] messages when required.
 
 
+Representation Of Time {#time-representation}
+======================
+
+The [[#remote-playback-protocol]] and the [[#streaming-protocol]] represent
+points of time and durations in terms of a [=time scale=].  A <dfn>time
+scale</dfn> is a common denominator for time values that allows values to be
+expressed as rational numbers without loss of precision.  The [=time scale=] is
+represented in hertz, such as 90000 for 90000 Hz, a common time scale for
+video.
+
 Remote Playback Protocol {#remote-playback-protocol}
 ========================
 
@@ -1517,9 +1527,7 @@ changed.
 
 All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common [=media-time=] value (see Appendix A)
-which includes a time scale.  This allows time values which work on different
-time scales to be expressed without loss of precision.  The scale is represented
-in hertz, such as 90000 for 90000 Hz, a common time scale for video.
+which includes a [=time scale=]. 
 
 <div class="note">
 <table>
@@ -1792,7 +1800,7 @@ Each audio encoding offered defines the following fields:
     RFC 6381 [=codecs parameter=].
 
 : time-scale
-:: The time scale used by all audio frames.  This allows senders to
+:: The [=time scale=] used by all audio frames.  This allows senders to
     make audio-frame messages smaller by not including the time scale
     in each one.
 
@@ -1813,7 +1821,7 @@ Each video encoding offered defines the following fields:
 :: The name of the codec used by the encoding.
 
 : time-scale
-:: The time scale used by all video frames.  This allows senders to
+:: The [=time scale=] used by all video frames.  This allows senders to
     make video-frame messages smaller by not including the time scale
     in each one.
 
@@ -1839,7 +1847,7 @@ Each data encoding offered defines the following fields:
 :: The name of the data type used by the encoding.
 
 : time-scale
-:: The time scale used by all data frames.  This allows senders to
+:: The [=time scale=] used by all data frames.  This allows senders to
     make data-frame messages smaller by not including the time scale
     in each one.
 
@@ -1919,21 +1927,21 @@ separate QUIC streams.
 :: Identifies the media encoding to which this audio frame belongs.  This can be
     used to reference fields of the encoding (from the
     [=audio-encoding-offer=] message) such as the codec, codec properties,
-    time scale (aka clock rate), and default duration.
+    [=time scale=], and default duration.
     Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : start-time
 :: Identifies the beginning of the time range of the audio frame. The
     end time can be inferred from the start time and duration. The
-    time scale is equal to the value in the `time-scale` field of the
+    [=time scale=] is equal to the value in the `time-scale` field of the
     [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the audio frame. If not present, the
     duration is equal to the `default-duration` field of the
     [=audio-encoding-offer=] message referenced by the `encoding-id`.
-    The time scale is equal to the value in the `time-scale` field of
+    The [=time scale=] is equal to the value in the `time-scale` field of
     the [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
@@ -1966,7 +1974,7 @@ ending at the last dependent frame.
 : encoding-id
 :: Identifies the media encoding to which this video frame belongs.
     This can be used to reference fields of the encoding such as the
-    codec, codec properties, time scale, and default rotation.
+    codec, codec properties, [=time scale=], and default rotation.
     Referencing fields of the encoding through the encoding id helps
     to avoid sending duplicate information in every frame.
 
@@ -1985,12 +1993,12 @@ ending at the last dependent frame.
 : start-time
 :: Identifies the beginning of the time range of the video frame.  The
     end time can be inferred from the start time and duration. The
-    time scale is equal to the value in the `time-scale` field of the
+    [=time scale=] is equal to the value in the `time-scale` field of the
     [=video-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the video frame. If not present, that
-    means duration is unknown.  The time scale is equal to the value
+    means duration is unknown.  The [=time scale=] is equal to the value
     in the `time-scale` field of the [=video-encoding-offer=] message
     referenced by the `encoding-id`.
 
@@ -2026,7 +2034,7 @@ that makes sense for a specific type of data.
 : encoding-id
 :: Identifies the data encoding to which this data frame belongs.  This can be
     used to reference fields of the encoding such as the type of data and
-    time scale.  Referencing fields of the encoding through the encoding id
+    [=time scale=].  Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : sequence-number
@@ -2037,14 +2045,14 @@ that makes sense for a specific type of data.
 : start-time
 :: Identifies the beginning of the time range of the data frame.  The
     end time can be inferred from the start time and duration.  The
-    time scale is equal to the value in the `time-scale` field of the
+    [=time scale=] is equal to the value in the `time-scale` field of the
     [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the data frame. If not present, the
     duration is equal to the `default-duration` field of the
     [=data-encoding-offer=] message referenced by the `encoding-id`.
-    The time scale is equal to the value in the `time-scale` field of
+    The [=time scale=] is equal to the value in the `time-scale` field of
     the [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
