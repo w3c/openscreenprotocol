@@ -1008,10 +1008,10 @@ Representation Of Time {#time-representation}
 
 The [[#remote-playback-protocol]] and the [[#streaming-protocol]] represent
 points of time and durations in terms of a [=time scale=].  A <dfn>time
-scale</dfn> is a common denominator for time values that allows values which
-work on different time scales to be expressed as rational numbers without loss
-of precision.  The [=time scale=] is represented in hertz, such as 90000 for
-90000 Hz, a common time scale for video.
+scale</dfn> is a common denominator for time values that allows values to be
+expressed as rational numbers without loss of precision.  The [=time scale=] is
+represented in hertz, such as 90000 for 90000 Hz, a common time scale for
+video.
 
 Remote Playback Protocol {#remote-playback-protocol}
 ========================
