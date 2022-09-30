@@ -31,7 +31,7 @@ urlPrefix: https://www.w3.org/TR/presentation-api/#dfn-; type: dfn; spec: PRESEN
     text: presentation request url
     text: receiving user agent
     text: creating a receiving browsing context
-urlPrefix: https://w3c.github.io/presentation-api/; type: interface; spec: PRESENTATION-API
+urlPrefix: https://www.w3.org/TR/presentation-api/; type: interface; spec: PRESENTATION-API
     text: PresentationConnection
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
     text: availability sources set
