@@ -23,13 +23,14 @@ urlPrefix: https://html.spec.whatwg.org/multipage/media.html#; type: dfn; spec: 
     text: official playback position
     text: poster frame
     text: timeline offset
-urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
+urlPrefix: https://www.w3.org/TR/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
     text: available presentation display
     text: controlling user agent
     text: presentation
     text: presentation id
     text: presentation request url
     text: receiving user agent
+    text: creating a receiving browsing context
 urlPrefix: https://w3c.github.io/presentation-api/; type: interface; spec: PRESENTATION-API
     text: PresentationConnection
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
@@ -782,7 +783,7 @@ values:
 
 : headers
 :: headers that the receiver should use to fetch the presentation URL.  For example,
-    [[PRESENTATION-API#establishing-a-presentation-connection|section 6.6.1]] of
+    [[PRESENTATION-API#creating-a-receiving-browsing-context|section 6.6.1]] of
     the Presentation API says that the Accept-Language header should be
     provided.
 
