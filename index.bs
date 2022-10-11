@@ -833,7 +833,7 @@ values:
 : headers
 :: headers that the receiver should use to fetch the presentation URL.  For example,
     [[PRESENTATION-API#creating-a-receiving-browsing-context|section 6.6.1]] of
-    the Presentation API says that the Accept-Language header should be
+    the Presentation API says that the HTTP `Accept-Language` header should be
     provided.
 
 The presentation ID must follow the restrictions defined by
