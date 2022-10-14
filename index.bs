@@ -31,8 +31,6 @@ urlPrefix: https://www.w3.org/TR/presentation-api/#dfn-; type: dfn; spec: PRESEN
     text: presentation request url
     text: receiving user agent
     text: creating a receiving browsing context
-urlPrefix: https://www.w3.org/TR/presentation-api/; type: interface; spec: PRESENTATION-API
-    text: PresentationConnection
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
     text: availability sources set
     text: compatible remote playback device
@@ -1449,13 +1447,13 @@ changed.
 : loading
 :: The state of network activity for loading the [=media resource=]. See
     {{HTMLMediaElement/networkState|HTMLMediaElement.networkState}}.
-    The default is empty ({{NETWORK_EMPTY}}
+    The default is empty ({{NETWORK_EMPTY}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : loaded
 :: The state of the loaded media (whether enough is loaded to play). See
     {{HTMLMediaElement/readyState|HTMLMediaElement.readyState}}.
-    The default is nothing ({{HAVE_NOTHING}}
+    The default is nothing ({{HAVE_NOTHING}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : error
@@ -1631,10 +1629,10 @@ This is how the [[REMOTE-PLAYBACK|Remote Playback API]] uses the
 messages defined in [[#remote-playback-protocol]]:
 
 When [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
-6.2.1.2]] says "This list contains [=remote playback devices=] and is populated
+5.2.1.2]] says "This list contains [=remote playback devices=] and is populated
 based on an implementation specific discovery mechanism" and
 [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
-6.2.1.4]] says "Retrieve available remote playback devices (using an
+5.2.1.4]] says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the mDNS, QUIC,
 [=agent-info-request=], and [=remote-playback-availability-request=] messages
 defined previously in this spec to discover [=receivers=].  The
@@ -1643,7 +1641,7 @@ sources set=].
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
-6.2.4]] says "Request connection of remote to device. The implementation of this
+5.2.4]] says "Request connection of remote to device. The implementation of this
 step is specific to the user agent." and "Synchronize the current media element
 state with the remote playback state", the controller may send the
 [=remote-playback-start-request=] message to the receiver to start remote
@@ -1654,7 +1652,7 @@ of [[REMOTE-PLAYBACK|Remote Playback API]] may allow for several.
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
-6.2.4]] says "The mechanism that is used to connect the user agent with the
+5.2.4]] says "The mechanism that is used to connect the user agent with the
 remote playback device and play the remote playback source is an implementation
 choice of the user agent. The connection will likely have to provide a two-way
 messaging abstraction capable of carrying media commands to the remote playback
@@ -1666,8 +1664,8 @@ based on changes to the local media element and receive
 change the local media element based on changes to the remote playback state.
 
 When
-[[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
-6.2.7]] says "Request disconnection of remote from the device. The
+[[REMOTE-PLAYBACK#disconnecting-from-a-remote-playback-device|section
+5.2.7]] says "Request disconnection of remote from the device. The
 implementation of this step is specific to the user agent," the controller may
 send the [=remote-playback-termination-request=] message to the receiver.
 
