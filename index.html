@@ -6,9 +6,9 @@
   <meta content="w3c/ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 44af0bf3e, updated Fri Jul 29 17:05:16 2022 -0700" name="generator">
+  <meta content="Bikeshed version b0de3432c, updated Thu Oct 13 09:16:59 2022 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="48f7b082f9c534f34d3f43ab613b8c3fb1e7788f" name="document-revision">
+  <meta content="37cef3198b57bf23d2026728ae251bb8563a00d0" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -516,7 +516,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-09-12">12 September 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-18">18 October 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -707,10 +707,10 @@ more background on the protocol.</p>
 agent</dfn> (or OSP agent) is any implementation of this protocol (browser,
 display, speaker, or other software).</p>
    <p>Some OSP agents support the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>.  The
-API allows a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent">controlling user agent</a> to initiate presentation of Web content
-on another device.  We call this agent a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="controller">controller</dfn> for short.  A <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent">receiving user agent</a> is responsible for rendering the Web content, which we
+API allows a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent">controlling user agent</a> to initiate presentation of Web content
+on another device.  We call this agent a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="controller">controller</dfn> for short.  A <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent">receiving user agent</a> is responsible for rendering the Web content, which we
 will call a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="receiver">receiver</dfn> for short.  The the Web content itself is called
-a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation" id="ref-for-dfn-presentation">presentation</a>.</p>
+a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation" id="ref-for-dfn-presentation">presentation</a>.</p>
    <p>Some OSP agents also support the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a>.  That
 API allows an agent to render a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-element" id="ref-for-media-element①">media element</a> on a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices">remote playback device</a>.  In this document, we refer to it as a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver">receiver</a> because it is shorter and keeps terminology consistent between presentations and
 remote playbacks. Similarly, we use the term <a data-link-type="dfn" href="#controller" id="ref-for-controller">controller</a> to refer to the
@@ -736,16 +736,16 @@ establishing a network transport to the agent.</p>
    <ol>
     <li data-md>
      <p>A <a data-link-type="dfn" href="#controller" id="ref-for-controller①">controller</a> must be able to determine if a <a data-link-type="dfn" href="#receiver" id="ref-for-receiver①">receiver</a> is reasonably
-capable of rendering a specific <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a>.</p>
+capable of rendering a specific <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a>.</p>
     <li data-md>
-     <p>A controller must be able to start a new <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation" id="ref-for-dfn-presentation①">presentation</a> on a
-receiver given a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id">presentation ID</a>.</p>
+     <p>A controller must be able to start a new <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation" id="ref-for-dfn-presentation①">presentation</a> on a
+receiver given a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id">presentation ID</a>.</p>
     <li data-md>
-     <p>A controller must be able to create a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection">PresentationConnection</a></code> to an
-existing presentation on the receiver, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request
-URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id①">presentation ID</a>.</p>
+     <p>A controller must be able to create a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#dom-presentationconnection" id="ref-for-dom-presentationconnection">PresentationConnection</a></code> to an
+existing presentation on the receiver, given its <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request
+URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id①">presentation ID</a>.</p>
     <li data-md>
-     <p>It must be possible to close a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection①">PresentationConnection</a></code> between a
+     <p>It must be possible to close a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#dom-presentationconnection" id="ref-for-dom-presentationconnection①">PresentationConnection</a></code> between a
 controller and a presentation, and signal both parties with the reason why
 the connection was closed.</p>
     <li data-md>
@@ -765,7 +765,7 @@ closed with reason <code>error</code>.</p>
 messages (represented as <code>Blob</code> objects in HTML5, or <code>ArrayBuffer</code> or <code>ArrayBufferView</code> types in ECMAScript).</p>
     <li data-md>
      <p>The controller must be able to signal to the receiver to
-terminate a presentation, given its <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url③">presentation request URL</a> and <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id②">presentation
+terminate a presentation, given its <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url③">presentation request URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id②">presentation
 ID</a>.</p>
     <li data-md>
      <p>The receiver must be able to signal all connected controllers
@@ -931,7 +931,7 @@ QUIC connection.</p>
    <p>The <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate②">agent certificate</a> must have the following characteristics:</p>
    <ul>
     <li data-md>
-     <p>256-bit, 384-bit, or 521-bit ECDSA public key</p>
+     <p>256-bit or 384-bit ECDSA public key</p>
     <li data-md>
      <p>Self-signed</p>
     <li data-md>
@@ -941,8 +941,6 @@ QUIC connection.</p>
        <p>secp256r1_sha256</p>
       <li data-md>
        <p>secp384r1_sha384</p>
-      <li data-md>
-       <p>secp521r1_sha512</p>
      </ul>
     <li data-md>
      <p>Valid for signing</p>
@@ -1207,8 +1205,8 @@ and sends the <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-statu
    <p>This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a>. <a href="#presentation-api">§ 7.1 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> map to the
 protocol messages defined in this section.</p>
-   <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation displays</a> for a
-particular <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url④">presentation request URL</a> or set of URLs, the controller may send
+   <p>To learn which receivers are <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display" id="ref-for-dfn-available-presentation-display">available presentation displays</a> for a
+particular <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url④">presentation request URL</a> or set of URLs, the controller may send
 a <a data-link-type="dfn" href="#presentation-url-availability-request" id="ref-for-presentation-url-availability-request">presentation-url-availability-request</a> message with the following values:</p>
    <dl>
     <dt data-md>urls
@@ -1263,8 +1261,8 @@ values:</p>
      <p>The selected presentation URL</p>
     <dt data-md>headers
     <dd data-md>
-     <p>headers that the receiver should use to fetch the presentation URL.  For example, <a href="https://w3c.github.io/presentation-api/#establishing-a-presentation-connection">section 6.6.1</a> of
-the Presentation API says that the Accept-Language header should be
+     <p>headers that the receiver should use to fetch the presentation URL.  For example, <a href="https://w3c.github.io/presentation-api/#creating-a-receiving-browsing-context">section 6.6.1</a> of
+the Presentation API says that the HTTP <code>Accept-Language</code> header should be
 provided.</p>
    </dl>
    <p>The presentation ID must follow the restrictions defined by <a href="https://w3c.github.io/presentation-api/#common-idioms">section 6.1</a> of the Presentation API, in that
@@ -1407,9 +1405,9 @@ to that presentation with the values:</p>
 so request and response messages are not needed.  A request to terminate a
 presentation may succeed or fail, so a response message is required.</p>
    <h3 class="heading settled" data-level="7.1" id="presentation-api"><span class="secno">7.1. </span><span class="content">Presentation API</span><a class="self-link" href="#presentation-api"></a></h3>
-   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑤">Open Screen Protocol agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>control-presentation</code> capability.
-An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑥">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>receive-presentation</code> capability.
-The same OSP agent may be a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agent</a> and a <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving user agent</a>.</p>
+   <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑤">Open Screen Protocol agent</a> that is a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>control-presentation</code> capability.
+An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑥">OSP agent</a> that is a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> must support the <code>receive-presentation</code> capability.
+The same OSP agent may be a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agent</a> and a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving user agent</a>.</p>
    <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent④">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent③">listening agent</a> during discovery and connection establishment.</p>
    <p>This is how the <a data-link-type="biblio" href="#biblio-presentation-api">Presentation API</a> uses the <a href="#presentation-protocol">§ 7 Presentation Protocol</a>:</p>
    <p>When <a href="https://w3c.github.io/presentation-api/#the-list-of-available-presentation-displays">section
@@ -1855,11 +1853,13 @@ so the controller knows what <a data-link-type="dfn" href="https://w3c.github.io
     <dt data-md>loading
     <dd data-md>
      <p>The state of network activity for loading the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-media-resources" id="ref-for-dfn-media-resources⑨">media resource</a>. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate" id="ref-for-dom-media-networkstate①">HTMLMediaElement.networkState</a></code>.
-The default is empty (<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty" id="ref-for-dom-media-network_empty">NETWORK_EMPTY</a></code> for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response④">remote-playback-start-response</a> message.</p>
+The default is empty (<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty" id="ref-for-dom-media-network_empty">NETWORK_EMPTY</a></code>)
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response④">remote-playback-start-response</a> message.</p>
     <dt data-md>loaded
     <dd data-md>
      <p>The state of the loaded media (whether enough is loaded to play). See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate" id="ref-for-dom-media-readystate①">HTMLMediaElement.readyState</a></code>.
-The default is nothing (<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing" id="ref-for-dom-media-have_nothing">HAVE_NOTHING</a></code> for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑤">remote-playback-start-response</a> message.</p>
+The default is nothing (<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing" id="ref-for-dom-media-have_nothing">HAVE_NOTHING</a></code>)
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑤">remote-playback-start-response</a> message.</p>
     <dt data-md>error
     <dd data-md>
      <p>A major error occurred which prevents the remote playback from continuing. See <code class="idl"><a class="idl-code" data-link-type="attribute" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error" id="ref-for-dom-media-error①">HTMLMediaElement.error</a></code> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code" id="ref-for-concept-mediaerror-code">media error codes</a>.
@@ -2040,14 +2040,14 @@ remoting.</p>
    <p>This is how the <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> uses the
 messages defined in <a href="#remote-playback-protocol">§ 9 Remote Playback Protocol</a>:</p>
    <p>When <a href="https://w3c.github.io/remote-playback/#the-list-of-available-remote-playback-devices">section
-6.2.1.2</a> says "This list contains <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices③">remote playback devices</a> and is populated
+5.2.1.2</a> says "This list contains <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices③">remote playback devices</a> and is populated
 based on an implementation specific discovery mechanism" and <a href="https://w3c.github.io/remote-playback/#the-list-of-available-remote-playback-devices">section
-6.2.1.4</a> says "Retrieve available remote playback devices (using an
+5.2.1.4</a> says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the mDNS, QUIC, <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request③">agent-info-request</a>, and <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request①">remote-playback-availability-request</a> messages
 defined previously in this spec to discover <a data-link-type="dfn" href="#receiver" id="ref-for-receiver④">receivers</a>.  The <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request②">remote-playback-availability-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability
 sources set</a>.</p>
    <p>When <a href="https://w3c.github.io/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
-6.2.4</a> says "Request connection of remote to device. The implementation of this
+5.2.4</a> says "Request connection of remote to device. The implementation of this
 step is specific to the user agent." and "Synchronize the current media element
 state with the remote playback state", the controller may send the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑦">remote-playback-start-request</a> message to the receiver to start remote
 playback.  The <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑧">remote-playback-start-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote
@@ -2055,7 +2055,7 @@ playback source</a>.  The current <a data-link-type="biblio" href="#biblio-remot
 allows a single source, but the protocol allows for several and future versions
 of <a data-link-type="biblio" href="#biblio-remote-playback">Remote Playback API</a> may allow for several.</p>
    <p>When <a href="https://w3c.github.io/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
-6.2.4</a> says "The mechanism that is used to connect the user agent with the
+5.2.4</a> says "The mechanism that is used to connect the user agent with the
 remote playback device and play the remote playback source is an implementation
 choice of the user agent. The connection will likely have to provide a two-way
 messaging abstraction capable of carrying media commands to the remote playback
@@ -2063,8 +2063,8 @@ device and receiving media playback state in order to keep the media element
 state and remote playback state in sync", the controller may send <a data-link-type="dfn" href="#remote-playback-modify-request" id="ref-for-remote-playback-modify-request③">remote-playback-modify-request</a> messages to the receiver to change the remote playback state
 based on changes to the local media element and receive <a data-link-type="dfn" href="#remote-playback-modify-response" id="ref-for-remote-playback-modify-response①">remote-playback-modify-response</a> and <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑧">remote-playback-state-event</a> messages to
 change the local media element based on changes to the remote playback state.</p>
-   <p>When <a href="https://w3c.github.io/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
-6.2.7</a> says "Request disconnection of remote from the device. The
+   <p>When <a href="https://w3c.github.io/remote-playback/#disconnecting-from-a-remote-playback-device">section
+5.2.7</a> says "Request disconnection of remote from the device. The
 implementation of this step is specific to the user agent," the controller may
 send the <a data-link-type="dfn" href="#remote-playback-termination-request" id="ref-for-remote-playback-termination-request②">remote-playback-termination-request</a> message to the receiver.</p>
    <h2 class="heading settled" data-level="10" id="streaming-protocol"><span class="secno">10. </span><span class="content">Streaming Protocol</span><a class="self-link" href="#streaming-protocol"></a></h2>
@@ -2091,16 +2091,16 @@ Formats are composed of the following fields:</p>
    <dl>
     <dt data-md>name (required)
     <dd data-md>
-     <p>The name of the codec.   This must be a single-codec RFC 6381 <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codecs parameter</a>.</p>
-   </dl>
-   <p class="issue" id="issue-43c1a192"><a class="self-link" href="#issue-43c1a192"></a> Use the same codec names as the media APIs. <a href="https://github.com/w3c/openscreenprotocol/issues/233">[Issue #233]</a></p>
-   <dl>
+     <p>A fully qualified codec string listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry">[WEBCODECS-CODEC-REGISTRY]</a> and further
+ specified by the codec-specific registrations referenced in that registry.</p>
     <dt data-md>parameters (required)
     <dd data-md>
      <p>A list of (key, value) parameters that can be used to describe
 properties of a specific format, and not shared by other formats
 of that type (audio, video, etc.).</p>
    </dl>
+   <p>For <code>name</code>, Open Screen agents may also accept a single-codec <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codec
+parameter</a> as described in <a data-link-type="biblio" href="#biblio-rfc6381">[RFC6381]</a> for codecs not listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry">[WEBCODECS-CODEC-REGISTRY]</a>.</p>
    <p class="issue" id="issue-263f992a"><a class="self-link" href="#issue-263f992a"></a> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">[Issue #266]</a></p>
    <p>Audio capabilities are composed of the above format type, with the following
 additional fields:</p>
@@ -2732,8 +2732,8 @@ and presentations with the consent of each origin (through their use of the
 API).  This is similar to cross-origin communication via <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage" id="ref-for-dom-window-postmessage">postMessage()</a></code> with a <code>targetOrigin</code> of <code>*</code>.  However, the Presentation API does not convey source
 origin information with each message.  Therefore, the Open Screen Protocol does
 not convey origin information between its agents.</p>
-   <p>The <a data-link-type="dfn" href="https://w3c.github.io/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id③">presentation ID</a> carries some protection against unrestricted
-cross-origin access; but, rigorous authentication of the parties connected by a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection②">PresentationConnection</a></code> must be done at the application level.</p>
+   <p>The <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-id" id="ref-for-dfn-presentation-id③">presentation ID</a> carries some protection against unrestricted
+cross-origin access; but, rigorous authentication of the parties connected by a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#dom-presentationconnection" id="ref-for-dom-presentationconnection②">PresentationConnection</a></code> must be done at the application level.</p>
    <h3 class="heading settled" data-level="13.2" id="security-privacy-questions"><span class="secno">13.2. </span><span class="content">Open Screen Protocol Security and Privacy Considerations</span><a class="self-link" href="#security-privacy-questions"></a></h3>
    <h4 class="heading settled" data-level="13.2.1" id="personally-identifiable-information"><span class="secno">13.2.1. </span><span class="content">Personally Identifiable Information &amp; High-Value Data</span><a class="self-link" href="#personally-identifiable-information"></a></h4>
    <p>The following data exchanged by the protocol can be personally identifiable
@@ -2773,9 +2773,9 @@ preferred locales.</p>
    <h4 class="heading settled" data-level="13.2.2" id="cross-origin-state"><span class="secno">13.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
    <p>Access to origin state across browsing sessions is possible through the
 Presentation API by reconnecting to a presentation that was started by a
-previous session. This scenario is addressed in <a href="https://w3c.github.io/presentation-api/#cross-origin-access">Presentation API § cross-origin-access</a>.</p>
+previous session. This scenario is addressed in <a href="https://w3c.github.io/presentation-api/#cross-origin-access"><cite>Presentation API</cite> § 7.2 Cross-origin access</a>.</p>
    <p>Receiver availability is available cross-origin depending on the user’s network
-context.  Exposure of this data to the Web is also discussed in <a href="https://w3c.github.io/presentation-api/#personally-identifiable-information">Presentation API § personally-identifiable-information</a> and <a href="https://w3c.github.io/remote-playback/#personally-identifiable-information">Remote Playback API § personally-identifiable-information</a>.</p>
+context.  Exposure of this data to the Web is also discussed in <a href="https://w3c.github.io/presentation-api/#personally-identifiable-information"><cite>Presentation API</cite> § 7.1 Personally identifiable information</a> and <a href="https://w3c.github.io/remote-playback/#personally-identifiable-information"><cite>Remote Playback API</cite> § 6.1 Personally identifiable information</a>.</p>
    <h4 class="heading settled" data-level="13.2.3" id="origin-access-devices"><span class="secno">13.2.3. </span><span class="content">Origin Access to Other Devices</span><a class="self-link" href="#origin-access-devices"></a></h4>
    <p>By design, the Open Screen Protocol allows access to receivers from the Web.  By
 implementing the protocol, these devices are knowingly making themselves
@@ -2816,7 +2816,7 @@ following:</p>
      <p>Security characteristics of the user agent</p>
    </ul>
    <h3 class="heading settled" data-level="13.3" id="presentation-api-considerations"><span class="secno">13.3. </span><span class="content">Presentation API Considerations</span><a class="self-link" href="#presentation-api-considerations"></a></h3>
-   <p><a href="https://w3c.github.io/presentation-api/#security-and-privacy-considerations">Presentation API § security-and-privacy-considerations</a> place these
+   <p><a href="https://w3c.github.io/presentation-api/#security-and-privacy-considerations"><cite>Presentation API</cite> § 7 Security and privacy considerations</a> place these
 requirements on the Open Screen Protocol:</p>
    <ol>
     <li data-md>
@@ -2838,11 +2838,11 @@ connections.</p>
      <p>Requiring mutual authentication and a TLS-secured QUIC connection before
  presentation URLs, IDs, or messages are exchanged.</p>
     <li data-md>
-     <p>Adding explicit messages and connection IDs for individual <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#presentationconnection" id="ref-for-presentationconnection③">PresentationConnections</a></code> so that agents can track
+     <p>Adding explicit messages and connection IDs for individual <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#dom-presentationconnection" id="ref-for-dom-presentationconnection③">PresentationConnections</a></code> so that agents can track
  the number of active connections.</p>
    </ol>
    <h3 class="heading settled" data-level="13.4" id="remote-playback-considerations"><span class="secno">13.4. </span><span class="content">Remote Playback API Considerations</span><a class="self-link" href="#remote-playback-considerations"></a></h3>
-   <p>The <a href="https://w3c.github.io/remote-playback/#security-and-privacy-considerations">Remote Playback API § security-and-privacy-considerations</a> also state that
+   <p>The <a href="https://w3c.github.io/remote-playback/#security-and-privacy-considerations"><cite>Remote Playback API</cite> § 6 Security and privacy considerations</a> also state that
 messaging between controllers and receivers should also be authenticated and
 confidential.</p>
    <p>This consideration is handled by requiring mutual authentication and a
@@ -4085,6 +4085,12 @@ extensions.</p>
     <li><a href="#ref-for-dom-media-seeking①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-media-src">
+   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src">https://html.spec.whatwg.org/multipage/media.html#dom-media-src</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-media-src">9.1. Remote Playback State and Controls</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-attr-source-src">
    <a href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src">https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src</a><b>Referenced in:</b>
    <ul>
@@ -4146,50 +4152,50 @@ extensions.</p>
     <li><a href="#ref-for-dom-media-volume①">9.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-volume②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-presentationconnection">
-   <a href="https://w3c.github.io/presentation-api/#presentationconnection">https://w3c.github.io/presentation-api/#presentationconnection</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dom-presentationconnection">
+   <a href="https://w3c.github.io/presentation-api/#dom-presentationconnection">https://w3c.github.io/presentation-api/#dom-presentationconnection</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-presentationconnection">2.2. Presentation API Requirements</a> <a href="#ref-for-presentationconnection①">(2)</a>
-    <li><a href="#ref-for-presentationconnection②">13.1.4. Same-Origin Policy Violations</a>
-    <li><a href="#ref-for-presentationconnection③">13.3. Presentation API Considerations</a>
+    <li><a href="#ref-for-dom-presentationconnection">2.2. Presentation API Requirements</a> <a href="#ref-for-dom-presentationconnection①">(2)</a>
+    <li><a href="#ref-for-dom-presentationconnection②">13.1.4. Same-Origin Policy Violations</a>
+    <li><a href="#ref-for-dom-presentationconnection③">13.3. Presentation API Considerations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-available-presentation-display">
-   <a href="https://w3c.github.io/presentation-api/#dfn-available-presentation-display">https://w3c.github.io/presentation-api/#dfn-available-presentation-display</a><b>Referenced in:</b>
+   <a href="https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display">https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-available-presentation-display">7. Presentation Protocol</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-controlling-user-agent">
-   <a href="https://w3c.github.io/presentation-api/#dfn-controlling-user-agent">https://w3c.github.io/presentation-api/#dfn-controlling-user-agent</a><b>Referenced in:</b>
+   <a href="https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent">https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-controlling-user-agent">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-controlling-user-agent①">7.1. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation">
-   <a href="https://w3c.github.io/presentation-api/#dfn-presentation">https://w3c.github.io/presentation-api/#dfn-presentation</a><b>Referenced in:</b>
+   <a href="https://www.w3.org/TR/presentation-api/#dfn-presentation">https://www.w3.org/TR/presentation-api/#dfn-presentation</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-presentation">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-presentation①">2.2. Presentation API Requirements</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-id">
-   <a href="https://w3c.github.io/presentation-api/#dfn-presentation-id">https://w3c.github.io/presentation-api/#dfn-presentation-id</a><b>Referenced in:</b>
+   <a href="https://www.w3.org/TR/presentation-api/#dfn-presentation-id">https://www.w3.org/TR/presentation-api/#dfn-presentation-id</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-presentation-id">2.2. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-id①">(2)</a> <a href="#ref-for-dfn-presentation-id②">(3)</a>
     <li><a href="#ref-for-dfn-presentation-id③">13.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
-   <a href="https://w3c.github.io/presentation-api/#dfn-presentation-request-url">https://w3c.github.io/presentation-api/#dfn-presentation-request-url</a><b>Referenced in:</b>
+   <a href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url">https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-presentation-request-url">2.2. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-request-url①">(2)</a> <a href="#ref-for-dfn-presentation-request-url②">(3)</a> <a href="#ref-for-dfn-presentation-request-url③">(4)</a>
     <li><a href="#ref-for-dfn-presentation-request-url④">7. Presentation Protocol</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-receiving-user-agent">
-   <a href="https://w3c.github.io/presentation-api/#dfn-receiving-user-agent">https://w3c.github.io/presentation-api/#dfn-receiving-user-agent</a><b>Referenced in:</b>
+   <a href="https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent">https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-receiving-user-agent">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-receiving-user-agent①">7.1. Presentation API</a> <a href="#ref-for-dfn-receiving-user-agent②">(2)</a>
@@ -4370,6 +4376,7 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-dom-media-readystate">readyState</span>
      <li><span class="dfn-paneled" id="term-for-dom-media-seekable">seekable</span>
      <li><span class="dfn-paneled" id="term-for-dom-media-seeking">seeking</span>
+     <li><span class="dfn-paneled" id="term-for-dom-media-src">src <small>(for HTMLMediaElement)</small></span>
      <li><span class="dfn-paneled" id="term-for-attr-source-src">src <small>(for source)</small></span>
      <li><span class="dfn-paneled" id="term-for-event-media-stalled">stalled</span>
      <li><span class="dfn-paneled" id="term-for-dom-media-texttracks">textTracks</span>
@@ -4383,7 +4390,7 @@ extensions.</p>
    <li>
     <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-presentationconnection">PresentationConnection</span>
+     <li><span class="dfn-paneled" id="term-for-dom-presentationconnection">PresentationConnection</span>
      <li><span class="dfn-paneled" id="term-for-dfn-available-presentation-display">available presentation display</span>
      <li><span class="dfn-paneled" id="term-for-dfn-controlling-user-agent">controlling user agent</span>
      <li><span class="dfn-paneled" id="term-for-dfn-presentation">presentation</span>
@@ -4459,10 +4466,14 @@ extensions.</p>
    <dd>Mounir Lamouri; Chris Cunningham; Vi Nguyen. <a href="https://w3c.github.io/media-capabilities/"><cite>Media Capabilities</cite></a>. URL: <a href="https://w3c.github.io/media-capabilities/">https://w3c.github.io/media-capabilities/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
    <dd>Mark Foltz; Dominik Röttsches. <a href="https://w3c.github.io/presentation-api/"><cite>Presentation API</cite></a>. URL: <a href="https://w3c.github.io/presentation-api/">https://w3c.github.io/presentation-api/</a>
+   <dt id="biblio-presentation-api-1">[PRESENTATION-API-1]
+   <dd>Presentation API URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
    <dt id="biblio-quic">[QUIC]
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23"><cite>QUIC: A UDP-Based Multiplexed and Secure Transport</cite></a>. 12 September 2019. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23">https://tools.ietf.org/html/draft-ietf-quic-transport-23</a>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
    <dd>Mark Foltz. <a href="https://w3c.github.io/remote-playback/"><cite>Remote Playback API</cite></a>. URL: <a href="https://w3c.github.io/remote-playback/">https://w3c.github.io/remote-playback/</a>
+   <dt id="biblio-remote-playback-1">[REMOTE-PLAYBACK-1]
+   <dd>Remote Playback API URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-rfc5122">[RFC5122]
@@ -4496,6 +4507,8 @@ extensions.</p>
    <dd>P. Leach; M. Mealling; R. Salz. <a href="https://www.rfc-editor.org/rfc/rfc4122"><cite>A Universally Unique IDentifier (UUID) URN Namespace</cite></a>. July 2005. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc4122">https://www.rfc-editor.org/rfc/rfc4122</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
    <dd>Theresa O'Connor; Peter Snyder. <a href="https://w3ctag.github.io/security-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. URL: <a href="https://w3ctag.github.io/security-questionnaire/">https://w3ctag.github.io/security-questionnaire/</a>
+   <dt id="biblio-webcodecs-codec-registry">[WEBCODECS-CODEC-REGISTRY]
+   <dd>Chris Cunningham; Paul Adenot; Bernard Aboba. <a href="https://w3c.github.io/webcodecs/codec_registry.html"><cite>WebCodecs Codec Registry</cite></a>. URL: <a href="https://w3c.github.io/webcodecs/codec_registry.html">https://w3c.github.io/webcodecs/codec_registry.html</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
@@ -4515,7 +4528,6 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
    <div class="issue"> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">[Issue #265]</a> <a class="issue-return" href="#issue-74827562" title="Jump to section">↵</a></div>
    <div class="issue"> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">[Issue #241]</a> <a class="issue-return" href="#issue-9717419d" title="Jump to section">↵</a></div>
    <div class="issue"> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">[Issue #223]</a> <a class="issue-return" href="#issue-791c621c" title="Jump to section">↵</a></div>
-   <div class="issue"> Use the same codec names as the media APIs. <a href="https://github.com/w3c/openscreenprotocol/issues/233">[Issue #233]</a> <a class="issue-return" href="#issue-43c1a192" title="Jump to section">↵</a></div>
    <div class="issue"> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">[Issue #266]</a> <a class="issue-return" href="#issue-263f992a" title="Jump to section">↵</a></div>
    <div class="issue"> Expose capabilities for decoding HDR transfer functions and metadata formats. <a href="https://github.com/w3c/openscreenprotocol/issues/194">[Issue #194]</a> <a class="issue-return" href="#issue-ee6238c6" title="Jump to section">↵</a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a> <a class="issue-return" href="#issue-8bf4aa9f" title="Jump to section">↵</a></div>
