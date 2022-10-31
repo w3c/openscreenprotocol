@@ -23,15 +23,13 @@ urlPrefix: https://html.spec.whatwg.org/multipage/media.html#; type: dfn; spec: 
     text: official playback position
     text: poster frame
     text: timeline offset
-urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
+urlPrefix: https://www.w3.org/TR/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
     text: available presentation display
     text: controlling user agent
     text: presentation
     text: presentation id
     text: presentation request url
     text: receiving user agent
-urlPrefix: https://w3c.github.io/presentation-api/; type: interface; spec: PRESENTATION-API
-    text: PresentationConnection
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
     text: availability sources set
     text: compatible remote playback device
@@ -367,12 +365,11 @@ QUIC connection.
 
 The [=agent certificate=] must have the following characteristics:
 
-* 256-bit, 384-bit, or 521-bit ECDSA public key
+* 256-bit or 384-bit ECDSA public key
 * Self-signed
 * Supporting the at least one of the following signature algorithms:
     * secp256r1_sha256
     * secp384r1_sha384
-    * secp521r1_sha512
 * Valid for signing
 
 The following X.509 v3 fields are to be set as follows:
@@ -783,8 +780,8 @@ values:
 
 : headers
 :: headers that the receiver should use to fetch the presentation URL.  For example,
-    [[PRESENTATION-API#establishing-a-presentation-connection|section 6.6.1]] of
-    the Presentation API says that the Accept-Language header should be
+    [[PRESENTATION-API#creating-a-receiving-browsing-context|section 6.6.1]] of
+    the Presentation API says that the HTTP `Accept-Language` header should be
     provided.
 
 The presentation ID must follow the restrictions defined by
@@ -1002,6 +999,16 @@ browsing contexts using an implementation specific mechanism.", the receiver
 must send a [=presentation-connection-open-response=] message and
 [=presentation-change-event=] messages when required.
 
+
+Representation Of Time {#time-representation}
+======================
+
+The [[#remote-playback-protocol]] and the [[#streaming-protocol]] represent
+points of time and durations in terms of a [=time scale=].  A <dfn>time
+scale</dfn> is a common denominator for time values that allows values to be
+expressed as rational numbers without loss of precision.  The [=time scale=] is
+represented in hertz, such as 90000 for 90000 Hz, a common time scale for
+video.
 
 Remote Playback Protocol {#remote-playback-protocol}
 ========================
@@ -1390,13 +1397,13 @@ changed.
 : loading
 :: The state of network activity for loading the [=media resource=]. See
     {{HTMLMediaElement/networkState|HTMLMediaElement.networkState}}.
-    The default is empty ({{NETWORK_EMPTY}}
+    The default is empty ({{NETWORK_EMPTY}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : loaded
 :: The state of the loaded media (whether enough is loaded to play). See
     {{HTMLMediaElement/readyState|HTMLMediaElement.readyState}}.
-    The default is nothing ({{HAVE_NOTHING}}
+    The default is nothing ({{HAVE_NOTHING}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : error
@@ -1517,9 +1524,7 @@ changed.
 
 All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common [=media-time=] value (see Appendix A)
-which includes a time scale.  This allows time values which work on different
-time scales to be expressed without loss of precision.  The scale is represented
-in hertz, such as 90000 for 90000 Hz, a common time scale for video.
+which includes a [=time scale=]. 
 
 <div class="note">
 <table>
@@ -1574,10 +1579,10 @@ This is how the [[REMOTE-PLAYBACK|Remote Playback API]] uses the
 messages defined in [[#remote-playback-protocol]]:
 
 When [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
-6.2.1.2]] says "This list contains [=remote playback devices=] and is populated
+5.2.1.2]] says "This list contains [=remote playback devices=] and is populated
 based on an implementation specific discovery mechanism" and
 [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
-6.2.1.4]] says "Retrieve available remote playback devices (using an
+5.2.1.4]] says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the mDNS, QUIC,
 [=agent-info-request=], and [=remote-playback-availability-request=] messages
 defined previously in this spec to discover [=receivers=].  The
@@ -1586,7 +1591,7 @@ sources set=].
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
-6.2.4]] says "Request connection of remote to device. The implementation of this
+5.2.4]] says "Request connection of remote to device. The implementation of this
 step is specific to the user agent." and "Synchronize the current media element
 state with the remote playback state", the controller may send the
 [=remote-playback-start-request=] message to the receiver to start remote
@@ -1597,7 +1602,7 @@ of [[REMOTE-PLAYBACK|Remote Playback API]] may allow for several.
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
-6.2.4]] says "The mechanism that is used to connect the user agent with the
+5.2.4]] says "The mechanism that is used to connect the user agent with the
 remote playback device and play the remote playback source is an implementation
 choice of the user agent. The connection will likely have to provide a two-way
 messaging abstraction capable of carrying media commands to the remote playback
@@ -1609,8 +1614,8 @@ based on changes to the local media element and receive
 change the local media element based on changes to the remote playback state.
 
 When
-[[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
-6.2.7]] says "Request disconnection of remote from the device. The
+[[REMOTE-PLAYBACK#disconnecting-from-a-remote-playback-device|section
+5.2.7]] says "Request disconnection of remote from the device. The
 implementation of this step is specific to the user agent," the controller may
 send the [=remote-playback-termination-request=] message to the receiver.
 
@@ -1647,14 +1652,17 @@ The format type is used as the basis for audio and video capabilities.
 Formats are composed of the following fields:
 
 : name (required)
-:: The name of the codec.   This must be a single-codec RFC 6381 [=codecs parameter=].
-
-Issue(233): Use the same codec names as the media APIs.
+:: A fully qualified codec string listed in the [[WEBCODECS-CODEC-REGISTRY]] and further
+     specified by the codec-specific registrations referenced in that registry.
 
 : parameters (required)
 :: A list of (key, value) parameters that can be used to describe
     properties of a specific format, and not shared by other formats
     of that type (audio, video, etc.).
+
+For `name`, Open Screen agents may also accept a single-codec [=codec
+parameter=] as described in [[!RFC6381]] for codecs not listed in the
+[[WEBCODECS-CODEC-REGISTRY]].
 
 Issue(266): Specify where codec-specific parameters are defined or drop them.
 
@@ -1803,7 +1811,7 @@ Each audio encoding offered defines the following fields:
     RFC 6381 [=codecs parameter=].
 
 : time-scale
-:: The time scale used by all audio frames.  This allows senders to
+:: The [=time scale=] used by all audio frames.  This allows senders to
     make audio-frame messages smaller by not including the time scale
     in each one.
 
@@ -1824,7 +1832,7 @@ Each video encoding offered defines the following fields:
 :: The name of the codec used by the encoding.
 
 : time-scale
-:: The time scale used by all video frames.  This allows senders to
+:: The [=time scale=] used by all video frames.  This allows senders to
     make video-frame messages smaller by not including the time scale
     in each one.
 
@@ -1850,7 +1858,7 @@ Each data encoding offered defines the following fields:
 :: The name of the data type used by the encoding.
 
 : time-scale
-:: The time scale used by all data frames.  This allows senders to
+:: The [=time scale=] used by all data frames.  This allows senders to
     make data-frame messages smaller by not including the time scale
     in each one.
 
@@ -1930,21 +1938,21 @@ separate QUIC streams.
 :: Identifies the media encoding to which this audio frame belongs.  This can be
     used to reference fields of the encoding (from the
     [=audio-encoding-offer=] message) such as the codec, codec properties,
-    time scale (aka clock rate), and default duration.
+    [=time scale=], and default duration.
     Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : start-time
 :: Identifies the beginning of the time range of the audio frame. The
     end time can be inferred from the start time and duration. The
-    time scale is equal to the value in the `time-scale` field of the
+    [=time scale=] is equal to the value in the `time-scale` field of the
     [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the audio frame. If not present, the
     duration is equal to the `default-duration` field of the
     [=audio-encoding-offer=] message referenced by the `encoding-id`.
-    The time scale is equal to the value in the `time-scale` field of
+    The [=time scale=] is equal to the value in the `time-scale` field of
     the [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
@@ -1977,7 +1985,7 @@ ending at the last dependent frame.
 : encoding-id
 :: Identifies the media encoding to which this video frame belongs.
     This can be used to reference fields of the encoding such as the
-    codec, codec properties, time scale, and default rotation.
+    codec, codec properties, [=time scale=], and default rotation.
     Referencing fields of the encoding through the encoding id helps
     to avoid sending duplicate information in every frame.
 
@@ -1996,12 +2004,12 @@ ending at the last dependent frame.
 : start-time
 :: Identifies the beginning of the time range of the video frame.  The
     end time can be inferred from the start time and duration. The
-    time scale is equal to the value in the `time-scale` field of the
+    [=time scale=] is equal to the value in the `time-scale` field of the
     [=video-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the video frame. If not present, that
-    means duration is unknown.  The time scale is equal to the value
+    means duration is unknown.  The [=time scale=] is equal to the value
     in the `time-scale` field of the [=video-encoding-offer=] message
     referenced by the `encoding-id`.
 
@@ -2037,7 +2045,7 @@ that makes sense for a specific type of data.
 : encoding-id
 :: Identifies the data encoding to which this data frame belongs.  This can be
     used to reference fields of the encoding such as the type of data and
-    time scale.  Referencing fields of the encoding through the encoding id
+    [=time scale=].  Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : sequence-number
@@ -2048,14 +2056,14 @@ that makes sense for a specific type of data.
 : start-time
 :: Identifies the beginning of the time range of the data frame.  The
     end time can be inferred from the start time and duration.  The
-    time scale is equal to the value in the `time-scale` field of the
+    [=time scale=] is equal to the value in the `time-scale` field of the
     [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the data frame. If not present, the
     duration is equal to the `default-duration` field of the
     [=data-encoding-offer=] message referenced by the `encoding-id`.
-    The time scale is equal to the value in the `time-scale` field of
+    The [=time scale=] is equal to the value in the `time-scale` field of
     the [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
@@ -2556,7 +2564,7 @@ authentication:
 
 The active attacker may also attempt to disrupt data exchanged over the QUIC
 connection by injecting or modifying traffic.  These attacks should be mitigated
-by a correct implementation of TLS 1.3.  See Appendix E of [[RFC846]] for a
+by a correct implementation of TLS 1.3.  See Appendix E of [[RFC8446]] for a
 detailed security analysis of the TLS 1.3 protocol.
 
 ### Remote active network attackers ### {#remote-active-mitigations}
