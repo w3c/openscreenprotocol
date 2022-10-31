@@ -1758,18 +1758,25 @@ following additional fields:
     in the [[!MEDIA-CAPABILITIES|Media Capabilities]] API.  The default value is
     a list with the single entry "srgb".
 
-: transfer-functions (optional)
-:: An optional field indicating what HDR transfer functions can be decoded and rendered
-    by the media receiver.  Valid values correspond to
-    [[MEDIA-CAPABILITIES#transferfunction|TransferFunction]] in the
-    [[!MEDIA-CAPABILITIES|Media Capabilities]] API.  The default value is a list with the
-    single entry "srgb".
+: hdr-formats (optional)
+:: An optional field indicating what HDR transfer functions and metadata formats
+    can be decoded and rendered by the media receiver.  Each `video-hdr-format`
+    consists of two fields, `transfer-function` and `hdr-metadata`.
 
-: hdr-metadata (optional)
-:: An optional field indicating what HDR metadata types can be decoded and rendered by
-    by the media receiver.  Valid values correspond to
-    [[MEDIA-CAPABILITIES#hdrmetadatatype|HdrMetadataType]] in the
-    [[!MEDIA-CAPABILITIES|Media Capabilities]] API.  The default value is an empty list.
+    The `transfer-function` field must be a valid
+    [[MEDIA-CAPABILITIES#transferfunction|TransferFunction]]
+    and the `hdr-metadata` must be a valid
+    [[MEDIA-CAPABILITIES#hdrmetadatatype|HdrMetadataType]], both defined in the
+    [[!MEDIA-CAPABILITIES|Media Capabilities]] API.
+
+    If a `video-hdr-format` is provided with a `transfer-function` but no
+    `hdr-metadata`, then the media receiver can render the `transfer-function`
+    without any associated metadata.  (This is the case, for example, with the
+    "hlg" `transfer-function`.)
+
+    If no `hdr-formats` are listed, then the media reciever cannot decode any
+    HDR formats.
+
 
 : native-resolutions (optional)
 :: An optional field indicating what video-resolutions the media receiver supports and
