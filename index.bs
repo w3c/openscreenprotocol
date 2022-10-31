@@ -1765,7 +1765,7 @@ following additional fields:
 
     The `transfer-function` field must be a valid
     [[MEDIA-CAPABILITIES#transferfunction|TransferFunction]]
-    and the `hdr-metadata` must be a valid
+    and the `hdr-metadata` field must be a valid
     [[MEDIA-CAPABILITIES#hdrmetadatatype|HdrMetadataType]], both defined in the
     [[!MEDIA-CAPABILITIES|Media Capabilities]] API.
 
@@ -1774,6 +1774,7 @@ following additional fields:
     without any associated metadata.  (This is the case, for example, with the
     "hlg" `transfer-function`.)
 
+    The media receiver should ignore duplicate entries in `hdr-formats.`
     If no `hdr-formats` are listed, then the media reciever cannot decode any
     HDR formats.
 

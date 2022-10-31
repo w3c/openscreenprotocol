@@ -566,10 +566,10 @@ receive-video-capability = {
   ? 4: uint ; min-bit-rate
   ? 5: ratio ; aspect-ratio
   ? 6: [* string] ; color-gamuts
-  ? 7: [* video-hdr-format] ; hdr-formats
-  ? 8: [* video-resolution] ; native-resolutions
-  ? 9: bool ; supports-scaling
-  ? 10: bool ; supports-rotation
+  ? 7: [* video-resolution] ; native-resolutions
+  ? 8: bool ; supports-scaling
+  ? 9: bool ; supports-rotation
+  ? 10: [* video-hdr-format] ; hdr-formats
 }
 
 receive-data-capability = {
