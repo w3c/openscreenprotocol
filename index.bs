@@ -399,7 +399,7 @@ The [=agent certificate=] must have the following characteristics:
       DER representation: `301306072a8648ce3d020106082a8648ce3d030107`
       </p>
   </td>
-  <td>`ecdsaWithSha256`
+  <td>`ecdsa-with-SHA256`
     <p>
       Object identifier:
       <ol>
