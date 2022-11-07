@@ -6,9 +6,9 @@
   <meta content="w3c/ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version b0de3432c, updated Thu Oct 13 09:16:59 2022 -0700" name="generator">
+  <meta content="Bikeshed version 63e66730b, updated Tue Oct 25 12:35:05 2022 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="37cef3198b57bf23d2026728ae251bb8563a00d0" name="document-revision">
+  <meta content="246bc07e5d30e25220d08c65e374366a905eea78" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -360,6 +360,14 @@ a.self-link:hover {
 .heading > a.self-link {
     font-size: 83%;
 }
+.example > a.self-link,
+.note > a.self-link,
+.issue > a.self-link {
+    /* These blocks are overflow:auto, so positioning outside
+       doesn't work. */
+    left: auto;
+    right: 0;
+}
 li > a.self-link {
     left: calc(-1 * (3.5rem - 26px) - 2em);
 }
@@ -516,7 +524,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-18">18 October 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-11-07">7 November 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2139,15 +2147,21 @@ capable of processing, in kilobits per second. Default is no minimum.</p>
      <p>An optional field indicating what its ideal aspect ratio is, e.g. a 16:10
 display could return this value as 1.6 to indicate its preferred content
 scaling. Default is none.</p>
-   </dl>
-   <p class="issue" id="issue-ee6238c6"><a class="self-link" href="#issue-ee6238c6"></a> Expose capabilities for decoding HDR transfer functions and metadata formats. <a href="https://github.com/w3c/openscreenprotocol/issues/194">[Issue #194]</a></p>
-   <dl>
     <dt data-md>color-gamuts (optional)
     <dd data-md>
      <p>An optional field indicating what color spaces can be decoded and rendered by
 the media receiver.  The media sender may use these values to determine how
 to encode video. Valid values correspond to <a href="https://w3c.github.io/media-capabilities/#colorgamut">ColorGamut</a> in the <a data-link-type="biblio" href="#biblio-media-capabilities">Media Capabilities</a> API.  The default value is
 a list with the single entry "srgb".</p>
+    <dt data-md>hdr-formats (optional)
+    <dd data-md>
+     <p>An optional field indicating what HDR transfer functions and metadata formats
+can be decoded and rendered by the media receiver.  Each <code>video-hdr-format</code> consists of two fields, <code>transfer-function</code> and <code>hdr-metadata</code>.</p>
+     <p>The <code>transfer-function</code> field must be a valid <a href="https://w3c.github.io/media-capabilities/#transferfunction">TransferFunction</a> and the <code>hdr-metadata</code> field must be a valid <a href="https://w3c.github.io/media-capabilities/#hdrmetadatatype">HdrMetadataType</a>, both defined in the <a data-link-type="biblio" href="#biblio-media-capabilities">Media Capabilities</a> API.</p>
+     <p>If a <code>video-hdr-format</code> is provided with a <code>transfer-function</code> but no <code>hdr-metadata</code>, then the media receiver can render the <code>transfer-function</code> without any associated metadata.  (This is the case, for example, with the
+"hlg" <code>transfer-function</code>.)</p>
+     <p>The media receiver should ignore duplicate entries in <code>hdr-formats.</code> If no <code>hdr-formats</code> are listed, then the media reciever cannot decode any
+HDR formats.</p>
     <dt data-md>native-resolutions (optional)
     <dd data-md>
      <p>An optional field indicating what video-resolutions the media receiver supports and
@@ -3542,6 +3556,11 @@ the wire smaller.</p>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; width</span>
 <span class="p">}</span>
 
+<span class="nc">video-hdr-format </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">transfer-function </span><span class="c1">; string</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">?</span> <span class="nx">hdr-metadata </span><span class="c1">; string</span>
+<span class="p">}</span>
+
 <span class="nc">receive-video-capability </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="nx">format </span><span class="c1">; codec</span>
   <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="c1">; max-resolution</span>
@@ -3553,6 +3572,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-resolution</span><span class="p">]</span> <span class="c1">; native-resolutions</span>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
   <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-rotation</span>
+  <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-hdr-format</span><span class="p">]</span> <span class="c1">; hdr-formats</span>
 <span class="p">}</span>
 
 <span class="nc">receive-data-capability </span><span class="p">=</span> <span class="p">{</span>
@@ -4466,14 +4486,10 @@ extensions.</p>
    <dd>Mounir Lamouri; Chris Cunningham; Vi Nguyen. <a href="https://w3c.github.io/media-capabilities/"><cite>Media Capabilities</cite></a>. URL: <a href="https://w3c.github.io/media-capabilities/">https://w3c.github.io/media-capabilities/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
    <dd>Mark Foltz; Dominik Röttsches. <a href="https://w3c.github.io/presentation-api/"><cite>Presentation API</cite></a>. URL: <a href="https://w3c.github.io/presentation-api/">https://w3c.github.io/presentation-api/</a>
-   <dt id="biblio-presentation-api-1">[PRESENTATION-API-1]
-   <dd>Presentation API URL: <a href="https://www.w3.org/TR/presentation-api/">https://www.w3.org/TR/presentation-api/</a>
    <dt id="biblio-quic">[QUIC]
    <dd>J. Iyengar; M. Thomson. <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23"><cite>QUIC: A UDP-Based Multiplexed and Secure Transport</cite></a>. 12 September 2019. Internet Draft. URL: <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-23">https://tools.ietf.org/html/draft-ietf-quic-transport-23</a>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
    <dd>Mark Foltz. <a href="https://w3c.github.io/remote-playback/"><cite>Remote Playback API</cite></a>. URL: <a href="https://w3c.github.io/remote-playback/">https://w3c.github.io/remote-playback/</a>
-   <dt id="biblio-remote-playback-1">[REMOTE-PLAYBACK-1]
-   <dd>Remote Playback API URL: <a href="https://www.w3.org/TR/remote-playback/">https://www.w3.org/TR/remote-playback/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-rfc5122">[RFC5122]
@@ -4529,7 +4545,6 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
    <div class="issue"> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">[Issue #241]</a> <a class="issue-return" href="#issue-9717419d" title="Jump to section">↵</a></div>
    <div class="issue"> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">[Issue #223]</a> <a class="issue-return" href="#issue-791c621c" title="Jump to section">↵</a></div>
    <div class="issue"> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">[Issue #266]</a> <a class="issue-return" href="#issue-263f992a" title="Jump to section">↵</a></div>
-   <div class="issue"> Expose capabilities for decoding HDR transfer functions and metadata formats. <a href="https://github.com/w3c/openscreenprotocol/issues/194">[Issue #194]</a> <a class="issue-return" href="#issue-ee6238c6" title="Jump to section">↵</a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a> <a class="issue-return" href="#issue-8bf4aa9f" title="Jump to section">↵</a></div>
   </div>
   <aside class="dfn-panel" data-for="open-screen-protocol-agent">
