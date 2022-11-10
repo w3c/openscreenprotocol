@@ -409,8 +409,25 @@ The [=agent certificate=] must have the following characteristics:
 </tr>
 <tr>
   <td>`secp384r1_sha384`</td>
-  <td>`301006072a8648ce3d020106052b81040022`</td>
-  <td>`300a06082a8648ce3d040303`</td>
+  <td>`secp384r1`
+   <p>
+    Object Identifiers:
+    <ol>
+      <li>`1.2.840.10045.2.1` (ECC)</li>
+      <li>`1.3.132.0.34` (ECDSA P384)</li>
+    </ol> 
+    DER representation: `301006072a8648ce3d020106052b81040022`
+  </p>
+  </td>
+  <td>`ecdsa-with-SHA384`
+    <p>
+      Object identifier:
+      <ol>
+        <li>`1.2.840.10045.4.3.3`</li>
+      </ol>
+      DER representation: `300a06082a8648ce3d040303`
+    </p>
+  </td>
 </tr>
 </tbody>
 </table>
