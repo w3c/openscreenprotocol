@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 63e66730b, updated Tue Oct 25 12:35:05 2022 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="246bc07e5d30e25220d08c65e374366a905eea78" name="document-revision">
+  <meta content="3f1f1484e5e7d680f7f551d6ce183b8548663866" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -524,7 +524,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-11-07">7 November 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-11-14">14 November 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -939,49 +939,101 @@ QUIC connection.</p>
    <p>The <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate②">agent certificate</a> must have the following characteristics:</p>
    <ul>
     <li data-md>
-     <p>256-bit or 384-bit ECDSA public key</p>
+     <p>256-bit or 384-bit ECDSA public key.</p>
     <li data-md>
-     <p>Self-signed</p>
+     <p>Self-signed.</p>
     <li data-md>
-     <p>Supporting the at least one of the following signature algorithms:</p>
+     <p>Supporting at least one of the <a data-link-type="dfn" href="#certificate-algorithms" id="ref-for-certificate-algorithms">certificate algorithms</a> listed below.</p>
      <ul>
       <li data-md>
-       <p>secp256r1_sha256</p>
+       <p>The <code>AlgorithmIdentifiers</code> are defined in <a data-link-type="biblio" href="#biblio-rfc5480">[RFC5480]</a> (for public keys) and <a data-link-type="biblio" href="#biblio-rfc5758">[RFC5758]</a> (for signature schemes).</p>
       <li data-md>
-       <p>secp384r1_sha384</p>
+       <p><a data-link-type="biblio" href="#biblio-x690">[X690]</a> specifies the Distinguished Encoding Rules (DER) representation used to encode the identifiers.</p>
      </ul>
     <li data-md>
-     <p>Valid for signing</p>
+     <p>Valid for signing.</p>
    </ul>
-   <p>The following X.509 v3 fields are to be set as follows:</p>
-   <table>
+   <table class="data" id="algorithms">
+    <caption><dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="certificate algorithms" data-noexport id="certificate-algorithms">Agent Certificate Algorithms</dfn></caption>
     <thead>
      <tr>
-      <th>Field
-      <th>Value
+      <th>TLS 1.3 <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3" id="ref-for-section-4.2.3">Signature Scheme</a>
+      <th>Public Key <code>AlgorithmIdentifier</code>
+      <th>Signature <code>AlgorithmIdentifier</code>
     <tbody>
      <tr>
-      <td>Version Number
-      <td>3
+      <td><code>secp256r1_sha256</code>
+      <td>
+       <code>secp256r1</code> 
+       <p> Object Identifiers: </p>
+       <ol>
+        <li><code>1.2.840.10045.2.1</code> (ECC)
+        <li><code>1.2.840.10045.3.1.7</code> (ECDSA P256)
+       </ol>
+        DER representation: <code>301306072a8648ce3d020106082a8648ce3d030107</code> 
+       <p></p>
+      <td>
+       <code>ecdsa-with-SHA256</code> 
+       <p> Object identifier: </p>
+       <ol>
+        <li><code>1.2.840.10045.4.3.2</code>
+       </ol>
+        DER representation: <code>300a06082a8648ce3d040302</code> 
+       <p></p>
      <tr>
-      <td>Serial Number
-      <td><code>&lt;fp></code>
-     <tr>
-      <td>Signature Algorithm ID
-      <td>One of the values listed above.
-     <tr>
-      <td>Issuer Name
-      <td>CN = The <code>model-name</code> from the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br> 
-     <tr>
-      <td>Subject Name
-      <td>CN = <code>&lt;fp></code>._openscreen._udp<br> O = See note.<br> 
-     <tr>
-      <td>Subject Public Key Algorithm
-      <td>Elliptic Curve Public Key
-     <tr>
-      <td>Certificate Key usage
-      <td>Signing
+      <td><code>secp384r1_sha384</code>
+      <td>
+       <code>secp384r1</code> 
+       <p> Object Identifiers: </p>
+       <ol>
+        <li><code>1.2.840.10045.2.1</code> (ECC)
+        <li><code>1.3.132.0.34</code> (ECDSA P384)
+       </ol>
+        DER representation: <code>301006072a8648ce3d020106052b81040022</code> 
+       <p></p>
+      <td>
+       <code>ecdsa-with-SHA384</code> 
+       <p> Object identifier: </p>
+       <ol>
+        <li><code>1.2.840.10045.4.3.3</code>
+       </ol>
+        DER representation: <code>300a06082a8648ce3d040303</code> 
+       <p></p>
    </table>
+   <p>The following X.509 v3 fields are to be set as follows:</p>
+   <div class="assertion">
+    <table>
+     <thead>
+      <tr>
+       <th>Field
+       <th>Value
+     <tbody>
+      <tr>
+       <td>Version Number
+       <td>3
+      <tr>
+       <td>Serial Number
+       <td><code>&lt;fp></code>
+      <tr>
+       <td>Public Key <code>AlgorithmIdentifier</code>
+       <td>One of the supported <a data-link-type="dfn" href="#certificate-algorithms" id="ref-for-certificate-algorithms①">certificate algorithms</a>.
+      <tr>
+       <td>Signature <code>AlgorithmIdentifier</code>
+       <td>One of the supported <a data-link-type="dfn" href="#certificate-algorithms" id="ref-for-certificate-algorithms②">certificate algorithms</a>.
+      <tr>
+       <td>Issuer Name
+       <td>CN = The <code>model-name</code> from the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br> 
+      <tr>
+       <td>Subject Name
+       <td>CN = <code>&lt;fp></code>._openscreen._udp<br> O = See note.<br> 
+      <tr>
+       <td>Subject Public Key Algorithm
+       <td>Elliptic Curve Public Key
+      <tr>
+       <td>Certificate Key usage
+       <td><a data-link-type="dfn" href="https://tools.ietf.org/html/rfc5280#section-4.2.1.3" id="ref-for-section-4.2.1.3">digitalSignature</a>
+    </table>
+   </div>
    <p>Mandatory fields not mentioned above should be set according to <a data-link-type="biblio" href="#biblio-rfc5280">[RFC5280]</a>.</p>
    <p>The value <code>&lt;fp></code> above should be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a> (as
 serialized in mDNS TXT).</p>
@@ -3850,6 +3902,7 @@ extensions.</p>
    <li><a href="#auth-spake2-handshake">auth-spake2-handshake</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-status">auth-status</a><span>, in § Unnumbered section</span>
+   <li><a href="#certificate-algorithms">certificate algorithms</a><span>, in § 4.2</span>
    <li><a href="#controller">controller</a><span>, in § 1.1</span>
    <li><a href="#data-encoding-offer">data-encoding-offer</a><span>, in § Unnumbered section</span>
    <li><a href="#data-frame">data-frame</a><span>, in § Unnumbered section</span>
@@ -4299,6 +4352,12 @@ extensions.</p>
     <li><a href="#ref-for-section-4.4">9. Remote Playback Protocol</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-section-4.2.1.3">
+   <a href="https://tools.ietf.org/html/rfc5280#section-4.2.1.3">https://tools.ietf.org/html/rfc5280#section-4.2.1.3</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-4.2.1.3">4.2. Agent Certificates</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-section-2">
    <a href="https://tools.ietf.org/html/rfc5646#section-2">https://tools.ietf.org/html/rfc5646#section-2</a><b>Referenced in:</b>
    <ul>
@@ -4353,6 +4412,12 @@ extensions.</p>
    <a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-section-4.2.3">
+   <a href="https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3">https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-section-4.2.3">4.2. Agent Certificates</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-section-3">
@@ -4443,6 +4508,11 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-section-4.4">uuid</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[RFC5280]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-4.2.1.3">digitalsignature</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[RFC5646]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-section-2">language tag</span>
@@ -4472,6 +4542,11 @@ extensions.</p>
      <li><span class="dfn-paneled" id="term-for-section-5③">sha-512</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[RFC8446]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-section-4.2.3">signature scheme</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[RFC8610]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-section-3①">concise data definition language</span>
@@ -4496,8 +4571,12 @@ extensions.</p>
    <dd>P. Saint-Andre. <a href="https://www.rfc-editor.org/rfc/rfc5122"><cite>Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)</cite></a>. February 2008. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc5122">https://www.rfc-editor.org/rfc/rfc5122</a>
    <dt id="biblio-rfc5280">[RFC5280]
    <dd>D. Cooper; et al. <a href="https://www.rfc-editor.org/rfc/rfc5280"><cite>Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</cite></a>. May 2008. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc5280">https://www.rfc-editor.org/rfc/rfc5280</a>
+   <dt id="biblio-rfc5480">[RFC5480]
+   <dd>S. Turner; et al. <a href="https://www.rfc-editor.org/rfc/rfc5480"><cite>Elliptic Curve Cryptography Subject Public Key Information</cite></a>. March 2009. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc5480">https://www.rfc-editor.org/rfc/rfc5480</a>
    <dt id="biblio-rfc5646">[RFC5646]
    <dd>A. Phillips, Ed.; M. Davis, Ed.. <a href="https://www.rfc-editor.org/rfc/rfc5646"><cite>Tags for Identifying Languages</cite></a>. September 2009. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc5646">https://www.rfc-editor.org/rfc/rfc5646</a>
+   <dt id="biblio-rfc5758">[RFC5758]
+   <dd>Q. Dang; et al. <a href="https://www.rfc-editor.org/rfc/rfc5758"><cite>Internet X.509 Public Key Infrastructure: Additional Algorithms and Identifiers for DSA and ECDSA</cite></a>. January 2010. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc5758">https://www.rfc-editor.org/rfc/rfc5758</a>
    <dt id="biblio-rfc6066">[RFC6066]
    <dd>D. Eastlake 3rd. <a href="https://www.rfc-editor.org/rfc/rfc6066"><cite>Transport Layer Security (TLS) Extensions: Extension Definitions</cite></a>. January 2011. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc6066">https://www.rfc-editor.org/rfc/rfc6066</a>
    <dt id="biblio-rfc6381">[RFC6381]
@@ -4516,6 +4595,8 @@ extensions.</p>
    <dd>H. Birkholz; C. Vigano; C. Bormann. <a href="https://www.rfc-editor.org/rfc/rfc8610"><cite>Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures</cite></a>. June 2019. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>
    <dt id="biblio-rfc8949">[RFC8949]
    <dd>C. Bormann; P. Hoffman. <a href="https://www.rfc-editor.org/rfc/rfc8949"><cite>Concise Binary Object Representation (CBOR)</cite></a>. December 2020. Internet Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>
+   <dt id="biblio-x690">[X690]
+   <dd><a href="https://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf"><cite>Recommendation X.690 — Information Technology — ASN.1 Encoding Rules — Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER), and Distinguished Encoding Rules (DER)</cite></a>. URL: <a href="https://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf">https://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -4637,6 +4718,12 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
    <ul>
     <li><a href="#ref-for-agent-certificate">3. Discovery with mDNS</a>
     <li><a href="#ref-for-agent-certificate①">4.2. Agent Certificates</a> <a href="#ref-for-agent-certificate②">(2)</a> <a href="#ref-for-agent-certificate③">(3)</a> <a href="#ref-for-agent-certificate④">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="certificate-algorithms">
+   <b><a href="#certificate-algorithms">#certificate-algorithms</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-certificate-algorithms">4.2. Agent Certificates</a> <a href="#ref-for-certificate-algorithms①">(2)</a> <a href="#ref-for-certificate-algorithms②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="time-scale">
