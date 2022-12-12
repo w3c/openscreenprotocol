@@ -23,11 +23,12 @@ urlPrefix: https://html.spec.whatwg.org/multipage/media.html#; type: dfn; spec: 
     text: official playback position
     text: poster frame
     text: timeline offset
+    text: media resource
 urlPrefix: https://www.w3.org/TR/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
     text: available presentation display
     text: controlling user agent
-    text: presentation
-    text: presentation id
+    text: presentation; url: receiving-browsing-context
+    text: presentation identifier
     text: presentation request url
     text: receiving user agent
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
@@ -35,7 +36,6 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: compatible remote playback device
     text: initiate remote playback
     text: media element state
-    text: media resources
     text: remote playback devices
     text: remote playback source
 url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
@@ -138,11 +138,12 @@ Presentation API Requirements {#requirements-presentation-api}
     capable of rendering a specific [=presentation request URL=].
 
 2.  A controller must be able to start a new [=presentation=] on a
-    receiver given a [=presentation request URL=] and [=presentation ID=].
+    receiver given a [=presentation request URL=] and [=presentation
+    identifier=].
 
 3.  A controller must be able to create a new {{PresentationConnection}} to an
     existing presentation on the receiver, given its [=presentation request
-    URL=] and [=presentation ID=].
+    URL=] and [=presentation identifier=].
 
 4.  It must be possible to close a {{PresentationConnection}} between a
     controller and a presentation, and signal both parties with the reason why
@@ -166,8 +167,8 @@ Presentation API Requirements {#requirements-presentation-api}
     `ArrayBufferView` types in ECMAScript).
 
 10. The controller must be able to signal to the receiver to
-    terminate a presentation, given its [=presentation request URL=] and [=presentation
-    ID=].
+    terminate a presentation, given its [=presentation request URL=] and
+    [=presentation identifier=].
 
 11. The receiver must be able to signal all connected controllers
     when a presentation is terminated.
@@ -839,7 +840,7 @@ To start a presentation, the controller may send a
 values:
 
 : presentation-id
-:: The presentation identifier
+:: The [=presentation identifier=]
 
 : url
 :: The selected presentation URL
@@ -850,7 +851,7 @@ values:
     the Presentation API says that the HTTP `Accept-Language` header should be
     provided.
 
-The presentation ID must follow the restrictions defined by
+The [=presentation identifier=] must follow the restrictions defined by
 [[PRESENTATION-API#common-idioms|section 6.1]] of the Presentation API, in that
 it must consist of at least 16 ASCII characters.
 
@@ -1023,8 +1024,8 @@ When [[PRESENTATION-API#starting-a-presentation-connection|section 6.3.4]] says
 "Using an implementation specific mechanism, tell U to create a receiving
 browsing context with D, presentationUrl, and I as parameters.", U (the
 controller) may send a [=presentation-start-request=] message to D
-(the receiver), with I for the presentation identifier and presentationUrl for
-the selected presentation URL.
+(the receiver), with I for the [=presentation identifier=] and presentationUrl
+for the selected presentation URL.
 
 Issue(w3c/presentation-api#471): Once the Presentation API has text about
 reconnecting via an implementation specific mechanism, quote that here and map
@@ -2459,7 +2460,7 @@ API).  This is similar to cross-origin communication via
 origin information with each message.  Therefore, the Open Screen Protocol does
 not convey origin information between its agents.
 
-The [=presentation ID=] carries some protection against unrestricted
+The [=presentation identifier=] carries some protection against unrestricted
 cross-origin access; but, rigorous authentication of the parties connected by a
 {{PresentationConnection}} must be done at the application level.
 
@@ -2472,14 +2473,15 @@ The following data exchanged by the protocol can be personally identifiable
 and/or high value data:
 
 1. Presentation URLs and availability results
-1. Presentation IDs
+1. Presentation identifiers
 1. Presentation connection IDs
 1. Presentation connection messages
 1. Remote playback URLs
 1. Remote playback commands and status messages
 
-Presentation IDs are considered high value data because they can be used in
-conjunction with a Presentation URL to connect to a running presentation.
+[=Presentation identifiers=] are considered high value data because they can be
+used in conjunction with a Presentation URL to connect to a running
+presentation.
 
 Presentation display names, model names, and capabilities, while not
 considered personally identifiable, are important to protect to prevent an
@@ -2558,8 +2560,8 @@ Presentation API Considerations {#presentation-api-considerations}
 [[PRESENTATION-API#security-and-privacy-considerations]] place these
 requirements on the Open Screen Protocol:
 
-1.  Presentation URLs and presentation IDs should remain private among the
-    parties that are allowed to connect to a presentation, per the
+1.  Presentation URLs and [=presentation identifiers=] should remain private
+    among the parties that are allowed to connect to a presentation, per the
     cross-origin access guidelines.
 1.  Controllers and receivers should be notified when connections representing
     multiple user agent profiles have been made to a presentation, per the user
