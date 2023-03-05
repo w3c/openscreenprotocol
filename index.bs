@@ -2754,7 +2754,7 @@ To encode `P` into a numeric string, follow these steps:
     * Zero-pad `N` on the left with `3 - len(N) mod 3` digits.
     * Output `N` in groups of three digits separated by dashes.
 3. If `N` has more than 9 digits:
-    * Zero-pad `N` on the left with 4 - len(N) mod 4 digits.
+    * Zero-pad `N` on the left with `4 - len(N) mod 4` digits.
     * Output `N` in groups of four digits separated by dashes.
 
 <div class="example">
