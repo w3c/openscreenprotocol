@@ -2741,7 +2741,7 @@ The following appendix describes two encoding schemes for PSKs that take a value
 code=] for display to the user.
 
 Agents should use these encoding schemes to maximize the interoperability of the
-authentication step, which typically requires the displaying the PSK on one
+authentication step, which typically requires displaying the PSK on one
 device and the user inputting it on another device.
 
 Base-10 Numeric {#appendix-c-base-10}
