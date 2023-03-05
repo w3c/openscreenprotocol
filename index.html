@@ -6,9 +6,9 @@
   <meta content="w3c/ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 26e85e599, updated Thu Dec 8 15:29:31 2022 -0800" name="generator">
+  <meta content="Bikeshed version 077497365, updated Thu Mar 2 15:15:29 2023 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="ffda33047a9347d68b106d14ce3caff29367c85f" name="document-revision">
+  <meta content="bbeb6e055224dbf01f2ef0bd28f0c4090115fca0" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -73,7 +73,6 @@
 .highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
 </style>
 <style>/* style-autolinks */
-
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
     font-size: inherit;
@@ -133,7 +132,8 @@ pre .property::before, pre .property::after {
 
 [data-link-type=biblio] {
     white-space: pre;
-}</style>
+}
+</style>
 <style>/* style-colors */
 
 /* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
@@ -242,9 +242,9 @@ pre .property::before, pre .property::after {
     --outdated-shadow: red;
 
     --editedrec-bg: darkorange;
-}</style>
+}
+</style>
 <style>/* style-counters */
-
 body {
     counter-reset: example figure issue;
 }
@@ -271,9 +271,9 @@ figcaption {
 }
 figcaption:not(.no-marker)::before {
     content: "Figure " counter(figure) " ";
-}</style>
+}
+</style>
 <style>/* style-dfn-panel */
-
 :root {
     --dfnpanel-bg: #ddd;
     --dfnpanel-text: var(--text);
@@ -281,10 +281,10 @@ figcaption:not(.no-marker)::before {
 .dfn-panel {
     position: absolute;
     z-index: 35;
-    height: auto;
-    width: -webkit-fit-content;
-    width: fit-content;
+    width: 20em;
+    min-width: min-content;
     max-width: 300px;
+    height: auto;
     max-height: 500px;
     overflow: auto;
     padding: 0.5em 0.75em;
@@ -292,6 +292,7 @@ figcaption:not(.no-marker)::before {
     background: var(--dfnpanel-bg);
     color: var(--dfnpanel-text);
     border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
 }
 .dfn-panel:not(.on) { display: none; }
 .dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
@@ -314,7 +315,6 @@ figcaption:not(.no-marker)::before {
 .dfn-paneled { cursor: pointer; }
 </style>
 <style>/* style-issues */
-
 a[href].issue-return {
     float: right;
     float: inline-end;
@@ -324,7 +324,6 @@ a[href].issue-return {
 }
 </style>
 <style>/* style-md-lists */
-
 /* This is a weird hack for me not yet following the commonmark spec
    regarding paragraph and lists. */
 [data-md] > :first-child {
@@ -332,7 +331,8 @@ a[href].issue-return {
 }
 [data-md] > :last-child {
     margin-bottom: 0;
-}</style>
+}
+</style>
 <style>/* style-selflinks */
 
 :root {
@@ -506,6 +506,7 @@ dfn > a.self-link::before      { content: "#"; }
        which is quite common in practice... */
     img { background: white; }
 }
+
 @media (prefers-color-scheme: dark) {
     :root {
         --selflink-text: black;
@@ -519,12 +520,13 @@ dfn > a.self-link::before      { content: "#"; }
         --dfnpanel-bg: #222;
         --dfnpanel-text: var(--text);
     }
-}</style>
+}
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-12-12">12 December 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-03-05">5 March 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -542,7 +544,7 @@ dfn > a.self-link::before      { content: "#"; }
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2022 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -668,6 +670,12 @@ dfn > a.self-link::before      { content: "#"; }
      </ol>
     <li><a href="#appendix-a"><span class="secno"></span> <span class="content">Appendix A: Messages</span></a>
     <li><a href="#appendix-b"><span class="secno"></span> <span class="content">Appendix B: Message Type Key Ranges</span></a>
+    <li>
+     <a href="#appendix-c"><span class="secno"></span> <span class="content">Appendix C: PSK Encoding Schemes</span></a>
+     <ol class="toc">
+      <li><a href="#appendix-c-base-10"><span class="secno"></span> <span class="content">Base-10 Numeric</span></a>
+      <li><a href="#appendix-c-qr-code"><span class="secno"></span> <span class="content">QR Code</span></a>
+     </ol>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
      <ol class="toc">
@@ -893,7 +901,7 @@ as a <a data-link-type="dfn" href="https://tools.ietf.org/html/draft-ietf-quic-t
     <dd data-md>
      <p>An alphanumeric, unguessable token consisting of characters from the set <code>[A-Za-z0-9+/]</code>.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> <code>at</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 13.5.3 Remote active network attackers</a>. <code>at</code> should have at least 32 bits of true
+   <p class="note" role="note"><span class="marker">Note:</span> <code>at</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 13.5.3 Remote active network attackers</a>. <code>at</code> should have at least 32 bits of true
 entropy to make brute force attacks impractical.</p>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
@@ -1037,7 +1045,7 @@ QUIC connection.</p>
    <p>Mandatory fields not mentioned above should be set according to <a data-link-type="biblio" href="#biblio-rfc5280" title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</a>.</p>
    <p>The value <code>&lt;fp></code> above should be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a> (as
 serialized in mDNS TXT).</p>
-   <p class="note" role="note"><span>Note:</span> The OSP agent may use the implementer or device model name as the value
+   <p class="note" role="note"><span class="marker">Note:</span> The OSP agent may use the implementer or device model name as the value
 for the <code>O</code> key for user interface and debugging purposes. It may use the agent
 implementer’s or device manufacturer’s location as the value for the location
 keys (<code>L</code>, <code>ST</code>, and <code>C</code>) for user interface and debugging purposes.</p>
@@ -1117,7 +1125,7 @@ protocol.</p>
     <dd data-md>
      <p>The agent can send streaming using the streaming protocol.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> See the <a href="https://w3c.github.io/openscreenprotocol/capabilities.html">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
+   <p class="note" role="note"><span class="marker">Note:</span> See the <a href="https://w3c.github.io/openscreenprotocol/capabilities.html">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
 through <a href="#protocol-extensions">§ 12 Protocol Extensions</a>).</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
@@ -1217,6 +1225,7 @@ field, and at least as many bits of entropy as it sends in this field.</p>
 QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.</p>
+   <p>Appendix <a href="#appendix-c">Appendix C: PSK Encoding Schemes</a> describes two encoding schemes for PSKs that agents may support to produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-9cd012e1c8334b92e4c21f66da723b1a">QR code</a> for display to the user.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
    <p class="issue" id="issue-3b9ff3bd"><a class="self-link" href="#issue-3b9ff3bd"></a> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a></p>
    <p class="issue" id="issue-dc398825"><a class="self-link" href="#issue-dc398825"></a> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a></p>
@@ -1243,7 +1252,6 @@ is not stored in any form.</p>
    <p>This authentication method assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.</p>
-   <p class="issue" id="issue-619e4cec"><a class="self-link" href="#issue-619e4cec"></a> [Security] Describe encoding/decoding of PSK into numeric and QR codes. <a href="https://github.com/w3c/openscreenprotocol/issues/210">[Issue #210]</a></p>
    <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.</p>
    <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
@@ -1461,14 +1469,14 @@ to that presentation with the values:</p>
     <dd data-md>
      <p>The number of open presentation connections that remain.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> When an agent closes a presentation connection, it is always successful,
+   <p class="note" role="note"><span class="marker">Note:</span> When an agent closes a presentation connection, it is always successful,
 so request and response messages are not needed.  A request to terminate a
 presentation may succeed or fail, so a response message is required.</p>
    <h3 class="heading settled" data-level="7.1" id="presentation-api"><span class="secno">7.1. </span><span class="content">Presentation API</span><a class="self-link" href="#presentation-api"></a></h3>
    <p>An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑤">Open Screen Protocol agent</a> that is a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent①">controlling user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api" title="Presentation API">Presentation API</a> must support the <code>control-presentation</code> capability.
 An <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑥">OSP agent</a> that is a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent①">receiving user agent</a> for the <a data-link-type="biblio" href="#biblio-presentation-api" title="Presentation API">Presentation API</a> must support the <code>receive-presentation</code> capability.
 The same OSP agent may be a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent" id="ref-for-dfn-controlling-user-agent②">controlling user agent</a> and a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent" id="ref-for-dfn-receiving-user-agent②">receiving user agent</a>.</p>
-   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent④">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent③">listening agent</a> during discovery and connection establishment.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent④">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent③">listening agent</a> during discovery and connection establishment.</p>
    <p>This is how the <a data-link-type="biblio" href="#biblio-presentation-api" title="Presentation API">Presentation API</a> uses the <a href="#presentation-protocol">§ 7 Presentation Protocol</a>:</p>
    <p>When <a href="https://w3c.github.io/presentation-api/#the-list-of-available-presentation-displays">section
 6.4.2</a> says "This list of presentation displays ... is populated based on an
@@ -1587,7 +1595,7 @@ values:</p>
      <p>An identifier for this remote playback.  It should be universally unique
 among all remote playbacks.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> A version 4 (pseudorandom) <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a> is recommended as it meets the
+   <p class="note" role="note"><span class="marker">Note:</span> A version 4 (pseudorandom) <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a> is recommended as it meets the
 requirements for a remote-playback-id.</p>
    <dl>
     <dt data-md>sources
@@ -2096,7 +2104,7 @@ which includes a <a data-link-type="dfn" href="#time-scale" id="ref-for-time-sca
 remoting.</p>
    <p>An an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑧">OSP agent</a> that is a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices①">remote playback device</a> for the <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> must support the <code>receive-remote-playback</code> capability.  It may support the <code>receive-streaming</code> capability so it can receive <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑧">HTMLMediaElement</a></code> data through media remoting.</p>
    <p>The same OSP agent may implement both the <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> and be a <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices" id="ref-for-dfn-remote-playback-devices②">remote playback device</a> for that API.</p>
-   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑤">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent④">listening agent</a> during discovery and connection establishment.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑤">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent④">listening agent</a> during discovery and connection establishment.</p>
    <p>This is how the <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> uses the
 messages defined in <a href="#remote-playback-protocol">§ 9 Remote Playback Protocol</a>:</p>
    <p>When <a href="https://w3c.github.io/remote-playback/#the-list-of-available-remote-playback-devices">section
@@ -2133,7 +2141,7 @@ media from a <a data-link-type="dfn" href="#media-sender" id="ref-for-media-send
    <p>If an <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent⑨">Open Screen Protocol agent</a> is a media sender, it must advertise the <code>send-streaming</code> capability.  If an OSP agent is a media receiver, it must
 advertise the <code>receive-streaming</code> capability.  The same agent may be a media
 sender and a media receiver.</p>
-   <p class="note" role="note"><span>Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑥">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent⑤">listening agent</a> during discovery and connection establishment.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> These roles are independent of which agent was the <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent⑥">advertising agent</a> or the <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent⑤">listening agent</a> during discovery and connection establishment.</p>
    <h3 class="heading settled" data-level="10.1" id="streaming-protocol-capabilities"><span class="secno">10.1. </span><span class="content">Streaming Protocol Capabilities</span><a class="self-link" href="#streaming-protocol-capabilities"></a></h3>
     If the advertiser is already authenticated, the requester has the ability to
 request additional information by sending an <a data-link-type="dfn" href="#streaming-capabilities-request" id="ref-for-streaming-capabilities-request">streaming-capabilities-request</a> message, and receive back a <a data-link-type="dfn" href="#streaming-capabilities-response" id="ref-for-streaming-capabilities-response">streaming-capabilities-response</a> message with the
@@ -2712,11 +2720,11 @@ advertising a new <code>state-token</code>), it should discard any requests, res
 watches and events for that agent.</p>
    <p>Other IDs that must be unique and would cause confusion if one side
 loses state, such as <code>streaming-session-id</code>, <code>media-session-id</code>, and <code>encoding-id</code> should be treated the same.</p>
-   <p class="note" role="note"><span>Note:</span> Request and watch IDs are not tied to any particular QUIC connection
+   <p class="note" role="note"><span class="marker">Note:</span> Request and watch IDs are not tied to any particular QUIC connection
 between agents.  If a QUIC connection is closed, an agent should not discard
 requests, responses, watches, or events related to the other party.  This allows
 agents to save power by closing unused connections.</p>
-   <p class="note" role="note"><span>Note:</span> Request and watch IDs are not unique across agents.  An agent can combine
+   <p class="note" role="note"><span class="marker">Note:</span> Request and watch IDs are not unique across agents.  An agent can combine
 a request ID with a unique identifier for the agent that sent it (like its
 certificate fingerprint) to track requests across multiple agents.</p>
    <h2 class="heading settled" data-level="12" id="protocol-extensions"><span class="secno">12. </span><span class="content">Protocol Extensions</span><a class="self-link" href="#protocol-extensions"></a></h2>
@@ -2729,11 +2737,11 @@ Agents may then indicate that they accept an extension by including the
 corresponding capability ID in the <code>capabilities</code> field of its <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info⑤">agent-info</a> message.</p>
    <p>Capability IDs 1-999 are reserved for use by the Open Screen Protocol.
 Capability IDs 1000 and above are available for extensions.  See <a href="#appendix-b">Appendix B: Message Type Key Ranges</a> for legal ranges for extension message type keys.</p>
-   <p class="note" role="note"><span>Note:</span> The purpose of the public registry is to prevent conflicts between
+   <p class="note" role="note"><span class="marker">Note:</span> The purpose of the public registry is to prevent conflicts between
 multiple extension authors' capability IDs and message type keys.</p>
    <p>Agents must not send extension messages to another agent that has not advertised
 the corresponding extension capability ID.</p>
-   <p class="note" role="note"><span>Note:</span> See <a href="#messages">§ 5 Messages delivery using CBOR and QUIC streams</a> for how agents handle unknown message type keys.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> See <a href="#messages">§ 5 Messages delivery using CBOR and QUIC streams</a> for how agents handle unknown message type keys.</p>
    <p>It is recommended that extension messages are also encoded in CBOR, to simplify
 implementations and provide an easier path to standardization of extension
 protocols.  However, this is not required; agents that support non-CBOR
@@ -3840,6 +3848,72 @@ extensions.</p>
       <td>>= 2<sup>30</sup>
       <td>Reserved for future use
    </table>
+   <h2 class="heading settled" id="appendix-c"><span class="content">Appendix C: PSK Encoding Schemes</span><a class="self-link" href="#appendix-c"></a></h2>
+   <p>The following appendix describes two encoding schemes for PSKs that take a value <code>P</code> between 20 bits and 80 bits in length and produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-9cd012e1c8334b92e4c21f66da723b1a①">QR
+code</a> for display to the user.</p>
+   <p>Agents should use these encoding schemes to maximize the interoperability of the
+authentication step, which typically requires displaying the PSK on one
+device and the user inputting it on another device.</p>
+   <h3 class="heading settled" id="appendix-c-base-10"><span class="content">Base-10 Numeric</span><a class="self-link" href="#appendix-c-base-10"></a></h3>
+   <p>To encode <code>P</code> into a numeric string, follow these steps:</p>
+   <ol>
+    <li data-md>
+     <p>Convert <code>P</code> to a base-10 integer <code>N</code>.</p>
+    <li data-md>
+     <p>If <code>N</code> has fewer than 9 digits:</p>
+     <ul>
+      <li data-md>
+       <p>Zero-pad <code>N</code> on the left with <code>3 - len(N) mod 3</code> digits.</p>
+      <li data-md>
+       <p>Output <code>N</code> in groups of three digits separated by dashes.</p>
+     </ul>
+    <li data-md>
+     <p>If <code>N</code> has more than 9 digits:</p>
+     <ul>
+      <li data-md>
+       <p>Zero-pad <code>N</code> on the left with <code>4 - len(N) mod 4</code> digits.</p>
+      <li data-md>
+       <p>Output <code>N</code> in groups of four digits separated by dashes.</p>
+     </ul>
+   </ol>
+   <div class="example" id="example-7640121e"><a class="self-link" href="#example-7640121e"></a> For PSK <code>61488548833</code>, the steps would produce the string <code>0614-8854-8833</code>. </div>
+   <p>To decode a string <code>N</code> into a PSK <code>P</code>, follow these steps:</p>
+   <ol>
+    <li data-md>
+     <p>Remove dashes and leading zeros from <code>N</code>.</p>
+    <li data-md>
+     <p>Parse <code>N</code> as a base-10 decimal number to obtain <code>P</code>.</p>
+   </ol>
+   <p class="note" role="note"><span class="marker">Note:</span> <code>P</code> values between approximately 2^30 and 2^40 will produce values between
+10 and 12 digits in length.  Values over 12 digits are inconvenient to input
+and have limited additional security value.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> We do not allow the use of hexadecimal encoding here, because it would
+be ambiguous with base-10 numeric encodings, and not all devices may support
+alphanumeric input.</p>
+   <h3 class="heading settled" id="appendix-c-qr-code"><span class="content">QR Code</span><a class="self-link" href="#appendix-c-qr-code"></a></h3>
+   <p>To encode a PSK into a QR code, follow these steps:</p>
+   <ol>
+    <li data-md>
+     <p>Set <code>N</code> to the value of <code>P</code> converted to an ASCII-encoded, hexadecimal string.</p>
+    <li data-md>
+     <p>Construct a text <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-9cd012e1c8334b92e4c21f66da723b1a②">QR code</a> with the value of <code>N</code>.</p>
+   </ol>
+   <div class="example" id="example-9c4041cf">
+    <a class="self-link" href="#example-9c4041cf"></a> For PSK <code>61488548833</code>, the steps would produce the following QR code: 
+    <p>
+     <svg height="20%" stroke="none" version="1.1" viewBox="0 0 29 29" width="20%" xmlns="http://www.w3.org/2000/svg">
+      <rect fill="#FFFFFF" height="100%" width="100%"></rect>
+      <path d="M4,4h1v1h-1z M5,4h1v1h-1z M6,4h1v1h-1z M7,4h1v1h-1z M8,4h1v1h-1z M9,4h1v1h-1z M10,4h1v1h-1z M12,4h1v1h-1z M18,4h1v1h-1z M19,4h1v1h-1z M20,4h1v1h-1z M21,4h1v1h-1z M22,4h1v1h-1z M23,4h1v1h-1z M24,4h1v1h-1z M4,5h1v1h-1z M10,5h1v1h-1z M14,5h1v1h-1z M16,5h1v1h-1z M18,5h1v1h-1z M24,5h1v1h-1z M4,6h1v1h-1z M6,6h1v1h-1z M7,6h1v1h-1z M8,6h1v1h-1z M10,6h1v1h-1z M14,6h1v1h-1z M16,6h1v1h-1z M18,6h1v1h-1z M20,6h1v1h-1z M21,6h1v1h-1z M22,6h1v1h-1z M24,6h1v1h-1z M4,7h1v1h-1z M6,7h1v1h-1z M7,7h1v1h-1z M8,7h1v1h-1z M10,7h1v1h-1z M12,7h1v1h-1z M18,7h1v1h-1z M20,7h1v1h-1z M21,7h1v1h-1z M22,7h1v1h-1z M24,7h1v1h-1z M4,8h1v1h-1z M6,8h1v1h-1z M7,8h1v1h-1z M8,8h1v1h-1z M10,8h1v1h-1z M13,8h1v1h-1z M15,8h1v1h-1z M18,8h1v1h-1z M20,8h1v1h-1z M21,8h1v1h-1z M22,8h1v1h-1z M24,8h1v1h-1z M4,9h1v1h-1z M10,9h1v1h-1z M13,9h1v1h-1z M15,9h1v1h-1z M16,9h1v1h-1z M18,9h1v1h-1z M24,9h1v1h-1z M4,10h1v1h-1z M5,10h1v1h-1z M6,10h1v1h-1z M7,10h1v1h-1z M8,10h1v1h-1z M9,10h1v1h-1z M10,10h1v1h-1z M12,10h1v1h-1z M14,10h1v1h-1z M16,10h1v1h-1z M18,10h1v1h-1z M19,10h1v1h-1z M20,10h1v1h-1z M21,10h1v1h-1z M22,10h1v1h-1z M23,10h1v1h-1z M24,10h1v1h-1z M15,11h1v1h-1z M16,11h1v1h-1z M6,12h1v1h-1z M8,12h1v1h-1z M9,12h1v1h-1z M10,12h1v1h-1z M12,12h1v1h-1z M15,12h1v1h-1z M16,12h1v1h-1z M17,12h1v1h-1z M21,12h1v1h-1z M24,12h1v1h-1z M4,13h1v1h-1z M6,13h1v1h-1z M8,13h1v1h-1z M9,13h1v1h-1z M11,13h1v1h-1z M14,13h1v1h-1z M15,13h1v1h-1z M18,13h1v1h-1z M19,13h1v1h-1z M21,13h1v1h-1z M24,13h1v1h-1z M4,14h1v1h-1z M5,14h1v1h-1z M7,14h1v1h-1z M8,14h1v1h-1z M10,14h1v1h-1z M11,14h1v1h-1z M13,14h1v1h-1z M14,14h1v1h-1z M15,14h1v1h-1z M16,14h1v1h-1z M17,14h1v1h-1z M20,14h1v1h-1z M22,14h1v1h-1z M5,15h1v1h-1z M7,15h1v1h-1z M9,15h1v1h-1z M11,15h1v1h-1z M12,15h1v1h-1z M13,15h1v1h-1z M14,15h1v1h-1z M17,15h1v1h-1z M19,15h1v1h-1z M24,15h1v1h-1z M4,16h1v1h-1z M6,16h1v1h-1z M7,16h1v1h-1z M9,16h1v1h-1z M10,16h1v1h-1z M11,16h1v1h-1z M13,16h1v1h-1z M16,16h1v1h-1z M17,16h1v1h-1z M20,16h1v1h-1z M21,16h1v1h-1z M22,16h1v1h-1z M23,16h1v1h-1z M24,16h1v1h-1z M12,17h1v1h-1z M13,17h1v1h-1z M14,17h1v1h-1z M15,17h1v1h-1z M16,17h1v1h-1z M17,17h1v1h-1z M19,17h1v1h-1z M20,17h1v1h-1z M21,17h1v1h-1z M22,17h1v1h-1z M23,17h1v1h-1z M24,17h1v1h-1z M4,18h1v1h-1z M5,18h1v1h-1z M6,18h1v1h-1z M7,18h1v1h-1z M8,18h1v1h-1z M9,18h1v1h-1z M10,18h1v1h-1z M13,18h1v1h-1z M14,18h1v1h-1z M15,18h1v1h-1z M16,18h1v1h-1z M18,18h1v1h-1z M20,18h1v1h-1z M4,19h1v1h-1z M10,19h1v1h-1z M12,19h1v1h-1z M13,19h1v1h-1z M17,19h1v1h-1z M18,19h1v1h-1z M19,19h1v1h-1z M21,19h1v1h-1z M23,19h1v1h-1z M4,20h1v1h-1z M6,20h1v1h-1z M7,20h1v1h-1z M8,20h1v1h-1z M10,20h1v1h-1z M12,20h1v1h-1z M13,20h1v1h-1z M15,20h1v1h-1z M16,20h1v1h-1z M18,20h1v1h-1z M22,20h1v1h-1z M23,20h1v1h-1z M24,20h1v1h-1z M4,21h1v1h-1z M6,21h1v1h-1z M7,21h1v1h-1z M8,21h1v1h-1z M10,21h1v1h-1z M13,21h1v1h-1z M14,21h1v1h-1z M15,21h1v1h-1z M16,21h1v1h-1z M18,21h1v1h-1z M19,21h1v1h-1z M20,21h1v1h-1z M21,21h1v1h-1z M23,21h1v1h-1z M4,22h1v1h-1z M6,22h1v1h-1z M7,22h1v1h-1z M8,22h1v1h-1z M10,22h1v1h-1z M12,22h1v1h-1z M14,22h1v1h-1z M17,22h1v1h-1z M18,22h1v1h-1z M19,22h1v1h-1z M21,22h1v1h-1z M24,22h1v1h-1z M4,23h1v1h-1z M10,23h1v1h-1z M14,23h1v1h-1z M15,23h1v1h-1z M18,23h1v1h-1z M20,23h1v1h-1z M21,23h1v1h-1z M23,23h1v1h-1z M24,23h1v1h-1z M4,24h1v1h-1z M5,24h1v1h-1z M6,24h1v1h-1z M7,24h1v1h-1z M8,24h1v1h-1z M9,24h1v1h-1z M10,24h1v1h-1z M15,24h1v1h-1z M17,24h1v1h-1z M19,24h1v1h-1z M22,24h1v1h-1z M24,24h1v1h-1z" fill="#000000"></path>
+     </svg>
+    </p>
+   </div>
+   <p>To decode a PSK <code>P</code> given a QR code, follow these steps:</p>
+   <ol>
+    <li data-md>
+     <p>Obtain the string <code>N</code> by decoding the QR code.</p>
+    <li data-md>
+     <p>Parse <code>N</code> as a hexadecimal number to obtain <code>P</code>.</p>
+   </ol>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -3957,14 +4031,14 @@ extensions.</p>
    <li><a href="#video-encoding-offer">video-encoding-offer</a><span>, in § Unnumbered section</span>
    <li><a href="#video-frame">video-frame</a><span>, in § Unnumbered section</span>
   </ul>
-  <aside class="dfn-panel" data-for="term-for-dom-media-have_nothing">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing">https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-be9994344cc1aef8dbdaa51089f09c33" class="dfn-panel" data-for="be9994344cc1aef8dbdaa51089f09c33" id="infopanel-for-be9994344cc1aef8dbdaa51089f09c33">
+   <span id="infopaneltitle-for-be9994344cc1aef8dbdaa51089f09c33" style="display:none">Info about the 'HAVE_NOTHING' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing">https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-have_nothing">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-htmlmediaelement">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-40d5fac945f5ce2182dfffedab9a3af5" class="dfn-panel" data-for="40d5fac945f5ce2182dfffedab9a3af5" id="infopanel-for-40d5fac945f5ce2182dfffedab9a3af5">
+   <span id="infopaneltitle-for-40d5fac945f5ce2182dfffedab9a3af5" style="display:none">Info about the 'HTMLMediaElement' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement">https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-htmlmediaelement">2.3. Remote Playback API Requirements</a> <a href="#ref-for-htmlmediaelement①">(2)</a> <a href="#ref-for-htmlmediaelement②">(3)</a> <a href="#ref-for-htmlmediaelement③">(4)</a> <a href="#ref-for-htmlmediaelement④">(5)</a>
     <li><a href="#ref-for-htmlmediaelement⑤">9. Remote Playback Protocol</a>
@@ -3972,297 +4046,305 @@ extensions.</p>
     <li><a href="#ref-for-htmlmediaelement⑦">9.2. Remote Playback API</a> <a href="#ref-for-htmlmediaelement⑧">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-network_empty">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty">https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-290f3d9ecf3faba766a2be8a178c0047" class="dfn-panel" data-for="290f3d9ecf3faba766a2be8a178c0047" id="infopanel-for-290f3d9ecf3faba766a2be8a178c0047">
+   <span id="infopaneltitle-for-290f3d9ecf3faba766a2be8a178c0047" style="display:none">Info about the 'NETWORK_EMPTY' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty">https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-network_empty">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-addtexttrack">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack">https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-2d220dd9b816dbafd84134027ce13ced" class="dfn-panel" data-for="2d220dd9b816dbafd84134027ce13ced" id="infopanel-for-2d220dd9b816dbafd84134027ce13ced">
+   <span id="infopaneltitle-for-2d220dd9b816dbafd84134027ce13ced" style="display:none">Info about the 'addTextTrack(kind, label, language)' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack">https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-addtexttrack">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-audiotracks">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-f73f5a20030697c13096ded5d3dfe79d" class="dfn-panel" data-for="f73f5a20030697c13096ded5d3dfe79d" id="infopanel-for-f73f5a20030697c13096ded5d3dfe79d">
+   <span id="infopaneltitle-for-f73f5a20030697c13096ded5d3dfe79d" style="display:none">Info about the 'audioTracks' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks">https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-audiotracks">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-audiotracks①">9.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-audiotracks②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-buffered">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-545643ef6d11e88ab22ff65a162a72ce" class="dfn-panel" data-for="545643ef6d11e88ab22ff65a162a72ce" id="infopanel-for-545643ef6d11e88ab22ff65a162a72ce">
+   <span id="infopaneltitle-for-545643ef6d11e88ab22ff65a162a72ce" style="display:none">Info about the 'buffered' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered">https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-buffered">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-buffered①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-currentsrc">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-22686a917b2e6cb94d3b7b41b7da8c5f" class="dfn-panel" data-for="22686a917b2e6cb94d3b7b41b7da8c5f" id="infopanel-for-22686a917b2e6cb94d3b7b41b7da8c5f">
+   <span id="infopaneltitle-for-22686a917b2e6cb94d3b7b41b7da8c5f" style="display:none">Info about the 'currentSrc' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc">https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-currentsrc">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-currentsrc①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-currenttime">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-b7fdb8615d8917b67f7d57cce5eabaf2" class="dfn-panel" data-for="b7fdb8615d8917b67f7d57cce5eabaf2" id="infopanel-for-b7fdb8615d8917b67f7d57cce5eabaf2">
+   <span id="infopaneltitle-for-b7fdb8615d8917b67f7d57cce5eabaf2" style="display:none">Info about the 'currentTime' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime">https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-currenttime">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-currenttime①">9.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-currenttime②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-duration">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration">https://html.spec.whatwg.org/multipage/media.html#dom-media-duration</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-a61559aa87a3c4494135dba3eb6e895e" class="dfn-panel" data-for="a61559aa87a3c4494135dba3eb6e895e" id="infopanel-for-a61559aa87a3c4494135dba3eb6e895e">
+   <span id="infopaneltitle-for-a61559aa87a3c4494135dba3eb6e895e" style="display:none">Info about the 'duration' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration">https://html.spec.whatwg.org/multipage/media.html#dom-media-duration</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-duration">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-duration①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-ended">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">https://html.spec.whatwg.org/multipage/media.html#dom-media-ended</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-89901f7823db9307fd29dab661d969d7" class="dfn-panel" data-for="89901f7823db9307fd29dab661d969d7" id="infopanel-for-89901f7823db9307fd29dab661d969d7">
+   <span id="infopaneltitle-for-89901f7823db9307fd29dab661d969d7" style="display:none">Info about the 'ended' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-ended">https://html.spec.whatwg.org/multipage/media.html#dom-media-ended</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-ended">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-ended①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-error">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error">https://html.spec.whatwg.org/multipage/media.html#dom-media-error</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-5a84abe737b0dcdf6656db7c636c7339" class="dfn-panel" data-for="5a84abe737b0dcdf6656db7c636c7339" id="infopanel-for-5a84abe737b0dcdf6656db7c636c7339">
+   <span id="infopaneltitle-for-5a84abe737b0dcdf6656db7c636c7339" style="display:none">Info about the 'error' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-error">https://html.spec.whatwg.org/multipage/media.html#dom-media-error</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-error">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-error①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-fastseek">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek">https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-cd28e0562c0a200bb0ce23e61de08b27" class="dfn-panel" data-for="cd28e0562c0a200bb0ce23e61de08b27" id="infopanel-for-cd28e0562c0a200bb0ce23e61de08b27">
+   <span id="infopaneltitle-for-cd28e0562c0a200bb0ce23e61de08b27" style="display:none">Info about the 'fastSeek(time)' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek">https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-fastseek">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-fastseek①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-getstartdate">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate">https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-8b027a6a803ecb2a8451b2ce74330eee" class="dfn-panel" data-for="8b027a6a803ecb2a8451b2ce74330eee" id="infopanel-for-8b027a6a803ecb2a8451b2ce74330eee">
+   <span id="infopaneltitle-for-8b027a6a803ecb2a8451b2ce74330eee" style="display:none">Info about the 'getStartDate()' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate">https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-getstartdate">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-loop">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop">https://html.spec.whatwg.org/multipage/media.html#dom-media-loop</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-30b45f5aace1a8ab9a8a93b9939ff987" class="dfn-panel" data-for="30b45f5aace1a8ab9a8a93b9939ff987" id="infopanel-for-30b45f5aace1a8ab9a8a93b9939ff987">
+   <span id="infopaneltitle-for-30b45f5aace1a8ab9a8a93b9939ff987" style="display:none">Info about the 'loop' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-loop">https://html.spec.whatwg.org/multipage/media.html#dom-media-loop</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-loop">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-media-element">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#media-element">https://html.spec.whatwg.org/multipage/media.html#media-element</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-90b73a6ba3e525f0b52f54c60033d65e" class="dfn-panel" data-for="90b73a6ba3e525f0b52f54c60033d65e" id="infopanel-for-90b73a6ba3e525f0b52f54c60033d65e">
+   <span id="infopaneltitle-for-90b73a6ba3e525f0b52f54c60033d65e" style="display:none">Info about the 'media elements' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#media-element">https://html.spec.whatwg.org/multipage/media.html#media-element</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-media-element">1. Introduction</a>
     <li><a href="#ref-for-media-element①">1.1. Terminology</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-concept-mediaerror-code">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code">https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-ae6bbe09a533212397768ff22c20c25e" class="dfn-panel" data-for="ae6bbe09a533212397768ff22c20c25e" id="infopanel-for-ae6bbe09a533212397768ff22c20c25e">
+   <span id="infopaneltitle-for-ae6bbe09a533212397768ff22c20c25e" style="display:none">Info about the 'media error code' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code">https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-concept-mediaerror-code">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-media-resource">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#media-resource">https://html.spec.whatwg.org/multipage/media.html#media-resource</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-4c686b03e8f9e644ceab07571e2c5b2d" class="dfn-panel" data-for="4c686b03e8f9e644ceab07571e2c5b2d" id="infopanel-for-4c686b03e8f9e644ceab07571e2c5b2d">
+   <span id="infopaneltitle-for-4c686b03e8f9e644ceab07571e2c5b2d" style="display:none">Info about the 'media resource' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#media-resource">https://html.spec.whatwg.org/multipage/media.html#media-resource</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-media-resource">9. Remote Playback Protocol</a> <a href="#ref-for-media-resource①">(2)</a> <a href="#ref-for-media-resource②">(3)</a> <a href="#ref-for-media-resource③">(4)</a>
     <li><a href="#ref-for-media-resource④">9.1. Remote Playback State and Controls</a> <a href="#ref-for-media-resource⑤">(2)</a> <a href="#ref-for-media-resource⑥">(3)</a> <a href="#ref-for-media-resource⑦">(4)</a> <a href="#ref-for-media-resource⑧">(5)</a> <a href="#ref-for-media-resource⑨">(6)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-muted">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">https://html.spec.whatwg.org/multipage/media.html#dom-media-muted</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-6cc60809bff427f2d8e2b45841592d12" class="dfn-panel" data-for="6cc60809bff427f2d8e2b45841592d12" id="infopanel-for-6cc60809bff427f2d8e2b45841592d12">
+   <span id="infopaneltitle-for-6cc60809bff427f2d8e2b45841592d12" style="display:none">Info about the 'muted' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-muted">https://html.spec.whatwg.org/multipage/media.html#dom-media-muted</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-muted">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-muted①">9.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-muted②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-networkstate">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-4fc20fe37a236e79be18070d66a4bb56" class="dfn-panel" data-for="4fc20fe37a236e79be18070d66a4bb56" id="infopanel-for-4fc20fe37a236e79be18070d66a4bb56">
+   <span id="infopaneltitle-for-4fc20fe37a236e79be18070d66a4bb56" style="display:none">Info about the 'networkState' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate">https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-networkstate">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-networkstate①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-official-playback-position">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#official-playback-position">https://html.spec.whatwg.org/multipage/media.html#official-playback-position</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-73067ba9ecac501cbee3c8ebde47b510" class="dfn-panel" data-for="73067ba9ecac501cbee3c8ebde47b510" id="infopanel-for-73067ba9ecac501cbee3c8ebde47b510">
+   <span id="infopaneltitle-for-73067ba9ecac501cbee3c8ebde47b510" style="display:none">Info about the 'official playback position' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#official-playback-position">https://html.spec.whatwg.org/multipage/media.html#official-playback-position</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-official-playback-position">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-pause">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-pause">https://html.spec.whatwg.org/multipage/media.html#dom-media-pause</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-15a2ab78db09074899a135b576398ed8" class="dfn-panel" data-for="15a2ab78db09074899a135b576398ed8" id="infopanel-for-15a2ab78db09074899a135b576398ed8">
+   <span id="infopaneltitle-for-15a2ab78db09074899a135b576398ed8" style="display:none">Info about the 'pause()' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-pause">https://html.spec.whatwg.org/multipage/media.html#dom-media-pause</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-pause">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-pause①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-paused">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused">https://html.spec.whatwg.org/multipage/media.html#dom-media-paused</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-2241550aef18176add638ae063f53a77" class="dfn-panel" data-for="2241550aef18176add638ae063f53a77" id="infopanel-for-2241550aef18176add638ae063f53a77">
+   <span id="infopaneltitle-for-2241550aef18176add638ae063f53a77" style="display:none">Info about the 'paused' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-paused">https://html.spec.whatwg.org/multipage/media.html#dom-media-paused</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-paused">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-paused①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-play">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-play">https://html.spec.whatwg.org/multipage/media.html#dom-media-play</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-05bc932dac329ebfd3a86c3d9feeb156" class="dfn-panel" data-for="05bc932dac329ebfd3a86c3d9feeb156" id="infopanel-for-05bc932dac329ebfd3a86c3d9feeb156">
+   <span id="infopaneltitle-for-05bc932dac329ebfd3a86c3d9feeb156" style="display:none">Info about the 'play()' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-play">https://html.spec.whatwg.org/multipage/media.html#dom-media-play</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-play">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-play①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-playbackrate">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-0ebd847be84f04f61d1e255ed3f9a41f" class="dfn-panel" data-for="0ebd847be84f04f61d1e255ed3f9a41f" id="infopanel-for-0ebd847be84f04f61d1e255ed3f9a41f">
+   <span id="infopaneltitle-for-0ebd847be84f04f61d1e255ed3f9a41f" style="display:none">Info about the 'playbackRate' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate">https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-playbackrate">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-playbackrate①">9.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-playbackrate②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-played">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played">https://html.spec.whatwg.org/multipage/media.html#dom-media-played</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-8c21f3833ab0a584fcb352a229898f1e" class="dfn-panel" data-for="8c21f3833ab0a584fcb352a229898f1e" id="infopanel-for-8c21f3833ab0a584fcb352a229898f1e">
+   <span id="infopaneltitle-for-8c21f3833ab0a584fcb352a229898f1e" style="display:none">Info about the 'played' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-played">https://html.spec.whatwg.org/multipage/media.html#dom-media-played</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-played">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-played①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-postmessage">
-   <a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-5cb0d297de2f505fabf339355dff97bf" class="dfn-panel" data-for="5cb0d297de2f505fabf339355dff97bf" id="infopanel-for-5cb0d297de2f505fabf339355dff97bf">
+   <span id="infopaneltitle-for-5cb0d297de2f505fabf339355dff97bf" style="display:none">Info about the 'postMessage(message, targetOrigin, transfer)' external reference.</span><a href="https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage">https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-postmessage">13.1.4. Same-Origin Policy Violations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-poster-frame">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#poster-frame">https://html.spec.whatwg.org/multipage/media.html#poster-frame</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-5ae6b7afa2dfc4a7fa02cf0e580efa48" class="dfn-panel" data-for="5ae6b7afa2dfc4a7fa02cf0e580efa48" id="infopanel-for-5ae6b7afa2dfc4a7fa02cf0e580efa48">
+   <span id="infopaneltitle-for-5ae6b7afa2dfc4a7fa02cf0e580efa48" style="display:none">Info about the 'poster frame' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#poster-frame">https://html.spec.whatwg.org/multipage/media.html#poster-frame</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-poster-frame">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-preload">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload">https://html.spec.whatwg.org/multipage/media.html#dom-media-preload</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-bf50c8ef48922c05da1009bdde7fedd4" class="dfn-panel" data-for="bf50c8ef48922c05da1009bdde7fedd4" id="infopanel-for-bf50c8ef48922c05da1009bdde7fedd4">
+   <span id="infopaneltitle-for-bf50c8ef48922c05da1009bdde7fedd4" style="display:none">Info about the 'preload' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload">https://html.spec.whatwg.org/multipage/media.html#dom-media-preload</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-preload">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-readystate">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate">https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-2b56e2f37179ec70f19158993b316de8" class="dfn-panel" data-for="2b56e2f37179ec70f19158993b316de8" id="infopanel-for-2b56e2f37179ec70f19158993b316de8">
+   <span id="infopaneltitle-for-2b56e2f37179ec70f19158993b316de8" style="display:none">Info about the 'readyState' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate">https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-readystate">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-readystate①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-seekable">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable">https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-1d8f6c7d626284c737920601f5f56210" class="dfn-panel" data-for="1d8f6c7d626284c737920601f5f56210" id="infopanel-for-1d8f6c7d626284c737920601f5f56210">
+   <span id="infopaneltitle-for-1d8f6c7d626284c737920601f5f56210" style="display:none">Info about the 'seekable' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable">https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-seekable">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-seekable①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-seeking">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking">https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-e7d991b6c6275ac52b5ee3def218038b" class="dfn-panel" data-for="e7d991b6c6275ac52b5ee3def218038b" id="infopanel-for-e7d991b6c6275ac52b5ee3def218038b">
+   <span id="infopaneltitle-for-e7d991b6c6275ac52b5ee3def218038b" style="display:none">Info about the 'seeking' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking">https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-seeking">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-seeking①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-src">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src">https://html.spec.whatwg.org/multipage/media.html#dom-media-src</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-759752b89ba70ea00ec28685f858a6c8" class="dfn-panel" data-for="759752b89ba70ea00ec28685f858a6c8" id="infopanel-for-759752b89ba70ea00ec28685f858a6c8">
+   <span id="infopaneltitle-for-759752b89ba70ea00ec28685f858a6c8" style="display:none">Info about the 'src (for HTMLMediaElement)' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src">https://html.spec.whatwg.org/multipage/media.html#dom-media-src</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-src">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-attr-source-src">
-   <a href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src">https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-f510b51a8a7005b7f906b26495bbd669" class="dfn-panel" data-for="f510b51a8a7005b7f906b26495bbd669" id="infopanel-for-f510b51a8a7005b7f906b26495bbd669">
+   <span id="infopaneltitle-for-f510b51a8a7005b7f906b26495bbd669" style="display:none">Info about the 'src (for source)' external reference.</span><a href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src">https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-attr-source-src">9. Remote Playback Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-event-media-stalled">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">https://html.spec.whatwg.org/multipage/media.html#event-media-stalled</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-a110c13ceb3cb143345dd4cb28fe3e05" class="dfn-panel" data-for="a110c13ceb3cb143345dd4cb28fe3e05" id="infopanel-for-a110c13ceb3cb143345dd4cb28fe3e05">
+   <span id="infopaneltitle-for-a110c13ceb3cb143345dd4cb28fe3e05" style="display:none">Info about the 'stalled' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled">https://html.spec.whatwg.org/multipage/media.html#event-media-stalled</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-event-media-stalled">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-event-media-stalled①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-texttracks">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-cd1e6e5d25b8aed27c21f6b4c8f213eb" class="dfn-panel" data-for="cd1e6e5d25b8aed27c21f6b4c8f213eb" id="infopanel-for-cd1e6e5d25b8aed27c21f6b4c8f213eb">
+   <span id="infopaneltitle-for-cd1e6e5d25b8aed27c21f6b4c8f213eb" style="display:none">Info about the 'textTracks' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks">https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-texttracks">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-texttracks①">9.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-texttracks②">(2)</a> <a href="#ref-for-dom-media-texttracks③">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-timeline-offset">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset">https://html.spec.whatwg.org/multipage/media.html#timeline-offset</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-01c611f97e44bdc90b668e7c310e1076" class="dfn-panel" data-for="01c611f97e44bdc90b668e7c310e1076" id="infopanel-for-01c611f97e44bdc90b668e7c310e1076">
+   <span id="infopaneltitle-for-01c611f97e44bdc90b668e7c310e1076" style="display:none">Info about the 'timeline offset' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset">https://html.spec.whatwg.org/multipage/media.html#timeline-offset</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-timeline-offset">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-timeline-offset①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-attr-source-type">
-   <a href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type">https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-a1467c22a8c6582340bf56295fc41d68" class="dfn-panel" data-for="a1467c22a8c6582340bf56295fc41d68" id="infopanel-for-a1467c22a8c6582340bf56295fc41d68">
+   <span id="infopaneltitle-for-a1467c22a8c6582340bf56295fc41d68" style="display:none">Info about the 'type' external reference.</span><a href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type">https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-attr-source-type">9. Remote Playback Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-video-videoheight">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight">https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-52afcad5a0229db8c74bf0b2420482c7" class="dfn-panel" data-for="52afcad5a0229db8c74bf0b2420482c7" id="infopanel-for-52afcad5a0229db8c74bf0b2420482c7">
+   <span id="infopaneltitle-for-52afcad5a0229db8c74bf0b2420482c7" style="display:none">Info about the 'videoHeight' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight">https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-video-videoheight">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-video-videoheight①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-videotracks">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-edd6ef1987944282ba0a924a7dd84136" class="dfn-panel" data-for="edd6ef1987944282ba0a924a7dd84136" id="infopanel-for-edd6ef1987944282ba0a924a7dd84136">
+   <span id="infopaneltitle-for-edd6ef1987944282ba0a924a7dd84136" style="display:none">Info about the 'videoTracks' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks">https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-videotracks">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-videotracks①">9.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-videotracks②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-video-videowidth">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth">https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-9281d30187960a3202193cc70f521f9e" class="dfn-panel" data-for="9281d30187960a3202193cc70f521f9e" id="infopanel-for-9281d30187960a3202193cc70f521f9e">
+   <span id="infopaneltitle-for-9281d30187960a3202193cc70f521f9e" style="display:none">Info about the 'videoWidth' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth">https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-video-videowidth">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-video-videowidth①">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-media-volume">
-   <a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">https://html.spec.whatwg.org/multipage/media.html#dom-media-volume</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-3c25f640e5d8ccd3dc1d201213d0234e" class="dfn-panel" data-for="3c25f640e5d8ccd3dc1d201213d0234e" id="infopanel-for-3c25f640e5d8ccd3dc1d201213d0234e">
+   <span id="infopaneltitle-for-3c25f640e5d8ccd3dc1d201213d0234e" style="display:none">Info about the 'volume' external reference.</span><a href="https://html.spec.whatwg.org/multipage/media.html#dom-media-volume">https://html.spec.whatwg.org/multipage/media.html#dom-media-volume</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-media-volume">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-dom-media-volume①">9.1. Remote Playback State and Controls</a> <a href="#ref-for-dom-media-volume②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-presentationconnection">
-   <a href="https://w3c.github.io/presentation-api/#dom-presentationconnection">https://w3c.github.io/presentation-api/#dom-presentationconnection</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-9cd012e1c8334b92e4c21f66da723b1a" class="dfn-panel" data-for="9cd012e1c8334b92e4c21f66da723b1a" id="infopanel-for-9cd012e1c8334b92e4c21f66da723b1a">
+   <span id="infopaneltitle-for-9cd012e1c8334b92e4c21f66da723b1a" style="display:none">Info about the 'qr code' external reference.</span><a href="https://www.iso.org/standard/62021.html#">https://www.iso.org/standard/62021.html#</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-9cd012e1c8334b92e4c21f66da723b1a">6. Authentication</a>
+    <li><a href="#ref-for-9cd012e1c8334b92e4c21f66da723b1a">Appendix C: PSK Encoding Schemes</a>
+    <li><a href="#ref-for-9cd012e1c8334b92e4c21f66da723b1a">QR Code</a>
+   </ul>
+  </aside>
+  <aside aria-labelledby="infopaneltitle-for-baca5541e1aa57d51d4e80c2e6ea99f9" class="dfn-panel" data-for="baca5541e1aa57d51d4e80c2e6ea99f9" id="infopanel-for-baca5541e1aa57d51d4e80c2e6ea99f9">
+   <span id="infopaneltitle-for-baca5541e1aa57d51d4e80c2e6ea99f9" style="display:none">Info about the 'PresentationConnection' external reference.</span><a href="https://w3c.github.io/presentation-api/#dom-presentationconnection">https://w3c.github.io/presentation-api/#dom-presentationconnection</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-presentationconnection">2.2. Presentation API Requirements</a> <a href="#ref-for-dom-presentationconnection①">(2)</a>
     <li><a href="#ref-for-dom-presentationconnection②">13.1.4. Same-Origin Policy Violations</a>
     <li><a href="#ref-for-dom-presentationconnection③">13.3. Presentation API Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-available-presentation-display">
-   <a href="https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display">https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-2a4be53ef5a9bbedeffb77215b973b0d" class="dfn-panel" data-for="2a4be53ef5a9bbedeffb77215b973b0d" id="infopanel-for-2a4be53ef5a9bbedeffb77215b973b0d">
+   <span id="infopaneltitle-for-2a4be53ef5a9bbedeffb77215b973b0d" style="display:none">Info about the 'available presentation display' external reference.</span><a href="https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display">https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-available-presentation-display">7. Presentation Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-controlling-user-agent">
-   <a href="https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent">https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-f1ae0b44d21df91c111145a51d028684" class="dfn-panel" data-for="f1ae0b44d21df91c111145a51d028684" id="infopanel-for-f1ae0b44d21df91c111145a51d028684">
+   <span id="infopaneltitle-for-f1ae0b44d21df91c111145a51d028684" style="display:none">Info about the 'controlling user agent' external reference.</span><a href="https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent">https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-controlling-user-agent">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-controlling-user-agent①">7.1. Presentation API</a> <a href="#ref-for-dfn-controlling-user-agent②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-receiving-browsing-context">
-   <a href="https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context">https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-9a380bb421d67f1e1ead86e480ff5824" class="dfn-panel" data-for="9a380bb421d67f1e1ead86e480ff5824" id="infopanel-for-9a380bb421d67f1e1ead86e480ff5824">
+   <span id="infopaneltitle-for-9a380bb421d67f1e1ead86e480ff5824" style="display:none">Info about the 'presentation' external reference.</span><a href="https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context">https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-receiving-browsing-context">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-receiving-browsing-context①">2.2. Presentation API Requirements</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-presentation-identifier">
-   <a href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier">https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-8d64f0ad492e8811b2184457738f56ee" class="dfn-panel" data-for="8d64f0ad492e8811b2184457738f56ee" id="infopanel-for-8d64f0ad492e8811b2184457738f56ee">
+   <span id="infopaneltitle-for-8d64f0ad492e8811b2184457738f56ee" style="display:none">Info about the 'presentation identifier' external reference.</span><a href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier">https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-presentation-identifier">2.2. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-identifier①">(2)</a> <a href="#ref-for-dfn-presentation-identifier②">(3)</a>
     <li><a href="#ref-for-dfn-presentation-identifier③">7. Presentation Protocol</a> <a href="#ref-for-dfn-presentation-identifier④">(2)</a>
@@ -4272,161 +4354,161 @@ extensions.</p>
     <li><a href="#ref-for-dfn-presentation-identifier⑧">13.3. Presentation API Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-presentation-request-url">
-   <a href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url">https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-e5f6e8e9a1ed36ae4e1b734b22dd05ed" class="dfn-panel" data-for="e5f6e8e9a1ed36ae4e1b734b22dd05ed" id="infopanel-for-e5f6e8e9a1ed36ae4e1b734b22dd05ed">
+   <span id="infopaneltitle-for-e5f6e8e9a1ed36ae4e1b734b22dd05ed" style="display:none">Info about the 'presentation request url' external reference.</span><a href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url">https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-presentation-request-url">2.2. Presentation API Requirements</a> <a href="#ref-for-dfn-presentation-request-url①">(2)</a> <a href="#ref-for-dfn-presentation-request-url②">(3)</a> <a href="#ref-for-dfn-presentation-request-url③">(4)</a>
     <li><a href="#ref-for-dfn-presentation-request-url④">7. Presentation Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-receiving-user-agent">
-   <a href="https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent">https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-9bd636dc39153e17a59db0244ce352c5" class="dfn-panel" data-for="9bd636dc39153e17a59db0244ce352c5" id="infopanel-for-9bd636dc39153e17a59db0244ce352c5">
+   <span id="infopaneltitle-for-9bd636dc39153e17a59db0244ce352c5" style="display:none">Info about the 'receiving user agent' external reference.</span><a href="https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent">https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-receiving-user-agent">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-receiving-user-agent①">7.1. Presentation API</a> <a href="#ref-for-dfn-receiving-user-agent②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-19.19">
-   <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-19.19">https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-19.19</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-3bf902028e27c0259ac1a6ab23fc9ca3" class="dfn-panel" data-for="3bf902028e27c0259ac1a6ab23fc9ca3" id="infopanel-for-3bf902028e27c0259ac1a6ab23fc9ca3">
+   <span id="infopaneltitle-for-3bf902028e27c0259ac1a6ab23fc9ca3" style="display:none">Info about the 'connection_close frames' external reference.</span><a href="https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-19.19">https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-19.19</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-19.19">5. Messages delivery using CBOR and QUIC streams</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-18">
-   <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18">https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-f727df20e7be1659dfd0f4fc6eb0ef5b" class="dfn-panel" data-for="f727df20e7be1659dfd0f4fc6eb0ef5b" id="infopanel-for-f727df20e7be1659dfd0f4fc6eb0ef5b">
+   <span id="infopaneltitle-for-f727df20e7be1659dfd0f4fc6eb0ef5b" style="display:none">Info about the 'transport parameter encoding' external reference.</span><a href="https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18">https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-18">4.3. Metadata Discovery</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-16">
-   <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16">https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-025ea40c8bb84aa892bb50fbdd3bd1be" class="dfn-panel" data-for="025ea40c8bb84aa892bb50fbdd3bd1be" id="infopanel-for-025ea40c8bb84aa892bb50fbdd3bd1be">
+   <span id="infopaneltitle-for-025ea40c8bb84aa892bb50fbdd3bd1be" style="display:none">Info about the 'variable-length integer' external reference.</span><a href="https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16">https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-16">3. Discovery with mDNS</a>
     <li><a href="#ref-for-section-16①">5. Messages delivery using CBOR and QUIC streams</a> <a href="#ref-for-section-16②">(2)</a>
     <li><a href="#ref-for-section-16③">Appendix B: Message Type Key Ranges</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-16">
-   <a href="https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16">https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-2da8ed2b4ba18d904dddb725cc6ad98f" class="dfn-panel" data-for="2da8ed2b4ba18d904dddb725cc6ad98f" id="infopanel-for-2da8ed2b4ba18d904dddb725cc6ad98f">
+   <span id="infopaneltitle-for-2da8ed2b4ba18d904dddb725cc6ad98f" style="display:none">Info about the 'variable-length integer encoding' external reference.</span><a href="https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16">https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-16">3. Discovery with mDNS</a>
     <li><a href="#ref-for-section-16①">5. Messages delivery using CBOR and QUIC streams</a> <a href="#ref-for-section-16②">(2)</a>
     <li><a href="#ref-for-section-16③">Appendix B: Message Type Key Ranges</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-availability-sources-set">
-   <a href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set">https://w3c.github.io/remote-playback/#dfn-availability-sources-set</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-712badb06aa21772a1f50d1a338e3559" class="dfn-panel" data-for="712badb06aa21772a1f50d1a338e3559" id="infopanel-for-712badb06aa21772a1f50d1a338e3559">
+   <span id="infopaneltitle-for-712badb06aa21772a1f50d1a338e3559" style="display:none">Info about the 'availability sources set' external reference.</span><a href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set">https://w3c.github.io/remote-playback/#dfn-availability-sources-set</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-availability-sources-set">9.2. Remote Playback API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-compatible-remote-playback-device">
-   <a href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device">https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-8c8f02d92dbdbce6b7759357e75da195" class="dfn-panel" data-for="8c8f02d92dbdbce6b7759357e75da195" id="infopanel-for-8c8f02d92dbdbce6b7759357e75da195">
+   <span id="infopaneltitle-for-8c8f02d92dbdbce6b7759357e75da195" style="display:none">Info about the 'compatible remote playback device' external reference.</span><a href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device">https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-compatible-remote-playback-device">9. Remote Playback Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-initiate-remote-playback">
-   <a href="https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback">https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-fc533266b72a9ac7bec1cc960769ab2d" class="dfn-panel" data-for="fc533266b72a9ac7bec1cc960769ab2d" id="infopanel-for-fc533266b72a9ac7bec1cc960769ab2d">
+   <span id="infopaneltitle-for-fc533266b72a9ac7bec1cc960769ab2d" style="display:none">Info about the 'initiate remote playback' external reference.</span><a href="https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback">https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-initiate-remote-playback">2.3. Remote Playback API Requirements</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-media-element-state">
-   <a href="https://w3c.github.io/remote-playback/#dfn-media-element-state">https://w3c.github.io/remote-playback/#dfn-media-element-state</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-6a3851a19e50475867d8b44e392ac1dd" class="dfn-panel" data-for="6a3851a19e50475867d8b44e392ac1dd" id="infopanel-for-6a3851a19e50475867d8b44e392ac1dd">
+   <span id="infopaneltitle-for-6a3851a19e50475867d8b44e392ac1dd" style="display:none">Info about the 'media element state' external reference.</span><a href="https://w3c.github.io/remote-playback/#dfn-media-element-state">https://w3c.github.io/remote-playback/#dfn-media-element-state</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-media-element-state">2.3. Remote Playback API Requirements</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-devices">
-   <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices">https://w3c.github.io/remote-playback/#dfn-remote-playback-devices</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-204e6387f21137c36a8e27cc238770fd" class="dfn-panel" data-for="204e6387f21137c36a8e27cc238770fd" id="infopanel-for-204e6387f21137c36a8e27cc238770fd">
+   <span id="infopaneltitle-for-204e6387f21137c36a8e27cc238770fd" style="display:none">Info about the 'remote playback devices' external reference.</span><a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-devices">https://w3c.github.io/remote-playback/#dfn-remote-playback-devices</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-remote-playback-devices">1.1. Terminology</a>
     <li><a href="#ref-for-dfn-remote-playback-devices①">9.2. Remote Playback API</a> <a href="#ref-for-dfn-remote-playback-devices②">(2)</a> <a href="#ref-for-dfn-remote-playback-devices③">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-remote-playback-source">
-   <a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source">https://w3c.github.io/remote-playback/#dfn-remote-playback-source</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-4ae6533c3cf09704d7bfecca4628f89d" class="dfn-panel" data-for="4ae6533c3cf09704d7bfecca4628f89d" id="infopanel-for-4ae6533c3cf09704d7bfecca4628f89d">
+   <span id="infopaneltitle-for-4ae6533c3cf09704d7bfecca4628f89d" style="display:none">Info about the 'remote playback source' external reference.</span><a href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source">https://w3c.github.io/remote-playback/#dfn-remote-playback-source</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-remote-playback-source">9.2. Remote Playback API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-4.4">
-   <a href="https://tools.ietf.org/html/rfc4122#section-4.4">https://tools.ietf.org/html/rfc4122#section-4.4</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-a8903ba36924a239aff79e5725ddc45e" class="dfn-panel" data-for="a8903ba36924a239aff79e5725ddc45e" id="infopanel-for-a8903ba36924a239aff79e5725ddc45e">
+   <span id="infopaneltitle-for-a8903ba36924a239aff79e5725ddc45e" style="display:none">Info about the 'uuid' external reference.</span><a href="https://tools.ietf.org/html/rfc4122#section-4.4">https://tools.ietf.org/html/rfc4122#section-4.4</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-4.4">9. Remote Playback Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-4.2.1.3">
-   <a href="https://tools.ietf.org/html/rfc5280#section-4.2.1.3">https://tools.ietf.org/html/rfc5280#section-4.2.1.3</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-c70d73a6aae776a18bd0cb330e9c6ba4" class="dfn-panel" data-for="c70d73a6aae776a18bd0cb330e9c6ba4" id="infopanel-for-c70d73a6aae776a18bd0cb330e9c6ba4">
+   <span id="infopaneltitle-for-c70d73a6aae776a18bd0cb330e9c6ba4" style="display:none">Info about the 'digitalsignature' external reference.</span><a href="https://tools.ietf.org/html/rfc5280#section-4.2.1.3">https://tools.ietf.org/html/rfc5280#section-4.2.1.3</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-4.2.1.3">4.2. Agent Certificates</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-2">
-   <a href="https://tools.ietf.org/html/rfc5646#section-2">https://tools.ietf.org/html/rfc5646#section-2</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-0b0992b8be5418744d503719132e278c" class="dfn-panel" data-for="0b0992b8be5418744d503719132e278c" id="infopanel-for-0b0992b8be5418744d503719132e278c">
+   <span id="infopaneltitle-for-0b0992b8be5418744d503719132e278c" style="display:none">Info about the 'language tag' external reference.</span><a href="https://tools.ietf.org/html/rfc5646#section-2">https://tools.ietf.org/html/rfc5646#section-2</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-2">4.3. Metadata Discovery</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-3">
-   <a href="https://tools.ietf.org/html/rfc6381#section-3">https://tools.ietf.org/html/rfc6381#section-3</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-56b0d69cb3d237a7cb70ad5fc1d0e158" class="dfn-panel" data-for="56b0d69cb3d237a7cb70ad5fc1d0e158" id="infopanel-for-56b0d69cb3d237a7cb70ad5fc1d0e158">
+   <span id="infopaneltitle-for-56b0d69cb3d237a7cb70ad5fc1d0e158" style="display:none">Info about the 'codecs parameter' external reference.</span><a href="https://tools.ietf.org/html/rfc6381#section-3">https://tools.ietf.org/html/rfc6381#section-3</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-3">10.1. Streaming Protocol Capabilities</a>
     <li><a href="#ref-for-section-3①">10.2. Sessions</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-9">
-   <a href="https://tools.ietf.org/html/rfc6762#section-9">https://tools.ietf.org/html/rfc6762#section-9</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-e556cf0dbc2faa14661a54edb42c2d51" class="dfn-panel" data-for="e556cf0dbc2faa14661a54edb42c2d51" id="infopanel-for-e556cf0dbc2faa14661a54edb42c2d51">
+   <span id="infopaneltitle-for-e556cf0dbc2faa14661a54edb42c2d51" style="display:none">Info about the 'conflict resolution' external reference.</span><a href="https://tools.ietf.org/html/rfc6762#section-9">https://tools.ietf.org/html/rfc6762#section-9</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-9">3. Discovery with mDNS</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-4.1.1">
-   <a href="https://tools.ietf.org/html/rfc6763#section-4.1.1">https://tools.ietf.org/html/rfc6763#section-4.1.1</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-377dbf88ca8c0c99dfd0aa58520db615" class="dfn-panel" data-for="377dbf88ca8c0c99dfd0aa58520db615" id="infopanel-for-377dbf88ca8c0c99dfd0aa58520db615">
+   <span id="infopaneltitle-for-377dbf88ca8c0c99dfd0aa58520db615" style="display:none">Info about the 'instance name' external reference.</span><a href="https://tools.ietf.org/html/rfc6763#section-4.1.1">https://tools.ietf.org/html/rfc6763#section-4.1.1</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-4.1.1">3. Discovery with mDNS</a>
     <li><a href="#ref-for-section-4.1.1①">13.6.1. Instance and Display Names</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-7">
-   <a href="https://tools.ietf.org/html/rfc6763#section-7">https://tools.ietf.org/html/rfc6763#section-7</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-0fc81229ab3cb5590294c8c943586f84" class="dfn-panel" data-for="0fc81229ab3cb5590294c8c943586f84" id="infopanel-for-0fc81229ab3cb5590294c8c943586f84">
+   <span id="infopaneltitle-for-0fc81229ab3cb5590294c8c943586f84" style="display:none">Info about the 'service name' external reference.</span><a href="https://tools.ietf.org/html/rfc6763#section-7">https://tools.ietf.org/html/rfc6763#section-7</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-7">3. Discovery with mDNS</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-5">
-   <a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-e9360ff262a248bec2c0e592f2529057" class="dfn-panel" data-for="e9360ff262a248bec2c0e592f2529057" id="infopanel-for-e9360ff262a248bec2c0e592f2529057">
+   <span id="infopaneltitle-for-e9360ff262a248bec2c0e592f2529057" style="display:none">Info about the 'md2' external reference.</span><a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-5">
-   <a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-cc68fc917b88f5c8844bd58c3dbe296e" class="dfn-panel" data-for="cc68fc917b88f5c8844bd58c3dbe296e" id="infopanel-for-cc68fc917b88f5c8844bd58c3dbe296e">
+   <span id="infopaneltitle-for-cc68fc917b88f5c8844bd58c3dbe296e" style="display:none">Info about the 'md5' external reference.</span><a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-5">
-   <a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-37912effcfbed943ab52e38b5e1be38b" class="dfn-panel" data-for="37912effcfbed943ab52e38b5e1be38b" id="infopanel-for-37912effcfbed943ab52e38b5e1be38b">
+   <span id="infopaneltitle-for-37912effcfbed943ab52e38b5e1be38b" style="display:none">Info about the 'sha-256' external reference.</span><a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-5">
-   <a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-1a051b709d7abc763c114dcde0c8398f" class="dfn-panel" data-for="1a051b709d7abc763c114dcde0c8398f" id="infopanel-for-1a051b709d7abc763c114dcde0c8398f">
+   <span id="infopaneltitle-for-1a051b709d7abc763c114dcde0c8398f" style="display:none">Info about the 'sha-512' external reference.</span><a href="https://tools.ietf.org/html/rfc8122#section-5">https://tools.ietf.org/html/rfc8122#section-5</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-5">3. Discovery with mDNS</a> <a href="#ref-for-section-5①">(2)</a> <a href="#ref-for-section-5②">(3)</a> <a href="#ref-for-section-5③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-4.2.3">
-   <a href="https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3">https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-209ba57d51ad1ac09abd20b1838984ca" class="dfn-panel" data-for="209ba57d51ad1ac09abd20b1838984ca" id="infopanel-for-209ba57d51ad1ac09abd20b1838984ca">
+   <span id="infopaneltitle-for-209ba57d51ad1ac09abd20b1838984ca" style="display:none">Info about the 'signature scheme' external reference.</span><a href="https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3">https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-4.2.3">4.2. Agent Certificates</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-section-3">
-   <a href="https://tools.ietf.org/html/rfc8610#section-3">https://tools.ietf.org/html/rfc8610#section-3</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-68eaf19018697c0b2bfa102f10b29141" class="dfn-panel" data-for="68eaf19018697c0b2bfa102f10b29141" id="infopanel-for-68eaf19018697c0b2bfa102f10b29141">
+   <span id="infopaneltitle-for-68eaf19018697c0b2bfa102f10b29141" style="display:none">Info about the 'concise data definition language' external reference.</span><a href="https://tools.ietf.org/html/rfc8610#section-3">https://tools.ietf.org/html/rfc8610#section-3</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-section-3②">Appendix A: Messages</a>
    </ul>
@@ -4436,125 +4518,130 @@ extensions.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dom-media-have_nothing">HAVE_NOTHING</span>
-     <li><span class="dfn-paneled" id="term-for-htmlmediaelement">HTMLMediaElement</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-network_empty">NETWORK_EMPTY</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-addtexttrack">addTextTrack(kind)</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-audiotracks">audioTracks</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-buffered">buffered</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-currentsrc">currentSrc</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-currenttime">currentTime</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-duration">duration</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-ended">ended</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-error">error</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-fastseek">fastSeek(time)</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-getstartdate">getStartDate()</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-loop">loop</span>
-     <li><span class="dfn-paneled" id="term-for-media-element">media elements</span>
-     <li><span class="dfn-paneled" id="term-for-concept-mediaerror-code">media error code</span>
-     <li><span class="dfn-paneled" id="term-for-media-resource">media resource</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-muted">muted</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-networkstate">networkState</span>
-     <li><span class="dfn-paneled" id="term-for-official-playback-position">official playback position</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-pause">pause()</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-paused">paused</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-play">play()</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-playbackrate">playbackRate</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-played">played</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-postmessage">postMessage(message, targetOrigin, transfer)</span>
-     <li><span class="dfn-paneled" id="term-for-poster-frame">poster frame</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-preload">preload</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-readystate">readyState</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-seekable">seekable</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-seeking">seeking</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-src">src <small>(for HTMLMediaElement)</small></span>
-     <li><span class="dfn-paneled" id="term-for-attr-source-src">src <small>(for source)</small></span>
-     <li><span class="dfn-paneled" id="term-for-event-media-stalled">stalled</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-texttracks">textTracks</span>
-     <li><span class="dfn-paneled" id="term-for-timeline-offset">timeline offset</span>
-     <li><span class="dfn-paneled" id="term-for-attr-source-type">type</span>
-     <li><span class="dfn-paneled" id="term-for-dom-video-videoheight">videoHeight</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-videotracks">videoTracks</span>
-     <li><span class="dfn-paneled" id="term-for-dom-video-videowidth">videoWidth</span>
-     <li><span class="dfn-paneled" id="term-for-dom-media-volume">volume</span>
+     <li><span class="dfn-paneled" id="be9994344cc1aef8dbdaa51089f09c33">HAVE_NOTHING</span>
+     <li><span class="dfn-paneled" id="40d5fac945f5ce2182dfffedab9a3af5">HTMLMediaElement</span>
+     <li><span class="dfn-paneled" id="290f3d9ecf3faba766a2be8a178c0047">NETWORK_EMPTY</span>
+     <li><span class="dfn-paneled" id="2d220dd9b816dbafd84134027ce13ced">addTextTrack(kind, label, language)</span>
+     <li><span class="dfn-paneled" id="f73f5a20030697c13096ded5d3dfe79d">audioTracks</span>
+     <li><span class="dfn-paneled" id="545643ef6d11e88ab22ff65a162a72ce">buffered</span>
+     <li><span class="dfn-paneled" id="22686a917b2e6cb94d3b7b41b7da8c5f">currentSrc</span>
+     <li><span class="dfn-paneled" id="b7fdb8615d8917b67f7d57cce5eabaf2">currentTime</span>
+     <li><span class="dfn-paneled" id="a61559aa87a3c4494135dba3eb6e895e">duration</span>
+     <li><span class="dfn-paneled" id="89901f7823db9307fd29dab661d969d7">ended</span>
+     <li><span class="dfn-paneled" id="5a84abe737b0dcdf6656db7c636c7339">error</span>
+     <li><span class="dfn-paneled" id="cd28e0562c0a200bb0ce23e61de08b27">fastSeek(time)</span>
+     <li><span class="dfn-paneled" id="8b027a6a803ecb2a8451b2ce74330eee">getStartDate()</span>
+     <li><span class="dfn-paneled" id="30b45f5aace1a8ab9a8a93b9939ff987">loop</span>
+     <li><span class="dfn-paneled" id="90b73a6ba3e525f0b52f54c60033d65e">media elements</span>
+     <li><span class="dfn-paneled" id="ae6bbe09a533212397768ff22c20c25e">media error code</span>
+     <li><span class="dfn-paneled" id="4c686b03e8f9e644ceab07571e2c5b2d">media resource</span>
+     <li><span class="dfn-paneled" id="6cc60809bff427f2d8e2b45841592d12">muted</span>
+     <li><span class="dfn-paneled" id="4fc20fe37a236e79be18070d66a4bb56">networkState</span>
+     <li><span class="dfn-paneled" id="73067ba9ecac501cbee3c8ebde47b510">official playback position</span>
+     <li><span class="dfn-paneled" id="15a2ab78db09074899a135b576398ed8">pause()</span>
+     <li><span class="dfn-paneled" id="2241550aef18176add638ae063f53a77">paused</span>
+     <li><span class="dfn-paneled" id="05bc932dac329ebfd3a86c3d9feeb156">play()</span>
+     <li><span class="dfn-paneled" id="0ebd847be84f04f61d1e255ed3f9a41f">playbackRate</span>
+     <li><span class="dfn-paneled" id="8c21f3833ab0a584fcb352a229898f1e">played</span>
+     <li><span class="dfn-paneled" id="5cb0d297de2f505fabf339355dff97bf">postMessage(message, targetOrigin, transfer)</span>
+     <li><span class="dfn-paneled" id="5ae6b7afa2dfc4a7fa02cf0e580efa48">poster frame</span>
+     <li><span class="dfn-paneled" id="bf50c8ef48922c05da1009bdde7fedd4">preload</span>
+     <li><span class="dfn-paneled" id="2b56e2f37179ec70f19158993b316de8">readyState</span>
+     <li><span class="dfn-paneled" id="1d8f6c7d626284c737920601f5f56210">seekable</span>
+     <li><span class="dfn-paneled" id="e7d991b6c6275ac52b5ee3def218038b">seeking</span>
+     <li><span class="dfn-paneled" id="759752b89ba70ea00ec28685f858a6c8">src <small>(for HTMLMediaElement)</small></span>
+     <li><span class="dfn-paneled" id="f510b51a8a7005b7f906b26495bbd669">src <small>(for source)</small></span>
+     <li><span class="dfn-paneled" id="a110c13ceb3cb143345dd4cb28fe3e05">stalled</span>
+     <li><span class="dfn-paneled" id="cd1e6e5d25b8aed27c21f6b4c8f213eb">textTracks</span>
+     <li><span class="dfn-paneled" id="01c611f97e44bdc90b668e7c310e1076">timeline offset</span>
+     <li><span class="dfn-paneled" id="a1467c22a8c6582340bf56295fc41d68">type</span>
+     <li><span class="dfn-paneled" id="52afcad5a0229db8c74bf0b2420482c7">videoHeight</span>
+     <li><span class="dfn-paneled" id="edd6ef1987944282ba0a924a7dd84136">videoTracks</span>
+     <li><span class="dfn-paneled" id="9281d30187960a3202193cc70f521f9e">videoWidth</span>
+     <li><span class="dfn-paneled" id="3c25f640e5d8ccd3dc1d201213d0234e">volume</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[ISO18004]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="9cd012e1c8334b92e4c21f66da723b1a">qr code</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PRESENTATION-API]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dom-presentationconnection">PresentationConnection</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-available-presentation-display">available presentation display</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-controlling-user-agent">controlling user agent</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-receiving-browsing-context">presentation</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-presentation-identifier">presentation identifier</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-presentation-request-url">presentation request url</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-receiving-user-agent">receiving user agent</span>
+     <li><span class="dfn-paneled" id="baca5541e1aa57d51d4e80c2e6ea99f9">PresentationConnection</span>
+     <li><span class="dfn-paneled" id="2a4be53ef5a9bbedeffb77215b973b0d">available presentation display</span>
+     <li><span class="dfn-paneled" id="f1ae0b44d21df91c111145a51d028684">controlling user agent</span>
+     <li><span class="dfn-paneled" id="9a380bb421d67f1e1ead86e480ff5824">presentation</span>
+     <li><span class="dfn-paneled" id="8d64f0ad492e8811b2184457738f56ee">presentation identifier</span>
+     <li><span class="dfn-paneled" id="e5f6e8e9a1ed36ae4e1b734b22dd05ed">presentation request url</span>
+     <li><span class="dfn-paneled" id="9bd636dc39153e17a59db0244ce352c5">receiving user agent</span>
     </ul>
    <li>
     <a data-link-type="biblio">[QUIC]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-19.19">connection_close frames</span>
-     <li><span class="dfn-paneled" id="term-for-section-18">transport parameter encoding</span>
-     <li><span class="dfn-paneled" id="term-for-section-16">variable-length integer</span>
-     <li><span class="dfn-paneled" id="term-for-section-16①">variable-length integer encoding</span>
+     <li><span class="dfn-paneled" id="3bf902028e27c0259ac1a6ab23fc9ca3">connection_close frames</span>
+     <li><span class="dfn-paneled" id="f727df20e7be1659dfd0f4fc6eb0ef5b">transport parameter encoding</span>
+     <li><span class="dfn-paneled" id="025ea40c8bb84aa892bb50fbdd3bd1be">variable-length integer</span>
+     <li><span class="dfn-paneled" id="2da8ed2b4ba18d904dddb725cc6ad98f">variable-length integer encoding</span>
     </ul>
    <li>
     <a data-link-type="biblio">[REMOTE-PLAYBACK]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dfn-availability-sources-set">availability sources set</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-compatible-remote-playback-device">compatible remote playback device</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-initiate-remote-playback">initiate remote playback</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-media-element-state">media element state</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-devices">remote playback devices</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-remote-playback-source">remote playback source</span>
+     <li><span class="dfn-paneled" id="712badb06aa21772a1f50d1a338e3559">availability sources set</span>
+     <li><span class="dfn-paneled" id="8c8f02d92dbdbce6b7759357e75da195">compatible remote playback device</span>
+     <li><span class="dfn-paneled" id="fc533266b72a9ac7bec1cc960769ab2d">initiate remote playback</span>
+     <li><span class="dfn-paneled" id="6a3851a19e50475867d8b44e392ac1dd">media element state</span>
+     <li><span class="dfn-paneled" id="204e6387f21137c36a8e27cc238770fd">remote playback devices</span>
+     <li><span class="dfn-paneled" id="4ae6533c3cf09704d7bfecca4628f89d">remote playback source</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC4122]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-4.4">uuid</span>
+     <li><span class="dfn-paneled" id="a8903ba36924a239aff79e5725ddc45e">uuid</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC5280]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-4.2.1.3">digitalsignature</span>
+     <li><span class="dfn-paneled" id="c70d73a6aae776a18bd0cb330e9c6ba4">digitalsignature</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC5646]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-2">language tag</span>
+     <li><span class="dfn-paneled" id="0b0992b8be5418744d503719132e278c">language tag</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC6381]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-3">codecs parameter</span>
+     <li><span class="dfn-paneled" id="56b0d69cb3d237a7cb70ad5fc1d0e158">codecs parameter</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC6762]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-9">conflict resolution</span>
+     <li><span class="dfn-paneled" id="e556cf0dbc2faa14661a54edb42c2d51">conflict resolution</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC6763]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-4.1.1">instance name</span>
-     <li><span class="dfn-paneled" id="term-for-section-7">service name</span>
+     <li><span class="dfn-paneled" id="377dbf88ca8c0c99dfd0aa58520db615">instance name</span>
+     <li><span class="dfn-paneled" id="0fc81229ab3cb5590294c8c943586f84">service name</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC8122]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-5">md2</span>
-     <li><span class="dfn-paneled" id="term-for-section-5①">md5</span>
-     <li><span class="dfn-paneled" id="term-for-section-5②">sha-256</span>
-     <li><span class="dfn-paneled" id="term-for-section-5③">sha-512</span>
+     <li><span class="dfn-paneled" id="e9360ff262a248bec2c0e592f2529057">md2</span>
+     <li><span class="dfn-paneled" id="cc68fc917b88f5c8844bd58c3dbe296e">md5</span>
+     <li><span class="dfn-paneled" id="37912effcfbed943ab52e38b5e1be38b">sha-256</span>
+     <li><span class="dfn-paneled" id="1a051b709d7abc763c114dcde0c8398f">sha-512</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC8446]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-4.2.3">signature scheme</span>
+     <li><span class="dfn-paneled" id="209ba57d51ad1ac09abd20b1838984ca">signature scheme</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC8610]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-section-3①">concise data definition language</span>
+     <li><span class="dfn-paneled" id="68eaf19018697c0b2bfa102f10b29141">concise data definition language</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -4562,6 +4649,8 @@ extensions.</p>
   <dl>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-iso18004">[ISO18004]
+   <dd><a href="https://iso.org/standard/62021.html"><cite>Information technology — Automatic identification and data capture techniques — QR Code bar code symbology specification</cite></a>. Published. URL: <a href="https://iso.org/standard/62021.html">https://iso.org/standard/62021.html</a>
    <dt id="biblio-media-capabilities">[MEDIA-CAPABILITIES]
    <dd>Jean-Yves Avenard; Will Cassella. <a href="https://w3c.github.io/media-capabilities/"><cite>Media Capabilities</cite></a>. URL: <a href="https://w3c.github.io/media-capabilities/">https://w3c.github.io/media-capabilities/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
@@ -4621,7 +4710,6 @@ list based on hardware characteristics of agents. <a href="https://github.com/w3
    <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">[Issue #108]</a> <a class="issue-return" href="#issue-e0955a17" title="Jump to section">↵</a></div>
    <div class="issue"> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a> <a class="issue-return" href="#issue-3b9ff3bd" title="Jump to section">↵</a></div>
    <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a> <a class="issue-return" href="#issue-dc398825" title="Jump to section">↵</a></div>
-   <div class="issue"> [Security] Describe encoding/decoding of PSK into numeric and QR codes. <a href="https://github.com/w3c/openscreenprotocol/issues/210">[Issue #210]</a> <a class="issue-return" href="#issue-619e4cec" title="Jump to section">↵</a></div>
    <div class="issue"> Once the Presentation API has text about
 reconnecting via an implementation specific mechanism, quote that here and map
 it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[Issue #w3c/presentation-api#471]</a> <a class="issue-return" href="#issue-733afe74" title="Jump to section">↵</a></div>
@@ -4633,8 +4721,9 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
    <div class="issue"> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">[Issue #266]</a> <a class="issue-return" href="#issue-263f992a" title="Jump to section">↵</a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a> <a class="issue-return" href="#issue-8bf4aa9f" title="Jump to section">↵</a></div>
   </div>
-  <aside class="dfn-panel" data-for="open-screen-protocol-agent">
-   <b><a href="#open-screen-protocol-agent">#open-screen-protocol-agent</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-open-screen-protocol-agent" class="dfn-panel" data-for="open-screen-protocol-agent" id="infopanel-for-open-screen-protocol-agent">
+   <span id="infopaneltitle-for-open-screen-protocol-agent" style="display:none">Info about the 'Open Screen Protocol
+agent' definition.</span><b><a href="#open-screen-protocol-agent">#open-screen-protocol-agent</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-open-screen-protocol-agent">2.1. General Requirements</a>
     <li><a href="#ref-for-open-screen-protocol-agent①">3. Discovery with mDNS</a>
@@ -4648,8 +4737,8 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
     <li><a href="#ref-for-open-screen-protocol-agent①①">13. Security and Privacy</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="controller">
-   <b><a href="#controller">#controller</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-controller" class="dfn-panel" data-for="controller" id="infopanel-for-controller">
+   <span id="infopaneltitle-for-controller" style="display:none">Info about the 'controller' definition.</span><b><a href="#controller">#controller</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-controller">1.1. Terminology</a>
     <li><a href="#ref-for-controller①">2.2. Presentation API Requirements</a>
@@ -4657,8 +4746,8 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
     <li><a href="#ref-for-controller③">7.1. Presentation API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="receiver">
-   <b><a href="#receiver">#receiver</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-receiver" class="dfn-panel" data-for="receiver" id="infopanel-for-receiver">
+   <span id="infopaneltitle-for-receiver" style="display:none">Info about the 'receiver' definition.</span><b><a href="#receiver">#receiver</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-receiver">1.1. Terminology</a>
     <li><a href="#ref-for-receiver①">2.2. Presentation API Requirements</a>
@@ -4667,22 +4756,22 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
     <li><a href="#ref-for-receiver④">9.2. Remote Playback API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="media-sender">
-   <b><a href="#media-sender">#media-sender</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-media-sender" class="dfn-panel" data-for="media-sender" id="infopanel-for-media-sender">
+   <span id="infopaneltitle-for-media-sender" style="display:none">Info about the 'media sender' definition.</span><b><a href="#media-sender">#media-sender</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-media-sender">10. Streaming Protocol</a>
     <li><a href="#ref-for-media-sender①">10.3. Audio</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="media-receiver">
-   <b><a href="#media-receiver">#media-receiver</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-media-receiver" class="dfn-panel" data-for="media-receiver" id="infopanel-for-media-receiver">
+   <span id="infopaneltitle-for-media-receiver" style="display:none">Info about the 'media receiver' definition.</span><b><a href="#media-receiver">#media-receiver</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-media-receiver">10. Streaming Protocol</a>
     <li><a href="#ref-for-media-receiver①">10.3. Audio</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="advertising-agent">
-   <b><a href="#advertising-agent">#advertising-agent</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-advertising-agent" class="dfn-panel" data-for="advertising-agent" id="infopanel-for-advertising-agent">
+   <span id="infopaneltitle-for-advertising-agent" style="display:none">Info about the 'advertising agent' definition.</span><b><a href="#advertising-agent">#advertising-agent</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-advertising-agent">2.4. Non-Functional Requirements</a>
     <li><a href="#ref-for-advertising-agent①">4. Transport and metadata discovery with QUIC</a>
@@ -4693,14 +4782,15 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
     <li><a href="#ref-for-advertising-agent⑥">10. Streaming Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="display-name">
-   <b><a href="#display-name">#display-name</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-display-name" class="dfn-panel" data-for="display-name" id="infopanel-for-display-name">
+   <span id="infopaneltitle-for-display-name" style="display:none">Info about the 'display
+name' definition.</span><b><a href="#display-name">#display-name</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-display-name">13.2.1. Personally Identifiable Information &amp; High-Value Data</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="listening-agent">
-   <b><a href="#listening-agent">#listening-agent</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-listening-agent" class="dfn-panel" data-for="listening-agent" id="infopanel-for-listening-agent">
+   <span id="infopaneltitle-for-listening-agent" style="display:none">Info about the 'listening agent' definition.</span><b><a href="#listening-agent">#listening-agent</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-listening-agent">2.4. Non-Functional Requirements</a>
     <li><a href="#ref-for-listening-agent①">4. Transport and metadata discovery with QUIC</a>
@@ -4710,29 +4800,31 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
     <li><a href="#ref-for-listening-agent⑤">10. Streaming Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="agent-fingerprint">
-   <b><a href="#agent-fingerprint">#agent-fingerprint</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-agent-fingerprint" class="dfn-panel" data-for="agent-fingerprint" id="infopanel-for-agent-fingerprint">
+   <span id="infopaneltitle-for-agent-fingerprint" style="display:none">Info about the 'agent fingerprint' definition.</span><b><a href="#agent-fingerprint">#agent-fingerprint</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-agent-fingerprint">4.1. TLS 1.3</a>
     <li><a href="#ref-for-agent-fingerprint①">4.2. Agent Certificates</a>
     <li><a href="#ref-for-agent-fingerprint②">6.1. Authentication with SPAKE2</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="agent-certificate">
-   <b><a href="#agent-certificate">#agent-certificate</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-agent-certificate" class="dfn-panel" data-for="agent-certificate" id="infopanel-for-agent-certificate">
+   <span id="infopaneltitle-for-agent-certificate" style="display:none">Info about the 'agent
+certificate' definition.</span><b><a href="#agent-certificate">#agent-certificate</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-agent-certificate">3. Discovery with mDNS</a>
     <li><a href="#ref-for-agent-certificate①">4.2. Agent Certificates</a> <a href="#ref-for-agent-certificate②">(2)</a> <a href="#ref-for-agent-certificate③">(3)</a> <a href="#ref-for-agent-certificate④">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="certificate-algorithms">
-   <b><a href="#certificate-algorithms">#certificate-algorithms</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-certificate-algorithms" class="dfn-panel" data-for="certificate-algorithms" id="infopanel-for-certificate-algorithms">
+   <span id="infopaneltitle-for-certificate-algorithms" style="display:none">Info about the 'Agent Certificate Algorithms' definition.</span><b><a href="#certificate-algorithms">#certificate-algorithms</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-certificate-algorithms">4.2. Agent Certificates</a> <a href="#ref-for-certificate-algorithms①">(2)</a> <a href="#ref-for-certificate-algorithms②">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="time-scale">
-   <b><a href="#time-scale">#time-scale</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-time-scale" class="dfn-panel" data-for="time-scale" id="infopanel-for-time-scale">
+   <span id="infopaneltitle-for-time-scale" style="display:none">Info about the 'time
+scale' definition.</span><b><a href="#time-scale">#time-scale</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-time-scale">8. Representation Of Time</a> <a href="#ref-for-time-scale①">(2)</a>
     <li><a href="#ref-for-time-scale②">9.1. Remote Playback State and Controls</a>
@@ -4742,40 +4834,41 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
     <li><a href="#ref-for-time-scale①②">10.5. Data</a> <a href="#ref-for-time-scale①③">(2)</a> <a href="#ref-for-time-scale①④">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="suspicious-agent">
-   <b><a href="#suspicious-agent">#suspicious-agent</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-suspicious-agent" class="dfn-panel" data-for="suspicious-agent" id="infopanel-for-suspicious-agent">
+   <span id="infopaneltitle-for-suspicious-agent" style="display:none">Info about the 'suspicious
+agent' definition.</span><b><a href="#suspicious-agent">#suspicious-agent</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-suspicious-agent">13.6. User Interface Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="verified-display-name">
-   <b><a href="#verified-display-name">#verified-display-name</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-verified-display-name" class="dfn-panel" data-for="verified-display-name" id="infopanel-for-verified-display-name">
+   <span id="infopaneltitle-for-verified-display-name" style="display:none">Info about the 'verified display name' definition.</span><b><a href="#verified-display-name">#verified-display-name</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-verified-display-name">13.6.1. Instance and Display Names</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="agent-info-request">
-   <b><a href="#agent-info-request">#agent-info-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-agent-info-request" class="dfn-panel" data-for="agent-info-request" id="infopanel-for-agent-info-request">
+   <span id="infopaneltitle-for-agent-info-request" style="display:none">Info about the 'agent-info-request' definition.</span><b><a href="#agent-info-request">#agent-info-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-agent-info-request">4.3. Metadata Discovery</a> <a href="#ref-for-agent-info-request①">(2)</a>
     <li><a href="#ref-for-agent-info-request②">7.1. Presentation API</a>
     <li><a href="#ref-for-agent-info-request③">9.2. Remote Playback API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="agent-info-response">
-   <b><a href="#agent-info-response">#agent-info-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-agent-info-response" class="dfn-panel" data-for="agent-info-response" id="infopanel-for-agent-info-response">
+   <span id="infopaneltitle-for-agent-info-response" style="display:none">Info about the 'agent-info-response' definition.</span><b><a href="#agent-info-response">#agent-info-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-agent-info-response">4.3. Metadata Discovery</a> <a href="#ref-for-agent-info-response①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="agent-info-event">
-   <b><a href="#agent-info-event">#agent-info-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-agent-info-event" class="dfn-panel" data-for="agent-info-event" id="infopanel-for-agent-info-event">
+   <span id="infopaneltitle-for-agent-info-event" style="display:none">Info about the 'agent-info-event' definition.</span><b><a href="#agent-info-event">#agent-info-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-agent-info-event">4.3. Metadata Discovery</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="agent-info">
-   <b><a href="#agent-info">#agent-info</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-agent-info" class="dfn-panel" data-for="agent-info" id="infopanel-for-agent-info">
+   <span id="infopaneltitle-for-agent-info" style="display:none">Info about the 'agent-info' definition.</span><b><a href="#agent-info">#agent-info</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-agent-info">4.3. Metadata Discovery</a> <a href="#ref-for-agent-info①">(2)</a> <a href="#ref-for-agent-info②">(3)</a> <a href="#ref-for-agent-info③">(4)</a> <a href="#ref-for-agent-info④">(5)</a>
     <li><a href="#ref-for-agent-info⑤">12. Protocol Extensions</a>
@@ -4785,388 +4878,442 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
     <li><a href="#ref-for-agent-info⑨">13.6.1. Instance and Display Names</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="agent-status-request">
-   <b><a href="#agent-status-request">#agent-status-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-agent-status-request" class="dfn-panel" data-for="agent-status-request" id="infopanel-for-agent-status-request">
+   <span id="infopaneltitle-for-agent-status-request" style="display:none">Info about the 'agent-status-request' definition.</span><b><a href="#agent-status-request">#agent-status-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-agent-status-request">4.3. Metadata Discovery</a> <a href="#ref-for-agent-status-request①">(2)</a> <a href="#ref-for-agent-status-request②">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="agent-status-response">
-   <b><a href="#agent-status-response">#agent-status-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-agent-status-response" class="dfn-panel" data-for="agent-status-response" id="infopanel-for-agent-status-response">
+   <span id="infopaneltitle-for-agent-status-response" style="display:none">Info about the 'agent-status-response' definition.</span><b><a href="#agent-status-response">#agent-status-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-agent-status-response">4.3. Metadata Discovery</a> <a href="#ref-for-agent-status-response①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="auth-capabilities">
-   <b><a href="#auth-capabilities">#auth-capabilities</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-auth-capabilities" class="dfn-panel" data-for="auth-capabilities" id="infopanel-for-auth-capabilities">
+   <span id="infopaneltitle-for-auth-capabilities" style="display:none">Info about the 'auth-capabilities' definition.</span><b><a href="#auth-capabilities">#auth-capabilities</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-auth-capabilities">6. Authentication</a> <a href="#ref-for-auth-capabilities①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="auth-initiation-token">
-   <b><a href="#auth-initiation-token">#auth-initiation-token</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-auth-initiation-token" class="dfn-panel" data-for="auth-initiation-token" id="infopanel-for-auth-initiation-token">
+   <span id="infopaneltitle-for-auth-initiation-token" style="display:none">Info about the 'auth-initiation-token' definition.</span><b><a href="#auth-initiation-token">#auth-initiation-token</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-auth-initiation-token">6. Authentication</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="auth-spake2-need-psk">
-   <b><a href="#auth-spake2-need-psk">#auth-spake2-need-psk</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-auth-spake2-need-psk" class="dfn-panel" data-for="auth-spake2-need-psk" id="infopanel-for-auth-spake2-need-psk">
+   <span id="infopaneltitle-for-auth-spake2-need-psk" style="display:none">Info about the 'auth-spake2-need-psk' definition.</span><b><a href="#auth-spake2-need-psk">#auth-spake2-need-psk</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-auth-spake2-need-psk">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-spake2-need-psk①">(2)</a> <a href="#ref-for-auth-spake2-need-psk②">(3)</a> <a href="#ref-for-auth-spake2-need-psk③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="auth-spake2-handshake">
-   <b><a href="#auth-spake2-handshake">#auth-spake2-handshake</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-auth-spake2-handshake" class="dfn-panel" data-for="auth-spake2-handshake" id="infopanel-for-auth-spake2-handshake">
+   <span id="infopaneltitle-for-auth-spake2-handshake" style="display:none">Info about the 'auth-spake2-handshake' definition.</span><b><a href="#auth-spake2-handshake">#auth-spake2-handshake</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-auth-spake2-handshake">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-spake2-handshake①">(2)</a> <a href="#ref-for-auth-spake2-handshake②">(3)</a> <a href="#ref-for-auth-spake2-handshake③">(4)</a> <a href="#ref-for-auth-spake2-handshake④">(5)</a> <a href="#ref-for-auth-spake2-handshake⑤">(6)</a> <a href="#ref-for-auth-spake2-handshake⑥">(7)</a> <a href="#ref-for-auth-spake2-handshake⑦">(8)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="auth-spake2-confirmation">
-   <b><a href="#auth-spake2-confirmation">#auth-spake2-confirmation</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-auth-spake2-confirmation" class="dfn-panel" data-for="auth-spake2-confirmation" id="infopanel-for-auth-spake2-confirmation">
+   <span id="infopaneltitle-for-auth-spake2-confirmation" style="display:none">Info about the 'auth-spake2-confirmation' definition.</span><b><a href="#auth-spake2-confirmation">#auth-spake2-confirmation</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-auth-spake2-confirmation">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-spake2-confirmation①">(2)</a> <a href="#ref-for-auth-spake2-confirmation②">(3)</a> <a href="#ref-for-auth-spake2-confirmation③">(4)</a> <a href="#ref-for-auth-spake2-confirmation④">(5)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="auth-status">
-   <b><a href="#auth-status">#auth-status</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-auth-status" class="dfn-panel" data-for="auth-status" id="infopanel-for-auth-status">
+   <span id="infopaneltitle-for-auth-status" style="display:none">Info about the 'auth-status' definition.</span><b><a href="#auth-status">#auth-status</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-auth-status">6.1. Authentication with SPAKE2</a> <a href="#ref-for-auth-status①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-url-availability-request">
-   <b><a href="#presentation-url-availability-request">#presentation-url-availability-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-url-availability-request" class="dfn-panel" data-for="presentation-url-availability-request" id="infopanel-for-presentation-url-availability-request">
+   <span id="infopaneltitle-for-presentation-url-availability-request" style="display:none">Info about the 'presentation-url-availability-request' definition.</span><b><a href="#presentation-url-availability-request">#presentation-url-availability-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-url-availability-request">7. Presentation Protocol</a>
     <li><a href="#ref-for-presentation-url-availability-request①">7.1. Presentation API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-url-availability-response">
-   <b><a href="#presentation-url-availability-response">#presentation-url-availability-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-url-availability-response" class="dfn-panel" data-for="presentation-url-availability-response" id="infopanel-for-presentation-url-availability-response">
+   <span id="infopaneltitle-for-presentation-url-availability-response" style="display:none">Info about the 'presentation-url-availability-response' definition.</span><b><a href="#presentation-url-availability-response">#presentation-url-availability-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-url-availability-response">7. Presentation Protocol</a> <a href="#ref-for-presentation-url-availability-response①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-url-availability-event">
-   <b><a href="#presentation-url-availability-event">#presentation-url-availability-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-url-availability-event" class="dfn-panel" data-for="presentation-url-availability-event" id="infopanel-for-presentation-url-availability-event">
+   <span id="infopaneltitle-for-presentation-url-availability-event" style="display:none">Info about the 'presentation-url-availability-event' definition.</span><b><a href="#presentation-url-availability-event">#presentation-url-availability-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-url-availability-event">7. Presentation Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-start-request">
-   <b><a href="#presentation-start-request">#presentation-start-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-start-request" class="dfn-panel" data-for="presentation-start-request" id="infopanel-for-presentation-start-request">
+   <span id="infopaneltitle-for-presentation-start-request" style="display:none">Info about the 'presentation-start-request' definition.</span><b><a href="#presentation-start-request">#presentation-start-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-start-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-start-request①">(2)</a>
     <li><a href="#ref-for-presentation-start-request②">7.1. Presentation API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-start-response">
-   <b><a href="#presentation-start-response">#presentation-start-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-start-response" class="dfn-panel" data-for="presentation-start-response" id="infopanel-for-presentation-start-response">
+   <span id="infopaneltitle-for-presentation-start-response" style="display:none">Info about the 'presentation-start-response' definition.</span><b><a href="#presentation-start-response">#presentation-start-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-start-response">7. Presentation Protocol</a> <a href="#ref-for-presentation-start-response①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-termination-request">
-   <b><a href="#presentation-termination-request">#presentation-termination-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-termination-request" class="dfn-panel" data-for="presentation-termination-request" id="infopanel-for-presentation-termination-request">
+   <span id="infopaneltitle-for-presentation-termination-request" style="display:none">Info about the 'presentation-termination-request' definition.</span><b><a href="#presentation-termination-request">#presentation-termination-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-termination-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-termination-request①">(2)</a> <a href="#ref-for-presentation-termination-request②">(3)</a> <a href="#ref-for-presentation-termination-request③">(4)</a>
     <li><a href="#ref-for-presentation-termination-request④">7.1. Presentation API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-termination-response">
-   <b><a href="#presentation-termination-response">#presentation-termination-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-termination-response" class="dfn-panel" data-for="presentation-termination-response" id="infopanel-for-presentation-termination-response">
+   <span id="infopaneltitle-for-presentation-termination-response" style="display:none">Info about the 'presentation-termination-response' definition.</span><b><a href="#presentation-termination-response">#presentation-termination-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-termination-response">7. Presentation Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-termination-event">
-   <b><a href="#presentation-termination-event">#presentation-termination-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-termination-event" class="dfn-panel" data-for="presentation-termination-event" id="infopanel-for-presentation-termination-event">
+   <span id="infopaneltitle-for-presentation-termination-event" style="display:none">Info about the 'presentation-termination-event' definition.</span><b><a href="#presentation-termination-event">#presentation-termination-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-termination-event">7. Presentation Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-connection-open-request">
-   <b><a href="#presentation-connection-open-request">#presentation-connection-open-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-connection-open-request" class="dfn-panel" data-for="presentation-connection-open-request" id="infopanel-for-presentation-connection-open-request">
+   <span id="infopaneltitle-for-presentation-connection-open-request" style="display:none">Info about the 'presentation-connection-open-request' definition.</span><b><a href="#presentation-connection-open-request">#presentation-connection-open-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-connection-open-request">7. Presentation Protocol</a> <a href="#ref-for-presentation-connection-open-request①">(2)</a>
     <li><a href="#ref-for-presentation-connection-open-request②">7.1. Presentation API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-connection-open-response">
-   <b><a href="#presentation-connection-open-response">#presentation-connection-open-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-connection-open-response" class="dfn-panel" data-for="presentation-connection-open-response" id="infopanel-for-presentation-connection-open-response">
+   <span id="infopaneltitle-for-presentation-connection-open-response" style="display:none">Info about the 'presentation-connection-open-response' definition.</span><b><a href="#presentation-connection-open-response">#presentation-connection-open-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-connection-open-response">7. Presentation Protocol</a> <a href="#ref-for-presentation-connection-open-response①">(2)</a> <a href="#ref-for-presentation-connection-open-response②">(3)</a>
     <li><a href="#ref-for-presentation-connection-open-response③">7.1. Presentation API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-connection-close-event">
-   <b><a href="#presentation-connection-close-event">#presentation-connection-close-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-connection-close-event" class="dfn-panel" data-for="presentation-connection-close-event" id="infopanel-for-presentation-connection-close-event">
+   <span id="infopaneltitle-for-presentation-connection-close-event" style="display:none">Info about the 'presentation-connection-close-event' definition.</span><b><a href="#presentation-connection-close-event">#presentation-connection-close-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-connection-close-event">7. Presentation Protocol</a> <a href="#ref-for-presentation-connection-close-event①">(2)</a>
     <li><a href="#ref-for-presentation-connection-close-event②">7.1. Presentation API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-change-event">
-   <b><a href="#presentation-change-event">#presentation-change-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-change-event" class="dfn-panel" data-for="presentation-change-event" id="infopanel-for-presentation-change-event">
+   <span id="infopaneltitle-for-presentation-change-event" style="display:none">Info about the 'presentation-change-event' definition.</span><b><a href="#presentation-change-event">#presentation-change-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-change-event">7. Presentation Protocol</a> <a href="#ref-for-presentation-change-event①">(2)</a>
     <li><a href="#ref-for-presentation-change-event②">7.1. Presentation API</a> <a href="#ref-for-presentation-change-event③">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="presentation-connection-message">
-   <b><a href="#presentation-connection-message">#presentation-connection-message</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-presentation-connection-message" class="dfn-panel" data-for="presentation-connection-message" id="infopanel-for-presentation-connection-message">
+   <span id="infopaneltitle-for-presentation-connection-message" style="display:none">Info about the 'presentation-connection-message' definition.</span><b><a href="#presentation-connection-message">#presentation-connection-message</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-presentation-connection-message">7. Presentation Protocol</a>
     <li><a href="#ref-for-presentation-connection-message①">7.1. Presentation API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-availability-request">
-   <b><a href="#remote-playback-availability-request">#remote-playback-availability-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-availability-request" class="dfn-panel" data-for="remote-playback-availability-request" id="infopanel-for-remote-playback-availability-request">
+   <span id="infopaneltitle-for-remote-playback-availability-request" style="display:none">Info about the 'remote-playback-availability-request' definition.</span><b><a href="#remote-playback-availability-request">#remote-playback-availability-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-availability-request">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-remote-playback-availability-request①">9.2. Remote Playback API</a> <a href="#ref-for-remote-playback-availability-request②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-availability-response">
-   <b><a href="#remote-playback-availability-response">#remote-playback-availability-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-availability-response" class="dfn-panel" data-for="remote-playback-availability-response" id="infopanel-for-remote-playback-availability-response">
+   <span id="infopaneltitle-for-remote-playback-availability-response" style="display:none">Info about the 'remote-playback-availability-response' definition.</span><b><a href="#remote-playback-availability-response">#remote-playback-availability-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-availability-response">9. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-availability-response①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-availability-event">
-   <b><a href="#remote-playback-availability-event">#remote-playback-availability-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-availability-event" class="dfn-panel" data-for="remote-playback-availability-event" id="infopanel-for-remote-playback-availability-event">
+   <span id="infopaneltitle-for-remote-playback-availability-event" style="display:none">Info about the 'remote-playback-availability-event' definition.</span><b><a href="#remote-playback-availability-event">#remote-playback-availability-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-availability-event">9. Remote Playback Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-start-request">
-   <b><a href="#remote-playback-start-request">#remote-playback-start-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-start-request" class="dfn-panel" data-for="remote-playback-start-request" id="infopanel-for-remote-playback-start-request">
+   <span id="infopaneltitle-for-remote-playback-start-request" style="display:none">Info about the 'remote-playback-start-request' definition.</span><b><a href="#remote-playback-start-request">#remote-playback-start-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-start-request">9. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-start-request①">(2)</a> <a href="#ref-for-remote-playback-start-request②">(3)</a>
     <li><a href="#ref-for-remote-playback-start-request③">9.1. Remote Playback State and Controls</a> <a href="#ref-for-remote-playback-start-request④">(2)</a> <a href="#ref-for-remote-playback-start-request⑤">(3)</a> <a href="#ref-for-remote-playback-start-request⑥">(4)</a>
     <li><a href="#ref-for-remote-playback-start-request⑦">9.2. Remote Playback API</a> <a href="#ref-for-remote-playback-start-request⑧">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-start-response">
-   <b><a href="#remote-playback-start-response">#remote-playback-start-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-start-response" class="dfn-panel" data-for="remote-playback-start-response" id="infopanel-for-remote-playback-start-response">
+   <span id="infopaneltitle-for-remote-playback-start-response" style="display:none">Info about the 'remote-playback-start-response' definition.</span><b><a href="#remote-playback-start-response">#remote-playback-start-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-start-response">9. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-start-response①">(2)</a>
     <li><a href="#ref-for-remote-playback-start-response②">9.1. Remote Playback State and Controls</a> <a href="#ref-for-remote-playback-start-response③">(2)</a> <a href="#ref-for-remote-playback-start-response④">(3)</a> <a href="#ref-for-remote-playback-start-response⑤">(4)</a> <a href="#ref-for-remote-playback-start-response⑥">(5)</a> <a href="#ref-for-remote-playback-start-response⑦">(6)</a> <a href="#ref-for-remote-playback-start-response⑧">(7)</a> <a href="#ref-for-remote-playback-start-response⑨">(8)</a> <a href="#ref-for-remote-playback-start-response①⓪">(9)</a> <a href="#ref-for-remote-playback-start-response①①">(10)</a> <a href="#ref-for-remote-playback-start-response①②">(11)</a> <a href="#ref-for-remote-playback-start-response①③">(12)</a> <a href="#ref-for-remote-playback-start-response①④">(13)</a> <a href="#ref-for-remote-playback-start-response①⑤">(14)</a> <a href="#ref-for-remote-playback-start-response①⑥">(15)</a> <a href="#ref-for-remote-playback-start-response①⑦">(16)</a> <a href="#ref-for-remote-playback-start-response①⑧">(17)</a> <a href="#ref-for-remote-playback-start-response①⑨">(18)</a> <a href="#ref-for-remote-playback-start-response②⓪">(19)</a> <a href="#ref-for-remote-playback-start-response②①">(20)</a> <a href="#ref-for-remote-playback-start-response②②">(21)</a> <a href="#ref-for-remote-playback-start-response②③">(22)</a> <a href="#ref-for-remote-playback-start-response②④">(23)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-termination-request">
-   <b><a href="#remote-playback-termination-request">#remote-playback-termination-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-termination-request" class="dfn-panel" data-for="remote-playback-termination-request" id="infopanel-for-remote-playback-termination-request">
+   <span id="infopaneltitle-for-remote-playback-termination-request" style="display:none">Info about the 'remote-playback-termination-request' definition.</span><b><a href="#remote-playback-termination-request">#remote-playback-termination-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-termination-request">9. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-termination-request①">(2)</a>
     <li><a href="#ref-for-remote-playback-termination-request②">9.2. Remote Playback API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-termination-response">
-   <b><a href="#remote-playback-termination-response">#remote-playback-termination-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-termination-response" class="dfn-panel" data-for="remote-playback-termination-response" id="infopanel-for-remote-playback-termination-response">
+   <span id="infopaneltitle-for-remote-playback-termination-response" style="display:none">Info about the 'remote-playback-termination-response' definition.</span><b><a href="#remote-playback-termination-response">#remote-playback-termination-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-termination-response">9. Remote Playback Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-termination-event">
-   <b><a href="#remote-playback-termination-event">#remote-playback-termination-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-termination-event" class="dfn-panel" data-for="remote-playback-termination-event" id="infopanel-for-remote-playback-termination-event">
+   <span id="infopaneltitle-for-remote-playback-termination-event" style="display:none">Info about the 'remote-playback-termination-event' definition.</span><b><a href="#remote-playback-termination-event">#remote-playback-termination-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-termination-event">9. Remote Playback Protocol</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-modify-request">
-   <b><a href="#remote-playback-modify-request">#remote-playback-modify-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-modify-request" class="dfn-panel" data-for="remote-playback-modify-request" id="infopanel-for-remote-playback-modify-request">
+   <span id="infopaneltitle-for-remote-playback-modify-request" style="display:none">Info about the 'remote-playback-modify-request' definition.</span><b><a href="#remote-playback-modify-request">#remote-playback-modify-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-modify-request">9. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-modify-request①">(2)</a>
     <li><a href="#ref-for-remote-playback-modify-request②">9.1. Remote Playback State and Controls</a>
     <li><a href="#ref-for-remote-playback-modify-request③">9.2. Remote Playback API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-modify-response">
-   <b><a href="#remote-playback-modify-response">#remote-playback-modify-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-modify-response" class="dfn-panel" data-for="remote-playback-modify-response" id="infopanel-for-remote-playback-modify-response">
+   <span id="infopaneltitle-for-remote-playback-modify-response" style="display:none">Info about the 'remote-playback-modify-response' definition.</span><b><a href="#remote-playback-modify-response">#remote-playback-modify-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-modify-response">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-remote-playback-modify-response①">9.2. Remote Playback API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="remote-playback-state-event">
-   <b><a href="#remote-playback-state-event">#remote-playback-state-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-remote-playback-state-event" class="dfn-panel" data-for="remote-playback-state-event" id="infopanel-for-remote-playback-state-event">
+   <span id="infopaneltitle-for-remote-playback-state-event" style="display:none">Info about the 'remote-playback-state-event' definition.</span><b><a href="#remote-playback-state-event">#remote-playback-state-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-remote-playback-state-event">9. Remote Playback Protocol</a> <a href="#ref-for-remote-playback-state-event①">(2)</a> <a href="#ref-for-remote-playback-state-event②">(3)</a> <a href="#ref-for-remote-playback-state-event③">(4)</a> <a href="#ref-for-remote-playback-state-event④">(5)</a> <a href="#ref-for-remote-playback-state-event⑤">(6)</a> <a href="#ref-for-remote-playback-state-event⑥">(7)</a>
     <li><a href="#ref-for-remote-playback-state-event⑦">9.1. Remote Playback State and Controls</a>
     <li><a href="#ref-for-remote-playback-state-event⑧">9.2. Remote Playback API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="text-track-cue">
-   <b><a href="#text-track-cue">#text-track-cue</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-text-track-cue" class="dfn-panel" data-for="text-track-cue" id="infopanel-for-text-track-cue">
+   <span id="infopaneltitle-for-text-track-cue" style="display:none">Info about the 'text-track-cue' definition.</span><b><a href="#text-track-cue">#text-track-cue</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-text-track-cue">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="media-time">
-   <b><a href="#media-time">#media-time</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-media-time" class="dfn-panel" data-for="media-time" id="infopanel-for-media-time">
+   <span id="infopaneltitle-for-media-time" style="display:none">Info about the 'media-time' definition.</span><b><a href="#media-time">#media-time</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-media-time">9.1. Remote Playback State and Controls</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="audio-frame">
-   <b><a href="#audio-frame">#audio-frame</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-audio-frame" class="dfn-panel" data-for="audio-frame" id="infopanel-for-audio-frame">
+   <span id="infopaneltitle-for-audio-frame" style="display:none">Info about the 'audio-frame' definition.</span><b><a href="#audio-frame">#audio-frame</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-audio-frame">10.3. Audio</a>
     <li><a href="#ref-for-audio-frame①">12.1. Protocol Extension Fields</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="video-frame">
-   <b><a href="#video-frame">#video-frame</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-video-frame" class="dfn-panel" data-for="video-frame" id="infopanel-for-video-frame">
+   <span id="infopaneltitle-for-video-frame" style="display:none">Info about the 'video-frame' definition.</span><b><a href="#video-frame">#video-frame</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-video-frame">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-video-frame①">10.4. Video</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="data-frame">
-   <b><a href="#data-frame">#data-frame</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-data-frame" class="dfn-panel" data-for="data-frame" id="infopanel-for-data-frame">
+   <span id="infopaneltitle-for-data-frame" style="display:none">Info about the 'data-frame' definition.</span><b><a href="#data-frame">#data-frame</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-data-frame">10.5. Data</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-capabilities-request">
-   <b><a href="#streaming-capabilities-request">#streaming-capabilities-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-capabilities-request" class="dfn-panel" data-for="streaming-capabilities-request" id="infopanel-for-streaming-capabilities-request">
+   <span id="infopaneltitle-for-streaming-capabilities-request" style="display:none">Info about the 'streaming-capabilities-request' definition.</span><b><a href="#streaming-capabilities-request">#streaming-capabilities-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-capabilities-request">10.1. Streaming Protocol Capabilities</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-capabilities-response">
-   <b><a href="#streaming-capabilities-response">#streaming-capabilities-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-capabilities-response" class="dfn-panel" data-for="streaming-capabilities-response" id="infopanel-for-streaming-capabilities-response">
+   <span id="infopaneltitle-for-streaming-capabilities-response" style="display:none">Info about the 'streaming-capabilities-response' definition.</span><b><a href="#streaming-capabilities-response">#streaming-capabilities-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-capabilities-response">10.1. Streaming Protocol Capabilities</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-session-start-request">
-   <b><a href="#streaming-session-start-request">#streaming-session-start-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-session-start-request" class="dfn-panel" data-for="streaming-session-start-request" id="infopanel-for-streaming-session-start-request">
+   <span id="infopaneltitle-for-streaming-session-start-request" style="display:none">Info about the 'streaming-session-start-request' definition.</span><b><a href="#streaming-session-start-request">#streaming-session-start-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-session-start-request">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-streaming-session-start-request①">10.2. Sessions</a> <a href="#ref-for-streaming-session-start-request②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-session-start-response">
-   <b><a href="#streaming-session-start-response">#streaming-session-start-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-session-start-response" class="dfn-panel" data-for="streaming-session-start-response" id="infopanel-for-streaming-session-start-response">
+   <span id="infopaneltitle-for-streaming-session-start-response" style="display:none">Info about the 'streaming-session-start-response' definition.</span><b><a href="#streaming-session-start-response">#streaming-session-start-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-session-start-response">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-streaming-session-start-response①">10.2. Sessions</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-session-modify-request">
-   <b><a href="#streaming-session-modify-request">#streaming-session-modify-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-session-modify-request" class="dfn-panel" data-for="streaming-session-modify-request" id="infopanel-for-streaming-session-modify-request">
+   <span id="infopaneltitle-for-streaming-session-modify-request" style="display:none">Info about the 'streaming-session-modify-request' definition.</span><b><a href="#streaming-session-modify-request">#streaming-session-modify-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-session-modify-request">9. Remote Playback Protocol</a>
     <li><a href="#ref-for-streaming-session-modify-request①">10.2. Sessions</a> <a href="#ref-for-streaming-session-modify-request②">(2)</a> <a href="#ref-for-streaming-session-modify-request③">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-session-modify-response">
-   <b><a href="#streaming-session-modify-response">#streaming-session-modify-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-session-modify-response" class="dfn-panel" data-for="streaming-session-modify-response" id="infopanel-for-streaming-session-modify-response">
+   <span id="infopaneltitle-for-streaming-session-modify-response" style="display:none">Info about the 'streaming-session-modify-response' definition.</span><b><a href="#streaming-session-modify-response">#streaming-session-modify-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-session-modify-response">10.2. Sessions</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-session-terminate-request">
-   <b><a href="#streaming-session-terminate-request">#streaming-session-terminate-request</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-session-terminate-request" class="dfn-panel" data-for="streaming-session-terminate-request" id="infopanel-for-streaming-session-terminate-request">
+   <span id="infopaneltitle-for-streaming-session-terminate-request" style="display:none">Info about the 'streaming-session-terminate-request' definition.</span><b><a href="#streaming-session-terminate-request">#streaming-session-terminate-request</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-session-terminate-request">10.2. Sessions</a> <a href="#ref-for-streaming-session-terminate-request①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-session-terminate-response">
-   <b><a href="#streaming-session-terminate-response">#streaming-session-terminate-response</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-session-terminate-response" class="dfn-panel" data-for="streaming-session-terminate-response" id="infopanel-for-streaming-session-terminate-response">
+   <span id="infopaneltitle-for-streaming-session-terminate-response" style="display:none">Info about the 'streaming-session-terminate-response' definition.</span><b><a href="#streaming-session-terminate-response">#streaming-session-terminate-response</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-session-terminate-response">10.2. Sessions</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-session-terminate-event">
-   <b><a href="#streaming-session-terminate-event">#streaming-session-terminate-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-session-terminate-event" class="dfn-panel" data-for="streaming-session-terminate-event" id="infopanel-for-streaming-session-terminate-event">
+   <span id="infopaneltitle-for-streaming-session-terminate-event" style="display:none">Info about the 'streaming-session-terminate-event' definition.</span><b><a href="#streaming-session-terminate-event">#streaming-session-terminate-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-session-terminate-event">10.2. Sessions</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="audio-encoding-offer">
-   <b><a href="#audio-encoding-offer">#audio-encoding-offer</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-audio-encoding-offer" class="dfn-panel" data-for="audio-encoding-offer" id="infopanel-for-audio-encoding-offer">
+   <span id="infopaneltitle-for-audio-encoding-offer" style="display:none">Info about the 'audio-encoding-offer' definition.</span><b><a href="#audio-encoding-offer">#audio-encoding-offer</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-audio-encoding-offer">10.3. Audio</a> <a href="#ref-for-audio-encoding-offer①">(2)</a> <a href="#ref-for-audio-encoding-offer②">(3)</a> <a href="#ref-for-audio-encoding-offer③">(4)</a> <a href="#ref-for-audio-encoding-offer④">(5)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="video-encoding-offer">
-   <b><a href="#video-encoding-offer">#video-encoding-offer</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-video-encoding-offer" class="dfn-panel" data-for="video-encoding-offer" id="infopanel-for-video-encoding-offer">
+   <span id="infopaneltitle-for-video-encoding-offer" style="display:none">Info about the 'video-encoding-offer' definition.</span><b><a href="#video-encoding-offer">#video-encoding-offer</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-video-encoding-offer">10.4. Video</a> <a href="#ref-for-video-encoding-offer①">(2)</a> <a href="#ref-for-video-encoding-offer②">(3)</a> <a href="#ref-for-video-encoding-offer③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="data-encoding-offer">
-   <b><a href="#data-encoding-offer">#data-encoding-offer</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-data-encoding-offer" class="dfn-panel" data-for="data-encoding-offer" id="infopanel-for-data-encoding-offer">
+   <span id="infopaneltitle-for-data-encoding-offer" style="display:none">Info about the 'data-encoding-offer' definition.</span><b><a href="#data-encoding-offer">#data-encoding-offer</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-data-encoding-offer">10.5. Data</a> <a href="#ref-for-data-encoding-offer①">(2)</a> <a href="#ref-for-data-encoding-offer②">(3)</a> <a href="#ref-for-data-encoding-offer③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-session-sender-stats-event">
-   <b><a href="#streaming-session-sender-stats-event">#streaming-session-sender-stats-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-session-sender-stats-event" class="dfn-panel" data-for="streaming-session-sender-stats-event" id="infopanel-for-streaming-session-sender-stats-event">
+   <span id="infopaneltitle-for-streaming-session-sender-stats-event" style="display:none">Info about the 'streaming-session-sender-stats-event' definition.</span><b><a href="#streaming-session-sender-stats-event">#streaming-session-sender-stats-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-session-sender-stats-event">10.7. Stats</a> <a href="#ref-for-streaming-session-sender-stats-event①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="streaming-session-receiver-stats-event">
-   <b><a href="#streaming-session-receiver-stats-event">#streaming-session-receiver-stats-event</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-streaming-session-receiver-stats-event" class="dfn-panel" data-for="streaming-session-receiver-stats-event" id="infopanel-for-streaming-session-receiver-stats-event">
+   <span id="infopaneltitle-for-streaming-session-receiver-stats-event" style="display:none">Info about the 'streaming-session-receiver-stats-event' definition.</span><b><a href="#streaming-session-receiver-stats-event">#streaming-session-receiver-stats-event</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-streaming-session-receiver-stats-event">10.7. Stats</a> <a href="#ref-for-streaming-session-receiver-stats-event①">(2)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
-
-document.body.addEventListener("click", function(e) {
-    var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
-    // Find the dfn element or panel, if any, that was clicked on.
-    var el = e.target;
-    var target;
-    var hitALink = false;
-    while(el.parentElement) {
-        if(el.tagName == "A") {
-            // Clicking on a link in a <dfn> shouldn't summon the panel
-            hitALink = true;
-        }
-        if(el.classList.contains("dfn-paneled")) {
-            target = "dfn";
-            break;
-        }
-        if(el.classList.contains("dfn-panel")) {
-            target = "dfn-panel";
-            break;
-        }
-        el = el.parentElement;
+"use strict";
+{
+    function queryAll(sel) {
+        return [].slice.call(document.querySelectorAll(sel));
     }
-    if(target != "dfn-panel") {
+
+    // Add popup behavior to all dfns to show the corresponding dfn-panel.
+    var dfns = document.querySelectorAll('.dfn-paneled');
+    for (let dfn of dfns) { insertDfnPopupAction(dfn); }
+
+    document.body.addEventListener("click", (e) => {
+        // If not handled already, just hide all dfn panels.
+        hideAllDfnPanels();
+    });
+
+    function hideAllDfnPanels() {
         // Turn off any currently "on" or "activated" panels.
-        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
-            el.classList.remove("on");
-            el.classList.remove("activated");
-        });
-    }
-    if(target == "dfn" && !hitALink) {
-        // open the panel
-        var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
-        if(dfnPanel) {
-            dfnPanel.classList.add("on");
-            var rect = el.getBoundingClientRect();
-            dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
-            dfnPanel.style.top = window.scrollY + rect.top + "px";
-            var panelRect = dfnPanel.getBoundingClientRect();
-            var panelWidth = panelRect.right - panelRect.left;
-            if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
-                // Reposition, because the panel is overflowing
-                dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
-            }
-        } else {
-            console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
-        }
-    } else if(target == "dfn-panel") {
-        // Switch it to "activated" state, which pins it.
-        el.classList.add("activated");
-        el.style.left = null;
-        el.style.top = null;
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>hideDfnPanel(el));
     }
 
-});
+    function showDfnPanel(dfnPanel, dfn) {
+        hideAllDfnPanels(); // Only display one at this time.
+        dfn.setAttribute("aria-expanded", "true");
+        dfnPanel.classList.add("on");
+        dfnPanel.style.left = "5px";
+        dfnPanel.style.top = "0px";
+        const panelRect = dfnPanel.getBoundingClientRect();
+        const panelWidth = panelRect.right - panelRect.left;
+        if (panelRect.right > document.body.scrollWidth) {
+            // Panel's overflowing the screen.
+            // Just drop it below the dfn and flip it rightward instead.
+            // This still wont' fix things if the screen is *really* wide,
+            // but fixing that's a lot harder without 'anchor()'.
+            dfnPanel.style.top = "1.5em";
+            dfnPanel.style.left = "auto";
+            dfnPanel.style.right = "0px";
+        }
+    }
+
+    function pinDfnPanel(dfnPanel) {
+        // Switch it to "activated" state, which pins it.
+        dfnPanel.classList.add("activated");
+        dfnPanel.style.left = null;
+        dfnPanel.style.top = null;
+    }
+
+    function hideDfnPanel(dfnPanel, dfn) {
+        if(!dfn) {
+            dfn = document.getElementById(dfnPanel.getAttribute("data-for"));
+        }
+        dfn.setAttribute("aria-expanded", "false")
+        dfnPanel.classList.remove("on");
+        dfnPanel.classList.remove("activated");
+    }
+
+    function toggleDfnPanel(dfnPanel, dfn) {
+        if(dfnPanel.classList.contains("on")) {
+            hideDfnPanel(dfnPanel, dfn);
+        } else {
+            showDfnPanel(dfnPanel, dfn);
+        }
+    }
+
+    function insertDfnPopupAction(dfn) {
+        // Find dfn panel
+        const dfnPanel = document.querySelector(`.dfn-panel[data-for='${dfn.id}']`);
+        if (dfnPanel) {
+            const panelWrapper = document.createElement('span');
+            panelWrapper.appendChild(dfnPanel);
+            panelWrapper.style.position = "relative";
+            panelWrapper.style.height = "0px";
+            dfn.insertAdjacentElement("afterend", panelWrapper);
+            dfn.setAttribute('role', 'button');
+            dfn.setAttribute('aria-expanded', 'false')
+            dfn.tabIndex = 0;
+            dfn.classList.add('has-dfn-panel');
+            dfn.addEventListener('click', (event) => {
+                showDfnPanel(dfnPanel, dfn);
+                event.stopPropagation();
+            });
+            dfn.addEventListener('keypress', (event) => {
+                const kc = event.keyCode;
+                // 32->Space, 13->Enter
+                if(kc == 32 || kc == 13) {
+                    toggleDfnPanel(dfnPanel, dfn);
+                    event.stopPropagation();
+                    event.preventDefault();
+                }
+            });
+
+            dfnPanel.addEventListener('click', (event) => {
+                pinDfnPanel(dfnPanel);
+                event.stopPropagation();
+            });
+
+            dfnPanel.addEventListener('keydown', (event) => {
+                if(event.keyCode == 27) { // Escape key
+                    hideDfnPanel(dfnPanel, dfn);
+                    event.stopPropagation();
+                    event.preventDefault();
+                }
+            })
+
+        } else {
+            console.log("Couldn't find .dfn-panel[data-for='" + dfn.id + "']");
+        }
+    }
+}
 </script>
