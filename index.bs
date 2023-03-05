@@ -53,6 +53,7 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
 url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
+url: https://www.iso.org/standard/62021.html#; type: dfn; spec: iso18004; text: QR code
 url: https://tools.ietf.org/html/rfc5280#section-4.2.1.3; type: dfn; spec: RFC5280; text: digitalSignature
 url: https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3; type: dfn; spec: RFC8446; text: signature scheme
 </pre>
@@ -710,6 +711,8 @@ QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.
 
+Appendix [[#appendix-c]] describes two encoding schemes for PSKs that agents may support to produce either a string or a [=QR code=] for display to the user.
+
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
 
@@ -739,8 +742,6 @@ SPAKE2 provides explicit mutual authentication.
 This authentication method assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.
-
-Issue(210): [Security] Describe encoding/decoding of PSK into numeric and QR codes.
 
 SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.
@@ -2826,3 +2827,71 @@ https://github.com/tabatkins/bikeshed/issues/1128
 </tr>
 </tbody>
 </table>
+
+Appendix C: PSK Encoding Schemes {#appendix-c}
+================================
+
+The following appendix describes two encoding schemes for PSKs that take a value
+`P` between 20 bits and 80 bits in length and produce either a string or a [=QR
+code=] for display to the user.
+
+Agents should use these encoding schemes to maximize the interoperability of the
+authentication step, which typically requires displaying the PSK on one
+device and the user inputting it on another device.
+
+Base-10 Numeric {#appendix-c-base-10}
+---------------
+
+To encode `P` into a numeric string, follow these steps:
+
+1. Convert `P` to a base-10 integer `N`.
+2. If `N` has fewer than 9 digits:
+    * Zero-pad `N` on the left with `3 - len(N) mod 3` digits.
+    * Output `N` in groups of three digits separated by dashes.
+3. If `N` has more than 9 digits:
+    * Zero-pad `N` on the left with `4 - len(N) mod 4` digits.
+    * Output `N` in groups of four digits separated by dashes.
+
+<div class="example">
+For PSK `61488548833`, the steps would produce the string `0614-8854-8833`.
+</div>
+
+To decode a string `N` into a PSK `P`, follow these steps:
+
+1. Remove dashes and leading zeros from `N`.
+2. Parse `N` as a base-10 decimal number to obtain `P`.
+
+Note: `P` values between approximately 2^30 and 2^40 will produce values between
+10 and 12 digits in length.  Values over 12 digits are inconvenient to input
+and have limited additional security value.
+
+Note: We do not allow the use of hexadecimal encoding here, because it would
+be ambiguous with base-10 numeric encodings, and not all devices may support
+alphanumeric input.
+
+QR Code {#appendix-c-qr-code}
+-------
+
+To encode a PSK into a QR code, follow these steps:
+
+1. Set `N` to the value of `P` converted to an ASCII-encoded, hexadecimal string.
+2. Construct a text [=QR code=] with the value of `N`.
+
+<div class="example">
+For PSK `61488548833`, the steps would produce the following QR code:
+<p>
+<svg width="20%" height="20%" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 29 29" stroke="none">
+        <rect width="100%" height="100%" fill="#FFFFFF"/>
+        <path d="M4,4h1v1h-1z M5,4h1v1h-1z M6,4h1v1h-1z M7,4h1v1h-1z M8,4h1v1h-1z M9,4h1v1h-1z M10,4h1v1h-1z M12,4h1v1h-1z M18,4h1v1h-1z M19,4h1v1h-1z M20,4h1v1h-1z M21,4h1v1h-1z M22,4h1v1h-1z M23,4h1v1h-1z M24,4h1v1h-1z M4,5h1v1h-1z M10,5h1v1h-1z M14,5h1v1h-1z M16,5h1v1h-1z M18,5h1v1h-1z M24,5h1v1h-1z M4,6h1v1h-1z M6,6h1v1h-1z M7,6h1v1h-1z M8,6h1v1h-1z M10,6h1v1h-1z M14,6h1v1h-1z M16,6h1v1h-1z M18,6h1v1h-1z M20,6h1v1h-1z M21,6h1v1h-1z M22,6h1v1h-1z M24,6h1v1h-1z M4,7h1v1h-1z M6,7h1v1h-1z M7,7h1v1h-1z M8,7h1v1h-1z M10,7h1v1h-1z M12,7h1v1h-1z M18,7h1v1h-1z M20,7h1v1h-1z M21,7h1v1h-1z M22,7h1v1h-1z M24,7h1v1h-1z M4,8h1v1h-1z M6,8h1v1h-1z M7,8h1v1h-1z M8,8h1v1h-1z M10,8h1v1h-1z M13,8h1v1h-1z M15,8h1v1h-1z M18,8h1v1h-1z M20,8h1v1h-1z M21,8h1v1h-1z M22,8h1v1h-1z M24,8h1v1h-1z M4,9h1v1h-1z M10,9h1v1h-1z M13,9h1v1h-1z M15,9h1v1h-1z M16,9h1v1h-1z M18,9h1v1h-1z M24,9h1v1h-1z M4,10h1v1h-1z M5,10h1v1h-1z M6,10h1v1h-1z M7,10h1v1h-1z M8,10h1v1h-1z M9,10h1v1h-1z M10,10h1v1h-1z M12,10h1v1h-1z M14,10h1v1h-1z M16,10h1v1h-1z M18,10h1v1h-1z M19,10h1v1h-1z M20,10h1v1h-1z M21,10h1v1h-1z M22,10h1v1h-1z M23,10h1v1h-1z M24,10h1v1h-1z M15,11h1v1h-1z M16,11h1v1h-1z M6,12h1v1h-1z M8,12h1v1h-1z M9,12h1v1h-1z M10,12h1v1h-1z M12,12h1v1h-1z M15,12h1v1h-1z M16,12h1v1h-1z M17,12h1v1h-1z M21,12h1v1h-1z M24,12h1v1h-1z M4,13h1v1h-1z M6,13h1v1h-1z M8,13h1v1h-1z M9,13h1v1h-1z M11,13h1v1h-1z M14,13h1v1h-1z M15,13h1v1h-1z M18,13h1v1h-1z M19,13h1v1h-1z M21,13h1v1h-1z M24,13h1v1h-1z M4,14h1v1h-1z M5,14h1v1h-1z M7,14h1v1h-1z M8,14h1v1h-1z M10,14h1v1h-1z M11,14h1v1h-1z M13,14h1v1h-1z M14,14h1v1h-1z M15,14h1v1h-1z M16,14h1v1h-1z M17,14h1v1h-1z M20,14h1v1h-1z M22,14h1v1h-1z M5,15h1v1h-1z M7,15h1v1h-1z M9,15h1v1h-1z M11,15h1v1h-1z M12,15h1v1h-1z M13,15h1v1h-1z M14,15h1v1h-1z M17,15h1v1h-1z M19,15h1v1h-1z M24,15h1v1h-1z M4,16h1v1h-1z M6,16h1v1h-1z M7,16h1v1h-1z M9,16h1v1h-1z M10,16h1v1h-1z M11,16h1v1h-1z M13,16h1v1h-1z M16,16h1v1h-1z M17,16h1v1h-1z M20,16h1v1h-1z M21,16h1v1h-1z M22,16h1v1h-1z M23,16h1v1h-1z M24,16h1v1h-1z M12,17h1v1h-1z M13,17h1v1h-1z M14,17h1v1h-1z M15,17h1v1h-1z M16,17h1v1h-1z M17,17h1v1h-1z M19,17h1v1h-1z M20,17h1v1h-1z M21,17h1v1h-1z M22,17h1v1h-1z M23,17h1v1h-1z M24,17h1v1h-1z M4,18h1v1h-1z M5,18h1v1h-1z M6,18h1v1h-1z M7,18h1v1h-1z M8,18h1v1h-1z M9,18h1v1h-1z M10,18h1v1h-1z M13,18h1v1h-1z M14,18h1v1h-1z M15,18h1v1h-1z M16,18h1v1h-1z M18,18h1v1h-1z M20,18h1v1h-1z M4,19h1v1h-1z M10,19h1v1h-1z M12,19h1v1h-1z M13,19h1v1h-1z M17,19h1v1h-1z M18,19h1v1h-1z M19,19h1v1h-1z M21,19h1v1h-1z M23,19h1v1h-1z M4,20h1v1h-1z M6,20h1v1h-1z M7,20h1v1h-1z M8,20h1v1h-1z M10,20h1v1h-1z M12,20h1v1h-1z M13,20h1v1h-1z M15,20h1v1h-1z M16,20h1v1h-1z M18,20h1v1h-1z M22,20h1v1h-1z M23,20h1v1h-1z M24,20h1v1h-1z M4,21h1v1h-1z M6,21h1v1h-1z M7,21h1v1h-1z M8,21h1v1h-1z M10,21h1v1h-1z M13,21h1v1h-1z M14,21h1v1h-1z M15,21h1v1h-1z M16,21h1v1h-1z M18,21h1v1h-1z M19,21h1v1h-1z M20,21h1v1h-1z M21,21h1v1h-1z M23,21h1v1h-1z M4,22h1v1h-1z M6,22h1v1h-1z M7,22h1v1h-1z M8,22h1v1h-1z M10,22h1v1h-1z M12,22h1v1h-1z M14,22h1v1h-1z M17,22h1v1h-1z M18,22h1v1h-1z M19,22h1v1h-1z M21,22h1v1h-1z M24,22h1v1h-1z M4,23h1v1h-1z M10,23h1v1h-1z M14,23h1v1h-1z M15,23h1v1h-1z M18,23h1v1h-1z M20,23h1v1h-1z M21,23h1v1h-1z M23,23h1v1h-1z M24,23h1v1h-1z M4,24h1v1h-1z M5,24h1v1h-1z M6,24h1v1h-1z M7,24h1v1h-1z M8,24h1v1h-1z M9,24h1v1h-1z M10,24h1v1h-1z M15,24h1v1h-1z M17,24h1v1h-1z M19,24h1v1h-1z M22,24h1v1h-1z M24,24h1v1h-1z" fill="#000000"/>
+</svg>
+</p>
+</div>
+
+To decode a PSK `P` given a QR code, follow these steps:
+
+1. Obtain the string `N` by decoding the QR code.
+2. Parse `N` as a hexadecimal number to obtain `P`.
+
+
+
+
