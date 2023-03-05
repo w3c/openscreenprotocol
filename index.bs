@@ -647,7 +647,7 @@ QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.
 
-Appendix 
+Appendix [[#appendix-c]] describes two encoding schemes for PSKs that agents may support to produce either a string or a [=QR code=] for display to the user.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
