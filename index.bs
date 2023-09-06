@@ -711,7 +711,8 @@ QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.
 
-Appendix [[#appendix-c]] describes two encoding schemes for PSKs that agents may support to produce either a string or a [=QR code=] for display to the user.
+Appendix [[#appendix-c]] describes two encoding schemes for PSKs that agents may
+support to produce either a string or a [=QR code=] for display to the user.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
@@ -774,13 +775,15 @@ message to the PSK consumer with `psk-status` set to `psk-input` and the
 `public-value` field set to `pB`.
 
 Once an agent knows both `pA` and `pB` from [=auth-spake2-handshake=] messages,
-it computes and sends a [=auth-spake2-confirmation=] with the `transcript-mac`
-field set to `cA` (for Alice) or `cB` (for Bob) to the other agent.
+it computes and sends a [=auth-spake2-confirmation=] with the
+`confirmation-value` field set to `cA` (for Alice) or `cB` (for Bob) to the
+other agent.
 
 Once an agent receives an [=auth-spake2-confirmation=] message, it validates
-that message using the procedure in \[SPAKE2] and send an [=auth-status=]
-authenticated message to the other agent.  Any value of `result` other than
-`authenticated` means that authentication failed.
+that message using the procedure in \[SPAKE2] and then replies with an
+[=auth-status=] authenticated message to the other agent.  Any value of `result`
+other than `authenticated` means that authentication failed, and the agent must
+immediately disconnect.
 
 Note that this message is merely informative as each agent independently
 computes the outcome of SPAKE2 through key confirmation verification.
