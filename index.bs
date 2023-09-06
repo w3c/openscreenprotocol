@@ -390,11 +390,22 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Public Key `AlgorithmIdentifier`</td>
-   <td>One of the supported  [=certificate algorithms=].</td>
+   <td>OID:
+      <ol>
+        <li>`1.2.840.10045.2.1` (ECC)</li>
+        <li>`1.2.840.10045.3.1.7` (ECDSA P256)</li>
+      </ol>
+      DER representation: `301306072a8648ce3d020106082a8648ce3d030107`
+   </td>
  </tr>
  <tr>
    <td>Signature `AlgorithmIdentifier`</td>
-   <td>One of the supported  [=certificate algorithms=].</td>
+   <td>OID:
+      <ol>
+        <li>`1.2.840.10045.4.3.2`</li>
+      </ol>
+   </td>
+   DER representation: `300a06082a8648ce3d040302`
  </tr>
  <tr>
    <td>Issuer Name</td>
