@@ -554,6 +554,11 @@ video-resolution = {
   1: uint ; width
 }
 
+video-hdr-format = {
+  0: transfer-function ; string
+  1: ? hdr-metadata ; string
+}
+
 receive-video-capability = {
   0: format ; codec
   ? 1: video-resolution ; max-resolution
@@ -565,6 +570,7 @@ receive-video-capability = {
   ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling
   ? 9: bool ; supports-rotation
+  ? 10: [* video-hdr-format] ; hdr-formats
 }
 
 receive-data-capability = {
