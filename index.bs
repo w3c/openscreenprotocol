@@ -38,17 +38,10 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: media element state
     text: remote playback devices
     text: remote playback source
-    <!--
-url: https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin; type: dfn; spec: QUIC; text: Transport Parameter Encoding
-url: https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
-url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
-url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: QUIC; text: variable-length integer
--->
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin; type: dfn; spec: RFC9000; text: Transport Parameter Encoding
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames; type: dfn; spec: RFC9000; text: CONNECTION_CLOSE Frames
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
-
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
