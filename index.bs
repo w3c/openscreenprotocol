@@ -38,10 +38,10 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: media element state
     text: remote playback devices
     text: remote playback source
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-19.19; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: variable-length integer
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin; type: dfn; spec: RFC9000; text: Transport Parameter Encoding
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames; type: dfn; spec: RFC9000; text: CONNECTION_CLOSE Frames
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
@@ -326,7 +326,7 @@ Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
 If a [=listening agent=] wants to connect to or learn further metadata about an
-[=advertising agent=], it initiates a [[QUIC]] connection to the IP and port
+[=advertising agent=], it initiates a [[!RFC9000|QUIC]] connection to the IP and port
 from its SRV record.  Prior to authentication, a message may be exchanged (such
 as further metadata), but such info should be treated as unverified (such as
 indicating to a user that a display name of an unauthenticated agent is
@@ -593,7 +593,7 @@ be closed with an error code of 5139.  In order to keep a QUIC connection alive,
 agent may send an [=agent-status-request=] message, and any agent that receives an
 [=agent-status-request=] message should send an [=agent-status-response=] message. Such
 messages should be sent more frequently than the QUIC idle_timeout transport
-parameter (see [=Transport Parameter Encoding=] in [[QUIC]]) and QUIC PING
+parameter (see [=Transport Parameter Encoding=] in [[!RFC9000|QUIC]]) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
 recommended.  The agent should behave as though a timer less than the
 idle_timeout were reset every time a message is sent on a QUIC stream.  If the
@@ -631,7 +631,7 @@ include the unknown type key in the reason phrase of the [=CONNECTION_CLOSE
 frame=].
 
 Variable-length integers are encoded in the [=Variable-Length Integer Encoding=]
-used by [[QUIC]].
+used by [[!RFC9000|QUIC]].
 
 Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
