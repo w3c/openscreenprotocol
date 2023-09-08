@@ -1,15 +1,4 @@
 {
-  "QUIC": {
-      "authors": [
-          "J. Iyengar",
-          "M. Thomson"
-      ],
-      "date": "12 September 2019",
-      "href": "https://tools.ietf.org/html/draft-ietf-quic-transport-23",
-      "title": "QUIC: A UDP-Based Multiplexed and Secure Transport",
-      "status": "Internet Draft",
-      "publisher": "IETF"
-  },
   "iso18004": {
     "href": "https://iso.org/standard/62021.html",
     "title": "Information technology — Automatic identification and data capture techniques — QR Code bar code symbology specification",
