@@ -1100,8 +1100,6 @@ particular URL or set of URLs, the controller may send a
 :: A list of [=media resources=], the same as specified in the
     [=remote-playback-start-request=] message.  Must not be empty.
 
-Issue(146): Remote Playback HTTP headers.
-
 : headers
 :: headers that the receiver should use to fetch the
     urls.  For example,
@@ -1162,10 +1160,10 @@ requirements for a remote-playback-id.
 : sources
 :: The [=media resources=] that the controller has selected for playback
     on the receiver.  Each source must include a <{source/src|source URL}>
-    and should include an <{source/type|extended MIME type}>.
+    and should include an <{source/type|extended MIME type}>.  If empty,
+    the `remoting` field must be populated, as the controller will use a
+    streaming session to send encoded media.
     
-Issue(265): Should media resource URLs be optional?
-
 : text-track-urls
 :: URLs of text tracks associated with the [=media resources=].
 
@@ -1180,6 +1178,7 @@ Issue(265): Should media resource URLs be optional?
 : remoting (optional)
 :: Parameters for starting a streaming session associated with this
     remote playback.  If not included, no streaming session is started.
+    Required when `sources` is empty.
 
 When the receiver receives a [=remote-playback-start-request=] message, it should
 send back a [=remote-playback-start-response=] message.  It should do so quickly,
@@ -1325,14 +1324,13 @@ present control value indicates the change defined below. These controls
 intentionally mirror settable attributes and methods of the
 {{HTMLMediaElement}}.
 
-: source-url
-:: Change the [=media resource=] URL. See
+: source
+:: Change the [=media resource=]. See
     {{HTMLMediaElement/src|HTMLMediaElement.src}}
     for more details. Must not be used in the initial controls of the
-    [=remote-playback-start-request=] message (which already contains a list of URLs).
+    [=remote-playback-start-request=] message (which already contains a
+    [=media resource=]).
     
-Issue(223): Codec switching when remoting.
-
 : preload
 :: Set how aggressively to preload media. See
     {{HTMLMediaElement/preload|HTMLMediaElement.preload}}
@@ -1456,8 +1454,8 @@ changed.
     The default is empty (support for nothing)
     for the initial state in the [=remote-playback-start-response=] message.
 
-: source-url
-:: The current [=media resource=] URL. See
+: source
+:: The current [=media resource=]. See
     {{HTMLMediaElement/currentSrc|HTMLMediaElement.currentSrc}}.
     Must be present in the initial state in the [=remote-playback-start-response=] message
     so the controller knows what [=media resource=] was selected for playback.
@@ -1980,6 +1978,11 @@ a [=streaming-session-modify-request=], it should send back a
 [=streaming-session-modify-response=] indicate whether or not the
 application of the new request from the
 [=streaming-session-modify-request=] was successful.
+
+NOTE: If the sender wishes to send an encoding other than the one selected by
+the receiver in a [=streaming-session-start-response=] or
+[=streaming-session-modify-request=], it must terminate the current session
+and start a new session.
 
 Finally, the sender may terminate the streaming session by sending
 a [=streaming-session-terminate-request=] command.  When the receiver
