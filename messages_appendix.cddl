@@ -503,13 +503,6 @@ data-frame = {
   ? 5: media-time ; sync-time
 }
 
-; type key 120
-video-frame-request = {
- 1: uint; encoding-id
- 2: uint; sequence-number
- ? 3: uint; highest-decoded-frame-sequence-number
-}
-
 ratio = [
   antecedent: uint
   consequent: uint
@@ -611,7 +604,7 @@ streaming-session-start-response-params = (
 streaming-session-modify-request-params = (
   1: uint ; streaming-session-id
   2: [* media-stream-request] ; stream-requests
-}
+)
 
 ; type key 127
 streaming-session-modify-response = {
