@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="212162c625434adb784b06ca70bd348192c63dd2" name="document-revision">
+  <meta content="710a30d26b132a484e4020d7c1e9e7fc81665efc" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -581,7 +581,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-09-08">8 September 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-09-11">11 September 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -3622,13 +3622,6 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
 <span class="p">}</span>
 
-<span class="c1">; type key 120</span>
-<span class="nc">video-frame-request </span><span class="p">=</span> <span class="p">{</span>
- <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; encoding-id</span>
- <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; sequence-number</span>
- <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span><span class="c1">; highest-decoded-frame-sequence-number</span>
-<span class="p">}</span>
-
 <span class="nc">ratio </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">antecedent</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">consequent</span><span class="p">:</span> <span class="kt">uint</span>
@@ -3730,7 +3723,7 @@ the wire smaller.</p>
 <span class="nc">streaming-session-modify-request-params </span><span class="p">=</span> <span class="p">(</span>
   <span class="mi">1</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; streaming-session-id</span>
   <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-stream-request</span><span class="p">]</span> <span class="c1">; stream-requests</span>
-<span class="p">}</span>
+<span class="p">)</span>
 
 <span class="c1">; type key 127</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="streaming-session-modify-response">streaming-session-modify-response</dfn> </span><span class="p">=</span> <span class="p">{</span>
