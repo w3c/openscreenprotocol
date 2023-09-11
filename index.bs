@@ -886,6 +886,12 @@ To send a presentation message, the controller or receiver may send a
 : message
 :: The presentation message data.
 
+NOTE: An OSP agent should minimize the latency between applications sending or
+receiving messages and the underlying QUIC connection, as messages may be used
+to synchronize playback of media streams between agents.  The synchronization
+thresholds recommended in [[ITU-R-BT.1359-1]] imply that the total message
+processing latency by agents must be no greater than 45 ms to permit effective
+lip sync during media playback.
 
 To terminate a presentation, the controller may send a
 [=presentation-termination-request=] message with the following values:
