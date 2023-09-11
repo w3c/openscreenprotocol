@@ -1263,13 +1263,16 @@ The [=timeline offset=] associated with the playback changes since the last sent
 
 The {{stalled}} event needs to fire at the associated {{HTMLMediaElement}} instance.
 
-More than 350ms pass since the last [=remote-playback-state-event=] message
+More than 250ms pass since the last [=remote-playback-state-event=] message
   and any of the following attributes observably change since the last
   [=remote-playback-state-event=] message. Any new continuously changing
   attributes fall under this rule.
 
 * {{HTMLMediaElement/played|HTMLMediaElement.played}}
 * {{HTMLMediaElement/currentTime|HTMLMediaElement.currentTime}}
+
+NOTE: A media element is required to fire a {{HTMLMediaElement/timeupdate}}
+event every 250ms or sooner.
 
 : remote-playback-id
 :: The ID of the remote playback whose state has changed.
