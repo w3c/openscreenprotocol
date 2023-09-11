@@ -265,8 +265,6 @@ mechanisms, such as querying for the same DNS-SD records via unicast DNS.
 
 OSP agents must use the DNS-SD [=Service Name=] `_openscreen._udp`.
 
-Issue(107): Define suspend and resume behavior for discovery protocol.
-
 An <dfn noexport>advertising agent</dfn> is one that responds to mDNS queries
 for `_openscreen._udp.local`.  Such an agent should have a <dfn noexport>display
 name</dfn> (a non-empty string) that is a human readable description of the
@@ -312,6 +310,10 @@ Note: `at` prevents off-LAN parties from attempting authentication; see
 [[#remote-active-mitigations]].  `at` should have at least 32 bits of true
 entropy to make brute force attacks impractical.
 
+NOTE: If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons) it should attempt to retain cached and valid mDNS records so that
+discovery state is preserved when the network connection is resumed.
+
 <!-- TODO: Add examples of sample mDNS records. -->
 
 Future extensions to this QUIC-based protocol can use the same metadata
@@ -320,6 +322,7 @@ capabilities mechanism to be determined. If a future version of the Open Screen
 Protocol uses mDNS but breaks compatibility with the metadata discovery process,
 it should change the DNS-SD service name to a new value, indicating a new
 mechanism for metadata discovery.
+
 
 
 Transport and metadata discovery with QUIC {#transport}
@@ -579,11 +582,9 @@ The various capabilities have the following meanings:
 : send-streaming
 :: The agent can send streaming using the streaming protocol.
 
-Note: See the
-[Capabilities Registry](https://w3c.github.io/openscreenprotocol/capabilities.html)
+NOTE: See the [Capabilities Registry](https://github.com/w3c/openscreenprotocol/blob/main/capabilities.md)
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
-
 
 If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
@@ -603,7 +604,10 @@ If a listening agent wishes to send messages to an advertising agent, the
 listening agent can connect to the advertising agent "on demand"; it does not
 need to keep the connection alive.
 
-Issue(108): Define suspend and resume behavior for connection protocol.
+If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons), it should attempt to resume QUIC connections to the OSP agents to
+which it was previously connected once network connectivity is restored.  Once
+reconnected, it should send `agent-status-request` messages to those agents.
 
 The [=agent-info=] and [=agent-status-response=] messages may be extended to
 include additional information not defined in this spec, as described in
