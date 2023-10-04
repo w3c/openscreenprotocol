@@ -2511,16 +2511,17 @@ available to the Web and should be designed accordingly.
 
 Below, we discuss mitigation steps to prevent malicious use of these devices.
 
-### Incognito Mode ### {#incognito-mode}
+### Private Browsing Mode ### {#private-browsing-mode}
 
-The Open Screen Protocol does not distinguish between the user agent's normal
-browsing and incognito modes, and agents that follow the specification
-behave identically regardless of which mode is in use.
+The Open Screen Protocol itself does not distinguish between the user agent's normal
+browsing and [private browsing](https://www.w3.org/2001/tag/doc/private-browsing-modes/)
+modes.
 
-It's recommended that user agents use separate authentication contexts and QUIC
-connections for normal and incognito profiles from the same user agent instance.
-This prevents OSP agents from correlating activity among profiles
-belonging to the same user (both normal and incognito).
+However, it's recommended that user agents use separate authentication contexts
+(see [[#authentication]]) and QUIC connections (see [[#transport]]) for normal and
+private browsing from the same user agent instance. This makes it more difficult
+for OSP agents to match activities occurring in normal and private browsing by the
+same user.
 
 ### Persistent State ### {#persistent-state}
 
