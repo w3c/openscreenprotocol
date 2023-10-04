@@ -1719,20 +1719,13 @@ following fields:
 The format type is used as the basis for audio and video capabilities.
 Formats are composed of the following fields:
 
-: name (required)
+: codec-name (required)
 :: A fully qualified codec string listed in the [[WEBCODECS-CODEC-REGISTRY]] and further
      specified by the codec-specific registrations referenced in that registry.
 
-: parameters (required)
-:: A list of (key, value) parameters that can be used to describe
-    properties of a specific format, and not shared by other formats
-    of that type (audio, video, etc.).
-
-For `name`, Open Screen agents may also accept a single-codec [=codec
+For `codec-name`, Open Screen agents may also accept a single-codec [=codec
 parameter=] as described in [[!RFC6381]] for codecs not listed in the
 [[WEBCODECS-CODEC-REGISTRY]].
-
-Issue(266): Specify where codec-specific parameters are defined or drop them.
 
 Audio capabilities are composed of the above format type, with the following
 additional fields:
@@ -1883,8 +1876,8 @@ Each audio encoding offered defines the following fields:
     [[#requests-responses-watches]].
 
 : codec-name
-:: The name of the codec used by the encoding.  This must be a single-codec
-    RFC 6381 [=codecs parameter=].
+:: The name of the codec used by the encoding, following the same
+    rules as `codec-name` in [[#streaming-protocol-capabilities]].
 
 : time-scale
 :: The [=time scale=] used by all audio frames.  This allows senders to
@@ -1905,7 +1898,8 @@ Each video encoding offered defines the following fields:
     [[#requests-responses-watches]].
 
 : codec-name
-:: The name of the codec used by the encoding.
+:: The name of the codec used by the encoding, following the same
+    rules as `codec-name` in [[#streaming-protocol-capabilities]].
 
 : time-scale
 :: The [=time scale=] used by all video frames.  This allows senders to
@@ -1994,8 +1988,8 @@ Audio {#streaming-audio}
 [=Media senders=] may send audio to [=media receivers=] by sending
 [=audio-frame=] messages (see [[#appendix-a]]) with the following keys and
 values.  An audio frame message contains a set of encoded audio samples for a
-range of time. A series of encoded audio frames that share a codec, codec
-parameters and a timeline form an audio encoding.
+range of time. A series of encoded audio frames that share a codec and a
+timeline form an audio encoding.
 
 Unlike most Open Screen Protocol messages, this one uses an
 array-based grouping rather than a struct-based grouping.  For
@@ -2038,9 +2032,8 @@ separate QUIC streams.
     be; it can be any clock chosen by the media sender.
 
 : payload
-:: The encoded audio.  The codec and codec parameters are equal to the
-    `codec-name` field of the [=audio-encoding-offer=] message referenced by
-    the `encoding-id`.
+:: The encoded audio.  The codec is equal to the `codec-name` field of the
+    [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 Video {#streaming-video}
 --------------------------------------------
@@ -2049,8 +2042,7 @@ Media senders may send video to media receivers by sending [=video-frame=]
 messages (see [[#appendix-a]]) with the following keys and values.  A video
 frame message contains an encoded video frame (an encoded image) at a specific
 point in time or over a specfic time range (if the duration is known).  A series
-of encoded video frames that share a codec, codec parameters and a timeline form
-a video encoding.
+of encoded video frames that share a codec and a timeline form a video encoding.
 
 To allow for video frames to be sent out of order, they may be sent in
 separate QUIC streams.  If the encoding is a long chain of encoded video frames
@@ -2102,9 +2094,9 @@ ending at the last dependent frame.
     referenced by the `encoding-id`.
 
 : payload
-:: The encoded video frame (encoded image).  The codec and codec
-     parameters are equal to the `codec-name` field of the
-     [=video-encoding-offer=] message referenced by the `encoding-id`.
+:: The encoded video frame (encoded image).  The codec is equal to the
+    `codec-name` field of the [=video-encoding-offer=] message referenced
+    by the `encoding-id`.
 
 Data {#streaming-data}
 ------------------------------------

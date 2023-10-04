@@ -526,13 +526,7 @@ streaming-capabilities = {
 }
 
 format = {
-  0: string ; name
-  1: [* format-parameter] ; parameters
-}
-
-format-parameter = {
-  0: string ; key
-  1: bytes ; value
+  0: string ; codec-name
 }
 
 receive-audio-capability = {
