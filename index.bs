@@ -2526,9 +2526,10 @@ browsing and [private browsing](https://www.w3.org/2001/tag/doc/private-browsing
 modes.
 
 However, it's recommended that user agents use separate authentication contexts
-and QUIC connections for normal and private browsing from the same user agent
-instance.  This makes it more difficult for OSP agents to match activities
-occurring in normal and private browsing by the same user.
+(see [[#authentication]]) and QUIC connections (see [[#transport]]) for normal and
+private browsing from the same user agent instance. This makes it more difficult
+for OSP agents to match activities occurring in normal and private browsing by the
+same user.
 
 ### Persistent State ### {#persistent-state}
 
