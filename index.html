@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="710a30d26b132a484e4020d7c1e9e7fc81665efc" name="document-revision">
+  <meta content="7dbd39d8606c8550ea4467a08472097e31c82faf" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -581,7 +581,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-09-11">11 September 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-10-04">4 October 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2212,19 +2212,13 @@ following fields:
    <p>The format type is used as the basis for audio and video capabilities.
 Formats are composed of the following fields:</p>
    <dl>
-    <dt data-md>name (required)
+    <dt data-md>codec-name (required)
     <dd data-md>
      <p>A fully qualified codec string listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry" title="WebCodecs Codec Registry">[WEBCODECS-CODEC-REGISTRY]</a> and further
  specified by the codec-specific registrations referenced in that registry.</p>
-    <dt data-md>parameters (required)
-    <dd data-md>
-     <p>A list of (key, value) parameters that can be used to describe
-properties of a specific format, and not shared by other formats
-of that type (audio, video, etc.).</p>
    </dl>
-   <p>For <code>name</code>, Open Screen agents may also accept a single-codec <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codec
+   <p>For <code>codec-name</code>, Open Screen agents may also accept a single-codec <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codec
 parameter</a> as described in <a data-link-type="biblio" href="#biblio-rfc6381" title="The &apos;Codecs&apos; and &apos;Profiles&apos; Parameters for &quot;Bucket&quot; Media Types">[RFC6381]</a> for codecs not listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry" title="WebCodecs Codec Registry">[WEBCODECS-CODEC-REGISTRY]</a>.</p>
-   <p class="issue" id="issue-263f992a"><a class="self-link" href="#issue-263f992a"></a> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">[Issue #266]</a></p>
    <p>Audio capabilities are composed of the above format type, with the following
 additional fields:</p>
    <dl>
@@ -2357,8 +2351,8 @@ the media stream.  These IDs should be treated like request IDs
 with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 11 Requests, Responses, and Watches</a>.</p>
     <dt data-md>codec-name
     <dd data-md>
-     <p>The name of the codec used by the encoding.  This must be a single-codec
-RFC 6381 <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3①">codecs parameter</a>.</p>
+     <p>The name of the codec used by the encoding, following the same
+rules as <code>codec-name</code> in <a href="#streaming-protocol-capabilities">§ 10.1 Streaming Protocol Capabilities</a>.</p>
     <dt data-md>time-scale
     <dd data-md>
      <p>The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale③">time scale</a> used by all audio frames.  This allows senders to
@@ -2379,7 +2373,8 @@ the media stream.  These IDs should be treated like request IDs
 with regards to the <code>state-token</code> as specified in <a href="#requests-responses-watches">§ 11 Requests, Responses, and Watches</a>.</p>
     <dt data-md>codec-name
     <dd data-md>
-     <p>The name of the codec used by the encoding.</p>
+     <p>The name of the codec used by the encoding, following the same
+rules as <code>codec-name</code> in <a href="#streaming-protocol-capabilities">§ 10.1 Streaming Protocol Capabilities</a>.</p>
     <dt data-md>time-scale
     <dd data-md>
      <p>The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale④">time scale</a> used by all video frames.  This allows senders to
@@ -2460,8 +2455,8 @@ any point and notify the sender by sending a <a data-link-type="dfn" href="#stre
    <h3 class="heading settled" data-level="10.3" id="streaming-audio"><span class="secno">10.3. </span><span class="content">Audio</span><a class="self-link" href="#streaming-audio"></a></h3>
    <p><a data-link-type="dfn" href="#media-sender" id="ref-for-media-sender①">Media senders</a> may send audio to <a data-link-type="dfn" href="#media-receiver" id="ref-for-media-receiver①">media receivers</a> by sending <a data-link-type="dfn" href="#audio-frame" id="ref-for-audio-frame">audio-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and
 values.  An audio frame message contains a set of encoded audio samples for a
-range of time. A series of encoded audio frames that share a codec, codec
-parameters and a timeline form an audio encoding.</p>
+range of time. A series of encoded audio frames that share a codec and a
+timeline form an audio encoding.</p>
    <p>Unlike most Open Screen Protocol messages, this one uses an
 array-based grouping rather than a struct-based grouping.  For
 required fields, this allows for a more efficient use of bytes on the
@@ -2498,15 +2493,13 @@ different timelines.  It may be wall clock time, but it need not
 be; it can be any clock chosen by the media sender.</p>
     <dt data-md>payload
     <dd data-md>
-     <p>The encoded audio.  The codec and codec parameters are equal to the <code>codec-name</code> field of the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer④">audio-encoding-offer</a> message referenced by
-the <code>encoding-id</code>.</p>
+     <p>The encoded audio.  The codec is equal to the <code>codec-name</code> field of the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer④">audio-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
    </dl>
    <h3 class="heading settled" data-level="10.4" id="streaming-video"><span class="secno">10.4. </span><span class="content">Video</span><a class="self-link" href="#streaming-video"></a></h3>
    <p>Media senders may send video to media receivers by sending <a data-link-type="dfn" href="#video-frame" id="ref-for-video-frame①">video-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A video
 frame message contains an encoded video frame (an encoded image) at a specific
 point in time or over a specfic time range (if the duration is known).  A series
-of encoded video frames that share a codec, codec parameters and a timeline form
-a video encoding.</p>
+of encoded video frames that share a codec and a timeline form a video encoding.</p>
    <p>To allow for video frames to be sent out of order, they may be sent in
 separate QUIC streams.  If the encoding is a long chain of encoded video frames
 dependent on the previous one back until an independent frame, it may make sense
@@ -2555,8 +2548,8 @@ increments of 90 degrees.  The default is equal to the <code>default-rotation</c
 referenced by the <code>encoding-id</code>.</p>
     <dt data-md>payload
     <dd data-md>
-     <p>The encoded video frame (encoded image).  The codec and codec
- parameters are equal to the <code>codec-name</code> field of the <a data-link-type="dfn" href="#video-encoding-offer" id="ref-for-video-encoding-offer③">video-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
+     <p>The encoded video frame (encoded image).  The codec is equal to the <code>codec-name</code> field of the <a data-link-type="dfn" href="#video-encoding-offer" id="ref-for-video-encoding-offer③">video-encoding-offer</a> message referenced
+by the <code>encoding-id</code>.</p>
    </dl>
    <h3 class="heading settled" data-level="10.5" id="streaming-data"><span class="secno">10.5. </span><span class="content">Data</span><a class="self-link" href="#streaming-data"></a></h3>
    <p>Media senders may send timed data to media receivers by sending <a data-link-type="dfn" href="#data-frame" id="ref-for-data-frame">data-frame</a> messages (see <a href="#appendix-a">Appendix A: Messages</a>) with the following keys and values.  A data frame message
@@ -3103,7 +3096,7 @@ capable of handling:
     </ol>
    </div>
    <h2 class="heading settled" id="appendix-a"><span class="content">Appendix A: Messages</span><a class="self-link" href="#appendix-a"></a></h2>
-   <p>The following messages are defined using the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8610#section-3" id="ref-for-section-3②">Concise Data Definition
+   <p>The following messages are defined using the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8610#section-3" id="ref-for-section-3①">Concise Data Definition
 Language</a> syntax. When integer keys are used, a comment is appended to the line
 to indicate the name of the field. Object definitions in this specification have
 this unusual syntax to reduce the number of bytes-on-the-wire, while maintaining
@@ -3645,13 +3638,7 @@ the wire smaller.</p>
 <span class="p">}</span>
 
 <span class="nc">format </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; name</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">format-parameter</span><span class="p">]</span> <span class="c1">; parameters</span>
-<span class="p">}</span>
-
-<span class="nc">format-parameter </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; key</span>
-  <span class="mi">1</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; value</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; codec-name</span>
 <span class="p">}</span>
 
 <span class="nc">receive-audio-capability </span><span class="p">=</span> <span class="p">{</span>
@@ -4286,7 +4273,6 @@ it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[I
    <div class="issue"> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">[Issue #265]</a> <a class="issue-return" href="#issue-74827562" title="Jump to section">↵</a></div>
    <div class="issue"> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">[Issue #241]</a> <a class="issue-return" href="#issue-9717419d" title="Jump to section">↵</a></div>
    <div class="issue"> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">[Issue #223]</a> <a class="issue-return" href="#issue-791c621c" title="Jump to section">↵</a></div>
-   <div class="issue"> Specify where codec-specific parameters are defined or drop them. <a href="https://github.com/w3c/openscreenprotocol/issues/266">[Issue #266]</a> <a class="issue-return" href="#issue-263f992a" title="Jump to section">↵</a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a> <a class="issue-return" href="#issue-8bf4aa9f" title="Jump to section">↵</a></div>
   </div>
 <script>/* Boilerplate: script-dfn-panel */
@@ -4655,7 +4641,7 @@ window.dfnpanelData['b2b6fbb0'] = {"dfnID": "b2b6fbb0", "url": "https://w3c.gith
 window.dfnpanelData['1704ff9c'] = {"dfnID": "1704ff9c", "url": "https://tools.ietf.org/html/rfc4122#section-4.4", "dfnText": "uuid", "refSections": [{"refs": [{"id": "ref-for-section-4.4"}], "title": "9. Remote Playback Protocol"}], "external": true};
 window.dfnpanelData['1fe3b46b'] = {"dfnID": "1fe3b46b", "url": "https://tools.ietf.org/html/rfc5280#section-4.2.1.3", "dfnText": "digitalsignature", "refSections": [{"refs": [{"id": "ref-for-section-4.2.1.3"}], "title": "4.2. Agent Certificates"}], "external": true};
 window.dfnpanelData['208b5961'] = {"dfnID": "208b5961", "url": "https://tools.ietf.org/html/rfc5646#section-2", "dfnText": "language tag", "refSections": [{"refs": [{"id": "ref-for-section-2"}], "title": "4.3. Metadata Discovery"}], "external": true};
-window.dfnpanelData['09153fed'] = {"dfnID": "09153fed", "url": "https://tools.ietf.org/html/rfc6381#section-3", "dfnText": "codecs parameter", "refSections": [{"refs": [{"id": "ref-for-section-3"}], "title": "10.1. Streaming Protocol Capabilities"}, {"refs": [{"id": "ref-for-section-3\u2460"}], "title": "10.2. Sessions"}], "external": true};
+window.dfnpanelData['09153fed'] = {"dfnID": "09153fed", "url": "https://tools.ietf.org/html/rfc6381#section-3", "dfnText": "codecs parameter", "refSections": [{"refs": [{"id": "ref-for-section-3"}], "title": "10.1. Streaming Protocol Capabilities"}], "external": true};
 window.dfnpanelData['38cb699f'] = {"dfnID": "38cb699f", "url": "https://tools.ietf.org/html/rfc6762#section-9", "dfnText": "conflict resolution", "refSections": [{"refs": [{"id": "ref-for-section-9"}], "title": "3. Discovery with mDNS"}], "external": true};
 window.dfnpanelData['34d12a4f'] = {"dfnID": "34d12a4f", "url": "https://tools.ietf.org/html/rfc6763#section-4.1.1", "dfnText": "instance name", "refSections": [{"refs": [{"id": "ref-for-section-4.1.1"}], "title": "3. Discovery with mDNS"}, {"refs": [{"id": "ref-for-section-4.1.1\u2460"}], "title": "13.6.1. Instance and Display Names"}], "external": true};
 window.dfnpanelData['6f0181fa'] = {"dfnID": "6f0181fa", "url": "https://tools.ietf.org/html/rfc6763#section-7", "dfnText": "service name", "refSections": [{"refs": [{"id": "ref-for-section-7"}], "title": "3. Discovery with mDNS"}], "external": true};
@@ -4664,7 +4650,7 @@ window.dfnpanelData['5cab86ab'] = {"dfnID": "5cab86ab", "url": "https://tools.ie
 window.dfnpanelData['9481333e'] = {"dfnID": "9481333e", "url": "https://tools.ietf.org/html/rfc8122#section-5", "dfnText": "sha-256", "refSections": [{"refs": [{"id": "ref-for-section-5"}, {"id": "ref-for-section-5\u2460"}, {"id": "ref-for-section-5\u2461"}, {"id": "ref-for-section-5\u2462"}], "title": "3. Discovery with mDNS"}], "external": true};
 window.dfnpanelData['d72c64a8'] = {"dfnID": "d72c64a8", "url": "https://tools.ietf.org/html/rfc8122#section-5", "dfnText": "sha-512", "refSections": [{"refs": [{"id": "ref-for-section-5"}, {"id": "ref-for-section-5\u2460"}, {"id": "ref-for-section-5\u2461"}, {"id": "ref-for-section-5\u2462"}], "title": "3. Discovery with mDNS"}], "external": true};
 window.dfnpanelData['c7313446'] = {"dfnID": "c7313446", "url": "https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3", "dfnText": "signature scheme", "refSections": [{"refs": [{"id": "ref-for-section-4.2.3"}], "title": "4.2. Agent Certificates"}], "external": true};
-window.dfnpanelData['8f45ca65'] = {"dfnID": "8f45ca65", "url": "https://tools.ietf.org/html/rfc8610#section-3", "dfnText": "concise data definition language", "refSections": [{"refs": [{"id": "ref-for-section-3\u2461"}], "title": "Appendix A: Messages"}], "external": true};
+window.dfnpanelData['8f45ca65'] = {"dfnID": "8f45ca65", "url": "https://tools.ietf.org/html/rfc8610#section-3", "dfnText": "concise data definition language", "refSections": [{"refs": [{"id": "ref-for-section-3\u2460"}], "title": "Appendix A: Messages"}], "external": true};
 window.dfnpanelData['a6ddbb58'] = {"dfnID": "a6ddbb58", "url": "https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames", "dfnText": "connection_close frames", "refSections": [{"refs": [{"id": "ref-for-name-connection_close-frames"}], "title": "5. Messages delivery using CBOR and QUIC streams"}], "external": true};
 window.dfnpanelData['fc89f77a'] = {"dfnID": "fc89f77a", "url": "https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin", "dfnText": "transport parameter encoding", "refSections": [{"refs": [{"id": "ref-for-name-transport-parameter-encodin"}], "title": "4.3. Metadata Discovery"}], "external": true};
 window.dfnpanelData['6c09a22e'] = {"dfnID": "6c09a22e", "url": "https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc", "dfnText": "variable-length integer", "refSections": [{"refs": [{"id": "ref-for-name-variable-length-integer-enc"}], "title": "3. Discovery with mDNS"}, {"refs": [{"id": "ref-for-name-variable-length-integer-enc\u2460"}, {"id": "ref-for-name-variable-length-integer-enc\u2461"}], "title": "5. Messages delivery using CBOR and QUIC streams"}, {"refs": [{"id": "ref-for-name-variable-length-integer-enc\u2462"}], "title": "Appendix B: Message Type Key Ranges"}], "external": true};
