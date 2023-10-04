@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="7dbd39d8606c8550ea4467a08472097e31c82faf" name="document-revision">
+  <meta content="32f78dc7422babee8c31a3721f196e9078b7767c" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -702,7 +702,7 @@ dfn > a.self-link::before      { content: "#"; }
         <li><a href="#personally-identifiable-information"><span class="secno">13.2.1</span> <span class="content">Personally Identifiable Information &amp; High-Value Data</span></a>
         <li><a href="#cross-origin-state"><span class="secno">13.2.2</span> <span class="content">Cross Origin State Considerations</span></a>
         <li><a href="#origin-access-devices"><span class="secno">13.2.3</span> <span class="content">Origin Access to Other Devices</span></a>
-        <li><a href="#incognito-mode"><span class="secno">13.2.4</span> <span class="content">Incognito Mode</span></a>
+        <li><a href="#private-browsing-mode"><span class="secno">13.2.4</span> <span class="content">Private Browsing Mode</span></a>
         <li><a href="#persistent-state"><span class="secno">13.2.5</span> <span class="content">Persistent State</span></a>
         <li><a href="#other-considerations"><span class="secno">13.2.6</span> <span class="content">Other Considerations</span></a>
        </ol>
@@ -2904,14 +2904,14 @@ context.  Exposure of this data to the Web is also discussed in <a href="https:/
 implementing the protocol, these devices are knowingly making themselves
 available to the Web and should be designed accordingly.</p>
    <p>Below, we discuss mitigation steps to prevent malicious use of these devices.</p>
-   <h4 class="heading settled" data-level="13.2.4" id="incognito-mode"><span class="secno">13.2.4. </span><span class="content">Incognito Mode</span><a class="self-link" href="#incognito-mode"></a></h4>
-   <p>The Open Screen Protocol does not distinguish between the user agent’s normal
-browsing and incognito modes, and agents that follow the specification
-behave identically regardless of which mode is in use.</p>
-   <p>It’s recommended that user agents use separate authentication contexts and QUIC
-connections for normal and incognito profiles from the same user agent instance.
-This prevents OSP agents from correlating activity among profiles
-belonging to the same user (both normal and incognito).</p>
+   <h4 class="heading settled" data-level="13.2.4" id="private-browsing-mode"><span class="secno">13.2.4. </span><span class="content">Private Browsing Mode</span><a class="self-link" href="#private-browsing-mode"></a></h4>
+   <p>The Open Screen Protocol itself does not distinguish between the user agent’s normal
+browsing and <a href="https://www.w3.org/2001/tag/doc/private-browsing-modes/">private browsing</a> modes.</p>
+   <p>However, it’s recommended that user agents use separate authentication contexts
+(see <a href="#authentication">§ 6 Authentication</a>) and QUIC connections (see <a href="#transport">§ 4 Transport and metadata discovery with QUIC</a>) for normal and
+private browsing from the same user agent instance. This makes it more difficult
+for OSP agents to match activities occurring in normal and private browsing by the
+same user.</p>
    <h4 class="heading settled" data-level="13.2.5" id="persistent-state"><span class="secno">13.2.5. </span><span class="content">Persistent State</span><a class="self-link" href="#persistent-state"></a></h4>
    <p>An agent is likely to persist the identity of agents that have successfully
 completed <a href="#authentication">§ 6 Authentication</a>.  This may include the public key fingerprints,
