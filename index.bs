@@ -1877,7 +1877,7 @@ Each audio encoding offered defines the following fields:
 
 : codec-name
 :: The name of the codec used by the encoding, following the same
-    rules as `codec-name` in [=streaming-capabilities-response=].
+    rules as `codec-name` in [[#streaming-protocol-capabilities]].
 
 : time-scale
 :: The [=time scale=] used by all audio frames.  This allows senders to
