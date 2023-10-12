@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="32f78dc7422babee8c31a3721f196e9078b7767c" name="document-revision">
+  <meta content="4b54b3484afcbad977c80ddb448ecc376b531410" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -581,7 +581,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-10-04">4 October 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-10-12">12 October 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1548,9 +1548,10 @@ browsing context with D, presentationUrl, and I as parameters.", U (the
 controller) may send a <a data-link-type="dfn" href="#presentation-start-request" id="ref-for-presentation-start-request②">presentation-start-request</a> message to D
 (the receiver), with I for the <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier" id="ref-for-dfn-presentation-identifier⑤">presentation identifier</a> and presentationUrl
 for the selected presentation URL.</p>
-   <p class="issue" id="issue-733afe74"><a class="self-link" href="#issue-733afe74"></a> Once the Presentation API has text about
-reconnecting via an implementation specific mechanism, quote that here and map
-it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[Issue #w3c/presentation-api#471]</a></p>
+   <p>When <a href="https://w3c.github.io/presentation-api/#reconnecting-to-a-presentation">section 6.3.5</a> says to
+"establish a presentation connection with newConnection," let U be the
+presentationURL of <code>newConnection</code> and I the presentation identifier of <code>newConnection.</code> The agent should send a <a data-link-type="dfn" href="#presentation-connection-open-request" id="ref-for-presentation-connection-open-request②">presentation-connection-open-request</a> message with U for the <code>url</code> and I for
+the <code>presentation-id</code>.</p>
    <p>When <a href="https://w3c.github.io/presentation-api/#sending-a-message-through-presentationconnection">section
 6.5.2</a> says "Using an implementation specific mechanism, transmit the contents
 of messageOrData as the presentation message data and messageType as the
@@ -1570,7 +1571,7 @@ a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-p
    <p>When <a href="https://w3c.github.io/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "it MUST listen to and accept incoming connection requests from a
 controlling browsing context using an implementation specific
-mechanism", the receiver must receive and process the <a data-link-type="dfn" href="#presentation-connection-open-request" id="ref-for-presentation-connection-open-request②">presentation-connection-open-request</a>.</p>
+mechanism", the receiver must receive and process the <a data-link-type="dfn" href="#presentation-connection-open-request" id="ref-for-presentation-connection-open-request③">presentation-connection-open-request</a>.</p>
    <p>When <a href="https://w3c.github.io/presentation-api/#monitoring-incoming-presentation-connections">section
 6.7.1</a> says "Establish the connection between the controlling and receiving
 browsing contexts using an implementation specific mechanism.", the receiver
@@ -4265,9 +4266,6 @@ list based on hardware characteristics of agents. <a href="https://github.com/w3
    <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">[Issue #108]</a> <a class="issue-return" href="#issue-e0955a17" title="Jump to section">↵</a></div>
    <div class="issue"> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a> <a class="issue-return" href="#issue-3b9ff3bd" title="Jump to section">↵</a></div>
    <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a> <a class="issue-return" href="#issue-dc398825" title="Jump to section">↵</a></div>
-   <div class="issue"> Once the Presentation API has text about
-reconnecting via an implementation specific mechanism, quote that here and map
-it to a message. <a href="https://github.com/w3c/presentation-api/issues/471">[Issue #w3c/presentation-api#471]</a> <a class="issue-return" href="#issue-733afe74" title="Jump to section">↵</a></div>
    <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">[Issue #159]</a> <a class="issue-return" href="#issue-649c173f" title="Jump to section">↵</a></div>
    <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">[Issue #146]</a> <a class="issue-return" href="#issue-9145071e" title="Jump to section">↵</a></div>
    <div class="issue"> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">[Issue #265]</a> <a class="issue-return" href="#issue-74827562" title="Jump to section">↵</a></div>
@@ -4689,7 +4687,7 @@ window.dfnpanelData['presentation-start-response'] = {"dfnID": "presentation-sta
 window.dfnpanelData['presentation-termination-request'] = {"dfnID": "presentation-termination-request", "url": "#presentation-termination-request", "dfnText": "presentation-termination-request", "refSections": [{"refs": [{"id": "ref-for-presentation-termination-request"}, {"id": "ref-for-presentation-termination-request\u2460"}, {"id": "ref-for-presentation-termination-request\u2461"}, {"id": "ref-for-presentation-termination-request\u2462"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-termination-request\u2463"}], "title": "7.1. Presentation API"}], "external": false};
 window.dfnpanelData['presentation-termination-response'] = {"dfnID": "presentation-termination-response", "url": "#presentation-termination-response", "dfnText": "presentation-termination-response", "refSections": [{"refs": [{"id": "ref-for-presentation-termination-response"}], "title": "7. Presentation Protocol"}], "external": false};
 window.dfnpanelData['presentation-termination-event'] = {"dfnID": "presentation-termination-event", "url": "#presentation-termination-event", "dfnText": "presentation-termination-event", "refSections": [{"refs": [{"id": "ref-for-presentation-termination-event"}], "title": "7. Presentation Protocol"}], "external": false};
-window.dfnpanelData['presentation-connection-open-request'] = {"dfnID": "presentation-connection-open-request", "url": "#presentation-connection-open-request", "dfnText": "presentation-connection-open-request", "refSections": [{"refs": [{"id": "ref-for-presentation-connection-open-request"}, {"id": "ref-for-presentation-connection-open-request\u2460"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-connection-open-request\u2461"}], "title": "7.1. Presentation API"}], "external": false};
+window.dfnpanelData['presentation-connection-open-request'] = {"dfnID": "presentation-connection-open-request", "url": "#presentation-connection-open-request", "dfnText": "presentation-connection-open-request", "refSections": [{"refs": [{"id": "ref-for-presentation-connection-open-request"}, {"id": "ref-for-presentation-connection-open-request\u2460"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-connection-open-request\u2461"}, {"id": "ref-for-presentation-connection-open-request\u2462"}], "title": "7.1. Presentation API"}], "external": false};
 window.dfnpanelData['presentation-connection-open-response'] = {"dfnID": "presentation-connection-open-response", "url": "#presentation-connection-open-response", "dfnText": "presentation-connection-open-response", "refSections": [{"refs": [{"id": "ref-for-presentation-connection-open-response"}, {"id": "ref-for-presentation-connection-open-response\u2460"}, {"id": "ref-for-presentation-connection-open-response\u2461"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-connection-open-response\u2462"}], "title": "7.1. Presentation API"}], "external": false};
 window.dfnpanelData['presentation-connection-close-event'] = {"dfnID": "presentation-connection-close-event", "url": "#presentation-connection-close-event", "dfnText": "presentation-connection-close-event", "refSections": [{"refs": [{"id": "ref-for-presentation-connection-close-event"}, {"id": "ref-for-presentation-connection-close-event\u2460"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-connection-close-event\u2461"}], "title": "7.1. Presentation API"}], "external": false};
 window.dfnpanelData['presentation-change-event'] = {"dfnID": "presentation-change-event", "url": "#presentation-change-event", "dfnText": "presentation-change-event", "refSections": [{"refs": [{"id": "ref-for-presentation-change-event"}, {"id": "ref-for-presentation-change-event\u2460"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-change-event\u2461"}, {"id": "ref-for-presentation-change-event\u2462"}], "title": "7.1. Presentation API"}], "external": false};
