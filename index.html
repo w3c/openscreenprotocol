@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="4b54b3484afcbad977c80ddb448ecc376b531410" name="document-revision">
+  <meta content="134c548c0156987b2df1e46a6a1a85a63e09f34e" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1770,7 +1770,7 @@ controller.</p>
    </ul>
    <p>The <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset" id="ref-for-timeline-offset">timeline offset</a> associated with the playback changes since the last sent <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event④">remote-playback-state-event</a> message:</p>
    <p>The <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#event-media-stalled" id="ref-for-event-media-stalled">stalled</a></code> event needs to fire at the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑤">HTMLMediaElement</a></code> instance.</p>
-   <p>More than 350ms pass since the last <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑤">remote-playback-state-event</a> message
+   <p>More than 250ms pass since the last <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑤">remote-playback-state-event</a> message
   and any of the following attributes observably change since the last <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event⑥">remote-playback-state-event</a> message. Any new continuously changing
   attributes fall under this rule.</p>
    <ul>
@@ -1779,6 +1779,7 @@ controller.</p>
     <li data-md>
      <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime" id="ref-for-dom-media-currenttime">HTMLMediaElement.currentTime</a></code></p>
    </ul>
+   <p class="note" role="note"><span class="marker">NOTE:</span> A media element is required to fire a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#event-media-timeupdate" id="ref-for-event-media-timeupdate">timeupdate</a></code> event every 250ms or sooner.</p>
    <dl>
     <dt data-md>remote-playback-id
     <dd data-md>
@@ -4110,6 +4111,7 @@ alphanumeric input.</p>
      <li><span class="dfn-paneled" id="ea42745f">stalled</span>
      <li><span class="dfn-paneled" id="df48f90a">textTracks</span>
      <li><span class="dfn-paneled" id="e5d99cfd">timeline offset</span>
+     <li><span class="dfn-paneled" id="4ef17206">timeupdate</span>
      <li><span class="dfn-paneled" id="da57602e">type</span>
      <li><span class="dfn-paneled" id="d0a3e1e6">videoHeight</span>
      <li><span class="dfn-paneled" id="4bc31655">videoTracks</span>
@@ -4617,6 +4619,7 @@ window.dfnpanelData['1d3efcfe'] = {"dfnID": "1d3efcfe", "url": "https://html.spe
 window.dfnpanelData['ea42745f'] = {"dfnID": "ea42745f", "url": "https://html.spec.whatwg.org/multipage/media.html#event-media-stalled", "dfnText": "stalled", "refSections": [{"refs": [{"id": "ref-for-event-media-stalled"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-event-media-stalled\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
 window.dfnpanelData['df48f90a'] = {"dfnID": "df48f90a", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks", "dfnText": "textTracks", "refSections": [{"refs": [{"id": "ref-for-dom-media-texttracks"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-texttracks\u2460"}, {"id": "ref-for-dom-media-texttracks\u2461"}, {"id": "ref-for-dom-media-texttracks\u2462"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
 window.dfnpanelData['e5d99cfd'] = {"dfnID": "e5d99cfd", "url": "https://html.spec.whatwg.org/multipage/media.html#timeline-offset", "dfnText": "timeline offset", "refSections": [{"refs": [{"id": "ref-for-timeline-offset"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-timeline-offset\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
+window.dfnpanelData['4ef17206'] = {"dfnID": "4ef17206", "url": "https://html.spec.whatwg.org/multipage/media.html#event-media-timeupdate", "dfnText": "timeupdate", "refSections": [{"refs": [{"id": "ref-for-event-media-timeupdate"}], "title": "9. Remote Playback Protocol"}], "external": true};
 window.dfnpanelData['da57602e'] = {"dfnID": "da57602e", "url": "https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type", "dfnText": "type", "refSections": [{"refs": [{"id": "ref-for-attr-source-type"}], "title": "9. Remote Playback Protocol"}], "external": true};
 window.dfnpanelData['d0a3e1e6'] = {"dfnID": "d0a3e1e6", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight", "dfnText": "videoHeight", "refSections": [{"refs": [{"id": "ref-for-dom-video-videoheight"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-video-videoheight\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
 window.dfnpanelData['4bc31655'] = {"dfnID": "4bc31655", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks", "dfnText": "videoTracks", "refSections": [{"refs": [{"id": "ref-for-dom-media-videotracks"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-videotracks\u2460"}, {"id": "ref-for-dom-media-videotracks\u2461"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
