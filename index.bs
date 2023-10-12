@@ -1032,8 +1032,8 @@ When [[PRESENTATION-API#reconnecting-to-a-presentation|section 6.3.5]] says to
 "establish a presentation connection with newConnection," let U be the
 presentationURL of `newConnection` and I the presentation identifier of
 `newConnection.` The agent should send a
-[=presentation-connection-open-request=] with U for the `url` and I for the
-`presentation-id`.
+[=presentation-connection-open-request=] message with U for the `url` and I for
+the `presentation-id`.
 
 When [[PRESENTATION-API#sending-a-message-through-presentationconnection|section
 6.5.2]] says "Using an implementation specific mechanism, transmit the contents
