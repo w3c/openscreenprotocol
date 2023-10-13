@@ -347,7 +347,7 @@ be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
 refuse incoming connections that lack these parameters.
 
 * The [[!RFC7301|ALPN]] used must be "osp".
-* The [[!RFC6066|server_name extension]] must be set to the following `host_name`: 
+* The [[!RFC6066|server_name extension]] must be set to the following `host_name`:
     `<fp>._openscreen._udp`.
     * `<fp>` must be substituted with the [=agent fingerprint=] as used in mDNS TXT.
 
@@ -417,7 +417,7 @@ The [=agent certificate=] must have the following characteristics:
     <ol>
       <li>`1.2.840.10045.2.1` (ECC)</li>
       <li>`1.3.132.0.34` (ECDSA P384)</li>
-    </ol> 
+    </ol>
     DER representation: `301006072a8648ce3d020106052b81040022`
   </p>
   </td>
@@ -554,7 +554,7 @@ The various capabilities have the following meanings:
     protocols may report more specific capabilities, such as support for
     certain audio codecs in the streaming protocol.
 
-: receive-video 
+: receive-video
 :: The agent can receive video via the other protocols it supports.  Those other
     protocols may report more specific capabilities, such as support for
     certain video codecs in the streaming protocol.
@@ -1160,13 +1160,14 @@ values:
 Note: A version 4 (pseudorandom) [=UUID=] is recommended as it meets the
 requirements for a remote-playback-id.
 
-: sources
+: sources (optional)
 :: The [=media resources=] that the controller has selected for playback
     on the receiver.  Each source must include a <{source/src|source URL}>
-    and should include an <{source/type|extended MIME type}>.  If empty,
-    the `remoting` field must be populated, as the controller will use a
+    and should include an <{source/type|extended MIME type}> when available
+    for the [=media resource=].  If `sources` is missing or empty, the
+    `remoting` field must be populated, as the controller will use a
     streaming session to send encoded media.
-    
+
 : text-track-urls
 :: URLs of text tracks associated with the [=media resources=].
 
@@ -1181,7 +1182,7 @@ requirements for a remote-playback-id.
 : remoting (optional)
 :: Parameters for starting a streaming session associated with this
     remote playback.  If not included, no streaming session is started.
-    Required when `sources` is empty.
+    Required when `sources` is missing or empty.
 
 When the receiver receives a [=remote-playback-start-request=] message, it should
 send back a [=remote-playback-start-response=] message.  It should do so quickly,
@@ -1336,7 +1337,7 @@ intentionally mirror settable attributes and methods of the
     for more details. Must not be used in the initial controls of the
     [=remote-playback-start-request=] message (which already contains a
     [=media resource=]).
-    
+
 : preload
 :: Set how aggressively to preload media. See
     {{HTMLMediaElement/preload|HTMLMediaElement.preload}}
@@ -1596,7 +1597,7 @@ changed.
 
 All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common [=media-time=] value (see Appendix A)
-which includes a [=time scale=]. 
+which includes a [=time scale=].
 
 <div class="note">
 <table>
@@ -1854,7 +1855,7 @@ Each stream offer contains the following fields:
 : audio
 :: A list of audio encodings offered.  An audio encoding is a series
     of encoded audio frames.  Encodings define fields needed by
-    the receiver to know how to decode the encoding, such as codec. 
+    the receiver to know how to decode the encoding, such as codec.
     They can differ by codec and related fields, but should be different
     encodings of the same audio.
 
@@ -2897,7 +2898,3 @@ To decode a PSK `P` given a QR code, follow these steps:
 
 1. Obtain the string `N` by decoding the QR code.
 2. Parse `N` as a hexadecimal number to obtain `P`.
-
-
-
-
