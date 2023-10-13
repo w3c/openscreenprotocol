@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="134c548c0156987b2df1e46a6a1a85a63e09f34e" name="document-revision">
+  <meta content="dcc0efb5bf9e0fe9b3ff4e6b26f244d0a9a3c631" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -581,7 +581,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-10-12">12 October 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-10-13">13 October 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2258,12 +2258,17 @@ capable of processing, in kilobits per second. Default is no minimum.</p>
      <p>An optional field indicating what its ideal aspect ratio is, e.g. a 16:10
 display could return this value as 1.6 to indicate its preferred content
 scaling. Default is none.</p>
-    <dt data-md>color-gamuts (optional)
+    <dt data-md>color-gamut (optional)
     <dd data-md>
-     <p>An optional field indicating what color spaces can be decoded and rendered by
-the media receiver.  The media sender may use these values to determine how
-to encode video. Valid values correspond to <a href="https://w3c.github.io/media-capabilities/#colorgamut">ColorGamut</a> in the <a data-link-type="biblio" href="#biblio-media-capabilities" title="Media Capabilities">Media Capabilities</a> API.  The default value is
-a list with the single entry "srgb".</p>
+     <p>An optional field indicating the widest color space that can be decoded and
+rendered by the media receiver.  The media sender may use this value to
+determine how to encode video, and should assume all narrower color spaces
+are supported.  Valid values correspond to <a href="https://w3c.github.io/media-capabilities/#colorgamut">ColorGamut</a> in the <a data-link-type="biblio" href="#biblio-media-capabilities" title="Media Capabilities">Media Capabilities</a> API.  The default value is
+"srgb".</p>
+   </dl>
+   <p class="note" role="note"><span class="marker">NOTE:</span> Support for "p3" implies support for "srgb", and support for "rec2020"
+implies support for "p3" and "srgb".</p>
+   <dl>
     <dt data-md>hdr-formats (optional)
     <dd data-md>
      <p>An optional field indicating what HDR transfer functions and metadata formats
@@ -3666,7 +3671,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; max-pixels-per-second</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; min-bit-rate</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">ratio </span><span class="c1">; aspect-ratio</span>
-  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">string</span><span class="p">]</span> <span class="c1">; color-gamuts</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="nx">string </span><span class="c1">; color-gamut</span>
   <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-resolution</span><span class="p">]</span> <span class="c1">; native-resolutions</span>
   <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-scaling</span>
   <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; supports-rotation</span>
