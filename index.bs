@@ -38,10 +38,10 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: media element state
     text: remote playback devices
     text: remote playback source
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-19.19; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: variable-length integer
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin; type: dfn; spec: RFC9000; text: Transport Parameter Encoding
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames; type: dfn; spec: RFC9000; text: CONNECTION_CLOSE Frames
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
@@ -326,7 +326,7 @@ Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
 If a [=listening agent=] wants to connect to or learn further metadata about an
-[=advertising agent=], it initiates a [[QUIC]] connection to the IP and port
+[=advertising agent=], it initiates a [[!RFC9000|QUIC]] connection to the IP and port
 from its SRV record.  Prior to authentication, a message may be exchanged (such
 as further metadata), but such info should be treated as unverified (such as
 indicating to a user that a display name of an unauthenticated agent is
@@ -541,7 +541,7 @@ be closed with an error code of 5139.  In order to keep a QUIC connection alive,
 agent may send an [=agent-status-request=] message, and any agent that receives an
 [=agent-status-request=] message should send an [=agent-status-response=] message. Such
 messages should be sent more frequently than the QUIC idle_timeout transport
-parameter (see [=Transport Parameter Encoding=] in [[QUIC]]) and QUIC PING
+parameter (see [=Transport Parameter Encoding=] in [[!RFC9000|QUIC]]) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
 recommended.  The agent should behave as though a timer less than the
 idle_timeout were reset every time a message is sent on a QUIC stream.  If the
@@ -579,7 +579,7 @@ include the unknown type key in the reason phrase of the [=CONNECTION_CLOSE
 frame=].
 
 Variable-length integers are encoded in the [=Variable-Length Integer Encoding=]
-used by [[QUIC]].
+used by [[!RFC9000|QUIC]].
 
 Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
@@ -976,9 +976,12 @@ controller) may send a [=presentation-start-request=] message to D
 (the receiver), with I for the [=presentation identifier=] and presentationUrl
 for the selected presentation URL.
 
-Issue(w3c/presentation-api#471): Once the Presentation API has text about
-reconnecting via an implementation specific mechanism, quote that here and map
-it to a message.
+When [[PRESENTATION-API#reconnecting-to-a-presentation|section 6.3.5]] says to
+"establish a presentation connection with newConnection," let U be the
+presentationURL of `newConnection` and I the presentation identifier of
+`newConnection.` The agent should send a
+[=presentation-connection-open-request=] message with U for the `url` and I for
+the `presentation-id`.
 
 When [[PRESENTATION-API#sending-a-message-through-presentationconnection|section
 6.5.2]] says "Using an implementation specific mechanism, transmit the contents
@@ -1211,13 +1214,16 @@ The [=timeline offset=] associated with the playback changes since the last sent
 
 The {{stalled}} event needs to fire at the associated {{HTMLMediaElement}} instance.
 
-More than 350ms pass since the last [=remote-playback-state-event=] message
+More than 250ms pass since the last [=remote-playback-state-event=] message
   and any of the following attributes observably change since the last
   [=remote-playback-state-event=] message. Any new continuously changing
   attributes fall under this rule.
 
 * {{HTMLMediaElement/played|HTMLMediaElement.played}}
 * {{HTMLMediaElement/currentTime|HTMLMediaElement.currentTime}}
+
+NOTE: A media element is required to fire a {{HTMLMediaElement/timeupdate}}
+event every 250ms or sooner.
 
 : remote-playback-id
 :: The ID of the remote playback whose state has changed.
@@ -1667,20 +1673,13 @@ following fields:
 The format type is used as the basis for audio and video capabilities.
 Formats are composed of the following fields:
 
-: name (required)
+: codec-name (required)
 :: A fully qualified codec string listed in the [[WEBCODECS-CODEC-REGISTRY]] and further
      specified by the codec-specific registrations referenced in that registry.
 
-: parameters (required)
-:: A list of (key, value) parameters that can be used to describe
-    properties of a specific format, and not shared by other formats
-    of that type (audio, video, etc.).
-
-For `name`, Open Screen agents may also accept a single-codec [=codec
+For `codec-name`, Open Screen agents may also accept a single-codec [=codec
 parameter=] as described in [[!RFC6381]] for codecs not listed in the
 [[WEBCODECS-CODEC-REGISTRY]].
-
-Issue(266): Specify where codec-specific parameters are defined or drop them.
 
 Audio capabilities are composed of the above format type, with the following
 additional fields:
@@ -1718,12 +1717,16 @@ following additional fields:
     display could return this value as 1.6 to indicate its preferred content
     scaling. Default is none.
 
-: color-gamuts (optional)
-:: An optional field indicating what color spaces can be decoded and rendered by
-    the media receiver.  The media sender may use these values to determine how
-    to encode video. Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
+: color-gamut (optional)
+:: An optional field indicating the widest color space that can be decoded and
+    rendered by the media receiver.  The media sender may use this value to
+    determine how to encode video, and should assume all narrower color spaces
+    are supported.  Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
     in the [[!MEDIA-CAPABILITIES|Media Capabilities]] API.  The default value is
-    a list with the single entry "srgb".
+    "srgb".
+
+NOTE: Support for "p3" implies support for "srgb", and support for "rec2020"
+implies support for "p3" and "srgb".
 
 : hdr-formats (optional)
 :: An optional field indicating what HDR transfer functions and metadata formats
@@ -1831,8 +1834,8 @@ Each audio encoding offered defines the following fields:
     [[#requests-responses-watches]].
 
 : codec-name
-:: The name of the codec used by the encoding.  This must be a single-codec
-    RFC 6381 [=codecs parameter=].
+:: The name of the codec used by the encoding, following the same
+    rules as `codec-name` in [[#streaming-protocol-capabilities]].
 
 : time-scale
 :: The [=time scale=] used by all audio frames.  This allows senders to
@@ -1853,7 +1856,8 @@ Each video encoding offered defines the following fields:
     [[#requests-responses-watches]].
 
 : codec-name
-:: The name of the codec used by the encoding.
+:: The name of the codec used by the encoding, following the same
+    rules as `codec-name` in [[#streaming-protocol-capabilities]].
 
 : time-scale
 :: The [=time scale=] used by all video frames.  This allows senders to
@@ -1942,8 +1946,8 @@ Audio {#streaming-audio}
 [=Media senders=] may send audio to [=media receivers=] by sending
 [=audio-frame=] messages (see [[#appendix-a]]) with the following keys and
 values.  An audio frame message contains a set of encoded audio samples for a
-range of time. A series of encoded audio frames that share a codec, codec
-parameters and a timeline form an audio encoding.
+range of time. A series of encoded audio frames that share a codec and a
+timeline form an audio encoding.
 
 Unlike most Open Screen Protocol messages, this one uses an
 array-based grouping rather than a struct-based grouping.  For
@@ -1986,9 +1990,8 @@ separate QUIC streams.
     be; it can be any clock chosen by the media sender.
 
 : payload
-:: The encoded audio.  The codec and codec parameters are equal to the
-    `codec-name` field of the [=audio-encoding-offer=] message referenced by
-    the `encoding-id`.
+:: The encoded audio.  The codec is equal to the `codec-name` field of the
+    [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 Video {#streaming-video}
 --------------------------------------------
@@ -1997,8 +2000,7 @@ Media senders may send video to media receivers by sending [=video-frame=]
 messages (see [[#appendix-a]]) with the following keys and values.  A video
 frame message contains an encoded video frame (an encoded image) at a specific
 point in time or over a specfic time range (if the duration is known).  A series
-of encoded video frames that share a codec, codec parameters and a timeline form
-a video encoding.
+of encoded video frames that share a codec and a timeline form a video encoding.
 
 To allow for video frames to be sent out of order, they may be sent in
 separate QUIC streams.  If the encoding is a long chain of encoded video frames
@@ -2050,9 +2052,9 @@ ending at the last dependent frame.
     referenced by the `encoding-id`.
 
 : payload
-:: The encoded video frame (encoded image).  The codec and codec
-     parameters are equal to the `codec-name` field of the
-     [=video-encoding-offer=] message referenced by the `encoding-id`.
+:: The encoded video frame (encoded image).  The codec is equal to the
+    `codec-name` field of the [=video-encoding-offer=] message referenced
+    by the `encoding-id`.
 
 Data {#streaming-data}
 ------------------------------------
@@ -2467,16 +2469,17 @@ available to the Web and should be designed accordingly.
 
 Below, we discuss mitigation steps to prevent malicious use of these devices.
 
-### Incognito Mode ### {#incognito-mode}
+### Private Browsing Mode ### {#private-browsing-mode}
 
-The Open Screen Protocol does not distinguish between the user agent's normal
-browsing and incognito modes, and agents that follow the specification
-behave identically regardless of which mode is in use.
+The Open Screen Protocol itself does not distinguish between the user agent's normal
+browsing and [private browsing](https://www.w3.org/2001/tag/doc/private-browsing-modes/)
+modes.
 
-It's recommended that user agents use separate authentication contexts and QUIC
-connections for normal and incognito profiles from the same user agent instance.
-This prevents OSP agents from correlating activity among profiles
-belonging to the same user (both normal and incognito).
+However, it's recommended that user agents use separate authentication contexts
+(see [[#authentication]]) and QUIC connections (see [[#transport]]) for normal and
+private browsing from the same user agent instance. This makes it more difficult
+for OSP agents to match activities occurring in normal and private browsing by the
+same user.
 
 ### Persistent State ### {#persistent-state}
 
