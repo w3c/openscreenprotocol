@@ -1771,9 +1771,10 @@ following additional fields:
     scaling. Default is none.
 
 : color-gamut (optional)
-:: An optional field indicating what color spaces can be decoded and rendered by
-    the media receiver.  The media sender may use this value to determine how
-    to encode video. Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
+:: An optional field indicating the widest color space that can be decoded and
+    rendered by the media receiver.  The media sender may use this value to
+    determine how to encode video, and should assume all narrower color spaces
+    are supported.  Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
     in the [[!MEDIA-CAPABILITIES|Media Capabilities]] API.  The default value is
     "srgb".
 
