@@ -1769,12 +1769,16 @@ following additional fields:
     display could return this value as 1.6 to indicate its preferred content
     scaling. Default is none.
 
-: color-gamuts (optional)
-:: An optional field indicating what color spaces can be decoded and rendered by
-    the media receiver.  The media sender may use these values to determine how
-    to encode video. Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
+: color-gamut (optional)
+:: An optional field indicating the widest color space that can be decoded and
+    rendered by the media receiver.  The media sender may use this value to
+    determine how to encode video, and should assume all narrower color spaces
+    are supported.  Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
     in the [[!MEDIA-CAPABILITIES|Media Capabilities]] API.  The default value is
-    a list with the single entry "srgb".
+    "srgb".
+
+NOTE: Support for "p3" implies support for "srgb", and support for "rec2020"
+implies support for "p3" and "srgb".
 
 : hdr-formats (optional)
 :: An optional field indicating what HDR transfer functions and metadata formats
