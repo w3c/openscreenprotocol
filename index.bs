@@ -368,7 +368,11 @@ The [=agent certificate=] must have the following characteristics:
 
 * 256-bit ECDSA public key.
 * Self-signed.
-* Support the `secp256r1_sha256` signature algorithm.
+* Support the `ecdsa_secp256r1_sha256` [=signature scheme=] as defined in TLS 1.3.
+     * The `AlgorithmIdentifier` values are as defined in [[!RFC5480]] (for public
+        keys) and [[!RFC5758]] (for signature schemes).
+     * [[!X690]] specifies the Distinguished Encoding Rules (DER) representation
+        used to encode the identifiers.
 * Valid for signing.
 
 The following X.509 v3 fields are to be set as follows:
@@ -390,22 +394,22 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Public Key `AlgorithmIdentifier`</td>
-   <td>OID:
-      <ol>
-        <li>`1.2.840.10045.2.1` (ECC)</li>
-        <li>`1.2.840.10045.3.1.7` (ECDSA P256)</li>
+   <td>
+      <ul>
+        <li>ECC OID: `1.2.840.10045.2.1`</li>
+        <li>ECDSA 256 OID: `1.2.840.10045.3.1.7`</li>
+        <li>DER representation: `301306072a8648ce3d020106082a8648ce3d030107`</li>
       </ol>
-      DER representation: `301306072a8648ce3d020106082a8648ce3d030107`
    </td>
  </tr>
  <tr>
    <td>Signature `AlgorithmIdentifier`</td>
-   <td>OID:
-      <ol>
-        <li>`1.2.840.10045.4.3.2`</li>
-      </ol>
+   <td>
+     <ul>
+       <li>OID: `1.2.840.10045.4.3.2`</li>
+       <li>DER representation: `300a06082a8648ce3d040302`</li>
+     </ul>
    </td>
-   DER representation: `300a06082a8648ce3d040302`
  </tr>
  <tr>
    <td>Issuer Name</td>
