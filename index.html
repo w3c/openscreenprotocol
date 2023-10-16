@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="dcc0efb5bf9e0fe9b3ff4e6b26f244d0a9a3c631" name="document-revision">
+  <meta content="ee2b93f6ec2664197fdefe9bf67cc445a5892cd8" name="document-revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -581,7 +581,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-10-13">13 October 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-10-16">16 October 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -923,7 +923,6 @@ endpoint.  Agent advertisement and discovery through <a data-link-type="biblio" 
 by all agents. However, agents are free to implement additional discovery
 mechanisms, such as querying for the same DNS-SD records via unicast DNS.</p>
    <p>OSP agents must use the DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp</code>.</p>
-   <p class="issue" id="issue-56c2cd35"><a class="self-link" href="#issue-56c2cd35"></a> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/107">[Issue #107]</a></p>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="advertising-agent">advertising agent</dfn> is one that responds to mDNS queries
 for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
 name</dfn> (a non-empty string) that is a human readable description of the
@@ -958,6 +957,9 @@ as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000
    </dl>
    <p class="note" role="note"><span class="marker">Note:</span> <code>at</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 13.5.3 Remote active network attackers</a>. <code>at</code> should have at least 32 bits of true
 entropy to make brute force attacks impractical.</p>
+   <p class="note" role="note"><span class="marker">NOTE:</span> If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons) it should attempt to retain cached and valid mDNS records so that
+discovery state is preserved when the network connection is resumed.</p>
    <p>Future extensions to this QUIC-based protocol can use the same metadata
 discovery process to indicate support for those extensions, through a
 capabilities mechanism to be determined. If a future version of the Open Screen
@@ -1180,7 +1182,7 @@ protocol.</p>
     <dd data-md>
      <p>The agent can send streaming using the streaming protocol.</p>
    </dl>
-   <p class="note" role="note"><span class="marker">Note:</span> See the <a href="https://w3c.github.io/openscreenprotocol/capabilities.html">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
+   <p class="note" role="note"><span class="marker">NOTE:</span> See the <a href="https://github.com/w3c/openscreenprotocol/blob/main/capabilities.md">Capabilities Registry</a> for a list of all known capabilities (both defined by this specification, and
 through <a href="#protocol-extensions">§ 12 Protocol Extensions</a>).</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
@@ -1197,7 +1199,10 @@ timer expires, a <a data-link-type="dfn" href="#agent-status-request" id="ref-fo
    <p>If a listening agent wishes to send messages to an advertising agent, the
 listening agent can connect to the advertising agent "on demand"; it does not
 need to keep the connection alive.</p>
-   <p class="issue" id="issue-e0955a17"><a class="self-link" href="#issue-e0955a17"></a> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">[Issue #108]</a></p>
+   <p>If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons), it should attempt to resume QUIC connections to the OSP agents to
+which it was previously connected once network connectivity is restored.  Once
+reconnected, it should send <code>agent-status-request</code> messages to those agents.</p>
    <p>The <a data-link-type="dfn" href="#agent-info" id="ref-for-agent-info④">agent-info</a> and <a data-link-type="dfn" href="#agent-status-response" id="ref-for-agent-status-response①">agent-status-response</a> messages may be extended to
 include additional information not defined in this spec, as described in <a href="#protocol-extension-fields">§ 12.1 Protocol Extension Fields</a>.</p>
    <h2 class="heading settled" data-level="5" id="messages"><span class="secno">5. </span><span class="content">Messages delivery using CBOR and QUIC streams</span><a class="self-link" href="#messages"></a></h2>
@@ -2329,7 +2334,7 @@ give the user some information about what the media stream is.</p>
     <dd data-md>
      <p>A list of audio encodings offered.  An audio encoding is a series
 of encoded audio frames.  Encodings define fields needed by
-the receiver to know how to decode the encoding, such as codec. 
+the receiver to know how to decode the encoding, such as codec.
 They can differ by codec and related fields, but should be different
 encodings of the same audio.</p>
     <dt data-md>video
@@ -4266,11 +4271,9 @@ alphanumeric input.</p>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Define suspend and resume behavior for discovery protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/107">[Issue #107]</a> <a class="issue-return" href="#issue-56c2cd35" title="Jump to section">↵</a></div>
    <div class="issue"> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">[Issue #228]</a> <a class="issue-return" href="#issue-808efb48" title="Jump to section">↵</a></div>
    <div class="issue"> Make recommendations for cipher and signature algorithm preference
 list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">[Issue #218]</a> <a class="issue-return" href="#issue-08dfa2ca" title="Jump to section">↵</a></div>
-   <div class="issue"> Define suspend and resume behavior for connection protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/108">[Issue #108]</a> <a class="issue-return" href="#issue-e0955a17" title="Jump to section">↵</a></div>
    <div class="issue"> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a> <a class="issue-return" href="#issue-3b9ff3bd" title="Jump to section">↵</a></div>
    <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a> <a class="issue-return" href="#issue-dc398825" title="Jump to section">↵</a></div>
    <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">[Issue #159]</a> <a class="issue-return" href="#issue-649c173f" title="Jump to section">↵</a></div>
