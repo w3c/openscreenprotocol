@@ -265,8 +265,6 @@ mechanisms, such as querying for the same DNS-SD records via unicast DNS.
 
 OSP agents must use the DNS-SD [=Service Name=] `_openscreen._udp`.
 
-Issue(107): Define suspend and resume behavior for discovery protocol.
-
 An <dfn noexport>advertising agent</dfn> is one that responds to mDNS queries
 for `_openscreen._udp.local`.  Such an agent should have a <dfn noexport>display
 name</dfn> (a non-empty string) that is a human readable description of the
@@ -312,6 +310,10 @@ Note: `at` prevents off-LAN parties from attempting authentication; see
 [[#remote-active-mitigations]].  `at` should have at least 32 bits of true
 entropy to make brute force attacks impractical.
 
+NOTE: If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons) it should attempt to retain cached and valid mDNS records so that
+discovery state is preserved when the network connection is resumed.
+
 <!-- TODO: Add examples of sample mDNS records. -->
 
 Future extensions to this QUIC-based protocol can use the same metadata
@@ -347,7 +349,7 @@ be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
 refuse incoming connections that lack these parameters.
 
 * The [[!RFC7301|ALPN]] used must be "osp".
-* The [[!RFC6066|server_name extension]] must be set to the following `host_name`: 
+* The [[!RFC6066|server_name extension]] must be set to the following `host_name`:
     `<fp>._openscreen._udp`.
     * `<fp>` must be substituted with the [=agent fingerprint=] as used in mDNS TXT.
 
@@ -417,7 +419,7 @@ The [=agent certificate=] must have the following characteristics:
     <ol>
       <li>`1.2.840.10045.2.1` (ECC)</li>
       <li>`1.3.132.0.34` (ECDSA P384)</li>
-    </ol> 
+    </ol>
     DER representation: `301006072a8648ce3d020106052b81040022`
   </p>
   </td>
@@ -554,7 +556,7 @@ The various capabilities have the following meanings:
     protocols may report more specific capabilities, such as support for
     certain audio codecs in the streaming protocol.
 
-: receive-video 
+: receive-video
 :: The agent can receive video via the other protocols it supports.  Those other
     protocols may report more specific capabilities, such as support for
     certain video codecs in the streaming protocol.
@@ -579,11 +581,9 @@ The various capabilities have the following meanings:
 : send-streaming
 :: The agent can send streaming using the streaming protocol.
 
-Note: See the
-[Capabilities Registry](https://w3c.github.io/openscreenprotocol/capabilities.html)
+NOTE: See the [Capabilities Registry](https://github.com/w3c/openscreenprotocol/blob/main/capabilities.md)
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
-
 
 If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
@@ -603,7 +603,10 @@ If a listening agent wishes to send messages to an advertising agent, the
 listening agent can connect to the advertising agent "on demand"; it does not
 need to keep the connection alive.
 
-Issue(108): Define suspend and resume behavior for connection protocol.
+If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons), it should attempt to resume QUIC connections to the OSP agents to
+which it was previously connected once network connectivity is restored.  Once
+reconnected, it should send `agent-status-request` messages to those agents.
 
 The [=agent-info=] and [=agent-status-response=] messages may be extended to
 include additional information not defined in this spec, as described in
@@ -1166,7 +1169,7 @@ requirements for a remote-playback-id.
 :: The [=media resources=] that the controller has selected for playback
     on the receiver.  Each source must include a <{source/src|source URL}>
     and should include an <{source/type|extended MIME type}>.
-    
+
 Issue(265): Should media resource URLs be optional?
 
 : text-track-urls
@@ -1336,7 +1339,7 @@ intentionally mirror settable attributes and methods of the
     {{HTMLMediaElement/src|HTMLMediaElement.src}}
     for more details. Must not be used in the initial controls of the
     [=remote-playback-start-request=] message (which already contains a list of URLs).
-    
+
 Issue(223): Codec switching when remoting.
 
 : preload
@@ -1598,7 +1601,7 @@ changed.
 
 All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common [=media-time=] value (see Appendix A)
-which includes a [=time scale=]. 
+which includes a [=time scale=].
 
 <div class="note">
 <table>
@@ -1856,7 +1859,7 @@ Each stream offer contains the following fields:
 : audio
 :: A list of audio encodings offered.  An audio encoding is a series
     of encoded audio frames.  Encodings define fields needed by
-    the receiver to know how to decode the encoding, such as codec. 
+    the receiver to know how to decode the encoding, such as codec.
     They can differ by codec and related fields, but should be different
     encodings of the same audio.
 
@@ -2894,7 +2897,3 @@ To decode a PSK `P` given a QR code, follow these steps:
 
 1. Obtain the string `N` by decoding the QR code.
 2. Parse `N` as a hexadecimal number to obtain `P`.
-
-
-
-
