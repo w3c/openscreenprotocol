@@ -23,27 +23,25 @@ urlPrefix: https://html.spec.whatwg.org/multipage/media.html#; type: dfn; spec: 
     text: official playback position
     text: poster frame
     text: timeline offset
-urlPrefix: https://w3c.github.io/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
+    text: media resource
+urlPrefix: https://www.w3.org/TR/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
     text: available presentation display
     text: controlling user agent
-    text: presentation
-    text: presentation id
+    text: presentation; url: receiving-browsing-context
+    text: presentation identifier
     text: presentation request url
     text: receiving user agent
-urlPrefix: https://w3c.github.io/presentation-api/; type: interface; spec: PRESENTATION-API
-    text: PresentationConnection
 urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-PLAYBACK
     text: availability sources set
     text: compatible remote playback device
     text: initiate remote playback
     text: media element state
-    text: media resources
     text: remote playback devices
     text: remote playback source
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-18; type: dfn; spec: QUIC; text: Transport Parameter Encoding
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-19.19; type: dfn; spec: QUIC; text: CONNECTION_CLOSE Frames
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: Variable-Length Integer Encoding
-url: https://tools.ietf.org/html/draft-ietf-quic-transport-34#section-16; type: dfn; spec: QUIC; text: variable-length integer
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin; type: dfn; spec: RFC9000; text: Transport Parameter Encoding
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames; type: dfn; spec: RFC9000; text: CONNECTION_CLOSE Frames
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
@@ -55,6 +53,9 @@ url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; te
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
 url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
+url: https://www.iso.org/standard/62021.html#; type: dfn; spec: iso18004; text: QR code
+url: https://tools.ietf.org/html/rfc5280#section-4.2.1.3; type: dfn; spec: RFC5280; text: digitalSignature
+url: https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3; type: dfn; spec: RFC8446; text: signature scheme
 </pre>
 
 Introduction {#introduction}
@@ -138,11 +139,12 @@ Presentation API Requirements {#requirements-presentation-api}
     capable of rendering a specific [=presentation request URL=].
 
 2.  A controller must be able to start a new [=presentation=] on a
-    receiver given a [=presentation request URL=] and [=presentation ID=].
+    receiver given a [=presentation request URL=] and [=presentation
+    identifier=].
 
 3.  A controller must be able to create a new {{PresentationConnection}} to an
     existing presentation on the receiver, given its [=presentation request
-    URL=] and [=presentation ID=].
+    URL=] and [=presentation identifier=].
 
 4.  It must be possible to close a {{PresentationConnection}} between a
     controller and a presentation, and signal both parties with the reason why
@@ -166,8 +168,8 @@ Presentation API Requirements {#requirements-presentation-api}
     `ArrayBufferView` types in ECMAScript).
 
 10. The controller must be able to signal to the receiver to
-    terminate a presentation, given its [=presentation request URL=] and [=presentation
-    ID=].
+    terminate a presentation, given its [=presentation request URL=] and
+    [=presentation identifier=].
 
 11. The receiver must be able to signal all connected controllers
     when a presentation is terminated.
@@ -263,8 +265,6 @@ mechanisms, such as querying for the same DNS-SD records via unicast DNS.
 
 OSP agents must use the DNS-SD [=Service Name=] `_openscreen._udp`.
 
-Issue(107): Define suspend and resume behavior for discovery protocol.
-
 An <dfn noexport>advertising agent</dfn> is one that responds to mDNS queries
 for `_openscreen._udp.local`.  Such an agent should have a <dfn noexport>display
 name</dfn> (a non-empty string) that is a human readable description of the
@@ -310,6 +310,10 @@ Note: `at` prevents off-LAN parties from attempting authentication; see
 [[#remote-active-mitigations]].  `at` should have at least 32 bits of true
 entropy to make brute force attacks impractical.
 
+NOTE: If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons) it should attempt to retain cached and valid mDNS records so that
+discovery state is preserved when the network connection is resumed.
+
 <!-- TODO: Add examples of sample mDNS records. -->
 
 Future extensions to this QUIC-based protocol can use the same metadata
@@ -324,7 +328,7 @@ Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
 If a [=listening agent=] wants to connect to or learn further metadata about an
-[=advertising agent=], it initiates a [[QUIC]] connection to the IP and port
+[=advertising agent=], it initiates a [[!RFC9000|QUIC]] connection to the IP and port
 from its SRV record.  Prior to authentication, a message may be exchanged (such
 as further metadata), but such info should be treated as unverified (such as
 indicating to a user that a display name of an unauthenticated agent is
@@ -345,16 +349,13 @@ be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
 refuse incoming connections that lack these parameters.
 
 * The [[!RFC7301|ALPN]] used must be "osp".
-* The [[!RFC6066|server_name extension]] must be set to the following `host_name`: 
+* The [[!RFC6066|server_name extension]] must be set to the following `host_name`:
     `<fp>._openscreen._udp`.
     * `<fp>` must be substituted with the [=agent fingerprint=] as used in mDNS TXT.
 
 An OSP Agent must not send TLS early data.
 
 Issue(228): Register ALPN with IANA.
-
-Issue(218): Make recommendations for cipher and signature algorithm preference
-list based on hardware characteristics of agents.
 
 Agent Certificates {#certificates}
 ----------------------------------
@@ -367,13 +368,14 @@ QUIC connection.
 
 The [=agent certificate=] must have the following characteristics:
 
-* 256-bit, 384-bit, or 521-bit ECDSA public key
-* Self-signed
-* Supporting the at least one of the following signature algorithms:
-    * secp256r1_sha256
-    * secp384r1_sha384
-    * secp521r1_sha512
-* Valid for signing
+* 256-bit ECDSA public key.
+* Self-signed.
+* Support the `ecdsa_secp256r1_sha256` [=signature scheme=] as defined in TLS 1.3.
+     * The `AlgorithmIdentifier` values are as defined in [[!RFC5480]] (for public
+        keys) and [[!RFC5758]] (for signature schemes).
+     * [[!X690]] specifies the Distinguished Encoding Rules (DER) representation
+        used to encode the identifiers.
+* Valid for signing.
 
 Let the <dfn>certificate serial number</dfn> be the result of the following steps:
 
@@ -397,6 +399,7 @@ Let the <dfn>certificate serial number</dfn> be the result of the following step
 
 The following X.509 v3 fields are to be set as follows:
 
+<div class="assertion">
 <table>
 <thead>
  <th>Field</th>
@@ -412,8 +415,23 @@ The following X.509 v3 fields are to be set as follows:
    <td>The [=certificate serial number=].</td>
  </tr>
  <tr>
-   <td>Signature Algorithm ID</td>
-   <td>One of the values listed above.</td>
+   <td>Public Key `AlgorithmIdentifier`</td>
+   <td>
+      <ul>
+        <li>ECC OID: `1.2.840.10045.2.1`</li>
+        <li>ECDSA 256 OID: `1.2.840.10045.3.1.7`</li>
+        <li>DER representation: `301306072a8648ce3d020106082a8648ce3d030107`</li>
+      </ol>
+   </td>
+ </tr>
+ <tr>
+   <td>Signature `AlgorithmIdentifier`</td>
+   <td>
+     <ul>
+       <li>OID: `1.2.840.10045.4.3.2`</li>
+       <li>DER representation: `300a06082a8648ce3d040302`</li>
+     </ul>
+   </td>
  </tr>
  <tr>
    <td>Issuer Name</td>
@@ -436,10 +454,11 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Certificate Key usage</td>
-   <td>Signing</td>
+   <td>[=digitalSignature=]</td>
  </tr>
 </tbody>
 </table>
+</div>
 
 Mandatory fields not mentioned above should be set according to [[!RFC5280]].
 
@@ -509,7 +528,7 @@ The various capabilities have the following meanings:
     protocols may report more specific capabilities, such as support for
     certain audio codecs in the streaming protocol.
 
-: receive-video 
+: receive-video
 :: The agent can receive video via the other protocols it supports.  Those other
     protocols may report more specific capabilities, such as support for
     certain video codecs in the streaming protocol.
@@ -534,11 +553,9 @@ The various capabilities have the following meanings:
 : send-streaming
 :: The agent can send streaming using the streaming protocol.
 
-Note: See the
-[Capabilities Registry](https://w3c.github.io/openscreenprotocol/capabilities.html)
+NOTE: See the [Capabilities Registry](https://github.com/w3c/openscreenprotocol/blob/main/capabilities.md)
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
-
 
 If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
@@ -548,7 +565,7 @@ be closed with an error code of 5139.  In order to keep a QUIC connection alive,
 agent may send an [=agent-status-request=] message, and any agent that receives an
 [=agent-status-request=] message should send an [=agent-status-response=] message. Such
 messages should be sent more frequently than the QUIC idle_timeout transport
-parameter (see [=Transport Parameter Encoding=] in [[QUIC]]) and QUIC PING
+parameter (see [=Transport Parameter Encoding=] in [[!RFC9000|QUIC]]) and QUIC PING
 frames should not be used.  An idle_timeout transport parameter of 25 seconds is
 recommended.  The agent should behave as though a timer less than the
 idle_timeout were reset every time a message is sent on a QUIC stream.  If the
@@ -558,7 +575,10 @@ If a listening agent wishes to send messages to an advertising agent, the
 listening agent can connect to the advertising agent "on demand"; it does not
 need to keep the connection alive.
 
-Issue(108): Define suspend and resume behavior for connection protocol.
+If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons), it should attempt to resume QUIC connections to the OSP agents to
+which it was previously connected once network connectivity is restored.  Once
+reconnected, it should send `agent-status-request` messages to those agents.
 
 The [=agent-info=] and [=agent-status-response=] messages may be extended to
 include additional information not defined in this spec, as described in
@@ -586,7 +606,7 @@ include the unknown type key in the reason phrase of the [=CONNECTION_CLOSE
 frame=].
 
 Variable-length integers are encoded in the [=Variable-Length Integer Encoding=]
-used by [[QUIC]].
+used by [[!RFC9000|QUIC]].
 
 Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
@@ -666,6 +686,8 @@ QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.
 
+Appendix [[#appendix-c]] describes two encoding schemes for PSKs that agents may support to produce either a string or a [=QR code=] for display to the user.
+
 Authentication with SPAKE2 {#authentication-with-spake2}
 --------------------------
 
@@ -695,8 +717,6 @@ SPAKE2 provides explicit mutual authentication.
 This authentication method assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.
-
-Issue(210): [Security] Describe encoding/decoding of PSK into numeric and QR codes.
 
 SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
 The client acts as Alice, the server acts as Bob.
@@ -796,18 +816,18 @@ To start a presentation, the controller may send a
 values:
 
 : presentation-id
-:: The presentation identifier
+:: The [=presentation identifier=]
 
 : url
 :: The selected presentation URL
 
 : headers
 :: headers that the receiver should use to fetch the presentation URL.  For example,
-    [[PRESENTATION-API#establishing-a-presentation-connection|section 6.6.1]] of
-    the Presentation API says that the Accept-Language header should be
+    [[PRESENTATION-API#creating-a-receiving-browsing-context|section 6.6.1]] of
+    the Presentation API says that the HTTP `Accept-Language` header should be
     provided.
 
-The presentation ID must follow the restrictions defined by
+The [=presentation identifier=] must follow the restrictions defined by
 [[PRESENTATION-API#common-idioms|section 6.1]] of the Presentation API, in that
 it must consist of at least 16 ASCII characters.
 
@@ -841,6 +861,14 @@ To send a presentation message, the controller or receiver may send a
 : message
 :: The presentation message data.
 
+NOTE: An OSP agent should minimize buffering and processing of messages sent or
+received via the QUIC connection beyond what is strictly necessary (i.e., CBOR
+serialization).  Message payloads should be treated as real-time data, as they
+may be used to synchronize playback of media streams between agents or other low
+latency use cases.  The synchronization thresholds recommended in
+[[ITU-R-BT.1359-1]] imply that the total agent-to-agent processing latency
+(including serialization, buffering, QUIC processing, and network latency) must
+be no greater than 45 ms to permit effective lip sync during media playback.
 
 To terminate a presentation, the controller may send a
 [=presentation-termination-request=] message with the following values:
@@ -980,12 +1008,15 @@ When [[PRESENTATION-API#starting-a-presentation-connection|section 6.3.4]] says
 "Using an implementation specific mechanism, tell U to create a receiving
 browsing context with D, presentationUrl, and I as parameters.", U (the
 controller) may send a [=presentation-start-request=] message to D
-(the receiver), with I for the presentation identifier and presentationUrl for
-the selected presentation URL.
+(the receiver), with I for the [=presentation identifier=] and presentationUrl
+for the selected presentation URL.
 
-Issue(w3c/presentation-api#471): Once the Presentation API has text about
-reconnecting via an implementation specific mechanism, quote that here and map
-it to a message.
+When [[PRESENTATION-API#reconnecting-to-a-presentation|section 6.3.5]] says to
+"establish a presentation connection with newConnection," let U be the
+presentationURL of `newConnection` and I the presentation identifier of
+`newConnection.` The agent should send a
+[=presentation-connection-open-request=] message with U for the `url` and I for
+the `presentation-id`.
 
 When [[PRESENTATION-API#sending-a-message-through-presentationconnection|section
 6.5.2]] says "Using an implementation specific mechanism, transmit the contents
@@ -1023,6 +1054,16 @@ must send a [=presentation-connection-open-response=] message and
 [=presentation-change-event=] messages when required.
 
 
+Representation Of Time {#time-representation}
+======================
+
+The [[#remote-playback-protocol]] and the [[#streaming-protocol]] represent
+points of time and durations in terms of a [=time scale=].  A <dfn>time
+scale</dfn> is a common denominator for time values that allows values to be
+expressed as rational numbers without loss of precision.  The [=time scale=] is
+represented in hertz, such as 90000 for 90000 Hz, a common time scale for
+video.
+
 Remote Playback Protocol {#remote-playback-protocol}
 ========================
 
@@ -1044,8 +1085,6 @@ particular URL or set of URLs, the controller may send a
 : sources
 :: A list of [=media resources=], the same as specified in the
     [=remote-playback-start-request=] message.  Must not be empty.
-
-Issue(146): Remote Playback HTTP headers.
 
 : headers
 :: headers that the receiver should use to fetch the
@@ -1104,12 +1143,13 @@ values:
 Note: A version 4 (pseudorandom) [=UUID=] is recommended as it meets the
 requirements for a remote-playback-id.
 
-: sources
+: sources (optional)
 :: The [=media resources=] that the controller has selected for playback
     on the receiver.  Each source must include a <{source/src|source URL}>
-    and should include an <{source/type|extended MIME type}>.
-    
-Issue(265): Should media resource URLs be optional?
+    and should include an <{source/type|extended MIME type}> when available
+    for the [=media resource=].  If `sources` is missing or empty, the
+    `remoting` field must be populated, as the controller will use a
+    streaming session to send encoded media.
 
 : text-track-urls
 :: URLs of text tracks associated with the [=media resources=].
@@ -1125,6 +1165,7 @@ Issue(265): Should media resource URLs be optional?
 : remoting (optional)
 :: Parameters for starting a streaming session associated with this
     remote playback.  If not included, no streaming session is started.
+    Required when `sources` is missing or empty.
 
 When the receiver receives a [=remote-playback-start-request=] message, it should
 send back a [=remote-playback-start-response=] message.  It should do so quickly,
@@ -1208,13 +1249,16 @@ The [=timeline offset=] associated with the playback changes since the last sent
 
 The {{stalled}} event needs to fire at the associated {{HTMLMediaElement}} instance.
 
-More than 350ms pass since the last [=remote-playback-state-event=] message
+More than 250ms pass since the last [=remote-playback-state-event=] message
   and any of the following attributes observably change since the last
   [=remote-playback-state-event=] message. Any new continuously changing
   attributes fall under this rule.
 
 * {{HTMLMediaElement/played|HTMLMediaElement.played}}
 * {{HTMLMediaElement/currentTime|HTMLMediaElement.currentTime}}
+
+NOTE: A media element is required to fire a {{HTMLMediaElement/timeupdate}}
+event every 250ms or sooner.
 
 : remote-playback-id
 :: The ID of the remote playback whose state has changed.
@@ -1270,13 +1314,12 @@ present control value indicates the change defined below. These controls
 intentionally mirror settable attributes and methods of the
 {{HTMLMediaElement}}.
 
-: source-url
-:: Change the [=media resource=] URL. See
+: source
+:: Change the [=media resource=]. See
     {{HTMLMediaElement/src|HTMLMediaElement.src}}
     for more details. Must not be used in the initial controls of the
-    [=remote-playback-start-request=] message (which already contains a list of URLs).
-    
-Issue(223): Codec switching when remoting.
+    [=remote-playback-start-request=] message (which already contains a
+    [=media resource=]).
 
 : preload
 :: Set how aggressively to preload media. See
@@ -1401,8 +1444,8 @@ changed.
     The default is empty (support for nothing)
     for the initial state in the [=remote-playback-start-response=] message.
 
-: source-url
-:: The current [=media resource=] URL. See
+: source
+:: The current [=media resource=]. See
     {{HTMLMediaElement/currentSrc|HTMLMediaElement.currentSrc}}.
     Must be present in the initial state in the [=remote-playback-start-response=] message
     so the controller knows what [=media resource=] was selected for playback.
@@ -1410,13 +1453,13 @@ changed.
 : loading
 :: The state of network activity for loading the [=media resource=]. See
     {{HTMLMediaElement/networkState|HTMLMediaElement.networkState}}.
-    The default is empty ({{NETWORK_EMPTY}}
+    The default is empty ({{NETWORK_EMPTY}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : loaded
 :: The state of the loaded media (whether enough is loaded to play). See
     {{HTMLMediaElement/readyState|HTMLMediaElement.readyState}}.
-    The default is nothing ({{HAVE_NOTHING}}
+    The default is nothing ({{HAVE_NOTHING}})
     for the initial state in the [=remote-playback-start-response=] message.
 
 : error
@@ -1537,9 +1580,7 @@ changed.
 
 All times, time ranges, and durations (such as position, duration, and
 seekable-time-ranges) used above use a common [=media-time=] value (see Appendix A)
-which includes a time scale.  This allows time values which work on different
-time scales to be expressed without loss of precision.  The scale is represented
-in hertz, such as 90000 for 90000 Hz, a common time scale for video.
+which includes a [=time scale=].
 
 <div class="note">
 <table>
@@ -1594,10 +1635,10 @@ This is how the [[REMOTE-PLAYBACK|Remote Playback API]] uses the
 messages defined in [[#remote-playback-protocol]]:
 
 When [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
-6.2.1.2]] says "This list contains [=remote playback devices=] and is populated
+5.2.1.2]] says "This list contains [=remote playback devices=] and is populated
 based on an implementation specific discovery mechanism" and
 [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
-6.2.1.4]] says "Retrieve available remote playback devices (using an
+5.2.1.4]] says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the mDNS, QUIC,
 [=agent-info-request=], and [=remote-playback-availability-request=] messages
 defined previously in this spec to discover [=receivers=].  The
@@ -1606,7 +1647,7 @@ sources set=].
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
-6.2.4]] says "Request connection of remote to device. The implementation of this
+5.2.4]] says "Request connection of remote to device. The implementation of this
 step is specific to the user agent." and "Synchronize the current media element
 state with the remote playback state", the controller may send the
 [=remote-playback-start-request=] message to the receiver to start remote
@@ -1617,7 +1658,7 @@ of [[REMOTE-PLAYBACK|Remote Playback API]] may allow for several.
 
 When
 [[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
-6.2.4]] says "The mechanism that is used to connect the user agent with the
+5.2.4]] says "The mechanism that is used to connect the user agent with the
 remote playback device and play the remote playback source is an implementation
 choice of the user agent. The connection will likely have to provide a two-way
 messaging abstraction capable of carrying media commands to the remote playback
@@ -1629,8 +1670,8 @@ based on changes to the local media element and receive
 change the local media element based on changes to the remote playback state.
 
 When
-[[REMOTE-PLAYBACK#establishing-a-connection-with-a-remote-playback-device|section
-6.2.7]] says "Request disconnection of remote from the device. The
+[[REMOTE-PLAYBACK#disconnecting-from-a-remote-playback-device|section
+5.2.7]] says "Request disconnection of remote from the device. The
 implementation of this step is specific to the user agent," the controller may
 send the [=remote-playback-termination-request=] message to the receiver.
 
@@ -1666,17 +1707,13 @@ following fields:
 The format type is used as the basis for audio and video capabilities.
 Formats are composed of the following fields:
 
-: name (required)
-:: The name of the codec.   This must be a single-codec RFC 6381 [=codecs parameter=].
+: codec-name (required)
+:: A fully qualified codec string listed in the [[WEBCODECS-CODEC-REGISTRY]] and further
+     specified by the codec-specific registrations referenced in that registry.
 
-Issue(233): Use the same codec names as the media APIs.
-
-: parameters (required)
-:: A list of (key, value) parameters that can be used to describe
-    properties of a specific format, and not shared by other formats
-    of that type (audio, video, etc.).
-
-Issue(266): Specify where codec-specific parameters are defined or drop them.
+For `codec-name`, Open Screen agents may also accept a single-codec [=codec
+parameter=] as described in [[!RFC6381]] for codecs not listed in the
+[[WEBCODECS-CODEC-REGISTRY]].
 
 Audio capabilities are composed of the above format type, with the following
 additional fields:
@@ -1714,14 +1751,37 @@ following additional fields:
     display could return this value as 1.6 to indicate its preferred content
     scaling. Default is none.
 
-Issue(194): Expose capabilities for decoding HDR transfer functions and metadata formats.
-
-: color-gamuts (optional)
-:: An optional field indicating what color spaces can be decoded and rendered by
-    the media receiver.  The media sender may use these values to determine how
-    to encode video. Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
+: color-gamut (optional)
+:: An optional field indicating the widest color space that can be decoded and
+    rendered by the media receiver.  The media sender may use this value to
+    determine how to encode video, and should assume all narrower color spaces
+    are supported.  Valid values correspond to [[MEDIA-CAPABILITIES#colorgamut|ColorGamut]]
     in the [[!MEDIA-CAPABILITIES|Media Capabilities]] API.  The default value is
-    a list with the single entry "srgb".
+    "srgb".
+
+NOTE: Support for "p3" implies support for "srgb", and support for "rec2020"
+implies support for "p3" and "srgb".
+
+: hdr-formats (optional)
+:: An optional field indicating what HDR transfer functions and metadata formats
+    can be decoded and rendered by the media receiver.  Each `video-hdr-format`
+    consists of two fields, `transfer-function` and `hdr-metadata`.
+
+    The `transfer-function` field must be a valid
+    [[MEDIA-CAPABILITIES#transferfunction|TransferFunction]]
+    and the `hdr-metadata` field must be a valid
+    [[MEDIA-CAPABILITIES#hdrmetadatatype|HdrMetadataType]], both defined in the
+    [[!MEDIA-CAPABILITIES|Media Capabilities]] API.
+
+    If a `video-hdr-format` is provided with a `transfer-function` but no
+    `hdr-metadata`, then the media receiver can render the `transfer-function`
+    without any associated metadata.  (This is the case, for example, with the
+    "hlg" `transfer-function`.)
+
+    The media receiver should ignore duplicate entries in `hdr-formats.`
+    If no `hdr-formats` are listed, then the media reciever cannot decode any
+    HDR formats.
+
 
 : native-resolutions (optional)
 :: An optional field indicating what video-resolutions the media receiver supports and
@@ -1778,7 +1838,7 @@ Each stream offer contains the following fields:
 : audio
 :: A list of audio encodings offered.  An audio encoding is a series
     of encoded audio frames.  Encodings define fields needed by
-    the receiver to know how to decode the encoding, such as codec. 
+    the receiver to know how to decode the encoding, such as codec.
     They can differ by codec and related fields, but should be different
     encodings of the same audio.
 
@@ -1808,11 +1868,11 @@ Each audio encoding offered defines the following fields:
     [[#requests-responses-watches]].
 
 : codec-name
-:: The name of the codec used by the encoding.  This must be a single-codec
-    RFC 6381 [=codecs parameter=].
+:: The name of the codec used by the encoding, following the same
+    rules as `codec-name` in [[#streaming-protocol-capabilities]].
 
 : time-scale
-:: The time scale used by all audio frames.  This allows senders to
+:: The [=time scale=] used by all audio frames.  This allows senders to
     make audio-frame messages smaller by not including the time scale
     in each one.
 
@@ -1830,10 +1890,11 @@ Each video encoding offered defines the following fields:
     [[#requests-responses-watches]].
 
 : codec-name
-:: The name of the codec used by the encoding.
+:: The name of the codec used by the encoding, following the same
+    rules as `codec-name` in [[#streaming-protocol-capabilities]].
 
 : time-scale
-:: The time scale used by all video frames.  This allows senders to
+:: The [=time scale=] used by all video frames.  This allows senders to
     make video-frame messages smaller by not including the time scale
     in each one.
 
@@ -1859,7 +1920,7 @@ Each data encoding offered defines the following fields:
 :: The name of the data type used by the encoding.
 
 : time-scale
-:: The time scale used by all data frames.  This allows senders to
+:: The [=time scale=] used by all data frames.  This allows senders to
     make data-frame messages smaller by not including the time scale
     in each one.
 
@@ -1906,6 +1967,11 @@ a [=streaming-session-modify-request=], it should send back a
 application of the new request from the
 [=streaming-session-modify-request=] was successful.
 
+NOTE: If the sender wishes to send an encoding other than the one selected by
+the receiver in a [=streaming-session-start-response=] or
+[=streaming-session-modify-request=], it must terminate the current session
+and start a new session.
+
 Finally, the sender may terminate the streaming session by sending
 a [=streaming-session-terminate-request=] command.  When the receiver
 receives the [=streaming-session-terminate-request=], it should send back
@@ -1919,8 +1985,8 @@ Audio {#streaming-audio}
 [=Media senders=] may send audio to [=media receivers=] by sending
 [=audio-frame=] messages (see [[#appendix-a]]) with the following keys and
 values.  An audio frame message contains a set of encoded audio samples for a
-range of time. A series of encoded audio frames that share a codec, codec
-parameters and a timeline form an audio encoding.
+range of time. A series of encoded audio frames that share a codec and a
+timeline form an audio encoding.
 
 Unlike most Open Screen Protocol messages, this one uses an
 array-based grouping rather than a struct-based grouping.  For
@@ -1939,21 +2005,21 @@ separate QUIC streams.
 :: Identifies the media encoding to which this audio frame belongs.  This can be
     used to reference fields of the encoding (from the
     [=audio-encoding-offer=] message) such as the codec, codec properties,
-    time scale (aka clock rate), and default duration.
+    [=time scale=], and default duration.
     Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : start-time
 :: Identifies the beginning of the time range of the audio frame. The
     end time can be inferred from the start time and duration. The
-    time scale is equal to the value in the `time-scale` field of the
+    [=time scale=] is equal to the value in the `time-scale` field of the
     [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the audio frame. If not present, the
     duration is equal to the `default-duration` field of the
     [=audio-encoding-offer=] message referenced by the `encoding-id`.
-    The time scale is equal to the value in the `time-scale` field of
+    The [=time scale=] is equal to the value in the `time-scale` field of
     the [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
@@ -1963,9 +2029,8 @@ separate QUIC streams.
     be; it can be any clock chosen by the media sender.
 
 : payload
-:: The encoded audio.  The codec and codec parameters are equal to the
-    `codec-name` field of the [=audio-encoding-offer=] message referenced by
-    the `encoding-id`.
+:: The encoded audio.  The codec is equal to the `codec-name` field of the
+    [=audio-encoding-offer=] message referenced by the `encoding-id`.
 
 Video {#streaming-video}
 --------------------------------------------
@@ -1974,8 +2039,7 @@ Media senders may send video to media receivers by sending [=video-frame=]
 messages (see [[#appendix-a]]) with the following keys and values.  A video
 frame message contains an encoded video frame (an encoded image) at a specific
 point in time or over a specfic time range (if the duration is known).  A series
-of encoded video frames that share a codec, codec parameters and a timeline form
-a video encoding.
+of encoded video frames that share a codec and a timeline form a video encoding.
 
 To allow for video frames to be sent out of order, they may be sent in
 separate QUIC streams.  If the encoding is a long chain of encoded video frames
@@ -1986,7 +2050,7 @@ ending at the last dependent frame.
 : encoding-id
 :: Identifies the media encoding to which this video frame belongs.
     This can be used to reference fields of the encoding such as the
-    codec, codec properties, time scale, and default rotation.
+    codec, codec properties, [=time scale=], and default rotation.
     Referencing fields of the encoding through the encoding id helps
     to avoid sending duplicate information in every frame.
 
@@ -2005,12 +2069,12 @@ ending at the last dependent frame.
 : start-time
 :: Identifies the beginning of the time range of the video frame.  The
     end time can be inferred from the start time and duration. The
-    time scale is equal to the value in the `time-scale` field of the
+    [=time scale=] is equal to the value in the `time-scale` field of the
     [=video-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the video frame. If not present, that
-    means duration is unknown.  The time scale is equal to the value
+    means duration is unknown.  The [=time scale=] is equal to the value
     in the `time-scale` field of the [=video-encoding-offer=] message
     referenced by the `encoding-id`.
 
@@ -2027,9 +2091,9 @@ ending at the last dependent frame.
     referenced by the `encoding-id`.
 
 : payload
-:: The encoded video frame (encoded image).  The codec and codec
-     parameters are equal to the `codec-name` field of the
-     [=video-encoding-offer=] message referenced by the `encoding-id`.
+:: The encoded video frame (encoded image).  The codec is equal to the
+    `codec-name` field of the [=video-encoding-offer=] message referenced
+    by the `encoding-id`.
 
 Data {#streaming-data}
 ------------------------------------
@@ -2046,7 +2110,7 @@ that makes sense for a specific type of data.
 : encoding-id
 :: Identifies the data encoding to which this data frame belongs.  This can be
     used to reference fields of the encoding such as the type of data and
-    time scale.  Referencing fields of the encoding through the encoding id
+    [=time scale=].  Referencing fields of the encoding through the encoding id
     helps to avoid sending duplicate information in every frame.
 
 : sequence-number
@@ -2057,14 +2121,14 @@ that makes sense for a specific type of data.
 : start-time
 :: Identifies the beginning of the time range of the data frame.  The
     end time can be inferred from the start time and duration.  The
-    time scale is equal to the value in the `time-scale` field of the
+    [=time scale=] is equal to the value in the `time-scale` field of the
     [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : duration
 :: If present, the duration of the data frame. If not present, the
     duration is equal to the `default-duration` field of the
     [=data-encoding-offer=] message referenced by the `encoding-id`.
-    The time scale is equal to the value in the `time-scale` field of
+    The [=time scale=] is equal to the value in the `time-scale` field of
     the [=data-encoding-offer=] message referenced by the `encoding-id`.
 
 : sync-time
@@ -2386,7 +2450,7 @@ API).  This is similar to cross-origin communication via
 origin information with each message.  Therefore, the Open Screen Protocol does
 not convey origin information between its agents.
 
-The [=presentation ID=] carries some protection against unrestricted
+The [=presentation identifier=] carries some protection against unrestricted
 cross-origin access; but, rigorous authentication of the parties connected by a
 {{PresentationConnection}} must be done at the application level.
 
@@ -2399,14 +2463,15 @@ The following data exchanged by the protocol can be personally identifiable
 and/or high value data:
 
 1. Presentation URLs and availability results
-1. Presentation IDs
+1. Presentation identifiers
 1. Presentation connection IDs
 1. Presentation connection messages
 1. Remote playback URLs
 1. Remote playback commands and status messages
 
-Presentation IDs are considered high value data because they can be used in
-conjunction with a Presentation URL to connect to a running presentation.
+[=Presentation identifiers=] are considered high value data because they can be
+used in conjunction with a Presentation URL to connect to a running
+presentation.
 
 Presentation display names, model names, and capabilities, while not
 considered personally identifiable, are important to protect to prevent an
@@ -2443,16 +2508,17 @@ available to the Web and should be designed accordingly.
 
 Below, we discuss mitigation steps to prevent malicious use of these devices.
 
-### Incognito Mode ### {#incognito-mode}
+### Private Browsing Mode ### {#private-browsing-mode}
 
-The Open Screen Protocol does not distinguish between the user agent's normal
-browsing and incognito modes, and agents that follow the specification
-behave identically regardless of which mode is in use.
+The Open Screen Protocol itself does not distinguish between the user agent's normal
+browsing and [private browsing](https://www.w3.org/2001/tag/doc/private-browsing-modes/)
+modes.
 
-It's recommended that user agents use separate authentication contexts and QUIC
-connections for normal and incognito profiles from the same user agent instance.
-This prevents OSP agents from correlating activity among profiles
-belonging to the same user (both normal and incognito).
+However, it's recommended that user agents use separate authentication contexts
+(see [[#authentication]]) and QUIC connections (see [[#transport]]) for normal and
+private browsing from the same user agent instance. This makes it more difficult
+for OSP agents to match activities occurring in normal and private browsing by the
+same user.
 
 ### Persistent State ### {#persistent-state}
 
@@ -2485,8 +2551,8 @@ Presentation API Considerations {#presentation-api-considerations}
 [[PRESENTATION-API#security-and-privacy-considerations]] place these
 requirements on the Open Screen Protocol:
 
-1.  Presentation URLs and presentation IDs should remain private among the
-    parties that are allowed to connect to a presentation, per the
+1.  Presentation URLs and [=presentation identifiers=] should remain private
+    among the parties that are allowed to connect to a presentation, per the
     cross-origin access guidelines.
 1.  Controllers and receivers should be notified when connections representing
     multiple user agent profiles have been made to a presentation, per the user
@@ -2565,7 +2631,7 @@ authentication:
 
 The active attacker may also attempt to disrupt data exchanged over the QUIC
 connection by injecting or modifying traffic.  These attacks should be mitigated
-by a correct implementation of TLS 1.3.  See Appendix E of [[RFC846]] for a
+by a correct implementation of TLS 1.3.  See Appendix E of [[RFC8446]] for a
 detailed security analysis of the TLS 1.3 protocol.
 
 ### Remote active network attackers ### {#remote-active-mitigations}
@@ -2751,3 +2817,67 @@ https://github.com/tabatkins/bikeshed/issues/1128
 </tr>
 </tbody>
 </table>
+
+Appendix C: PSK Encoding Schemes {#appendix-c}
+================================
+
+The following appendix describes two encoding schemes for PSKs that take a value
+`P` between 20 bits and 80 bits in length and produce either a string or a [=QR
+code=] for display to the user.
+
+Agents should use these encoding schemes to maximize the interoperability of the
+authentication step, which typically requires displaying the PSK on one
+device and the user inputting it on another device.
+
+Base-10 Numeric {#appendix-c-base-10}
+---------------
+
+To encode `P` into a numeric string, follow these steps:
+
+1. Convert `P` to a base-10 integer `N`.
+2. If `N` has fewer than 9 digits:
+    * Zero-pad `N` on the left with `3 - len(N) mod 3` digits.
+    * Output `N` in groups of three digits separated by dashes.
+3. If `N` has more than 9 digits:
+    * Zero-pad `N` on the left with `4 - len(N) mod 4` digits.
+    * Output `N` in groups of four digits separated by dashes.
+
+<div class="example">
+For PSK `61488548833`, the steps would produce the string `0614-8854-8833`.
+</div>
+
+To decode a string `N` into a PSK `P`, follow these steps:
+
+1. Remove dashes and leading zeros from `N`.
+2. Parse `N` as a base-10 decimal number to obtain `P`.
+
+Note: `P` values between approximately 2^30 and 2^40 will produce values between
+10 and 12 digits in length.  Values over 12 digits are inconvenient to input
+and have limited additional security value.
+
+Note: We do not allow the use of hexadecimal encoding here, because it would
+be ambiguous with base-10 numeric encodings, and not all devices may support
+alphanumeric input.
+
+QR Code {#appendix-c-qr-code}
+-------
+
+To encode a PSK into a QR code, follow these steps:
+
+1. Set `N` to the value of `P` converted to an ASCII-encoded, hexadecimal string.
+2. Construct a text [=QR code=] with the value of `N`.
+
+<div class="example">
+For PSK `61488548833`, the steps would produce the following QR code:
+<p>
+<svg width="20%" height="20%" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 29 29" stroke="none">
+        <rect width="100%" height="100%" fill="#FFFFFF"/>
+        <path d="M4,4h1v1h-1z M5,4h1v1h-1z M6,4h1v1h-1z M7,4h1v1h-1z M8,4h1v1h-1z M9,4h1v1h-1z M10,4h1v1h-1z M12,4h1v1h-1z M18,4h1v1h-1z M19,4h1v1h-1z M20,4h1v1h-1z M21,4h1v1h-1z M22,4h1v1h-1z M23,4h1v1h-1z M24,4h1v1h-1z M4,5h1v1h-1z M10,5h1v1h-1z M14,5h1v1h-1z M16,5h1v1h-1z M18,5h1v1h-1z M24,5h1v1h-1z M4,6h1v1h-1z M6,6h1v1h-1z M7,6h1v1h-1z M8,6h1v1h-1z M10,6h1v1h-1z M14,6h1v1h-1z M16,6h1v1h-1z M18,6h1v1h-1z M20,6h1v1h-1z M21,6h1v1h-1z M22,6h1v1h-1z M24,6h1v1h-1z M4,7h1v1h-1z M6,7h1v1h-1z M7,7h1v1h-1z M8,7h1v1h-1z M10,7h1v1h-1z M12,7h1v1h-1z M18,7h1v1h-1z M20,7h1v1h-1z M21,7h1v1h-1z M22,7h1v1h-1z M24,7h1v1h-1z M4,8h1v1h-1z M6,8h1v1h-1z M7,8h1v1h-1z M8,8h1v1h-1z M10,8h1v1h-1z M13,8h1v1h-1z M15,8h1v1h-1z M18,8h1v1h-1z M20,8h1v1h-1z M21,8h1v1h-1z M22,8h1v1h-1z M24,8h1v1h-1z M4,9h1v1h-1z M10,9h1v1h-1z M13,9h1v1h-1z M15,9h1v1h-1z M16,9h1v1h-1z M18,9h1v1h-1z M24,9h1v1h-1z M4,10h1v1h-1z M5,10h1v1h-1z M6,10h1v1h-1z M7,10h1v1h-1z M8,10h1v1h-1z M9,10h1v1h-1z M10,10h1v1h-1z M12,10h1v1h-1z M14,10h1v1h-1z M16,10h1v1h-1z M18,10h1v1h-1z M19,10h1v1h-1z M20,10h1v1h-1z M21,10h1v1h-1z M22,10h1v1h-1z M23,10h1v1h-1z M24,10h1v1h-1z M15,11h1v1h-1z M16,11h1v1h-1z M6,12h1v1h-1z M8,12h1v1h-1z M9,12h1v1h-1z M10,12h1v1h-1z M12,12h1v1h-1z M15,12h1v1h-1z M16,12h1v1h-1z M17,12h1v1h-1z M21,12h1v1h-1z M24,12h1v1h-1z M4,13h1v1h-1z M6,13h1v1h-1z M8,13h1v1h-1z M9,13h1v1h-1z M11,13h1v1h-1z M14,13h1v1h-1z M15,13h1v1h-1z M18,13h1v1h-1z M19,13h1v1h-1z M21,13h1v1h-1z M24,13h1v1h-1z M4,14h1v1h-1z M5,14h1v1h-1z M7,14h1v1h-1z M8,14h1v1h-1z M10,14h1v1h-1z M11,14h1v1h-1z M13,14h1v1h-1z M14,14h1v1h-1z M15,14h1v1h-1z M16,14h1v1h-1z M17,14h1v1h-1z M20,14h1v1h-1z M22,14h1v1h-1z M5,15h1v1h-1z M7,15h1v1h-1z M9,15h1v1h-1z M11,15h1v1h-1z M12,15h1v1h-1z M13,15h1v1h-1z M14,15h1v1h-1z M17,15h1v1h-1z M19,15h1v1h-1z M24,15h1v1h-1z M4,16h1v1h-1z M6,16h1v1h-1z M7,16h1v1h-1z M9,16h1v1h-1z M10,16h1v1h-1z M11,16h1v1h-1z M13,16h1v1h-1z M16,16h1v1h-1z M17,16h1v1h-1z M20,16h1v1h-1z M21,16h1v1h-1z M22,16h1v1h-1z M23,16h1v1h-1z M24,16h1v1h-1z M12,17h1v1h-1z M13,17h1v1h-1z M14,17h1v1h-1z M15,17h1v1h-1z M16,17h1v1h-1z M17,17h1v1h-1z M19,17h1v1h-1z M20,17h1v1h-1z M21,17h1v1h-1z M22,17h1v1h-1z M23,17h1v1h-1z M24,17h1v1h-1z M4,18h1v1h-1z M5,18h1v1h-1z M6,18h1v1h-1z M7,18h1v1h-1z M8,18h1v1h-1z M9,18h1v1h-1z M10,18h1v1h-1z M13,18h1v1h-1z M14,18h1v1h-1z M15,18h1v1h-1z M16,18h1v1h-1z M18,18h1v1h-1z M20,18h1v1h-1z M4,19h1v1h-1z M10,19h1v1h-1z M12,19h1v1h-1z M13,19h1v1h-1z M17,19h1v1h-1z M18,19h1v1h-1z M19,19h1v1h-1z M21,19h1v1h-1z M23,19h1v1h-1z M4,20h1v1h-1z M6,20h1v1h-1z M7,20h1v1h-1z M8,20h1v1h-1z M10,20h1v1h-1z M12,20h1v1h-1z M13,20h1v1h-1z M15,20h1v1h-1z M16,20h1v1h-1z M18,20h1v1h-1z M22,20h1v1h-1z M23,20h1v1h-1z M24,20h1v1h-1z M4,21h1v1h-1z M6,21h1v1h-1z M7,21h1v1h-1z M8,21h1v1h-1z M10,21h1v1h-1z M13,21h1v1h-1z M14,21h1v1h-1z M15,21h1v1h-1z M16,21h1v1h-1z M18,21h1v1h-1z M19,21h1v1h-1z M20,21h1v1h-1z M21,21h1v1h-1z M23,21h1v1h-1z M4,22h1v1h-1z M6,22h1v1h-1z M7,22h1v1h-1z M8,22h1v1h-1z M10,22h1v1h-1z M12,22h1v1h-1z M14,22h1v1h-1z M17,22h1v1h-1z M18,22h1v1h-1z M19,22h1v1h-1z M21,22h1v1h-1z M24,22h1v1h-1z M4,23h1v1h-1z M10,23h1v1h-1z M14,23h1v1h-1z M15,23h1v1h-1z M18,23h1v1h-1z M20,23h1v1h-1z M21,23h1v1h-1z M23,23h1v1h-1z M24,23h1v1h-1z M4,24h1v1h-1z M5,24h1v1h-1z M6,24h1v1h-1z M7,24h1v1h-1z M8,24h1v1h-1z M9,24h1v1h-1z M10,24h1v1h-1z M15,24h1v1h-1z M17,24h1v1h-1z M19,24h1v1h-1z M22,24h1v1h-1z M24,24h1v1h-1z" fill="#000000"/>
+</svg>
+</p>
+</div>
+
+To decode a PSK `P` given a QR code, follow these steps:
+
+1. Obtain the string `N` by decoding the QR code.
+2. Parse `N` as a hexadecimal number to obtain `P`.
