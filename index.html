@@ -5,9 +5,9 @@
   <title>Open Screen Protocol</title>
   <meta content="w3c/ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
+  <meta content="Bikeshed version 4416b18d5, updated Tue Jan 2 15:52:39 2024 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="ee2b93f6ec2664197fdefe9bf67cc445a5892cd8" name="document-revision">
+  <meta content="11a21a818423cfa5ea47e252cb3c149985551f9c" name="revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -142,7 +142,6 @@ pre .property::before, pre .property::after {
 }
 </style>
 <style>/* Boilerplate: style-colors */
-
 /* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
 :root {
     color-scheme: light dark;
@@ -396,11 +395,15 @@ figcaption:not(.no-marker)::before {
 :root {
     --dfnpanel-bg: #ddd;
     --dfnpanel-text: var(--text);
+    --dfnpanel-target-bg: #ffc;
+    --dfnpanel-target-outline: orange;
 }
 @media (prefers-color-scheme: dark) {
     :root {
         --dfnpanel-bg: #222;
         --dfnpanel-text: var(--text);
+        --dfnpanel-target-bg: #333;
+        --dfnpanel-target-outline: silver;
     }
 }
 .dfn-panel {
@@ -423,11 +426,13 @@ figcaption:not(.no-marker)::before {
 .dfn-panel > b { display: block; }
 .dfn-panel a { color: var(--dfnpanel-text); }
 .dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel a:focus {
+    outline: 5px auto Highlight;
+    outline: 5px auto -webkit-focus-ring-color;
+}
 .dfn-panel > b + b { margin-top: 0.25em; }
 .dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
 .dfn-panel li a {
-    white-space: pre;
-    display: inline-block;
     max-width: calc(300px - 1.5em - 1em);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -436,67 +441,79 @@ figcaption:not(.no-marker)::before {
 .dfn-panel.activated {
     display: inline-block;
     position: fixed;
-    left: .5em;
+    left: 8px;
     bottom: 2em;
     margin: 0 auto;
     max-width: calc(100vw - 1.5em - .4em - .5em);
     max-height: 30vh;
+    transition: left 1s ease-out, bottom 1s ease-out;
 }
 
-.dfn-paneled[role="button"] { cursor: pointer; }
-</style>
-<style>/* Boilerplate: style-dfn-panel */
-:root {
-    --dfnpanel-bg: #ddd;
-    --dfnpanel-text: var(--text);
+.dfn-panel .link-item:hover {
+    text-decoration: underline;
 }
-@media (prefers-color-scheme: dark) {
-    :root {
-        --dfnpanel-bg: #222;
-        --dfnpanel-text: var(--text);
+.dfn-panel .link-item .copy-icon {
+    opacity: 0;
+}
+.dfn-panel .link-item:hover .copy-icon,
+.dfn-panel .link-item .copy-icon:focus {
+    opacity: 1;
+}
+
+.dfn-panel .copy-icon {
+    display: inline-block;
+    margin-right: 0.5em;
+    width: 0.85em;
+    height: 1em;
+    border-radius: 3px;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.dfn-panel .copy-icon .icon {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dfn-panel .copy-icon .icon::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    background-color: #ccc;
+    opacity: 0.25;
+    transform: translate(3px, -3px);
+}
+
+.dfn-panel .copy-icon:active .icon::before {
+    opacity: 1;
+}
+
+.dfn-paneled[role="button"] { cursor: help; }
+
+.highlighted {
+    animation: target-fade 3s;
+}
+
+@keyframes target-fade {
+    from {
+        background-color: var(--dfnpanel-target-bg);
+        outline: 5px solid var(--dfnpanel-target-outline);
+    }
+    to {
+        color: var(--a-normal-text);
+        background-color: transparent;
+        outline: transparent;
     }
 }
-.dfn-panel {
-    position: absolute;
-    z-index: 35;
-    width: 20em;
-    width: 300px;
-    height: auto;
-    max-height: 500px;
-    overflow: auto;
-    padding: 0.5em 0.75em;
-    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
-    background: var(--dfnpanel-bg);
-    color: var(--dfnpanel-text);
-    border: outset 0.2em;
-    white-space: normal; /* in case it's moved into a pre */
-}
-.dfn-panel:not(.on) { display: none; }
-.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
-.dfn-panel > b { display: block; }
-.dfn-panel a { color: var(--dfnpanel-text); }
-.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
-.dfn-panel > b + b { margin-top: 0.25em; }
-.dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
-.dfn-panel li a {
-    white-space: pre;
-    display: inline-block;
-    max-width: calc(300px - 1.5em - 1em);
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.dfn-panel.activated {
-    display: inline-block;
-    position: fixed;
-    left: .5em;
-    bottom: 2em;
-    margin: 0 auto;
-    max-width: calc(100vw - 1.5em - .4em - .5em);
-    max-height: 30vh;
-}
-
-.dfn-paneled[role="button"] { cursor: pointer; }
 </style>
 <style>/* Boilerplate: style-issues */
 a[href].issue-return {
@@ -517,8 +534,40 @@ a[href].issue-return {
     margin-bottom: 0;
 }
 </style>
-<style>/* Boilerplate: style-selflinks */
+<style>/* Boilerplate: style-ref-hints */
+:root {
+    --ref-hint-bg: #ddd;
+    --ref-hint-text: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ref-hint-bg: #222;
+        --ref-hint-text: var(--text);
+    }
+}
 
+.ref-hint {
+    display: inline-block;
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.5em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--ref-hint-bg);
+    color: var(--ref-hint-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+
+.ref-hint * { margin: 0; padding: 0; text-indent: 0; }
+
+.ref-hint ul { padding: 0 0 0 1em; list-style: none; }
+</style>
+<style>/* Boilerplate: style-selflinks */
 :root {
     --selflink-text: white;
     --selflink-bg: gray;
@@ -581,7 +630,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-10-16">16 October 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-01-22">22 January 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -599,16 +648,15 @@ dfn > a.self-link::before      { content: "#"; }
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/copyright-software" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2024 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>The Open Screen Protocol is a suite of network protocols that allow
-
-          user agents to implement the <a data-link-type="biblio" href="#biblio-presentation-api" title="Presentation API">Presentation API</a> and
-          the <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> in an interoperable
-          fashion.</p>
+user agents to implement the <a data-link-type="biblio" href="#biblio-presentation-api" title="Presentation API">Presentation API</a> and
+the <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> in an interoperable
+fashion.</p>
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
@@ -618,7 +666,7 @@ dfn > a.self-link::before      { content: "#"; }
    <p> Publication as an Editor’s Draft does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy-20200915/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#def-essential">Essential
     Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
-   <p> This document is governed by the <a href="https://www.w3.org/2023/Process-20230612/" id="w3c_process_revision">12 June 2023 W3C Process Document</a>. </p>
+   <p> This document is governed by the <a href="https://www.w3.org/2023/Process-20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -1424,6 +1472,13 @@ presentation URL (after redirects).</p>
     <dd data-md>
      <p>The presentation message data.</p>
    </dl>
+   <p class="note" role="note"><span class="marker">NOTE:</span> An OSP agent should minimize buffering and processing of messages sent or
+received via the QUIC connection beyond what is strictly necessary (i.e., CBOR
+serialization).  Message payloads should be treated as real-time data, as they
+may be used to synchronize playback of media streams between agents or other low
+latency use cases.  The synchronization thresholds recommended in <a data-link-type="biblio" href="#biblio-itu-r-bt1359-1" title="ITU-R BT.1359-1, Relative Timing of Sound and Vision for Broadcasting">[ITU-R-BT.1359-1]</a> imply that the total agent-to-agent processing latency
+(including serialization, buffering, QUIC processing, and network latency) must
+be no greater than 45 ms to permit effective lip sync during media playback.</p>
    <p>To terminate a presentation, the controller may send a <a data-link-type="dfn" href="#presentation-termination-request" id="ref-for-presentation-termination-request">presentation-termination-request</a> message with the following values:</p>
    <dl>
     <dt data-md>presentation-id
@@ -4262,6 +4317,8 @@ alphanumeric input.</p>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
+   <dt id="biblio-itu-r-bt1359-1">[ITU-R-BT.1359-1]
+   <dd><a href="https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf"><cite>ITU-R BT.1359-1, Relative Timing of Sound and Vision for Broadcasting</cite></a>. Recommendation. URL: <a href="https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf">https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf</a>
    <dt id="biblio-rfc4122">[RFC4122]
    <dd>P. Leach; M. Mealling; R. Salz. <a href="https://www.rfc-editor.org/rfc/rfc4122"><cite>A Universally Unique IDentifier (UUID) URN Namespace</cite></a>. July 2005. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc4122">https://www.rfc-editor.org/rfc/rfc4122</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
@@ -4283,458 +4340,8 @@ list based on hardware characteristics of agents. <a href="https://github.com/w3
    <div class="issue"> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">[Issue #223]</a> <a class="issue-return" href="#issue-791c621c" title="Jump to section">↵</a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a> <a class="issue-return" href="#issue-8bf4aa9f" title="Jump to section">↵</a></div>
   </div>
-<script>/* Boilerplate: script-dfn-panel */
-"use strict";
-{
-    const dfnsJson = window.dfnsJson || {};
-
-    function genDfnPanel({dfnID, url, dfnText, refSections, external}) {
-        return mk.aside({
-            class: "dfn-panel",
-            id: `infopanel-for-${dfnID}`,
-            "data-for": dfnID,
-            "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
-            },
-            mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
-                `Info about the '${dfnText}' ${external?"external":""} reference.`),
-            mk.a({href:url}, url),
-            mk.b({}, "Referenced in:"),
-            mk.ul({},
-                ...refSections.map(section=>
-                    mk.li({},
-                        ...section.refs.map((ref, refI)=>
-                            [
-                                mk.a({
-                                    href: `#${ref.id}`
-                                    },
-                                    (refI == 0) ? section.title : `(${refI + 1})`
-                                ),
-                                " ",
-                            ]
-                        ),
-                    ),
-                ),
-            ),
-        );
-    }
-
-    function genAllDfnPanels() {
-        for(const panelData of Object.values(window.dfnpanelData)) {
-            const dfnID = panelData.dfnID;
-            const dfn = document.getElementById(dfnID);
-            if(!dfn) {
-                console.log(`Can't find dfn#${dfnID}.`, panelData);
-            } else {
-                const panel = genDfnPanel(panelData);
-                append(document.body, panel);
-                insertDfnPopupAction(dfn, panel)
-            }
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", ()=>{
-        genAllDfnPanels();
-
-        // Add popup behavior to all dfns to show the corresponding dfn-panel.
-        var dfns = queryAll('.dfn-paneled');
-        for(let dfn of dfns) { ; }
-
-        document.body.addEventListener("click", (e) => {
-            // If not handled already, just hide all dfn panels.
-            hideAllDfnPanels();
-        });
-    })
-
-
-    function hideAllDfnPanels() {
-        // Turn off any currently "on" or "activated" panels.
-        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>hideDfnPanel(el));
-    }
-
-    function showDfnPanel(dfnPanel, dfn) {
-        hideAllDfnPanels(); // Only display one at this time.
-        dfn.setAttribute("aria-expanded", "true");
-        dfnPanel.classList.add("on");
-        dfnPanel.style.left = "5px";
-        dfnPanel.style.top = "0px";
-        const panelRect = dfnPanel.getBoundingClientRect();
-        const panelWidth = panelRect.right - panelRect.left;
-        if (panelRect.right > document.body.scrollWidth) {
-            // Panel's overflowing the screen.
-            // Just drop it below the dfn and flip it rightward instead.
-            // This still wont' fix things if the screen is *really* wide,
-            // but fixing that's a lot harder without 'anchor()'.
-            dfnPanel.style.top = "1.5em";
-            dfnPanel.style.left = "auto";
-            dfnPanel.style.right = "0px";
-        }
-    }
-
-    function pinDfnPanel(dfnPanel) {
-        // Switch it to "activated" state, which pins it.
-        dfnPanel.classList.add("activated");
-        dfnPanel.style.left = null;
-        dfnPanel.style.top = null;
-    }
-
-    function hideDfnPanel(dfnPanel, dfn) {
-        if(!dfn) {
-            dfn = document.getElementById(dfnPanel.getAttribute("data-for"));
-        }
-        dfn.setAttribute("aria-expanded", "false")
-        dfnPanel.classList.remove("on");
-        dfnPanel.classList.remove("activated");
-    }
-
-    function toggleDfnPanel(dfnPanel, dfn) {
-        if(dfnPanel.classList.contains("on")) {
-            hideDfnPanel(dfnPanel, dfn);
-        } else {
-            showDfnPanel(dfnPanel, dfn);
-        }
-    }
-
-    function insertDfnPopupAction(dfn, dfnPanel) {
-        // Find dfn panel
-        const panelWrapper = document.createElement('span');
-        panelWrapper.appendChild(dfnPanel);
-        panelWrapper.style.position = "relative";
-        panelWrapper.style.height = "0px";
-        dfn.insertAdjacentElement("afterend", panelWrapper);
-        dfn.setAttribute('role', 'button');
-        dfn.setAttribute('aria-expanded', 'false')
-        dfn.tabIndex = 0;
-        dfn.classList.add('has-dfn-panel');
-        dfn.addEventListener('click', (event) => {
-            showDfnPanel(dfnPanel, dfn);
-            event.stopPropagation();
-        });
-        dfn.addEventListener('keypress', (event) => {
-            const kc = event.keyCode;
-            // 32->Space, 13->Enter
-            if(kc == 32 || kc == 13) {
-                toggleDfnPanel(dfnPanel, dfn);
-                event.stopPropagation();
-                event.preventDefault();
-            }
-        });
-
-        dfnPanel.addEventListener('click', (event) => {
-            if (event.target.nodeName == 'A') {
-                pinDfnPanel(dfnPanel);
-            }
-            event.stopPropagation();
-        });
-
-        dfnPanel.addEventListener('keydown', (event) => {
-            if(event.keyCode == 27) { // Escape key
-                hideDfnPanel(dfnPanel, dfn);
-                event.stopPropagation();
-                event.preventDefault();
-            }
-        })
-    }
-}
-</script>
-<script>/* Boilerplate: script-dfn-panel */
-"use strict";
-{
-    const dfnsJson = window.dfnsJson || {};
-
-    function genDfnPanel({dfnID, url, dfnText, refSections, external}) {
-        return mk.aside({
-            class: "dfn-panel",
-            id: `infopanel-for-${dfnID}`,
-            "data-for": dfnID,
-            "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
-            },
-            mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
-                `Info about the '${dfnText}' ${external?"external":""} reference.`),
-            mk.a({href:url}, url),
-            mk.b({}, "Referenced in:"),
-            mk.ul({},
-                ...refSections.map(section=>
-                    mk.li({},
-                        ...section.refs.map((ref, refI)=>
-                            [
-                                mk.a({
-                                    href: `#${ref.id}`
-                                    },
-                                    (refI == 0) ? section.title : `(${refI + 1})`
-                                ),
-                                " ",
-                            ]
-                        ),
-                    ),
-                ),
-            ),
-        );
-    }
-
-    function genAllDfnPanels() {
-        for(const panelData of Object.values(window.dfnpanelData)) {
-            const dfnID = panelData.dfnID;
-            const dfn = document.getElementById(dfnID);
-            if(!dfn) {
-                console.log(`Can't find dfn#${dfnID}.`, panelData);
-            } else {
-                const panel = genDfnPanel(panelData);
-                append(document.body, panel);
-                insertDfnPopupAction(dfn, panel)
-            }
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", ()=>{
-        genAllDfnPanels();
-
-        // Add popup behavior to all dfns to show the corresponding dfn-panel.
-        var dfns = queryAll('.dfn-paneled');
-        for(let dfn of dfns) { ; }
-
-        document.body.addEventListener("click", (e) => {
-            // If not handled already, just hide all dfn panels.
-            hideAllDfnPanels();
-        });
-    })
-
-
-    function hideAllDfnPanels() {
-        // Turn off any currently "on" or "activated" panels.
-        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>hideDfnPanel(el));
-    }
-
-    function showDfnPanel(dfnPanel, dfn) {
-        hideAllDfnPanels(); // Only display one at this time.
-        dfn.setAttribute("aria-expanded", "true");
-        dfnPanel.classList.add("on");
-        dfnPanel.style.left = "5px";
-        dfnPanel.style.top = "0px";
-        const panelRect = dfnPanel.getBoundingClientRect();
-        const panelWidth = panelRect.right - panelRect.left;
-        if (panelRect.right > document.body.scrollWidth) {
-            // Panel's overflowing the screen.
-            // Just drop it below the dfn and flip it rightward instead.
-            // This still wont' fix things if the screen is *really* wide,
-            // but fixing that's a lot harder without 'anchor()'.
-            dfnPanel.style.top = "1.5em";
-            dfnPanel.style.left = "auto";
-            dfnPanel.style.right = "0px";
-        }
-    }
-
-    function pinDfnPanel(dfnPanel) {
-        // Switch it to "activated" state, which pins it.
-        dfnPanel.classList.add("activated");
-        dfnPanel.style.left = null;
-        dfnPanel.style.top = null;
-    }
-
-    function hideDfnPanel(dfnPanel, dfn) {
-        if(!dfn) {
-            dfn = document.getElementById(dfnPanel.getAttribute("data-for"));
-        }
-        dfn.setAttribute("aria-expanded", "false")
-        dfnPanel.classList.remove("on");
-        dfnPanel.classList.remove("activated");
-    }
-
-    function toggleDfnPanel(dfnPanel, dfn) {
-        if(dfnPanel.classList.contains("on")) {
-            hideDfnPanel(dfnPanel, dfn);
-        } else {
-            showDfnPanel(dfnPanel, dfn);
-        }
-    }
-
-    function insertDfnPopupAction(dfn, dfnPanel) {
-        // Find dfn panel
-        const panelWrapper = document.createElement('span');
-        panelWrapper.appendChild(dfnPanel);
-        panelWrapper.style.position = "relative";
-        panelWrapper.style.height = "0px";
-        dfn.insertAdjacentElement("afterend", panelWrapper);
-        dfn.setAttribute('role', 'button');
-        dfn.setAttribute('aria-expanded', 'false')
-        dfn.tabIndex = 0;
-        dfn.classList.add('has-dfn-panel');
-        dfn.addEventListener('click', (event) => {
-            showDfnPanel(dfnPanel, dfn);
-            event.stopPropagation();
-        });
-        dfn.addEventListener('keypress', (event) => {
-            const kc = event.keyCode;
-            // 32->Space, 13->Enter
-            if(kc == 32 || kc == 13) {
-                toggleDfnPanel(dfnPanel, dfn);
-                event.stopPropagation();
-                event.preventDefault();
-            }
-        });
-
-        dfnPanel.addEventListener('click', (event) => {
-            if (event.target.nodeName == 'A') {
-                pinDfnPanel(dfnPanel);
-            }
-            event.stopPropagation();
-        });
-
-        dfnPanel.addEventListener('keydown', (event) => {
-            if(event.keyCode == 27) { // Escape key
-                hideDfnPanel(dfnPanel, dfn);
-                event.stopPropagation();
-                event.preventDefault();
-            }
-        })
-    }
-}
-</script>
-<script>/* Boilerplate: script-dfn-panel-json */
-window.dfnpanelData = {};
-window.dfnpanelData['3f5f11ee'] = {"dfnID": "3f5f11ee", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing", "dfnText": "HAVE_NOTHING", "refSections": [{"refs": [{"id": "ref-for-dom-media-have_nothing"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['1076ec40'] = {"dfnID": "1076ec40", "url": "https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement", "dfnText": "HTMLMediaElement", "refSections": [{"refs": [{"id": "ref-for-htmlmediaelement"}, {"id": "ref-for-htmlmediaelement\u2460"}, {"id": "ref-for-htmlmediaelement\u2461"}, {"id": "ref-for-htmlmediaelement\u2462"}, {"id": "ref-for-htmlmediaelement\u2463"}], "title": "2.3. Remote Playback API Requirements"}, {"refs": [{"id": "ref-for-htmlmediaelement\u2464"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-htmlmediaelement\u2465"}], "title": "9.1. Remote Playback State and Controls"}, {"refs": [{"id": "ref-for-htmlmediaelement\u2466"}, {"id": "ref-for-htmlmediaelement\u2467"}], "title": "9.2. Remote Playback API"}], "external": true};
-window.dfnpanelData['d834f763'] = {"dfnID": "d834f763", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty", "dfnText": "NETWORK_EMPTY", "refSections": [{"refs": [{"id": "ref-for-dom-media-network_empty"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['15a088cb'] = {"dfnID": "15a088cb", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack", "dfnText": "addTextTrack(kind, label, language)", "refSections": [{"refs": [{"id": "ref-for-dom-media-addtexttrack"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['03cd5764'] = {"dfnID": "03cd5764", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks", "dfnText": "audioTracks", "refSections": [{"refs": [{"id": "ref-for-dom-media-audiotracks"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-audiotracks\u2460"}, {"id": "ref-for-dom-media-audiotracks\u2461"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['a65cc4ee'] = {"dfnID": "a65cc4ee", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered", "dfnText": "buffered", "refSections": [{"refs": [{"id": "ref-for-dom-media-buffered"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-buffered\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['e9415387'] = {"dfnID": "e9415387", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc", "dfnText": "currentSrc", "refSections": [{"refs": [{"id": "ref-for-dom-media-currentsrc"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-currentsrc\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['89da795b'] = {"dfnID": "89da795b", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime", "dfnText": "currentTime", "refSections": [{"refs": [{"id": "ref-for-dom-media-currenttime"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-currenttime\u2460"}, {"id": "ref-for-dom-media-currenttime\u2461"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['36aa3708'] = {"dfnID": "36aa3708", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-duration", "dfnText": "duration", "refSections": [{"refs": [{"id": "ref-for-dom-media-duration"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-duration\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['a17504bd'] = {"dfnID": "a17504bd", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-ended", "dfnText": "ended", "refSections": [{"refs": [{"id": "ref-for-dom-media-ended"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-ended\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['ba8a9b31'] = {"dfnID": "ba8a9b31", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-error", "dfnText": "error", "refSections": [{"refs": [{"id": "ref-for-dom-media-error"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-error\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['732fbcbd'] = {"dfnID": "732fbcbd", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek", "dfnText": "fastSeek(time)", "refSections": [{"refs": [{"id": "ref-for-dom-media-fastseek"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-fastseek\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['eacd6596'] = {"dfnID": "eacd6596", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate", "dfnText": "getStartDate()", "refSections": [{"refs": [{"id": "ref-for-dom-media-getstartdate"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['1c76c896'] = {"dfnID": "1c76c896", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-loop", "dfnText": "loop", "refSections": [{"refs": [{"id": "ref-for-dom-media-loop"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['03499e48'] = {"dfnID": "03499e48", "url": "https://html.spec.whatwg.org/multipage/media.html#media-element", "dfnText": "media element", "refSections": [{"refs": [{"id": "ref-for-media-element"}], "title": "1. Introduction"}, {"refs": [{"id": "ref-for-media-element\u2460"}], "title": "1.1. Terminology"}], "external": true};
-window.dfnpanelData['9e0b0141'] = {"dfnID": "9e0b0141", "url": "https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code", "dfnText": "media error code", "refSections": [{"refs": [{"id": "ref-for-concept-mediaerror-code"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['649ace3d'] = {"dfnID": "649ace3d", "url": "https://html.spec.whatwg.org/multipage/media.html#media-resource", "dfnText": "media resource", "refSections": [{"refs": [{"id": "ref-for-media-resource"}, {"id": "ref-for-media-resource\u2460"}, {"id": "ref-for-media-resource\u2461"}, {"id": "ref-for-media-resource\u2462"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-media-resource\u2463"}, {"id": "ref-for-media-resource\u2464"}, {"id": "ref-for-media-resource\u2465"}, {"id": "ref-for-media-resource\u2466"}, {"id": "ref-for-media-resource\u2467"}, {"id": "ref-for-media-resource\u2468"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['8d87f944'] = {"dfnID": "8d87f944", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-muted", "dfnText": "muted", "refSections": [{"refs": [{"id": "ref-for-dom-media-muted"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-muted\u2460"}, {"id": "ref-for-dom-media-muted\u2461"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['552e1f12'] = {"dfnID": "552e1f12", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate", "dfnText": "networkState", "refSections": [{"refs": [{"id": "ref-for-dom-media-networkstate"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-networkstate\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['3ce575bf'] = {"dfnID": "3ce575bf", "url": "https://html.spec.whatwg.org/multipage/media.html#official-playback-position", "dfnText": "official playback position", "refSections": [{"refs": [{"id": "ref-for-official-playback-position"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['a35cc467'] = {"dfnID": "a35cc467", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-pause", "dfnText": "pause()", "refSections": [{"refs": [{"id": "ref-for-dom-media-pause"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-pause\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['eb577fbe'] = {"dfnID": "eb577fbe", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-paused", "dfnText": "paused", "refSections": [{"refs": [{"id": "ref-for-dom-media-paused"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-paused\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['613edb27'] = {"dfnID": "613edb27", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-play", "dfnText": "play()", "refSections": [{"refs": [{"id": "ref-for-dom-media-play"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-play\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['99123207'] = {"dfnID": "99123207", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate", "dfnText": "playbackRate", "refSections": [{"refs": [{"id": "ref-for-dom-media-playbackrate"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-playbackrate\u2460"}, {"id": "ref-for-dom-media-playbackrate\u2461"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['87a0c5de'] = {"dfnID": "87a0c5de", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-played", "dfnText": "played", "refSections": [{"refs": [{"id": "ref-for-dom-media-played"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-played\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['cb19d8be'] = {"dfnID": "cb19d8be", "url": "https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage", "dfnText": "postMessage(message, targetOrigin, transfer)", "refSections": [{"refs": [{"id": "ref-for-dom-window-postmessage"}], "title": "13.1.4. Same-Origin Policy Violations"}], "external": true};
-window.dfnpanelData['565ece29'] = {"dfnID": "565ece29", "url": "https://html.spec.whatwg.org/multipage/media.html#poster-frame", "dfnText": "poster frame", "refSections": [{"refs": [{"id": "ref-for-poster-frame"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['36c7793a'] = {"dfnID": "36c7793a", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-preload", "dfnText": "preload", "refSections": [{"refs": [{"id": "ref-for-dom-media-preload"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['621f3aeb'] = {"dfnID": "621f3aeb", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate", "dfnText": "readyState", "refSections": [{"refs": [{"id": "ref-for-dom-media-readystate"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-readystate\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['4728547d'] = {"dfnID": "4728547d", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable", "dfnText": "seekable", "refSections": [{"refs": [{"id": "ref-for-dom-media-seekable"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-seekable\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['45182159'] = {"dfnID": "45182159", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking", "dfnText": "seeking", "refSections": [{"refs": [{"id": "ref-for-dom-media-seeking"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-seeking\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['eb573143'] = {"dfnID": "eb573143", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-src", "dfnText": "src (for HTMLMediaElement)", "refSections": [{"refs": [{"id": "ref-for-dom-media-src"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['1d3efcfe'] = {"dfnID": "1d3efcfe", "url": "https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src", "dfnText": "src (for source)", "refSections": [{"refs": [{"id": "ref-for-attr-source-src"}], "title": "9. Remote Playback Protocol"}], "external": true};
-window.dfnpanelData['ea42745f'] = {"dfnID": "ea42745f", "url": "https://html.spec.whatwg.org/multipage/media.html#event-media-stalled", "dfnText": "stalled", "refSections": [{"refs": [{"id": "ref-for-event-media-stalled"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-event-media-stalled\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['df48f90a'] = {"dfnID": "df48f90a", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks", "dfnText": "textTracks", "refSections": [{"refs": [{"id": "ref-for-dom-media-texttracks"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-texttracks\u2460"}, {"id": "ref-for-dom-media-texttracks\u2461"}, {"id": "ref-for-dom-media-texttracks\u2462"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['e5d99cfd'] = {"dfnID": "e5d99cfd", "url": "https://html.spec.whatwg.org/multipage/media.html#timeline-offset", "dfnText": "timeline offset", "refSections": [{"refs": [{"id": "ref-for-timeline-offset"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-timeline-offset\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['4ef17206'] = {"dfnID": "4ef17206", "url": "https://html.spec.whatwg.org/multipage/media.html#event-media-timeupdate", "dfnText": "timeupdate", "refSections": [{"refs": [{"id": "ref-for-event-media-timeupdate"}], "title": "9. Remote Playback Protocol"}], "external": true};
-window.dfnpanelData['da57602e'] = {"dfnID": "da57602e", "url": "https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type", "dfnText": "type", "refSections": [{"refs": [{"id": "ref-for-attr-source-type"}], "title": "9. Remote Playback Protocol"}], "external": true};
-window.dfnpanelData['d0a3e1e6'] = {"dfnID": "d0a3e1e6", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight", "dfnText": "videoHeight", "refSections": [{"refs": [{"id": "ref-for-dom-video-videoheight"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-video-videoheight\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['4bc31655'] = {"dfnID": "4bc31655", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks", "dfnText": "videoTracks", "refSections": [{"refs": [{"id": "ref-for-dom-media-videotracks"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-videotracks\u2460"}, {"id": "ref-for-dom-media-videotracks\u2461"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['1a09160b'] = {"dfnID": "1a09160b", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth", "dfnText": "videoWidth", "refSections": [{"refs": [{"id": "ref-for-dom-video-videowidth"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-video-videowidth\u2460"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['5078a29a'] = {"dfnID": "5078a29a", "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-volume", "dfnText": "volume", "refSections": [{"refs": [{"id": "ref-for-dom-media-volume"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-dom-media-volume\u2460"}, {"id": "ref-for-dom-media-volume\u2461"}], "title": "9.1. Remote Playback State and Controls"}], "external": true};
-window.dfnpanelData['a2a5cd12'] = {"dfnID": "a2a5cd12", "url": "https://www.iso.org/standard/62021.html#", "dfnText": "qr code", "refSections": [{"refs": [{"id": "ref-for-something"}], "title": "6. Authentication"}, {"refs": [{"id": "ref-for-something\u2460"}], "title": "Appendix C: PSK Encoding Schemes"}, {"refs": [{"id": "ref-for-something\u2461"}], "title": "QR Code"}], "external": true};
-window.dfnpanelData['374afd71'] = {"dfnID": "374afd71", "url": "https://w3c.github.io/presentation-api/#dom-presentationconnection", "dfnText": "PresentationConnection", "refSections": [{"refs": [{"id": "ref-for-dom-presentationconnection"}, {"id": "ref-for-dom-presentationconnection\u2460"}], "title": "2.2. Presentation API Requirements"}, {"refs": [{"id": "ref-for-dom-presentationconnection\u2461"}], "title": "13.1.4. Same-Origin Policy Violations"}, {"refs": [{"id": "ref-for-dom-presentationconnection\u2462"}], "title": "13.3. Presentation API Considerations"}], "external": true};
-window.dfnpanelData['e01f0d07'] = {"dfnID": "e01f0d07", "url": "https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display", "dfnText": "available presentation display", "refSections": [{"refs": [{"id": "ref-for-dfn-available-presentation-display"}], "title": "7. Presentation Protocol"}], "external": true};
-window.dfnpanelData['ef3ff42b'] = {"dfnID": "ef3ff42b", "url": "https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent", "dfnText": "controlling user agent", "refSections": [{"refs": [{"id": "ref-for-dfn-controlling-user-agent"}], "title": "1.1. Terminology"}, {"refs": [{"id": "ref-for-dfn-controlling-user-agent\u2460"}, {"id": "ref-for-dfn-controlling-user-agent\u2461"}], "title": "7.1. Presentation API"}], "external": true};
-window.dfnpanelData['f1776616'] = {"dfnID": "f1776616", "url": "https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context", "dfnText": "presentation", "refSections": [{"refs": [{"id": "ref-for-dfn-receiving-browsing-context"}], "title": "1.1. Terminology"}, {"refs": [{"id": "ref-for-dfn-receiving-browsing-context\u2460"}], "title": "2.2. Presentation API Requirements"}], "external": true};
-window.dfnpanelData['456f89c8'] = {"dfnID": "456f89c8", "url": "https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier", "dfnText": "presentation identifier", "refSections": [{"refs": [{"id": "ref-for-dfn-presentation-identifier"}, {"id": "ref-for-dfn-presentation-identifier\u2460"}, {"id": "ref-for-dfn-presentation-identifier\u2461"}], "title": "2.2. Presentation API Requirements"}, {"refs": [{"id": "ref-for-dfn-presentation-identifier\u2462"}, {"id": "ref-for-dfn-presentation-identifier\u2463"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-dfn-presentation-identifier\u2464"}], "title": "7.1. Presentation API"}, {"refs": [{"id": "ref-for-dfn-presentation-identifier\u2465"}], "title": "13.1.4. Same-Origin Policy Violations"}, {"refs": [{"id": "ref-for-dfn-presentation-identifier\u2466"}], "title": "13.2.1. Personally Identifiable Information & High-Value Data"}, {"refs": [{"id": "ref-for-dfn-presentation-identifier\u2467"}], "title": "13.3. Presentation API Considerations"}], "external": true};
-window.dfnpanelData['e9b42004'] = {"dfnID": "e9b42004", "url": "https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url", "dfnText": "presentation request url", "refSections": [{"refs": [{"id": "ref-for-dfn-presentation-request-url"}, {"id": "ref-for-dfn-presentation-request-url\u2460"}, {"id": "ref-for-dfn-presentation-request-url\u2461"}, {"id": "ref-for-dfn-presentation-request-url\u2462"}], "title": "2.2. Presentation API Requirements"}, {"refs": [{"id": "ref-for-dfn-presentation-request-url\u2463"}], "title": "7. Presentation Protocol"}], "external": true};
-window.dfnpanelData['e21cba52'] = {"dfnID": "e21cba52", "url": "https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent", "dfnText": "receiving user agent", "refSections": [{"refs": [{"id": "ref-for-dfn-receiving-user-agent"}], "title": "1.1. Terminology"}, {"refs": [{"id": "ref-for-dfn-receiving-user-agent\u2460"}, {"id": "ref-for-dfn-receiving-user-agent\u2461"}], "title": "7.1. Presentation API"}], "external": true};
-window.dfnpanelData['a07c7f7e'] = {"dfnID": "a07c7f7e", "url": "https://w3c.github.io/remote-playback/#dfn-availability-sources-set", "dfnText": "availability sources set", "refSections": [{"refs": [{"id": "ref-for-dfn-availability-sources-set"}], "title": "9.2. Remote Playback API"}], "external": true};
-window.dfnpanelData['be4088c1'] = {"dfnID": "be4088c1", "url": "https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device", "dfnText": "compatible remote playback device", "refSections": [{"refs": [{"id": "ref-for-dfn-compatible-remote-playback-device"}], "title": "9. Remote Playback Protocol"}], "external": true};
-window.dfnpanelData['62061ebf'] = {"dfnID": "62061ebf", "url": "https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback", "dfnText": "initiate remote playback", "refSections": [{"refs": [{"id": "ref-for-dfn-initiate-remote-playback"}], "title": "2.3. Remote Playback API Requirements"}], "external": true};
-window.dfnpanelData['c5013a3b'] = {"dfnID": "c5013a3b", "url": "https://w3c.github.io/remote-playback/#dfn-media-element-state", "dfnText": "media element state", "refSections": [{"refs": [{"id": "ref-for-dfn-media-element-state"}], "title": "2.3. Remote Playback API Requirements"}], "external": true};
-window.dfnpanelData['06b254b0'] = {"dfnID": "06b254b0", "url": "https://w3c.github.io/remote-playback/#dfn-remote-playback-devices", "dfnText": "remote playback devices", "refSections": [{"refs": [{"id": "ref-for-dfn-remote-playback-devices"}], "title": "1.1. Terminology"}, {"refs": [{"id": "ref-for-dfn-remote-playback-devices\u2460"}, {"id": "ref-for-dfn-remote-playback-devices\u2461"}, {"id": "ref-for-dfn-remote-playback-devices\u2462"}], "title": "9.2. Remote Playback API"}], "external": true};
-window.dfnpanelData['b2b6fbb0'] = {"dfnID": "b2b6fbb0", "url": "https://w3c.github.io/remote-playback/#dfn-remote-playback-source", "dfnText": "remote playback source", "refSections": [{"refs": [{"id": "ref-for-dfn-remote-playback-source"}], "title": "9.2. Remote Playback API"}], "external": true};
-window.dfnpanelData['1704ff9c'] = {"dfnID": "1704ff9c", "url": "https://tools.ietf.org/html/rfc4122#section-4.4", "dfnText": "uuid", "refSections": [{"refs": [{"id": "ref-for-section-4.4"}], "title": "9. Remote Playback Protocol"}], "external": true};
-window.dfnpanelData['1fe3b46b'] = {"dfnID": "1fe3b46b", "url": "https://tools.ietf.org/html/rfc5280#section-4.2.1.3", "dfnText": "digitalsignature", "refSections": [{"refs": [{"id": "ref-for-section-4.2.1.3"}], "title": "4.2. Agent Certificates"}], "external": true};
-window.dfnpanelData['208b5961'] = {"dfnID": "208b5961", "url": "https://tools.ietf.org/html/rfc5646#section-2", "dfnText": "language tag", "refSections": [{"refs": [{"id": "ref-for-section-2"}], "title": "4.3. Metadata Discovery"}], "external": true};
-window.dfnpanelData['09153fed'] = {"dfnID": "09153fed", "url": "https://tools.ietf.org/html/rfc6381#section-3", "dfnText": "codecs parameter", "refSections": [{"refs": [{"id": "ref-for-section-3"}], "title": "10.1. Streaming Protocol Capabilities"}], "external": true};
-window.dfnpanelData['38cb699f'] = {"dfnID": "38cb699f", "url": "https://tools.ietf.org/html/rfc6762#section-9", "dfnText": "conflict resolution", "refSections": [{"refs": [{"id": "ref-for-section-9"}], "title": "3. Discovery with mDNS"}], "external": true};
-window.dfnpanelData['34d12a4f'] = {"dfnID": "34d12a4f", "url": "https://tools.ietf.org/html/rfc6763#section-4.1.1", "dfnText": "instance name", "refSections": [{"refs": [{"id": "ref-for-section-4.1.1"}], "title": "3. Discovery with mDNS"}, {"refs": [{"id": "ref-for-section-4.1.1\u2460"}], "title": "13.6.1. Instance and Display Names"}], "external": true};
-window.dfnpanelData['6f0181fa'] = {"dfnID": "6f0181fa", "url": "https://tools.ietf.org/html/rfc6763#section-7", "dfnText": "service name", "refSections": [{"refs": [{"id": "ref-for-section-7"}], "title": "3. Discovery with mDNS"}], "external": true};
-window.dfnpanelData['9d0cefbc'] = {"dfnID": "9d0cefbc", "url": "https://tools.ietf.org/html/rfc8122#section-5", "dfnText": "md2", "refSections": [{"refs": [{"id": "ref-for-section-5"}, {"id": "ref-for-section-5\u2460"}, {"id": "ref-for-section-5\u2461"}, {"id": "ref-for-section-5\u2462"}], "title": "3. Discovery with mDNS"}], "external": true};
-window.dfnpanelData['5cab86ab'] = {"dfnID": "5cab86ab", "url": "https://tools.ietf.org/html/rfc8122#section-5", "dfnText": "md5", "refSections": [{"refs": [{"id": "ref-for-section-5"}, {"id": "ref-for-section-5\u2460"}, {"id": "ref-for-section-5\u2461"}, {"id": "ref-for-section-5\u2462"}], "title": "3. Discovery with mDNS"}], "external": true};
-window.dfnpanelData['9481333e'] = {"dfnID": "9481333e", "url": "https://tools.ietf.org/html/rfc8122#section-5", "dfnText": "sha-256", "refSections": [{"refs": [{"id": "ref-for-section-5"}, {"id": "ref-for-section-5\u2460"}, {"id": "ref-for-section-5\u2461"}, {"id": "ref-for-section-5\u2462"}], "title": "3. Discovery with mDNS"}], "external": true};
-window.dfnpanelData['d72c64a8'] = {"dfnID": "d72c64a8", "url": "https://tools.ietf.org/html/rfc8122#section-5", "dfnText": "sha-512", "refSections": [{"refs": [{"id": "ref-for-section-5"}, {"id": "ref-for-section-5\u2460"}, {"id": "ref-for-section-5\u2461"}, {"id": "ref-for-section-5\u2462"}], "title": "3. Discovery with mDNS"}], "external": true};
-window.dfnpanelData['c7313446'] = {"dfnID": "c7313446", "url": "https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3", "dfnText": "signature scheme", "refSections": [{"refs": [{"id": "ref-for-section-4.2.3"}], "title": "4.2. Agent Certificates"}], "external": true};
-window.dfnpanelData['8f45ca65'] = {"dfnID": "8f45ca65", "url": "https://tools.ietf.org/html/rfc8610#section-3", "dfnText": "concise data definition language", "refSections": [{"refs": [{"id": "ref-for-section-3\u2460"}], "title": "Appendix A: Messages"}], "external": true};
-window.dfnpanelData['a6ddbb58'] = {"dfnID": "a6ddbb58", "url": "https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames", "dfnText": "connection_close frames", "refSections": [{"refs": [{"id": "ref-for-name-connection_close-frames"}], "title": "5. Messages delivery using CBOR and QUIC streams"}], "external": true};
-window.dfnpanelData['fc89f77a'] = {"dfnID": "fc89f77a", "url": "https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin", "dfnText": "transport parameter encoding", "refSections": [{"refs": [{"id": "ref-for-name-transport-parameter-encodin"}], "title": "4.3. Metadata Discovery"}], "external": true};
-window.dfnpanelData['6c09a22e'] = {"dfnID": "6c09a22e", "url": "https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc", "dfnText": "variable-length integer", "refSections": [{"refs": [{"id": "ref-for-name-variable-length-integer-enc"}], "title": "3. Discovery with mDNS"}, {"refs": [{"id": "ref-for-name-variable-length-integer-enc\u2460"}, {"id": "ref-for-name-variable-length-integer-enc\u2461"}], "title": "5. Messages delivery using CBOR and QUIC streams"}, {"refs": [{"id": "ref-for-name-variable-length-integer-enc\u2462"}], "title": "Appendix B: Message Type Key Ranges"}], "external": true};
-window.dfnpanelData['4be354e2'] = {"dfnID": "4be354e2", "url": "https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc", "dfnText": "variable-length integer encoding", "refSections": [{"refs": [{"id": "ref-for-name-variable-length-integer-enc"}], "title": "3. Discovery with mDNS"}, {"refs": [{"id": "ref-for-name-variable-length-integer-enc\u2460"}, {"id": "ref-for-name-variable-length-integer-enc\u2461"}], "title": "5. Messages delivery using CBOR and QUIC streams"}, {"refs": [{"id": "ref-for-name-variable-length-integer-enc\u2462"}], "title": "Appendix B: Message Type Key Ranges"}], "external": true};
-window.dfnpanelData['open-screen-protocol-agent'] = {"dfnID": "open-screen-protocol-agent", "url": "#open-screen-protocol-agent", "dfnText": "Open Screen Protocol\nagent", "refSections": [{"refs": [{"id": "ref-for-open-screen-protocol-agent"}], "title": "2.1. General Requirements"}, {"refs": [{"id": "ref-for-open-screen-protocol-agent\u2460"}], "title": "3. Discovery with mDNS"}, {"refs": [{"id": "ref-for-open-screen-protocol-agent\u2461"}], "title": "4.1. TLS 1.3"}, {"refs": [{"id": "ref-for-open-screen-protocol-agent\u2462"}], "title": "5. Messages delivery using CBOR and QUIC streams"}, {"refs": [{"id": "ref-for-open-screen-protocol-agent\u2463"}], "title": "6. Authentication"}, {"refs": [{"id": "ref-for-open-screen-protocol-agent\u2464"}, {"id": "ref-for-open-screen-protocol-agent\u2465"}], "title": "7.1. Presentation API"}, {"refs": [{"id": "ref-for-open-screen-protocol-agent\u2466"}, {"id": "ref-for-open-screen-protocol-agent\u2467"}], "title": "9.2. Remote Playback API"}, {"refs": [{"id": "ref-for-open-screen-protocol-agent\u2468"}], "title": "10. Streaming Protocol"}, {"refs": [{"id": "ref-for-open-screen-protocol-agent\u2460\u24ea"}], "title": "12. Protocol Extensions"}, {"refs": [{"id": "ref-for-open-screen-protocol-agent\u2460\u2460"}], "title": "13. Security and Privacy"}], "external": false};
-window.dfnpanelData['controller'] = {"dfnID": "controller", "url": "#controller", "dfnText": "controller", "refSections": [{"refs": [{"id": "ref-for-controller"}], "title": "1.1. Terminology"}, {"refs": [{"id": "ref-for-controller\u2460"}], "title": "2.2. Presentation API Requirements"}, {"refs": [{"id": "ref-for-controller\u2461"}], "title": "2.3. Remote Playback API Requirements"}, {"refs": [{"id": "ref-for-controller\u2462"}], "title": "7.1. Presentation API"}], "external": false};
-window.dfnpanelData['receiver'] = {"dfnID": "receiver", "url": "#receiver", "dfnText": "receiver", "refSections": [{"refs": [{"id": "ref-for-receiver"}], "title": "1.1. Terminology"}, {"refs": [{"id": "ref-for-receiver\u2460"}], "title": "2.2. Presentation API Requirements"}, {"refs": [{"id": "ref-for-receiver\u2461"}], "title": "2.3. Remote Playback API Requirements"}, {"refs": [{"id": "ref-for-receiver\u2462"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-receiver\u2463"}], "title": "9.2. Remote Playback API"}], "external": false};
-window.dfnpanelData['media-sender'] = {"dfnID": "media-sender", "url": "#media-sender", "dfnText": "media sender", "refSections": [{"refs": [{"id": "ref-for-media-sender"}], "title": "10. Streaming Protocol"}, {"refs": [{"id": "ref-for-media-sender\u2460"}], "title": "10.3. Audio"}], "external": false};
-window.dfnpanelData['media-receiver'] = {"dfnID": "media-receiver", "url": "#media-receiver", "dfnText": "media receiver", "refSections": [{"refs": [{"id": "ref-for-media-receiver"}], "title": "10. Streaming Protocol"}, {"refs": [{"id": "ref-for-media-receiver\u2460"}], "title": "10.3. Audio"}], "external": false};
-window.dfnpanelData['advertising-agent'] = {"dfnID": "advertising-agent", "url": "#advertising-agent", "dfnText": "advertising agent", "refSections": [{"refs": [{"id": "ref-for-advertising-agent"}], "title": "2.4. Non-Functional Requirements"}, {"refs": [{"id": "ref-for-advertising-agent\u2460"}], "title": "4. Transport and metadata discovery with QUIC"}, {"refs": [{"id": "ref-for-advertising-agent\u2461"}], "title": "4.2. Agent Certificates"}, {"refs": [{"id": "ref-for-advertising-agent\u2462"}], "title": "6. Authentication"}, {"refs": [{"id": "ref-for-advertising-agent\u2463"}], "title": "7.1. Presentation API"}, {"refs": [{"id": "ref-for-advertising-agent\u2464"}], "title": "9.2. Remote Playback API"}, {"refs": [{"id": "ref-for-advertising-agent\u2465"}], "title": "10. Streaming Protocol"}], "external": false};
-window.dfnpanelData['display-name'] = {"dfnID": "display-name", "url": "#display-name", "dfnText": "display\nname", "refSections": [{"refs": [{"id": "ref-for-display-name"}], "title": "13.2.1. Personally Identifiable Information & High-Value Data"}], "external": false};
-window.dfnpanelData['listening-agent'] = {"dfnID": "listening-agent", "url": "#listening-agent", "dfnText": "listening agent", "refSections": [{"refs": [{"id": "ref-for-listening-agent"}], "title": "2.4. Non-Functional Requirements"}, {"refs": [{"id": "ref-for-listening-agent\u2460"}], "title": "4. Transport and metadata discovery with QUIC"}, {"refs": [{"id": "ref-for-listening-agent\u2461"}], "title": "4.2. Agent Certificates"}, {"refs": [{"id": "ref-for-listening-agent\u2462"}], "title": "7.1. Presentation API"}, {"refs": [{"id": "ref-for-listening-agent\u2463"}], "title": "9.2. Remote Playback API"}, {"refs": [{"id": "ref-for-listening-agent\u2464"}], "title": "10. Streaming Protocol"}], "external": false};
-window.dfnpanelData['agent-fingerprint'] = {"dfnID": "agent-fingerprint", "url": "#agent-fingerprint", "dfnText": "agent fingerprint", "refSections": [{"refs": [{"id": "ref-for-agent-fingerprint"}], "title": "4.1. TLS 1.3"}, {"refs": [{"id": "ref-for-agent-fingerprint\u2460"}], "title": "4.2. Agent Certificates"}, {"refs": [{"id": "ref-for-agent-fingerprint\u2461"}], "title": "6.1. Authentication with SPAKE2"}], "external": false};
-window.dfnpanelData['agent-certificate'] = {"dfnID": "agent-certificate", "url": "#agent-certificate", "dfnText": "agent\ncertificate", "refSections": [{"refs": [{"id": "ref-for-agent-certificate"}], "title": "3. Discovery with mDNS"}, {"refs": [{"id": "ref-for-agent-certificate\u2460"}, {"id": "ref-for-agent-certificate\u2461"}, {"id": "ref-for-agent-certificate\u2462"}, {"id": "ref-for-agent-certificate\u2463"}], "title": "4.2. Agent Certificates"}], "external": false};
-window.dfnpanelData['certificate-algorithms'] = {"dfnID": "certificate-algorithms", "url": "#certificate-algorithms", "dfnText": "Agent Certificate Algorithms", "refSections": [{"refs": [{"id": "ref-for-certificate-algorithms"}, {"id": "ref-for-certificate-algorithms\u2460"}, {"id": "ref-for-certificate-algorithms\u2461"}], "title": "4.2. Agent Certificates"}], "external": false};
-window.dfnpanelData['time-scale'] = {"dfnID": "time-scale", "url": "#time-scale", "dfnText": "time\nscale", "refSections": [{"refs": [{"id": "ref-for-time-scale"}, {"id": "ref-for-time-scale\u2460"}], "title": "8. Representation Of Time"}, {"refs": [{"id": "ref-for-time-scale\u2461"}], "title": "9.1. Remote Playback State and Controls"}, {"refs": [{"id": "ref-for-time-scale\u2462"}, {"id": "ref-for-time-scale\u2463"}, {"id": "ref-for-time-scale\u2464"}], "title": "10.2. Sessions"}, {"refs": [{"id": "ref-for-time-scale\u2465"}, {"id": "ref-for-time-scale\u2466"}, {"id": "ref-for-time-scale\u2467"}], "title": "10.3. Audio"}, {"refs": [{"id": "ref-for-time-scale\u2468"}, {"id": "ref-for-time-scale\u2460\u24ea"}, {"id": "ref-for-time-scale\u2460\u2460"}], "title": "10.4. Video"}, {"refs": [{"id": "ref-for-time-scale\u2460\u2461"}, {"id": "ref-for-time-scale\u2460\u2462"}, {"id": "ref-for-time-scale\u2460\u2463"}], "title": "10.5. Data"}], "external": false};
-window.dfnpanelData['suspicious-agent'] = {"dfnID": "suspicious-agent", "url": "#suspicious-agent", "dfnText": "suspicious\nagent", "refSections": [{"refs": [{"id": "ref-for-suspicious-agent"}], "title": "13.6. User Interface Considerations"}], "external": false};
-window.dfnpanelData['verified-display-name'] = {"dfnID": "verified-display-name", "url": "#verified-display-name", "dfnText": "verified display name", "refSections": [{"refs": [{"id": "ref-for-verified-display-name"}], "title": "13.6.1. Instance and Display Names"}], "external": false};
-window.dfnpanelData['agent-info-request'] = {"dfnID": "agent-info-request", "url": "#agent-info-request", "dfnText": "agent-info-request", "refSections": [{"refs": [{"id": "ref-for-agent-info-request"}, {"id": "ref-for-agent-info-request\u2460"}], "title": "4.3. Metadata Discovery"}, {"refs": [{"id": "ref-for-agent-info-request\u2461"}], "title": "7.1. Presentation API"}, {"refs": [{"id": "ref-for-agent-info-request\u2462"}], "title": "9.2. Remote Playback API"}], "external": false};
-window.dfnpanelData['agent-info-response'] = {"dfnID": "agent-info-response", "url": "#agent-info-response", "dfnText": "agent-info-response", "refSections": [{"refs": [{"id": "ref-for-agent-info-response"}, {"id": "ref-for-agent-info-response\u2460"}], "title": "4.3. Metadata Discovery"}], "external": false};
-window.dfnpanelData['agent-info-event'] = {"dfnID": "agent-info-event", "url": "#agent-info-event", "dfnText": "agent-info-event", "refSections": [{"refs": [{"id": "ref-for-agent-info-event"}], "title": "4.3. Metadata Discovery"}], "external": false};
-window.dfnpanelData['agent-info'] = {"dfnID": "agent-info", "url": "#agent-info", "dfnText": "agent-info", "refSections": [{"refs": [{"id": "ref-for-agent-info"}, {"id": "ref-for-agent-info\u2460"}, {"id": "ref-for-agent-info\u2461"}, {"id": "ref-for-agent-info\u2462"}, {"id": "ref-for-agent-info\u2463"}], "title": "4.3. Metadata Discovery"}, {"refs": [{"id": "ref-for-agent-info\u2464"}], "title": "12. Protocol Extensions"}, {"refs": [{"id": "ref-for-agent-info\u2465"}], "title": "12.1. Protocol Extension Fields"}, {"refs": [{"id": "ref-for-agent-info\u2466"}], "title": "13.2.1. Personally Identifiable Information & High-Value Data"}, {"refs": [{"id": "ref-for-agent-info\u2467"}], "title": "13.5.2. Local active network attackers"}, {"refs": [{"id": "ref-for-agent-info\u2468"}], "title": "13.6.1. Instance and Display Names"}], "external": false};
-window.dfnpanelData['agent-status-request'] = {"dfnID": "agent-status-request", "url": "#agent-status-request", "dfnText": "agent-status-request", "refSections": [{"refs": [{"id": "ref-for-agent-status-request"}, {"id": "ref-for-agent-status-request\u2460"}, {"id": "ref-for-agent-status-request\u2461"}], "title": "4.3. Metadata Discovery"}], "external": false};
-window.dfnpanelData['agent-status-response'] = {"dfnID": "agent-status-response", "url": "#agent-status-response", "dfnText": "agent-status-response", "refSections": [{"refs": [{"id": "ref-for-agent-status-response"}, {"id": "ref-for-agent-status-response\u2460"}], "title": "4.3. Metadata Discovery"}], "external": false};
-window.dfnpanelData['auth-capabilities'] = {"dfnID": "auth-capabilities", "url": "#auth-capabilities", "dfnText": "auth-capabilities", "refSections": [{"refs": [{"id": "ref-for-auth-capabilities"}, {"id": "ref-for-auth-capabilities\u2460"}], "title": "6. Authentication"}], "external": false};
-window.dfnpanelData['auth-initiation-token'] = {"dfnID": "auth-initiation-token", "url": "#auth-initiation-token", "dfnText": "auth-initiation-token", "refSections": [{"refs": [{"id": "ref-for-auth-initiation-token"}], "title": "6. Authentication"}], "external": false};
-window.dfnpanelData['auth-spake2-need-psk'] = {"dfnID": "auth-spake2-need-psk", "url": "#auth-spake2-need-psk", "dfnText": "auth-spake2-need-psk", "refSections": [{"refs": [{"id": "ref-for-auth-spake2-need-psk"}, {"id": "ref-for-auth-spake2-need-psk\u2460"}, {"id": "ref-for-auth-spake2-need-psk\u2461"}, {"id": "ref-for-auth-spake2-need-psk\u2462"}], "title": "6.1. Authentication with SPAKE2"}], "external": false};
-window.dfnpanelData['auth-spake2-handshake'] = {"dfnID": "auth-spake2-handshake", "url": "#auth-spake2-handshake", "dfnText": "auth-spake2-handshake", "refSections": [{"refs": [{"id": "ref-for-auth-spake2-handshake"}, {"id": "ref-for-auth-spake2-handshake\u2460"}, {"id": "ref-for-auth-spake2-handshake\u2461"}, {"id": "ref-for-auth-spake2-handshake\u2462"}, {"id": "ref-for-auth-spake2-handshake\u2463"}, {"id": "ref-for-auth-spake2-handshake\u2464"}, {"id": "ref-for-auth-spake2-handshake\u2465"}, {"id": "ref-for-auth-spake2-handshake\u2466"}], "title": "6.1. Authentication with SPAKE2"}], "external": false};
-window.dfnpanelData['auth-spake2-confirmation'] = {"dfnID": "auth-spake2-confirmation", "url": "#auth-spake2-confirmation", "dfnText": "auth-spake2-confirmation", "refSections": [{"refs": [{"id": "ref-for-auth-spake2-confirmation"}, {"id": "ref-for-auth-spake2-confirmation\u2460"}, {"id": "ref-for-auth-spake2-confirmation\u2461"}, {"id": "ref-for-auth-spake2-confirmation\u2462"}, {"id": "ref-for-auth-spake2-confirmation\u2463"}], "title": "6.1. Authentication with SPAKE2"}], "external": false};
-window.dfnpanelData['auth-status'] = {"dfnID": "auth-status", "url": "#auth-status", "dfnText": "auth-status", "refSections": [{"refs": [{"id": "ref-for-auth-status"}, {"id": "ref-for-auth-status\u2460"}], "title": "6.1. Authentication with SPAKE2"}], "external": false};
-window.dfnpanelData['presentation-url-availability-request'] = {"dfnID": "presentation-url-availability-request", "url": "#presentation-url-availability-request", "dfnText": "presentation-url-availability-request", "refSections": [{"refs": [{"id": "ref-for-presentation-url-availability-request"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-url-availability-request\u2460"}], "title": "7.1. Presentation API"}], "external": false};
-window.dfnpanelData['presentation-url-availability-response'] = {"dfnID": "presentation-url-availability-response", "url": "#presentation-url-availability-response", "dfnText": "presentation-url-availability-response", "refSections": [{"refs": [{"id": "ref-for-presentation-url-availability-response"}, {"id": "ref-for-presentation-url-availability-response\u2460"}], "title": "7. Presentation Protocol"}], "external": false};
-window.dfnpanelData['presentation-url-availability-event'] = {"dfnID": "presentation-url-availability-event", "url": "#presentation-url-availability-event", "dfnText": "presentation-url-availability-event", "refSections": [{"refs": [{"id": "ref-for-presentation-url-availability-event"}], "title": "7. Presentation Protocol"}], "external": false};
-window.dfnpanelData['presentation-start-request'] = {"dfnID": "presentation-start-request", "url": "#presentation-start-request", "dfnText": "presentation-start-request", "refSections": [{"refs": [{"id": "ref-for-presentation-start-request"}, {"id": "ref-for-presentation-start-request\u2460"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-start-request\u2461"}], "title": "7.1. Presentation API"}], "external": false};
-window.dfnpanelData['presentation-start-response'] = {"dfnID": "presentation-start-response", "url": "#presentation-start-response", "dfnText": "presentation-start-response", "refSections": [{"refs": [{"id": "ref-for-presentation-start-response"}, {"id": "ref-for-presentation-start-response\u2460"}], "title": "7. Presentation Protocol"}], "external": false};
-window.dfnpanelData['presentation-termination-request'] = {"dfnID": "presentation-termination-request", "url": "#presentation-termination-request", "dfnText": "presentation-termination-request", "refSections": [{"refs": [{"id": "ref-for-presentation-termination-request"}, {"id": "ref-for-presentation-termination-request\u2460"}, {"id": "ref-for-presentation-termination-request\u2461"}, {"id": "ref-for-presentation-termination-request\u2462"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-termination-request\u2463"}], "title": "7.1. Presentation API"}], "external": false};
-window.dfnpanelData['presentation-termination-response'] = {"dfnID": "presentation-termination-response", "url": "#presentation-termination-response", "dfnText": "presentation-termination-response", "refSections": [{"refs": [{"id": "ref-for-presentation-termination-response"}], "title": "7. Presentation Protocol"}], "external": false};
-window.dfnpanelData['presentation-termination-event'] = {"dfnID": "presentation-termination-event", "url": "#presentation-termination-event", "dfnText": "presentation-termination-event", "refSections": [{"refs": [{"id": "ref-for-presentation-termination-event"}], "title": "7. Presentation Protocol"}], "external": false};
-window.dfnpanelData['presentation-connection-open-request'] = {"dfnID": "presentation-connection-open-request", "url": "#presentation-connection-open-request", "dfnText": "presentation-connection-open-request", "refSections": [{"refs": [{"id": "ref-for-presentation-connection-open-request"}, {"id": "ref-for-presentation-connection-open-request\u2460"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-connection-open-request\u2461"}, {"id": "ref-for-presentation-connection-open-request\u2462"}], "title": "7.1. Presentation API"}], "external": false};
-window.dfnpanelData['presentation-connection-open-response'] = {"dfnID": "presentation-connection-open-response", "url": "#presentation-connection-open-response", "dfnText": "presentation-connection-open-response", "refSections": [{"refs": [{"id": "ref-for-presentation-connection-open-response"}, {"id": "ref-for-presentation-connection-open-response\u2460"}, {"id": "ref-for-presentation-connection-open-response\u2461"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-connection-open-response\u2462"}], "title": "7.1. Presentation API"}], "external": false};
-window.dfnpanelData['presentation-connection-close-event'] = {"dfnID": "presentation-connection-close-event", "url": "#presentation-connection-close-event", "dfnText": "presentation-connection-close-event", "refSections": [{"refs": [{"id": "ref-for-presentation-connection-close-event"}, {"id": "ref-for-presentation-connection-close-event\u2460"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-connection-close-event\u2461"}], "title": "7.1. Presentation API"}], "external": false};
-window.dfnpanelData['presentation-change-event'] = {"dfnID": "presentation-change-event", "url": "#presentation-change-event", "dfnText": "presentation-change-event", "refSections": [{"refs": [{"id": "ref-for-presentation-change-event"}, {"id": "ref-for-presentation-change-event\u2460"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-change-event\u2461"}, {"id": "ref-for-presentation-change-event\u2462"}], "title": "7.1. Presentation API"}], "external": false};
-window.dfnpanelData['presentation-connection-message'] = {"dfnID": "presentation-connection-message", "url": "#presentation-connection-message", "dfnText": "presentation-connection-message", "refSections": [{"refs": [{"id": "ref-for-presentation-connection-message"}], "title": "7. Presentation Protocol"}, {"refs": [{"id": "ref-for-presentation-connection-message\u2460"}], "title": "7.1. Presentation API"}], "external": false};
-window.dfnpanelData['remote-playback-availability-request'] = {"dfnID": "remote-playback-availability-request", "url": "#remote-playback-availability-request", "dfnText": "remote-playback-availability-request", "refSections": [{"refs": [{"id": "ref-for-remote-playback-availability-request"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-remote-playback-availability-request\u2460"}, {"id": "ref-for-remote-playback-availability-request\u2461"}], "title": "9.2. Remote Playback API"}], "external": false};
-window.dfnpanelData['remote-playback-availability-response'] = {"dfnID": "remote-playback-availability-response", "url": "#remote-playback-availability-response", "dfnText": "remote-playback-availability-response", "refSections": [{"refs": [{"id": "ref-for-remote-playback-availability-response"}, {"id": "ref-for-remote-playback-availability-response\u2460"}], "title": "9. Remote Playback Protocol"}], "external": false};
-window.dfnpanelData['remote-playback-availability-event'] = {"dfnID": "remote-playback-availability-event", "url": "#remote-playback-availability-event", "dfnText": "remote-playback-availability-event", "refSections": [{"refs": [{"id": "ref-for-remote-playback-availability-event"}], "title": "9. Remote Playback Protocol"}], "external": false};
-window.dfnpanelData['remote-playback-start-request'] = {"dfnID": "remote-playback-start-request", "url": "#remote-playback-start-request", "dfnText": "remote-playback-start-request", "refSections": [{"refs": [{"id": "ref-for-remote-playback-start-request"}, {"id": "ref-for-remote-playback-start-request\u2460"}, {"id": "ref-for-remote-playback-start-request\u2461"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-remote-playback-start-request\u2462"}, {"id": "ref-for-remote-playback-start-request\u2463"}, {"id": "ref-for-remote-playback-start-request\u2464"}, {"id": "ref-for-remote-playback-start-request\u2465"}], "title": "9.1. Remote Playback State and Controls"}, {"refs": [{"id": "ref-for-remote-playback-start-request\u2466"}, {"id": "ref-for-remote-playback-start-request\u2467"}], "title": "9.2. Remote Playback API"}], "external": false};
-window.dfnpanelData['remote-playback-start-response'] = {"dfnID": "remote-playback-start-response", "url": "#remote-playback-start-response", "dfnText": "remote-playback-start-response", "refSections": [{"refs": [{"id": "ref-for-remote-playback-start-response"}, {"id": "ref-for-remote-playback-start-response\u2460"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-remote-playback-start-response\u2461"}, {"id": "ref-for-remote-playback-start-response\u2462"}, {"id": "ref-for-remote-playback-start-response\u2463"}, {"id": "ref-for-remote-playback-start-response\u2464"}, {"id": "ref-for-remote-playback-start-response\u2465"}, {"id": "ref-for-remote-playback-start-response\u2466"}, {"id": "ref-for-remote-playback-start-response\u2467"}, {"id": "ref-for-remote-playback-start-response\u2468"}, {"id": "ref-for-remote-playback-start-response\u2460\u24ea"}, {"id": "ref-for-remote-playback-start-response\u2460\u2460"}, {"id": "ref-for-remote-playback-start-response\u2460\u2461"}, {"id": "ref-for-remote-playback-start-response\u2460\u2462"}, {"id": "ref-for-remote-playback-start-response\u2460\u2463"}, {"id": "ref-for-remote-playback-start-response\u2460\u2464"}, {"id": "ref-for-remote-playback-start-response\u2460\u2465"}, {"id": "ref-for-remote-playback-start-response\u2460\u2466"}, {"id": "ref-for-remote-playback-start-response\u2460\u2467"}, {"id": "ref-for-remote-playback-start-response\u2460\u2468"}, {"id": "ref-for-remote-playback-start-response\u2461\u24ea"}, {"id": "ref-for-remote-playback-start-response\u2461\u2460"}, {"id": "ref-for-remote-playback-start-response\u2461\u2461"}, {"id": "ref-for-remote-playback-start-response\u2461\u2462"}, {"id": "ref-for-remote-playback-start-response\u2461\u2463"}], "title": "9.1. Remote Playback State and Controls"}], "external": false};
-window.dfnpanelData['remote-playback-termination-request'] = {"dfnID": "remote-playback-termination-request", "url": "#remote-playback-termination-request", "dfnText": "remote-playback-termination-request", "refSections": [{"refs": [{"id": "ref-for-remote-playback-termination-request"}, {"id": "ref-for-remote-playback-termination-request\u2460"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-remote-playback-termination-request\u2461"}], "title": "9.2. Remote Playback API"}], "external": false};
-window.dfnpanelData['remote-playback-termination-response'] = {"dfnID": "remote-playback-termination-response", "url": "#remote-playback-termination-response", "dfnText": "remote-playback-termination-response", "refSections": [{"refs": [{"id": "ref-for-remote-playback-termination-response"}], "title": "9. Remote Playback Protocol"}], "external": false};
-window.dfnpanelData['remote-playback-termination-event'] = {"dfnID": "remote-playback-termination-event", "url": "#remote-playback-termination-event", "dfnText": "remote-playback-termination-event", "refSections": [{"refs": [{"id": "ref-for-remote-playback-termination-event"}], "title": "9. Remote Playback Protocol"}], "external": false};
-window.dfnpanelData['remote-playback-modify-request'] = {"dfnID": "remote-playback-modify-request", "url": "#remote-playback-modify-request", "dfnText": "remote-playback-modify-request", "refSections": [{"refs": [{"id": "ref-for-remote-playback-modify-request"}, {"id": "ref-for-remote-playback-modify-request\u2460"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-remote-playback-modify-request\u2461"}], "title": "9.1. Remote Playback State and Controls"}, {"refs": [{"id": "ref-for-remote-playback-modify-request\u2462"}], "title": "9.2. Remote Playback API"}], "external": false};
-window.dfnpanelData['remote-playback-modify-response'] = {"dfnID": "remote-playback-modify-response", "url": "#remote-playback-modify-response", "dfnText": "remote-playback-modify-response", "refSections": [{"refs": [{"id": "ref-for-remote-playback-modify-response"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-remote-playback-modify-response\u2460"}], "title": "9.2. Remote Playback API"}], "external": false};
-window.dfnpanelData['remote-playback-state-event'] = {"dfnID": "remote-playback-state-event", "url": "#remote-playback-state-event", "dfnText": "remote-playback-state-event", "refSections": [{"refs": [{"id": "ref-for-remote-playback-state-event"}, {"id": "ref-for-remote-playback-state-event\u2460"}, {"id": "ref-for-remote-playback-state-event\u2461"}, {"id": "ref-for-remote-playback-state-event\u2462"}, {"id": "ref-for-remote-playback-state-event\u2463"}, {"id": "ref-for-remote-playback-state-event\u2464"}, {"id": "ref-for-remote-playback-state-event\u2465"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-remote-playback-state-event\u2466"}], "title": "9.1. Remote Playback State and Controls"}, {"refs": [{"id": "ref-for-remote-playback-state-event\u2467"}], "title": "9.2. Remote Playback API"}], "external": false};
-window.dfnpanelData['text-track-cue'] = {"dfnID": "text-track-cue", "url": "#text-track-cue", "dfnText": "text-track-cue", "refSections": [{"refs": [{"id": "ref-for-text-track-cue"}], "title": "9.1. Remote Playback State and Controls"}], "external": false};
-window.dfnpanelData['media-time'] = {"dfnID": "media-time", "url": "#media-time", "dfnText": "media-time", "refSections": [{"refs": [{"id": "ref-for-media-time"}], "title": "9.1. Remote Playback State and Controls"}], "external": false};
-window.dfnpanelData['audio-frame'] = {"dfnID": "audio-frame", "url": "#audio-frame", "dfnText": "audio-frame", "refSections": [{"refs": [{"id": "ref-for-audio-frame"}], "title": "10.3. Audio"}, {"refs": [{"id": "ref-for-audio-frame\u2460"}], "title": "12.1. Protocol Extension Fields"}], "external": false};
-window.dfnpanelData['video-frame'] = {"dfnID": "video-frame", "url": "#video-frame", "dfnText": "video-frame", "refSections": [{"refs": [{"id": "ref-for-video-frame"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-video-frame\u2460"}], "title": "10.4. Video"}], "external": false};
-window.dfnpanelData['data-frame'] = {"dfnID": "data-frame", "url": "#data-frame", "dfnText": "data-frame", "refSections": [{"refs": [{"id": "ref-for-data-frame"}], "title": "10.5. Data"}], "external": false};
-window.dfnpanelData['streaming-capabilities-request'] = {"dfnID": "streaming-capabilities-request", "url": "#streaming-capabilities-request", "dfnText": "streaming-capabilities-request", "refSections": [{"refs": [{"id": "ref-for-streaming-capabilities-request"}], "title": "10.1. Streaming Protocol Capabilities"}], "external": false};
-window.dfnpanelData['streaming-capabilities-response'] = {"dfnID": "streaming-capabilities-response", "url": "#streaming-capabilities-response", "dfnText": "streaming-capabilities-response", "refSections": [{"refs": [{"id": "ref-for-streaming-capabilities-response"}], "title": "10.1. Streaming Protocol Capabilities"}], "external": false};
-window.dfnpanelData['streaming-session-start-request'] = {"dfnID": "streaming-session-start-request", "url": "#streaming-session-start-request", "dfnText": "streaming-session-start-request", "refSections": [{"refs": [{"id": "ref-for-streaming-session-start-request"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-streaming-session-start-request\u2460"}, {"id": "ref-for-streaming-session-start-request\u2461"}], "title": "10.2. Sessions"}], "external": false};
-window.dfnpanelData['streaming-session-start-response'] = {"dfnID": "streaming-session-start-response", "url": "#streaming-session-start-response", "dfnText": "streaming-session-start-response", "refSections": [{"refs": [{"id": "ref-for-streaming-session-start-response"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-streaming-session-start-response\u2460"}], "title": "10.2. Sessions"}], "external": false};
-window.dfnpanelData['streaming-session-modify-request'] = {"dfnID": "streaming-session-modify-request", "url": "#streaming-session-modify-request", "dfnText": "streaming-session-modify-request", "refSections": [{"refs": [{"id": "ref-for-streaming-session-modify-request"}], "title": "9. Remote Playback Protocol"}, {"refs": [{"id": "ref-for-streaming-session-modify-request\u2460"}, {"id": "ref-for-streaming-session-modify-request\u2461"}, {"id": "ref-for-streaming-session-modify-request\u2462"}], "title": "10.2. Sessions"}], "external": false};
-window.dfnpanelData['streaming-session-modify-response'] = {"dfnID": "streaming-session-modify-response", "url": "#streaming-session-modify-response", "dfnText": "streaming-session-modify-response", "refSections": [{"refs": [{"id": "ref-for-streaming-session-modify-response"}], "title": "10.2. Sessions"}], "external": false};
-window.dfnpanelData['streaming-session-terminate-request'] = {"dfnID": "streaming-session-terminate-request", "url": "#streaming-session-terminate-request", "dfnText": "streaming-session-terminate-request", "refSections": [{"refs": [{"id": "ref-for-streaming-session-terminate-request"}, {"id": "ref-for-streaming-session-terminate-request\u2460"}], "title": "10.2. Sessions"}], "external": false};
-window.dfnpanelData['streaming-session-terminate-response'] = {"dfnID": "streaming-session-terminate-response", "url": "#streaming-session-terminate-response", "dfnText": "streaming-session-terminate-response", "refSections": [{"refs": [{"id": "ref-for-streaming-session-terminate-response"}], "title": "10.2. Sessions"}], "external": false};
-window.dfnpanelData['streaming-session-terminate-event'] = {"dfnID": "streaming-session-terminate-event", "url": "#streaming-session-terminate-event", "dfnText": "streaming-session-terminate-event", "refSections": [{"refs": [{"id": "ref-for-streaming-session-terminate-event"}], "title": "10.2. Sessions"}], "external": false};
-window.dfnpanelData['audio-encoding-offer'] = {"dfnID": "audio-encoding-offer", "url": "#audio-encoding-offer", "dfnText": "audio-encoding-offer", "refSections": [{"refs": [{"id": "ref-for-audio-encoding-offer"}, {"id": "ref-for-audio-encoding-offer\u2460"}, {"id": "ref-for-audio-encoding-offer\u2461"}, {"id": "ref-for-audio-encoding-offer\u2462"}, {"id": "ref-for-audio-encoding-offer\u2463"}], "title": "10.3. Audio"}], "external": false};
-window.dfnpanelData['video-encoding-offer'] = {"dfnID": "video-encoding-offer", "url": "#video-encoding-offer", "dfnText": "video-encoding-offer", "refSections": [{"refs": [{"id": "ref-for-video-encoding-offer"}, {"id": "ref-for-video-encoding-offer\u2460"}, {"id": "ref-for-video-encoding-offer\u2461"}, {"id": "ref-for-video-encoding-offer\u2462"}], "title": "10.4. Video"}], "external": false};
-window.dfnpanelData['data-encoding-offer'] = {"dfnID": "data-encoding-offer", "url": "#data-encoding-offer", "dfnText": "data-encoding-offer", "refSections": [{"refs": [{"id": "ref-for-data-encoding-offer"}, {"id": "ref-for-data-encoding-offer\u2460"}, {"id": "ref-for-data-encoding-offer\u2461"}, {"id": "ref-for-data-encoding-offer\u2462"}], "title": "10.5. Data"}], "external": false};
-window.dfnpanelData['streaming-session-sender-stats-event'] = {"dfnID": "streaming-session-sender-stats-event", "url": "#streaming-session-sender-stats-event", "dfnText": "streaming-session-sender-stats-event", "refSections": [{"refs": [{"id": "ref-for-streaming-session-sender-stats-event"}, {"id": "ref-for-streaming-session-sender-stats-event\u2460"}], "title": "10.7. Stats"}], "external": false};
-window.dfnpanelData['streaming-session-receiver-stats-event'] = {"dfnID": "streaming-session-receiver-stats-event", "url": "#streaming-session-receiver-stats-event", "dfnText": "streaming-session-receiver-stats-event", "refSections": [{"refs": [{"id": "ref-for-streaming-session-receiver-stats-event"}, {"id": "ref-for-streaming-session-receiver-stats-event\u2460"}], "title": "10.7. Stats"}], "external": false};
-</script>
 <script>/* Boilerplate: script-dom-helper */
+"use strict";
 function query(sel) { return document.querySelector(sel); }
 
 function queryAll(sel) { return [...document.querySelectorAll(sel)]; }
@@ -4928,5 +4535,898 @@ function parseHTML(markup) {
 		el.innerHTML = markup;
 		return el.content;
 	}
+}</script>
+<script>/* Boilerplate: script-dfn-panel */
+"use strict";
+{
+let dfnPanelData = {
+"03499e48": {"dfnID":"03499e48","dfnText":"media element","external":true,"refSections":[{"refs":[{"id":"ref-for-media-element"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-media-element\u2460"}],"title":"1.1. Terminology"}],"url":"https://html.spec.whatwg.org/multipage/media.html#media-element"},
+"03cd5764": {"dfnID":"03cd5764","dfnText":"audioTracks","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-audiotracks"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-audiotracks\u2460"},{"id":"ref-for-dom-media-audiotracks\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks"},
+"06b254b0": {"dfnID":"06b254b0","dfnText":"remote playback devices","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-remote-playback-devices"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-dfn-remote-playback-devices\u2460"},{"id":"ref-for-dfn-remote-playback-devices\u2461"},{"id":"ref-for-dfn-remote-playback-devices\u2462"}],"title":"9.2. Remote Playback API"}],"url":"https://w3c.github.io/remote-playback/#dfn-remote-playback-devices"},
+"09153fed": {"dfnID":"09153fed","dfnText":"codecs parameter","external":true,"refSections":[{"refs":[{"id":"ref-for-section-3"}],"title":"10.1. Streaming Protocol Capabilities"}],"url":"https://tools.ietf.org/html/rfc6381#section-3"},
+"1076ec40": {"dfnID":"1076ec40","dfnText":"HTMLMediaElement","external":true,"refSections":[{"refs":[{"id":"ref-for-htmlmediaelement"},{"id":"ref-for-htmlmediaelement\u2460"},{"id":"ref-for-htmlmediaelement\u2461"},{"id":"ref-for-htmlmediaelement\u2462"},{"id":"ref-for-htmlmediaelement\u2463"}],"title":"2.3. Remote Playback API Requirements"},{"refs":[{"id":"ref-for-htmlmediaelement\u2464"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-htmlmediaelement\u2465"}],"title":"9.1. Remote Playback State and Controls"},{"refs":[{"id":"ref-for-htmlmediaelement\u2466"},{"id":"ref-for-htmlmediaelement\u2467"}],"title":"9.2. Remote Playback API"}],"url":"https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement"},
+"15a088cb": {"dfnID":"15a088cb","dfnText":"addTextTrack(kind, label, language)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-addtexttrack"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack"},
+"1704ff9c": {"dfnID":"1704ff9c","dfnText":"uuid","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.4"}],"title":"9. Remote Playback Protocol"}],"url":"https://tools.ietf.org/html/rfc4122#section-4.4"},
+"1a09160b": {"dfnID":"1a09160b","dfnText":"videoWidth","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-video-videowidth"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-video-videowidth\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth"},
+"1c76c896": {"dfnID":"1c76c896","dfnText":"loop","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-loop"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-loop"},
+"1d3efcfe": {"dfnID":"1d3efcfe","dfnText":"src (for source)","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-source-src"}],"title":"9. Remote Playback Protocol"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src"},
+"1fe3b46b": {"dfnID":"1fe3b46b","dfnText":"digitalsignature","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.2.1.3"}],"title":"4.2. Agent Certificates"}],"url":"https://tools.ietf.org/html/rfc5280#section-4.2.1.3"},
+"208b5961": {"dfnID":"208b5961","dfnText":"language tag","external":true,"refSections":[{"refs":[{"id":"ref-for-section-2"}],"title":"4.3. Metadata Discovery"}],"url":"https://tools.ietf.org/html/rfc5646#section-2"},
+"34d12a4f": {"dfnID":"34d12a4f","dfnText":"instance name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.1.1"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-section-4.1.1\u2460"}],"title":"13.6.1. Instance and Display Names"}],"url":"https://tools.ietf.org/html/rfc6763#section-4.1.1"},
+"36aa3708": {"dfnID":"36aa3708","dfnText":"duration","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-duration"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-duration\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-duration"},
+"36c7793a": {"dfnID":"36c7793a","dfnText":"preload","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-preload"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-preload"},
+"374afd71": {"dfnID":"374afd71","dfnText":"PresentationConnection","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-presentationconnection"},{"id":"ref-for-dom-presentationconnection\u2460"}],"title":"2.2. Presentation API Requirements"},{"refs":[{"id":"ref-for-dom-presentationconnection\u2461"}],"title":"13.1.4. Same-Origin Policy Violations"},{"refs":[{"id":"ref-for-dom-presentationconnection\u2462"}],"title":"13.3. Presentation API Considerations"}],"url":"https://w3c.github.io/presentation-api/#dom-presentationconnection"},
+"38cb699f": {"dfnID":"38cb699f","dfnText":"conflict resolution","external":true,"refSections":[{"refs":[{"id":"ref-for-section-9"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc6762#section-9"},
+"3ce575bf": {"dfnID":"3ce575bf","dfnText":"official playback position","external":true,"refSections":[{"refs":[{"id":"ref-for-official-playback-position"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#official-playback-position"},
+"3f5f11ee": {"dfnID":"3f5f11ee","dfnText":"HAVE_NOTHING","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-have_nothing"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing"},
+"45182159": {"dfnID":"45182159","dfnText":"seeking","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-seeking"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-seeking\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking"},
+"456f89c8": {"dfnID":"456f89c8","dfnText":"presentation identifier","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-presentation-identifier"},{"id":"ref-for-dfn-presentation-identifier\u2460"},{"id":"ref-for-dfn-presentation-identifier\u2461"}],"title":"2.2. Presentation API Requirements"},{"refs":[{"id":"ref-for-dfn-presentation-identifier\u2462"},{"id":"ref-for-dfn-presentation-identifier\u2463"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-dfn-presentation-identifier\u2464"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-dfn-presentation-identifier\u2465"}],"title":"13.1.4. Same-Origin Policy Violations"},{"refs":[{"id":"ref-for-dfn-presentation-identifier\u2466"}],"title":"13.2.1. Personally Identifiable Information & High-Value Data"},{"refs":[{"id":"ref-for-dfn-presentation-identifier\u2467"}],"title":"13.3. Presentation API Considerations"}],"url":"https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier"},
+"4728547d": {"dfnID":"4728547d","dfnText":"seekable","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-seekable"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-seekable\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable"},
+"4bc31655": {"dfnID":"4bc31655","dfnText":"videoTracks","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-videotracks"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-videotracks\u2460"},{"id":"ref-for-dom-media-videotracks\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks"},
+"4be354e2": {"dfnID":"4be354e2","dfnText":"variable-length integer encoding","external":true,"refSections":[{"refs":[{"id":"ref-for-name-variable-length-integer-enc"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2460"},{"id":"ref-for-name-variable-length-integer-enc\u2461"}],"title":"5. Messages delivery using CBOR and QUIC streams"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2462"}],"title":"Appendix B: Message Type Key Ranges"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
+"4ef17206": {"dfnID":"4ef17206","dfnText":"timeupdate","external":true,"refSections":[{"refs":[{"id":"ref-for-event-media-timeupdate"}],"title":"9. Remote Playback Protocol"}],"url":"https://html.spec.whatwg.org/multipage/media.html#event-media-timeupdate"},
+"5078a29a": {"dfnID":"5078a29a","dfnText":"volume","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-volume"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-volume\u2460"},{"id":"ref-for-dom-media-volume\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-volume"},
+"552e1f12": {"dfnID":"552e1f12","dfnText":"networkState","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-networkstate"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-networkstate\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate"},
+"565ece29": {"dfnID":"565ece29","dfnText":"poster frame","external":true,"refSections":[{"refs":[{"id":"ref-for-poster-frame"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#poster-frame"},
+"5cab86ab": {"dfnID":"5cab86ab","dfnText":"md5","external":true,"refSections":[{"refs":[{"id":"ref-for-section-5"},{"id":"ref-for-section-5\u2460"},{"id":"ref-for-section-5\u2461"},{"id":"ref-for-section-5\u2462"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc8122#section-5"},
+"613edb27": {"dfnID":"613edb27","dfnText":"play()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-play"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-play\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-play"},
+"62061ebf": {"dfnID":"62061ebf","dfnText":"initiate remote playback","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-initiate-remote-playback"}],"title":"2.3. Remote Playback API Requirements"}],"url":"https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback"},
+"621f3aeb": {"dfnID":"621f3aeb","dfnText":"readyState","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-readystate"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-readystate\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate"},
+"649ace3d": {"dfnID":"649ace3d","dfnText":"media resource","external":true,"refSections":[{"refs":[{"id":"ref-for-media-resource"},{"id":"ref-for-media-resource\u2460"},{"id":"ref-for-media-resource\u2461"},{"id":"ref-for-media-resource\u2462"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-media-resource\u2463"},{"id":"ref-for-media-resource\u2464"},{"id":"ref-for-media-resource\u2465"},{"id":"ref-for-media-resource\u2466"},{"id":"ref-for-media-resource\u2467"},{"id":"ref-for-media-resource\u2468"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#media-resource"},
+"6c09a22e": {"dfnID":"6c09a22e","dfnText":"variable-length integer","external":true,"refSections":[{"refs":[{"id":"ref-for-name-variable-length-integer-enc"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2460"},{"id":"ref-for-name-variable-length-integer-enc\u2461"}],"title":"5. Messages delivery using CBOR and QUIC streams"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2462"}],"title":"Appendix B: Message Type Key Ranges"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
+"6f0181fa": {"dfnID":"6f0181fa","dfnText":"service name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-7"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc6763#section-7"},
+"732fbcbd": {"dfnID":"732fbcbd","dfnText":"fastSeek(time)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-fastseek"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-fastseek\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek"},
+"87a0c5de": {"dfnID":"87a0c5de","dfnText":"played","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-played"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-played\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-played"},
+"89da795b": {"dfnID":"89da795b","dfnText":"currentTime","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-currenttime"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-currenttime\u2460"},{"id":"ref-for-dom-media-currenttime\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime"},
+"8d87f944": {"dfnID":"8d87f944","dfnText":"muted","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-muted"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-muted\u2460"},{"id":"ref-for-dom-media-muted\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-muted"},
+"8f45ca65": {"dfnID":"8f45ca65","dfnText":"concise data definition language","external":true,"refSections":[{"refs":[{"id":"ref-for-section-3\u2460"}],"title":"Appendix A: Messages"}],"url":"https://tools.ietf.org/html/rfc8610#section-3"},
+"9481333e": {"dfnID":"9481333e","dfnText":"sha-256","external":true,"refSections":[{"refs":[{"id":"ref-for-section-5"},{"id":"ref-for-section-5\u2460"},{"id":"ref-for-section-5\u2461"},{"id":"ref-for-section-5\u2462"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc8122#section-5"},
+"99123207": {"dfnID":"99123207","dfnText":"playbackRate","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-playbackrate"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-playbackrate\u2460"},{"id":"ref-for-dom-media-playbackrate\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate"},
+"9d0cefbc": {"dfnID":"9d0cefbc","dfnText":"md2","external":true,"refSections":[{"refs":[{"id":"ref-for-section-5"},{"id":"ref-for-section-5\u2460"},{"id":"ref-for-section-5\u2461"},{"id":"ref-for-section-5\u2462"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc8122#section-5"},
+"9e0b0141": {"dfnID":"9e0b0141","dfnText":"media error code","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-mediaerror-code"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code"},
+"a07c7f7e": {"dfnID":"a07c7f7e","dfnText":"availability sources set","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-availability-sources-set"}],"title":"9.2. Remote Playback API"}],"url":"https://w3c.github.io/remote-playback/#dfn-availability-sources-set"},
+"a17504bd": {"dfnID":"a17504bd","dfnText":"ended","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-ended"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-ended\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-ended"},
+"a2a5cd12": {"dfnID":"a2a5cd12","dfnText":"qr code","external":true,"refSections":[{"refs":[{"id":"ref-for-something"}],"title":"6. Authentication"},{"refs":[{"id":"ref-for-something\u2460"}],"title":"Appendix C: PSK Encoding Schemes"},{"refs":[{"id":"ref-for-something\u2461"}],"title":"QR Code"}],"url":"https://www.iso.org/standard/62021.html#"},
+"a35cc467": {"dfnID":"a35cc467","dfnText":"pause()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-pause"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-pause\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-pause"},
+"a65cc4ee": {"dfnID":"a65cc4ee","dfnText":"buffered","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-buffered"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-buffered\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered"},
+"a6ddbb58": {"dfnID":"a6ddbb58","dfnText":"connection_close frames","external":true,"refSections":[{"refs":[{"id":"ref-for-name-connection_close-frames"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
+"advertising-agent": {"dfnID":"advertising-agent","dfnText":"advertising agent","external":false,"refSections":[{"refs":[{"id":"ref-for-advertising-agent"}],"title":"2.4. Non-Functional Requirements"},{"refs":[{"id":"ref-for-advertising-agent\u2460"}],"title":"4. Transport and metadata discovery with QUIC"},{"refs":[{"id":"ref-for-advertising-agent\u2461"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-advertising-agent\u2462"}],"title":"6. Authentication"},{"refs":[{"id":"ref-for-advertising-agent\u2463"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-advertising-agent\u2464"}],"title":"9.2. Remote Playback API"},{"refs":[{"id":"ref-for-advertising-agent\u2465"}],"title":"10. Streaming Protocol"}],"url":"#advertising-agent"},
+"agent-certificate": {"dfnID":"agent-certificate","dfnText":"agent\ncertificate","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-certificate"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-agent-certificate\u2460"},{"id":"ref-for-agent-certificate\u2461"},{"id":"ref-for-agent-certificate\u2462"},{"id":"ref-for-agent-certificate\u2463"}],"title":"4.2. Agent Certificates"}],"url":"#agent-certificate"},
+"agent-fingerprint": {"dfnID":"agent-fingerprint","dfnText":"agent fingerprint","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-fingerprint"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-fingerprint\u2460"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-agent-fingerprint\u2461"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#agent-fingerprint"},
+"agent-info": {"dfnID":"agent-info","dfnText":"agent-info","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info"},{"id":"ref-for-agent-info\u2460"},{"id":"ref-for-agent-info\u2461"},{"id":"ref-for-agent-info\u2462"},{"id":"ref-for-agent-info\u2463"}],"title":"4.3. Metadata Discovery"},{"refs":[{"id":"ref-for-agent-info\u2464"}],"title":"12. Protocol Extensions"},{"refs":[{"id":"ref-for-agent-info\u2465"}],"title":"12.1. Protocol Extension Fields"},{"refs":[{"id":"ref-for-agent-info\u2466"}],"title":"13.2.1. Personally Identifiable Information & High-Value Data"},{"refs":[{"id":"ref-for-agent-info\u2467"}],"title":"13.5.2. Local active network attackers"},{"refs":[{"id":"ref-for-agent-info\u2468"}],"title":"13.6.1. Instance and Display Names"}],"url":"#agent-info"},
+"agent-info-event": {"dfnID":"agent-info-event","dfnText":"agent-info-event","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info-event"}],"title":"4.3. Metadata Discovery"}],"url":"#agent-info-event"},
+"agent-info-request": {"dfnID":"agent-info-request","dfnText":"agent-info-request","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info-request"},{"id":"ref-for-agent-info-request\u2460"}],"title":"4.3. Metadata Discovery"},{"refs":[{"id":"ref-for-agent-info-request\u2461"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-agent-info-request\u2462"}],"title":"9.2. Remote Playback API"}],"url":"#agent-info-request"},
+"agent-info-response": {"dfnID":"agent-info-response","dfnText":"agent-info-response","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info-response"},{"id":"ref-for-agent-info-response\u2460"}],"title":"4.3. Metadata Discovery"}],"url":"#agent-info-response"},
+"agent-status-request": {"dfnID":"agent-status-request","dfnText":"agent-status-request","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-status-request"},{"id":"ref-for-agent-status-request\u2460"},{"id":"ref-for-agent-status-request\u2461"}],"title":"4.3. Metadata Discovery"}],"url":"#agent-status-request"},
+"agent-status-response": {"dfnID":"agent-status-response","dfnText":"agent-status-response","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-status-response"},{"id":"ref-for-agent-status-response\u2460"}],"title":"4.3. Metadata Discovery"}],"url":"#agent-status-response"},
+"audio-encoding-offer": {"dfnID":"audio-encoding-offer","dfnText":"audio-encoding-offer","external":false,"refSections":[{"refs":[{"id":"ref-for-audio-encoding-offer"},{"id":"ref-for-audio-encoding-offer\u2460"},{"id":"ref-for-audio-encoding-offer\u2461"},{"id":"ref-for-audio-encoding-offer\u2462"},{"id":"ref-for-audio-encoding-offer\u2463"}],"title":"10.3. Audio"}],"url":"#audio-encoding-offer"},
+"audio-frame": {"dfnID":"audio-frame","dfnText":"audio-frame","external":false,"refSections":[{"refs":[{"id":"ref-for-audio-frame"}],"title":"10.3. Audio"},{"refs":[{"id":"ref-for-audio-frame\u2460"}],"title":"12.1. Protocol Extension Fields"}],"url":"#audio-frame"},
+"auth-capabilities": {"dfnID":"auth-capabilities","dfnText":"auth-capabilities","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-capabilities"},{"id":"ref-for-auth-capabilities\u2460"}],"title":"6. Authentication"}],"url":"#auth-capabilities"},
+"auth-initiation-token": {"dfnID":"auth-initiation-token","dfnText":"auth-initiation-token","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-initiation-token"}],"title":"6. Authentication"}],"url":"#auth-initiation-token"},
+"auth-spake2-confirmation": {"dfnID":"auth-spake2-confirmation","dfnText":"auth-spake2-confirmation","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-confirmation"},{"id":"ref-for-auth-spake2-confirmation\u2460"},{"id":"ref-for-auth-spake2-confirmation\u2461"},{"id":"ref-for-auth-spake2-confirmation\u2462"},{"id":"ref-for-auth-spake2-confirmation\u2463"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-confirmation"},
+"auth-spake2-handshake": {"dfnID":"auth-spake2-handshake","dfnText":"auth-spake2-handshake","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-handshake"},{"id":"ref-for-auth-spake2-handshake\u2460"},{"id":"ref-for-auth-spake2-handshake\u2461"},{"id":"ref-for-auth-spake2-handshake\u2462"},{"id":"ref-for-auth-spake2-handshake\u2463"},{"id":"ref-for-auth-spake2-handshake\u2464"},{"id":"ref-for-auth-spake2-handshake\u2465"},{"id":"ref-for-auth-spake2-handshake\u2466"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-handshake"},
+"auth-spake2-need-psk": {"dfnID":"auth-spake2-need-psk","dfnText":"auth-spake2-need-psk","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-need-psk"},{"id":"ref-for-auth-spake2-need-psk\u2460"},{"id":"ref-for-auth-spake2-need-psk\u2461"},{"id":"ref-for-auth-spake2-need-psk\u2462"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-need-psk"},
+"auth-status": {"dfnID":"auth-status","dfnText":"auth-status","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-status"},{"id":"ref-for-auth-status\u2460"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-status"},
+"b2b6fbb0": {"dfnID":"b2b6fbb0","dfnText":"remote playback source","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-remote-playback-source"}],"title":"9.2. Remote Playback API"}],"url":"https://w3c.github.io/remote-playback/#dfn-remote-playback-source"},
+"ba8a9b31": {"dfnID":"ba8a9b31","dfnText":"error","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-error"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-error\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-error"},
+"be4088c1": {"dfnID":"be4088c1","dfnText":"compatible remote playback device","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-compatible-remote-playback-device"}],"title":"9. Remote Playback Protocol"}],"url":"https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device"},
+"c5013a3b": {"dfnID":"c5013a3b","dfnText":"media element state","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-media-element-state"}],"title":"2.3. Remote Playback API Requirements"}],"url":"https://w3c.github.io/remote-playback/#dfn-media-element-state"},
+"c7313446": {"dfnID":"c7313446","dfnText":"signature scheme","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.2.3"}],"title":"4.2. Agent Certificates"}],"url":"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3"},
+"cb19d8be": {"dfnID":"cb19d8be","dfnText":"postMessage(message, targetOrigin, transfer)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-postmessage"}],"title":"13.1.4. Same-Origin Policy Violations"}],"url":"https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage"},
+"certificate-algorithms": {"dfnID":"certificate-algorithms","dfnText":"Agent Certificate Algorithms","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-algorithms"},{"id":"ref-for-certificate-algorithms\u2460"},{"id":"ref-for-certificate-algorithms\u2461"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-algorithms"},
+"controller": {"dfnID":"controller","dfnText":"controller","external":false,"refSections":[{"refs":[{"id":"ref-for-controller"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-controller\u2460"}],"title":"2.2. Presentation API Requirements"},{"refs":[{"id":"ref-for-controller\u2461"}],"title":"2.3. Remote Playback API Requirements"},{"refs":[{"id":"ref-for-controller\u2462"}],"title":"7.1. Presentation API"}],"url":"#controller"},
+"d0a3e1e6": {"dfnID":"d0a3e1e6","dfnText":"videoHeight","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-video-videoheight"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-video-videoheight\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight"},
+"d72c64a8": {"dfnID":"d72c64a8","dfnText":"sha-512","external":true,"refSections":[{"refs":[{"id":"ref-for-section-5"},{"id":"ref-for-section-5\u2460"},{"id":"ref-for-section-5\u2461"},{"id":"ref-for-section-5\u2462"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc8122#section-5"},
+"d834f763": {"dfnID":"d834f763","dfnText":"NETWORK_EMPTY","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-network_empty"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty"},
+"da57602e": {"dfnID":"da57602e","dfnText":"type","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-source-type"}],"title":"9. Remote Playback Protocol"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type"},
+"data-encoding-offer": {"dfnID":"data-encoding-offer","dfnText":"data-encoding-offer","external":false,"refSections":[{"refs":[{"id":"ref-for-data-encoding-offer"},{"id":"ref-for-data-encoding-offer\u2460"},{"id":"ref-for-data-encoding-offer\u2461"},{"id":"ref-for-data-encoding-offer\u2462"}],"title":"10.5. Data"}],"url":"#data-encoding-offer"},
+"data-frame": {"dfnID":"data-frame","dfnText":"data-frame","external":false,"refSections":[{"refs":[{"id":"ref-for-data-frame"}],"title":"10.5. Data"}],"url":"#data-frame"},
+"df48f90a": {"dfnID":"df48f90a","dfnText":"textTracks","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-texttracks"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-texttracks\u2460"},{"id":"ref-for-dom-media-texttracks\u2461"},{"id":"ref-for-dom-media-texttracks\u2462"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks"},
+"display-name": {"dfnID":"display-name","dfnText":"display\nname","external":false,"refSections":[{"refs":[{"id":"ref-for-display-name"}],"title":"13.2.1. Personally Identifiable Information & High-Value Data"}],"url":"#display-name"},
+"e01f0d07": {"dfnID":"e01f0d07","dfnText":"available presentation display","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-available-presentation-display"}],"title":"7. Presentation Protocol"}],"url":"https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display"},
+"e21cba52": {"dfnID":"e21cba52","dfnText":"receiving user agent","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-receiving-user-agent"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-dfn-receiving-user-agent\u2460"},{"id":"ref-for-dfn-receiving-user-agent\u2461"}],"title":"7.1. Presentation API"}],"url":"https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent"},
+"e5d99cfd": {"dfnID":"e5d99cfd","dfnText":"timeline offset","external":true,"refSections":[{"refs":[{"id":"ref-for-timeline-offset"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-timeline-offset\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#timeline-offset"},
+"e9415387": {"dfnID":"e9415387","dfnText":"currentSrc","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-currentsrc"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-currentsrc\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc"},
+"e9b42004": {"dfnID":"e9b42004","dfnText":"presentation request url","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-presentation-request-url"},{"id":"ref-for-dfn-presentation-request-url\u2460"},{"id":"ref-for-dfn-presentation-request-url\u2461"},{"id":"ref-for-dfn-presentation-request-url\u2462"}],"title":"2.2. Presentation API Requirements"},{"refs":[{"id":"ref-for-dfn-presentation-request-url\u2463"}],"title":"7. Presentation Protocol"}],"url":"https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url"},
+"ea42745f": {"dfnID":"ea42745f","dfnText":"stalled","external":true,"refSections":[{"refs":[{"id":"ref-for-event-media-stalled"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-event-media-stalled\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#event-media-stalled"},
+"eacd6596": {"dfnID":"eacd6596","dfnText":"getStartDate()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-getstartdate"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate"},
+"eb573143": {"dfnID":"eb573143","dfnText":"src (for HTMLMediaElement)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-src"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-src"},
+"eb577fbe": {"dfnID":"eb577fbe","dfnText":"paused","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-paused"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-paused\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-paused"},
+"ef3ff42b": {"dfnID":"ef3ff42b","dfnText":"controlling user agent","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-controlling-user-agent"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-dfn-controlling-user-agent\u2460"},{"id":"ref-for-dfn-controlling-user-agent\u2461"}],"title":"7.1. Presentation API"}],"url":"https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent"},
+"f1776616": {"dfnID":"f1776616","dfnText":"presentation","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-receiving-browsing-context"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-dfn-receiving-browsing-context\u2460"}],"title":"2.2. Presentation API Requirements"}],"url":"https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context"},
+"fc89f77a": {"dfnID":"fc89f77a","dfnText":"transport parameter encoding","external":true,"refSections":[{"refs":[{"id":"ref-for-name-transport-parameter-encodin"}],"title":"4.3. Metadata Discovery"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin"},
+"listening-agent": {"dfnID":"listening-agent","dfnText":"listening agent","external":false,"refSections":[{"refs":[{"id":"ref-for-listening-agent"}],"title":"2.4. Non-Functional Requirements"},{"refs":[{"id":"ref-for-listening-agent\u2460"}],"title":"4. Transport and metadata discovery with QUIC"},{"refs":[{"id":"ref-for-listening-agent\u2461"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-listening-agent\u2462"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-listening-agent\u2463"}],"title":"9.2. Remote Playback API"},{"refs":[{"id":"ref-for-listening-agent\u2464"}],"title":"10. Streaming Protocol"}],"url":"#listening-agent"},
+"media-receiver": {"dfnID":"media-receiver","dfnText":"media receiver","external":false,"refSections":[{"refs":[{"id":"ref-for-media-receiver"}],"title":"10. Streaming Protocol"},{"refs":[{"id":"ref-for-media-receiver\u2460"}],"title":"10.3. Audio"}],"url":"#media-receiver"},
+"media-sender": {"dfnID":"media-sender","dfnText":"media sender","external":false,"refSections":[{"refs":[{"id":"ref-for-media-sender"}],"title":"10. Streaming Protocol"},{"refs":[{"id":"ref-for-media-sender\u2460"}],"title":"10.3. Audio"}],"url":"#media-sender"},
+"media-time": {"dfnID":"media-time","dfnText":"media-time","external":false,"refSections":[{"refs":[{"id":"ref-for-media-time"}],"title":"9.1. Remote Playback State and Controls"}],"url":"#media-time"},
+"open-screen-protocol-agent": {"dfnID":"open-screen-protocol-agent","dfnText":"Open Screen Protocol\nagent","external":false,"refSections":[{"refs":[{"id":"ref-for-open-screen-protocol-agent"}],"title":"2.1. General Requirements"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2460"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2461"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2462"}],"title":"5. Messages delivery using CBOR and QUIC streams"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2463"}],"title":"6. Authentication"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2464"},{"id":"ref-for-open-screen-protocol-agent\u2465"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2466"},{"id":"ref-for-open-screen-protocol-agent\u2467"}],"title":"9.2. Remote Playback API"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2468"}],"title":"10. Streaming Protocol"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2460\u24ea"}],"title":"12. Protocol Extensions"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2460\u2460"}],"title":"13. Security and Privacy"}],"url":"#open-screen-protocol-agent"},
+"presentation-change-event": {"dfnID":"presentation-change-event","dfnText":"presentation-change-event","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-change-event"},{"id":"ref-for-presentation-change-event\u2460"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-change-event\u2461"},{"id":"ref-for-presentation-change-event\u2462"}],"title":"7.1. Presentation API"}],"url":"#presentation-change-event"},
+"presentation-connection-close-event": {"dfnID":"presentation-connection-close-event","dfnText":"presentation-connection-close-event","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-connection-close-event"},{"id":"ref-for-presentation-connection-close-event\u2460"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-connection-close-event\u2461"}],"title":"7.1. Presentation API"}],"url":"#presentation-connection-close-event"},
+"presentation-connection-message": {"dfnID":"presentation-connection-message","dfnText":"presentation-connection-message","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-connection-message"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-connection-message\u2460"}],"title":"7.1. Presentation API"}],"url":"#presentation-connection-message"},
+"presentation-connection-open-request": {"dfnID":"presentation-connection-open-request","dfnText":"presentation-connection-open-request","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-connection-open-request"},{"id":"ref-for-presentation-connection-open-request\u2460"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-connection-open-request\u2461"},{"id":"ref-for-presentation-connection-open-request\u2462"}],"title":"7.1. Presentation API"}],"url":"#presentation-connection-open-request"},
+"presentation-connection-open-response": {"dfnID":"presentation-connection-open-response","dfnText":"presentation-connection-open-response","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-connection-open-response"},{"id":"ref-for-presentation-connection-open-response\u2460"},{"id":"ref-for-presentation-connection-open-response\u2461"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-connection-open-response\u2462"}],"title":"7.1. Presentation API"}],"url":"#presentation-connection-open-response"},
+"presentation-start-request": {"dfnID":"presentation-start-request","dfnText":"presentation-start-request","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-start-request"},{"id":"ref-for-presentation-start-request\u2460"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-start-request\u2461"}],"title":"7.1. Presentation API"}],"url":"#presentation-start-request"},
+"presentation-start-response": {"dfnID":"presentation-start-response","dfnText":"presentation-start-response","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-start-response"},{"id":"ref-for-presentation-start-response\u2460"}],"title":"7. Presentation Protocol"}],"url":"#presentation-start-response"},
+"presentation-termination-event": {"dfnID":"presentation-termination-event","dfnText":"presentation-termination-event","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-termination-event"}],"title":"7. Presentation Protocol"}],"url":"#presentation-termination-event"},
+"presentation-termination-request": {"dfnID":"presentation-termination-request","dfnText":"presentation-termination-request","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-termination-request"},{"id":"ref-for-presentation-termination-request\u2460"},{"id":"ref-for-presentation-termination-request\u2461"},{"id":"ref-for-presentation-termination-request\u2462"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-termination-request\u2463"}],"title":"7.1. Presentation API"}],"url":"#presentation-termination-request"},
+"presentation-termination-response": {"dfnID":"presentation-termination-response","dfnText":"presentation-termination-response","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-termination-response"}],"title":"7. Presentation Protocol"}],"url":"#presentation-termination-response"},
+"presentation-url-availability-event": {"dfnID":"presentation-url-availability-event","dfnText":"presentation-url-availability-event","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-url-availability-event"}],"title":"7. Presentation Protocol"}],"url":"#presentation-url-availability-event"},
+"presentation-url-availability-request": {"dfnID":"presentation-url-availability-request","dfnText":"presentation-url-availability-request","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-url-availability-request"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-url-availability-request\u2460"}],"title":"7.1. Presentation API"}],"url":"#presentation-url-availability-request"},
+"presentation-url-availability-response": {"dfnID":"presentation-url-availability-response","dfnText":"presentation-url-availability-response","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-url-availability-response"},{"id":"ref-for-presentation-url-availability-response\u2460"}],"title":"7. Presentation Protocol"}],"url":"#presentation-url-availability-response"},
+"receiver": {"dfnID":"receiver","dfnText":"receiver","external":false,"refSections":[{"refs":[{"id":"ref-for-receiver"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-receiver\u2460"}],"title":"2.2. Presentation API Requirements"},{"refs":[{"id":"ref-for-receiver\u2461"}],"title":"2.3. Remote Playback API Requirements"},{"refs":[{"id":"ref-for-receiver\u2462"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-receiver\u2463"}],"title":"9.2. Remote Playback API"}],"url":"#receiver"},
+"remote-playback-availability-event": {"dfnID":"remote-playback-availability-event","dfnText":"remote-playback-availability-event","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-availability-event"}],"title":"9. Remote Playback Protocol"}],"url":"#remote-playback-availability-event"},
+"remote-playback-availability-request": {"dfnID":"remote-playback-availability-request","dfnText":"remote-playback-availability-request","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-availability-request"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-remote-playback-availability-request\u2460"},{"id":"ref-for-remote-playback-availability-request\u2461"}],"title":"9.2. Remote Playback API"}],"url":"#remote-playback-availability-request"},
+"remote-playback-availability-response": {"dfnID":"remote-playback-availability-response","dfnText":"remote-playback-availability-response","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-availability-response"},{"id":"ref-for-remote-playback-availability-response\u2460"}],"title":"9. Remote Playback Protocol"}],"url":"#remote-playback-availability-response"},
+"remote-playback-modify-request": {"dfnID":"remote-playback-modify-request","dfnText":"remote-playback-modify-request","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-modify-request"},{"id":"ref-for-remote-playback-modify-request\u2460"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-remote-playback-modify-request\u2461"}],"title":"9.1. Remote Playback State and Controls"},{"refs":[{"id":"ref-for-remote-playback-modify-request\u2462"}],"title":"9.2. Remote Playback API"}],"url":"#remote-playback-modify-request"},
+"remote-playback-modify-response": {"dfnID":"remote-playback-modify-response","dfnText":"remote-playback-modify-response","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-modify-response"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-remote-playback-modify-response\u2460"}],"title":"9.2. Remote Playback API"}],"url":"#remote-playback-modify-response"},
+"remote-playback-start-request": {"dfnID":"remote-playback-start-request","dfnText":"remote-playback-start-request","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-start-request"},{"id":"ref-for-remote-playback-start-request\u2460"},{"id":"ref-for-remote-playback-start-request\u2461"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-remote-playback-start-request\u2462"},{"id":"ref-for-remote-playback-start-request\u2463"},{"id":"ref-for-remote-playback-start-request\u2464"},{"id":"ref-for-remote-playback-start-request\u2465"}],"title":"9.1. Remote Playback State and Controls"},{"refs":[{"id":"ref-for-remote-playback-start-request\u2466"},{"id":"ref-for-remote-playback-start-request\u2467"}],"title":"9.2. Remote Playback API"}],"url":"#remote-playback-start-request"},
+"remote-playback-start-response": {"dfnID":"remote-playback-start-response","dfnText":"remote-playback-start-response","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-start-response"},{"id":"ref-for-remote-playback-start-response\u2460"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-remote-playback-start-response\u2461"},{"id":"ref-for-remote-playback-start-response\u2462"},{"id":"ref-for-remote-playback-start-response\u2463"},{"id":"ref-for-remote-playback-start-response\u2464"},{"id":"ref-for-remote-playback-start-response\u2465"},{"id":"ref-for-remote-playback-start-response\u2466"},{"id":"ref-for-remote-playback-start-response\u2467"},{"id":"ref-for-remote-playback-start-response\u2468"},{"id":"ref-for-remote-playback-start-response\u2460\u24ea"},{"id":"ref-for-remote-playback-start-response\u2460\u2460"},{"id":"ref-for-remote-playback-start-response\u2460\u2461"},{"id":"ref-for-remote-playback-start-response\u2460\u2462"},{"id":"ref-for-remote-playback-start-response\u2460\u2463"},{"id":"ref-for-remote-playback-start-response\u2460\u2464"},{"id":"ref-for-remote-playback-start-response\u2460\u2465"},{"id":"ref-for-remote-playback-start-response\u2460\u2466"},{"id":"ref-for-remote-playback-start-response\u2460\u2467"},{"id":"ref-for-remote-playback-start-response\u2460\u2468"},{"id":"ref-for-remote-playback-start-response\u2461\u24ea"},{"id":"ref-for-remote-playback-start-response\u2461\u2460"},{"id":"ref-for-remote-playback-start-response\u2461\u2461"},{"id":"ref-for-remote-playback-start-response\u2461\u2462"},{"id":"ref-for-remote-playback-start-response\u2461\u2463"}],"title":"9.1. Remote Playback State and Controls"}],"url":"#remote-playback-start-response"},
+"remote-playback-state-event": {"dfnID":"remote-playback-state-event","dfnText":"remote-playback-state-event","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-state-event"},{"id":"ref-for-remote-playback-state-event\u2460"},{"id":"ref-for-remote-playback-state-event\u2461"},{"id":"ref-for-remote-playback-state-event\u2462"},{"id":"ref-for-remote-playback-state-event\u2463"},{"id":"ref-for-remote-playback-state-event\u2464"},{"id":"ref-for-remote-playback-state-event\u2465"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-remote-playback-state-event\u2466"}],"title":"9.1. Remote Playback State and Controls"},{"refs":[{"id":"ref-for-remote-playback-state-event\u2467"}],"title":"9.2. Remote Playback API"}],"url":"#remote-playback-state-event"},
+"remote-playback-termination-event": {"dfnID":"remote-playback-termination-event","dfnText":"remote-playback-termination-event","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-termination-event"}],"title":"9. Remote Playback Protocol"}],"url":"#remote-playback-termination-event"},
+"remote-playback-termination-request": {"dfnID":"remote-playback-termination-request","dfnText":"remote-playback-termination-request","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-termination-request"},{"id":"ref-for-remote-playback-termination-request\u2460"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-remote-playback-termination-request\u2461"}],"title":"9.2. Remote Playback API"}],"url":"#remote-playback-termination-request"},
+"remote-playback-termination-response": {"dfnID":"remote-playback-termination-response","dfnText":"remote-playback-termination-response","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-termination-response"}],"title":"9. Remote Playback Protocol"}],"url":"#remote-playback-termination-response"},
+"streaming-capabilities-request": {"dfnID":"streaming-capabilities-request","dfnText":"streaming-capabilities-request","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-capabilities-request"}],"title":"10.1. Streaming Protocol Capabilities"}],"url":"#streaming-capabilities-request"},
+"streaming-capabilities-response": {"dfnID":"streaming-capabilities-response","dfnText":"streaming-capabilities-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-capabilities-response"}],"title":"10.1. Streaming Protocol Capabilities"}],"url":"#streaming-capabilities-response"},
+"streaming-session-modify-request": {"dfnID":"streaming-session-modify-request","dfnText":"streaming-session-modify-request","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-modify-request"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-streaming-session-modify-request\u2460"},{"id":"ref-for-streaming-session-modify-request\u2461"},{"id":"ref-for-streaming-session-modify-request\u2462"}],"title":"10.2. Sessions"}],"url":"#streaming-session-modify-request"},
+"streaming-session-modify-response": {"dfnID":"streaming-session-modify-response","dfnText":"streaming-session-modify-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-modify-response"}],"title":"10.2. Sessions"}],"url":"#streaming-session-modify-response"},
+"streaming-session-receiver-stats-event": {"dfnID":"streaming-session-receiver-stats-event","dfnText":"streaming-session-receiver-stats-event","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-receiver-stats-event"},{"id":"ref-for-streaming-session-receiver-stats-event\u2460"}],"title":"10.7. Stats"}],"url":"#streaming-session-receiver-stats-event"},
+"streaming-session-sender-stats-event": {"dfnID":"streaming-session-sender-stats-event","dfnText":"streaming-session-sender-stats-event","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-sender-stats-event"},{"id":"ref-for-streaming-session-sender-stats-event\u2460"}],"title":"10.7. Stats"}],"url":"#streaming-session-sender-stats-event"},
+"streaming-session-start-request": {"dfnID":"streaming-session-start-request","dfnText":"streaming-session-start-request","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-start-request"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-streaming-session-start-request\u2460"},{"id":"ref-for-streaming-session-start-request\u2461"}],"title":"10.2. Sessions"}],"url":"#streaming-session-start-request"},
+"streaming-session-start-response": {"dfnID":"streaming-session-start-response","dfnText":"streaming-session-start-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-start-response"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-streaming-session-start-response\u2460"}],"title":"10.2. Sessions"}],"url":"#streaming-session-start-response"},
+"streaming-session-terminate-event": {"dfnID":"streaming-session-terminate-event","dfnText":"streaming-session-terminate-event","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-terminate-event"}],"title":"10.2. Sessions"}],"url":"#streaming-session-terminate-event"},
+"streaming-session-terminate-request": {"dfnID":"streaming-session-terminate-request","dfnText":"streaming-session-terminate-request","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-terminate-request"},{"id":"ref-for-streaming-session-terminate-request\u2460"}],"title":"10.2. Sessions"}],"url":"#streaming-session-terminate-request"},
+"streaming-session-terminate-response": {"dfnID":"streaming-session-terminate-response","dfnText":"streaming-session-terminate-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-terminate-response"}],"title":"10.2. Sessions"}],"url":"#streaming-session-terminate-response"},
+"suspicious-agent": {"dfnID":"suspicious-agent","dfnText":"suspicious\nagent","external":false,"refSections":[{"refs":[{"id":"ref-for-suspicious-agent"}],"title":"13.6. User Interface Considerations"}],"url":"#suspicious-agent"},
+"text-track-cue": {"dfnID":"text-track-cue","dfnText":"text-track-cue","external":false,"refSections":[{"refs":[{"id":"ref-for-text-track-cue"}],"title":"9.1. Remote Playback State and Controls"}],"url":"#text-track-cue"},
+"time-scale": {"dfnID":"time-scale","dfnText":"time\nscale","external":false,"refSections":[{"refs":[{"id":"ref-for-time-scale"},{"id":"ref-for-time-scale\u2460"}],"title":"8. Representation Of Time"},{"refs":[{"id":"ref-for-time-scale\u2461"}],"title":"9.1. Remote Playback State and Controls"},{"refs":[{"id":"ref-for-time-scale\u2462"},{"id":"ref-for-time-scale\u2463"},{"id":"ref-for-time-scale\u2464"}],"title":"10.2. Sessions"},{"refs":[{"id":"ref-for-time-scale\u2465"},{"id":"ref-for-time-scale\u2466"},{"id":"ref-for-time-scale\u2467"}],"title":"10.3. Audio"},{"refs":[{"id":"ref-for-time-scale\u2468"},{"id":"ref-for-time-scale\u2460\u24ea"},{"id":"ref-for-time-scale\u2460\u2460"}],"title":"10.4. Video"},{"refs":[{"id":"ref-for-time-scale\u2460\u2461"},{"id":"ref-for-time-scale\u2460\u2462"},{"id":"ref-for-time-scale\u2460\u2463"}],"title":"10.5. Data"}],"url":"#time-scale"},
+"verified-display-name": {"dfnID":"verified-display-name","dfnText":"verified display name","external":false,"refSections":[{"refs":[{"id":"ref-for-verified-display-name"}],"title":"13.6.1. Instance and Display Names"}],"url":"#verified-display-name"},
+"video-encoding-offer": {"dfnID":"video-encoding-offer","dfnText":"video-encoding-offer","external":false,"refSections":[{"refs":[{"id":"ref-for-video-encoding-offer"},{"id":"ref-for-video-encoding-offer\u2460"},{"id":"ref-for-video-encoding-offer\u2461"},{"id":"ref-for-video-encoding-offer\u2462"}],"title":"10.4. Video"}],"url":"#video-encoding-offer"},
+"video-frame": {"dfnID":"video-frame","dfnText":"video-frame","external":false,"refSections":[{"refs":[{"id":"ref-for-video-frame"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-video-frame\u2460"}],"title":"10.4. Video"}],"url":"#video-frame"},
+};
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    genAllDfnPanels();
+
+    document.body.addEventListener("click", (e) => {
+        // If not handled already, just hide all dfn panels.
+        hideAllDfnPanels();
+    });
+});
+
+window.addEventListener("resize", () => {
+    // Pin any visible dfn panel
+    queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>positionDfnPanel(el));
+});
+
+function genAllDfnPanels() {
+    for(const panelData of Object.values(dfnPanelData)) {
+        const dfnID = panelData.dfnID;
+        const dfn = document.getElementById(dfnID);
+        if(!dfn) {
+            console.log(`Can't find dfn#${dfnID}.`, panelData);
+            continue;
+        }
+        dfn.panelData = panelData;
+        insertDfnPopupAction(dfn);
+    }
+}
+
+function genDfnPanel(dfn, { dfnID, url, dfnText, refSections, external }) {
+    const dfnPanel = mk.aside({
+        class: "dfn-panel on",
+        id: `infopanel-for-${dfnID}`,
+        "data-for": dfnID,
+        "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
+        },
+        mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
+            `Info about the '${dfnText}' ${external?"external":""} reference.`),
+        mk.a({href:url, class:"dfn-link"}, url),
+        refSections.length == 0 ? [] :
+            mk.b({}, "Referenced in:"),
+            mk.ul({},
+                ...refSections.map(section=>
+                    mk.li({},
+                        ...section.refs.map((ref, refI)=>
+                            [
+                                mk.a({ href: `#${ref.id}` },
+                                    (refI == 0) ? section.title : `(${refI + 1})`
+                                ),
+                                " ",
+                            ]
+                        ),
+                    ),
+                ),
+            ),
+        genLinkingSyntaxes(dfn),
+    );
+
+    dfnPanel.addEventListener('click', (event) => {
+        if (event.target.nodeName == 'A') {
+            scrollToTargetAndHighlight(event);
+            pinDfnPanel(dfnPanel);
+        }
+        event.stopPropagation();
+        refocusOnTarget(event);
+    });
+    dfnPanel.addEventListener('keydown', (event) => {
+        if(event.keyCode == 27) { // Escape key
+            hideDfnPanel({dfnPanel});
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+
+    dfnPanel.dfn = dfn;
+    dfn.dfnPanel = dfnPanel;
+    return dfnPanel;
+}
+
+
+
+function hideAllDfnPanels() {
+    // Delete the currently-active dfn panel.
+    queryAll(".dfn-panel").forEach(dfnPanel=>hideDfnPanel({dfnPanel}));
+}
+
+function showDfnPanel(dfn) {
+    hideAllDfnPanels(); // Only display one at a time.
+
+    dfn.setAttribute("aria-expanded", "true");
+
+    const dfnPanel = genDfnPanel(dfn, dfn.panelData);
+
+    // Give the dfn a unique tabindex, and then
+    // give all the tabbable panel bits successive indexes.
+    let tabIndex = 100;
+    dfn.tabIndex = tabIndex++;
+    const tabbable = dfnPanel.querySelectorAll(":is(a, button)");
+    for (const el of tabbable) {
+        el.tabIndex = tabIndex++;
+    }
+
+    append(document.body, dfnPanel);
+    positionDfnPanel(dfnPanel);
+}
+
+function positionDfnPanel(dfnPanel) {
+    const dfn = dfnPanel.dfn;
+    const dfnPos = getRootLevelAbsolutePosition(dfn);
+    dfnPanel.style.top = dfnPos.bottom + "px";
+    dfnPanel.style.left = dfnPos.left + "px";
+
+    const panelPos = dfnPanel.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, dfnPos.left - overflowAmount);
+        dfnPanel.style.left = newLeft + "px";
+    }
+}
+
+function pinDfnPanel(dfnPanel) {
+    // Switch it to "activated" state, which pins it.
+    dfnPanel.classList.add("activated");
+    dfnPanel.style.position = "fixed";
+    dfnPanel.style.left = null;
+    dfnPanel.style.top = null;
+}
+
+function hideDfnPanel({dfn, dfnPanel}) {
+    if(!dfnPanel) dfnPanel = dfn.dfnPanel;
+    if(!dfn) dfn = dfnPanel.dfn;
+    dfn.dfnPanel = undefined;
+    dfnPanel.dfn = undefined;
+    dfn.setAttribute("aria-expanded", "false");
+    dfn.tabIndex = undefined;
+    dfnPanel.remove()
+}
+
+function toggleDfnPanel(dfn) {
+    if(dfn.dfnPanel) {
+        hideDfnPanel(dfn);
+    } else {
+        showDfnPanel(dfn);
+    }
+}
+
+function insertDfnPopupAction(dfn) {
+    dfn.setAttribute('role', 'button');
+    dfn.setAttribute('aria-expanded', 'false')
+    dfn.tabIndex = 0;
+    dfn.classList.add('has-dfn-panel');
+    dfn.addEventListener('click', (event) => {
+        toggleDfnPanel(dfn);
+        event.stopPropagation();
+    });
+    dfn.addEventListener('keypress', (event) => {
+        const kc = event.keyCode;
+        // 32->Space, 13->Enter
+        if(kc == 32 || kc == 13) {
+            toggleDfnPanel(dfn);
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+}
+
+function refocusOnTarget(event) {
+    const target = event.target;
+    setTimeout(() => {
+        // Refocus on the event.target element.
+        // This is needed after browser scrolls to the destination.
+        target.focus();
+    });
+}
+
+// Returns the root-level absolute position {left and top} of element.
+function getRootLevelAbsolutePosition(el) {
+    const boundsRect = el.getBoundingClientRect();
+    let xPos = 0;
+    let yPos = 0;
+
+    while (el) {
+        let xScroll = el.scrollLeft;
+        let yScroll = el.scrollTop;
+
+        // Ignore scrolling of body.
+        if (el.tagName === "BODY") {
+            xScroll = 0;
+            yScroll = 0;
+        }
+        xPos += (el.offsetLeft - xScroll + el.clientLeft);
+        yPos += (el.offsetTop - yScroll + el.clientTop);
+
+        el = el.offsetParent;
+    }
+    return {
+        left: xPos,
+        top: yPos,
+        right: xPos + boundsRect.width,
+        bottom: yPos + boundsRect.height,
+    };
+}
+
+function scrolledIntoView(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.top > 0 &&
+        rect.bottom < window.innerHeight
+    );
+}
+
+function scrollToTargetAndHighlight(event) {
+    let hash = event.target.hash;
+    if (hash) {
+        hash = decodeURIComponent(hash.substring(1));
+        const dest = document.getElementById(hash);
+        if (dest) {
+            // Maybe prevent default scroll.
+            if (scrolledIntoView(dest)) {
+                event.preventDefault();
+            }
+            dest.classList.add('highlighted');
+            setTimeout(() => dest.classList.remove('highlighted'), 1000);
+        }
+    }
+}
+
+// Functions, divided by link type, that wrap an autolink's
+// contents with the appropriate outer syntax.
+// Alternately, a string naming another type they format
+// the same as.
+function needsFor(type) {
+    switch(type) {
+        case "descriptor":
+        case "value":
+        case "element-attr":
+        case "attr-value":
+        case "element-state":
+        case "method":
+        case "constructor":
+        case "argument":
+        case "attribute":
+        case "const":
+        case "dict-member":
+        case "event":
+        case "enum-value":
+        case "stringifier":
+        case "serializer":
+        case "iterator":
+        case "maplike":
+        case "setlike":
+        case "state":
+        case "mode":
+        case "context":
+        case "facet": return true;
+
+        default: return false;
+    }
+}
+function refusesFor(type) {
+    switch(type) {
+        case "property":
+        case "element":
+        case "interface":
+        case "namespace":
+        case "callback":
+        case "dictionary":
+        case "enum":
+        case "exception":
+        case "typedef":
+        case "http-header":
+        case "permission": return true;
+
+        default: return false;
+    }
+}
+function linkFormatterFromType(type) {
+    switch(type) {
+        case 'scheme':
+        case 'permission':
+        case 'dfn': return (text) => `[=${text}=]`;
+
+        case 'abstract-op': return (text) => `[\$${text}\$]`;
+
+        case 'function':
+        case 'at-rule':
+        case 'selector':
+        case 'value': return (text) => `''${text}''`;
+
+        case 'http-header': return (text) => `[:${text}:]`;
+
+        case 'interface':
+        case 'constructor':
+        case 'method':
+        case 'argument':
+        case 'attribute':
+        case 'callback':
+        case 'dictionary':
+        case 'dict-member':
+        case 'enum':
+        case 'enum-value':
+        case 'exception':
+        case 'const':
+        case 'typedef':
+        case 'stringifier':
+        case 'serializer':
+        case 'iterator':
+        case 'maplike':
+        case 'setlike':
+        case 'extended-attribute':
+        case 'event':
+        case 'idl': return (text) => `{{${text}}}`;
+
+        case 'element-state':
+        case 'element-attr':
+        case 'attr-value':
+        case 'element': return (element) => `<{${element}}>`;
+
+        case 'grammar': return (text) => `${text} (within a <pre class=prod>)`;
+
+        case 'type': return (text)=> `<<${text}>>`;
+
+        case 'descriptor':
+        case 'property': return (text) => `'${text}'`;
+
+        default: return;
+    };
+};
+
+function genLinkingSyntaxes(dfn) {
+    if(dfn.tagName != "DFN") return;
+
+    const type = dfn.getAttribute('data-dfn-type');
+    if(!type) {
+        console.log(`<dfn> doesn't have a data-dfn-type:`, dfn);
+        return [];
+    }
+
+    // Return a function that wraps link text based on the type
+    const linkFormatter = linkFormatterFromType(type);
+    if(!linkFormatter) {
+        console.log(`<dfn> has an unknown data-dfn-type:`, dfn);
+        return [];
+    }
+
+    let ltAlts;
+    if(dfn.hasAttribute('data-lt')) {
+        ltAlts = dfn.getAttribute('data-lt')
+            .split("|")
+            .map(x=>x.trim());
+    } else {
+        ltAlts = [dfn.textContent.trim()];
+    }
+    if(type == "type") {
+        // lt of "<foo>", but "foo" is the interior;
+        // <<foo/bar>> is how you write it with a for,
+        // not <foo/<bar>> or whatever.
+        for(var i = 0; i < ltAlts.length; i++) {
+            const lt = ltAlts[i];
+            const match = /<(.*)>/.exec(lt);
+            if(match) { ltAlts[i] = match[1]; }
+        }
+    }
+
+    let forAlts;
+    if(dfn.hasAttribute('data-dfn-for')) {
+        forAlts = dfn.getAttribute('data-dfn-for')
+            .split(",")
+            .map(x=>x.trim());
+    } else {
+        forAlts = [''];
+    }
+
+    let linkingSyntaxes = [];
+    if(!needsFor(type)) {
+        for(const lt of ltAlts) {
+            linkingSyntaxes.push(linkFormatter(lt));
+        }
+    }
+    if(!refusesFor(type)) {
+        for(const f of forAlts) {
+            linkingSyntaxes.push(linkFormatter(`${f}/${ltAlts[0]}`))
+        }
+    }
+    return [
+        mk.b({}, 'Possible linking syntaxes:'),
+        mk.ul({},
+            ...linkingSyntaxes.map(link => {
+                const copyLink = async () =>
+                    await navigator.clipboard.writeText(link);
+                return mk.li({},
+                    mk.div({ class: 'link-item' },
+                        mk.button({
+                            class: 'copy-icon', title: 'Copy',
+                            type: 'button',
+                            _onclick: copyLink,
+                            tabindex: 0,
+                        }, mk.span({ class: 'icon' }) ),
+                        mk.span({}, link)
+                    )
+                );
+            })
+        )
+    ];
+}
+}
+</script>
+<script>/* Boilerplate: script-ref-hints */
+"use strict";
+{
+let refsData = {
+"#advertising-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"advertising agent","type":"dfn","url":"#advertising-agent"},
+"#agent-certificate": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"agent certificate","type":"dfn","url":"#agent-certificate"},
+"#agent-fingerprint": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"agent fingerprint","type":"dfn","url":"#agent-fingerprint"},
+"#agent-info": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"agent-info","type":"dfn","url":"#agent-info"},
+"#agent-info-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"agent-info-event","type":"dfn","url":"#agent-info-event"},
+"#agent-info-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"agent-info-request","type":"dfn","url":"#agent-info-request"},
+"#agent-info-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"agent-info-response","type":"dfn","url":"#agent-info-response"},
+"#agent-status-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"agent-status-request","type":"dfn","url":"#agent-status-request"},
+"#agent-status-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"agent-status-response","type":"dfn","url":"#agent-status-response"},
+"#audio-encoding-offer": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"audio-encoding-offer","type":"dfn","url":"#audio-encoding-offer"},
+"#audio-frame": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"audio-frame","type":"dfn","url":"#audio-frame"},
+"#auth-capabilities": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-capabilities","type":"dfn","url":"#auth-capabilities"},
+"#auth-initiation-token": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-initiation-token","type":"dfn","url":"#auth-initiation-token"},
+"#auth-spake2-confirmation": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-confirmation","type":"dfn","url":"#auth-spake2-confirmation"},
+"#auth-spake2-handshake": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-handshake","type":"dfn","url":"#auth-spake2-handshake"},
+"#auth-spake2-need-psk": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-need-psk","type":"dfn","url":"#auth-spake2-need-psk"},
+"#auth-status": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-status","type":"dfn","url":"#auth-status"},
+"#certificate-algorithms": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"certificate algorithms","type":"dfn","url":"#certificate-algorithms"},
+"#controller": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"controller","type":"dfn","url":"#controller"},
+"#data-encoding-offer": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"data-encoding-offer","type":"dfn","url":"#data-encoding-offer"},
+"#data-frame": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"data-frame","type":"dfn","url":"#data-frame"},
+"#display-name": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"display name","type":"dfn","url":"#display-name"},
+"#listening-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"listening agent","type":"dfn","url":"#listening-agent"},
+"#media-receiver": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"media receiver","type":"dfn","url":"#media-receiver"},
+"#media-sender": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"media sender","type":"dfn","url":"#media-sender"},
+"#media-time": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"media-time","type":"dfn","url":"#media-time"},
+"#open-screen-protocol-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"open screen protocol agent","type":"dfn","url":"#open-screen-protocol-agent"},
+"#presentation-change-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-change-event","type":"dfn","url":"#presentation-change-event"},
+"#presentation-connection-close-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-connection-close-event","type":"dfn","url":"#presentation-connection-close-event"},
+"#presentation-connection-message": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-connection-message","type":"dfn","url":"#presentation-connection-message"},
+"#presentation-connection-open-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-connection-open-request","type":"dfn","url":"#presentation-connection-open-request"},
+"#presentation-connection-open-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-connection-open-response","type":"dfn","url":"#presentation-connection-open-response"},
+"#presentation-start-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-start-request","type":"dfn","url":"#presentation-start-request"},
+"#presentation-start-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-start-response","type":"dfn","url":"#presentation-start-response"},
+"#presentation-termination-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-termination-event","type":"dfn","url":"#presentation-termination-event"},
+"#presentation-termination-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-termination-request","type":"dfn","url":"#presentation-termination-request"},
+"#presentation-termination-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-termination-response","type":"dfn","url":"#presentation-termination-response"},
+"#presentation-url-availability-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-url-availability-event","type":"dfn","url":"#presentation-url-availability-event"},
+"#presentation-url-availability-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-url-availability-request","type":"dfn","url":"#presentation-url-availability-request"},
+"#presentation-url-availability-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-url-availability-response","type":"dfn","url":"#presentation-url-availability-response"},
+"#receiver": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"receiver","type":"dfn","url":"#receiver"},
+"#remote-playback-availability-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-availability-event","type":"dfn","url":"#remote-playback-availability-event"},
+"#remote-playback-availability-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-availability-request","type":"dfn","url":"#remote-playback-availability-request"},
+"#remote-playback-availability-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-availability-response","type":"dfn","url":"#remote-playback-availability-response"},
+"#remote-playback-modify-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-modify-request","type":"dfn","url":"#remote-playback-modify-request"},
+"#remote-playback-modify-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-modify-response","type":"dfn","url":"#remote-playback-modify-response"},
+"#remote-playback-start-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-start-request","type":"dfn","url":"#remote-playback-start-request"},
+"#remote-playback-start-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-start-response","type":"dfn","url":"#remote-playback-start-response"},
+"#remote-playback-state-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-state-event","type":"dfn","url":"#remote-playback-state-event"},
+"#remote-playback-termination-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-termination-event","type":"dfn","url":"#remote-playback-termination-event"},
+"#remote-playback-termination-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-termination-request","type":"dfn","url":"#remote-playback-termination-request"},
+"#remote-playback-termination-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"remote-playback-termination-response","type":"dfn","url":"#remote-playback-termination-response"},
+"#streaming-capabilities-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-capabilities-request","type":"dfn","url":"#streaming-capabilities-request"},
+"#streaming-capabilities-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-capabilities-response","type":"dfn","url":"#streaming-capabilities-response"},
+"#streaming-session-modify-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-session-modify-request","type":"dfn","url":"#streaming-session-modify-request"},
+"#streaming-session-modify-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-session-modify-response","type":"dfn","url":"#streaming-session-modify-response"},
+"#streaming-session-receiver-stats-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-session-receiver-stats-event","type":"dfn","url":"#streaming-session-receiver-stats-event"},
+"#streaming-session-sender-stats-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-session-sender-stats-event","type":"dfn","url":"#streaming-session-sender-stats-event"},
+"#streaming-session-start-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-session-start-request","type":"dfn","url":"#streaming-session-start-request"},
+"#streaming-session-start-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-session-start-response","type":"dfn","url":"#streaming-session-start-response"},
+"#streaming-session-terminate-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-session-terminate-event","type":"dfn","url":"#streaming-session-terminate-event"},
+"#streaming-session-terminate-request": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-session-terminate-request","type":"dfn","url":"#streaming-session-terminate-request"},
+"#streaming-session-terminate-response": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"streaming-session-terminate-response","type":"dfn","url":"#streaming-session-terminate-response"},
+"#suspicious-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"suspicious agent","type":"dfn","url":"#suspicious-agent"},
+"#text-track-cue": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"text-track-cue","type":"dfn","url":"#text-track-cue"},
+"#time-scale": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"time scale","type":"dfn","url":"#time-scale"},
+"#verified-display-name": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"verified display name","type":"dfn","url":"#verified-display-name"},
+"#video-encoding-offer": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"video-encoding-offer","type":"dfn","url":"#video-encoding-offer"},
+"#video-frame": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"video-frame","type":"dfn","url":"#video-frame"},
+"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8446","spec":"rfc8446","status":"anchor-block","text":"signature scheme","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3"},
+"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"connection_close frames","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
+"https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"transport parameter encoding","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin"},
+"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"variable-length integer","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
+"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src": {"export":true,"for_":["source"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"src","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src"},
+"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type": {"export":true,"for_":["source"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"type","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type"},
+"https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"media error code","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"addTextTrack(kind, label, language)","type":"method","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-addtexttrack"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"audioTracks","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"buffered","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"currentSrc","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"currentTime","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-duration": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"duration","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-duration"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-ended": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"ended","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-ended"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-error": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"error","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-error"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"fastSeek(time)","type":"method","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"getStartDate()","type":"method","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"HAVE_NOTHING","type":"const","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-loop": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"loop","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-loop"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-muted": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"muted","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-muted"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"NETWORK_EMPTY","type":"const","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"networkState","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-pause": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"pause()","type":"method","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-pause"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-paused": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"paused","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-paused"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-play": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"play()","type":"method","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-play"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"playbackRate","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-played": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"played","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-played"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-preload": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"preload","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-preload"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"readyState","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"seekable","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-seekable"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"seeking","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-seeking"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-src": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"src","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-src"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"textTracks","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-texttracks"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"videoTracks","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-videotracks"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-media-volume": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"volume","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-volume"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight": {"export":true,"for_":["HTMLVideoElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"videoHeight","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight"},
+"https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth": {"export":true,"for_":["HTMLVideoElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"videoWidth","type":"attribute","url":"https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth"},
+"https://html.spec.whatwg.org/multipage/media.html#event-media-stalled": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"stalled","type":"event","url":"https://html.spec.whatwg.org/multipage/media.html#event-media-stalled"},
+"https://html.spec.whatwg.org/multipage/media.html#event-media-timeupdate": {"export":true,"for_":["HTMLMediaElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"timeupdate","type":"event","url":"https://html.spec.whatwg.org/multipage/media.html#event-media-timeupdate"},
+"https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"HTMLMediaElement","type":"interface","url":"https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement"},
+"https://html.spec.whatwg.org/multipage/media.html#media-element": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"media element","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#media-element"},
+"https://html.spec.whatwg.org/multipage/media.html#media-resource": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"media resource","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#media-resource"},
+"https://html.spec.whatwg.org/multipage/media.html#official-playback-position": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"official playback position","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#official-playback-position"},
+"https://html.spec.whatwg.org/multipage/media.html#poster-frame": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"poster frame","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#poster-frame"},
+"https://html.spec.whatwg.org/multipage/media.html#timeline-offset": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"timeline offset","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#timeline-offset"},
+"https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"postMessage(message, targetOrigin, transfer)","type":"method","url":"https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage"},
+"https://tools.ietf.org/html/rfc4122#section-4.4": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc4122","spec":"rfc4122","status":"anchor-block","text":"uuid","type":"dfn","url":"https://tools.ietf.org/html/rfc4122#section-4.4"},
+"https://tools.ietf.org/html/rfc5280#section-4.2.1.3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc5280","spec":"rfc5280","status":"anchor-block","text":"digitalsignature","type":"dfn","url":"https://tools.ietf.org/html/rfc5280#section-4.2.1.3"},
+"https://tools.ietf.org/html/rfc5646#section-2": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc5646","spec":"rfc5646","status":"anchor-block","text":"language tag","type":"dfn","url":"https://tools.ietf.org/html/rfc5646#section-2"},
+"https://tools.ietf.org/html/rfc6381#section-3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6381","spec":"rfc6381","status":"anchor-block","text":"codecs parameter","type":"dfn","url":"https://tools.ietf.org/html/rfc6381#section-3"},
+"https://tools.ietf.org/html/rfc6762#section-9": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6762","spec":"rfc6762","status":"anchor-block","text":"conflict resolution","type":"dfn","url":"https://tools.ietf.org/html/rfc6762#section-9"},
+"https://tools.ietf.org/html/rfc6763#section-4.1.1": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"instance name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-4.1.1"},
+"https://tools.ietf.org/html/rfc6763#section-7": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"service name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-7"},
+"https://tools.ietf.org/html/rfc8122#section-5": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8122","spec":"rfc8122","status":"anchor-block","text":"sha-256","type":"dfn","url":"https://tools.ietf.org/html/rfc8122#section-5"},
+"https://tools.ietf.org/html/rfc8610#section-3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8610","spec":"rfc8610","status":"anchor-block","text":"concise data definition language","type":"dfn","url":"https://tools.ietf.org/html/rfc8610#section-3"},
+"https://w3c.github.io/presentation-api/#dom-presentationconnection": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"presentation-api","spec":"presentation-api","status":"current","text":"PresentationConnection","type":"interface","url":"https://w3c.github.io/presentation-api/#dom-presentationconnection"},
+"https://w3c.github.io/remote-playback/#dfn-availability-sources-set": {"export":true,"for_":[],"level":"","normative":true,"shortname":"remote-playback","spec":"remote-playback","status":"anchor-block","text":"availability sources set","type":"dfn","url":"https://w3c.github.io/remote-playback/#dfn-availability-sources-set"},
+"https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device": {"export":true,"for_":[],"level":"","normative":true,"shortname":"remote-playback","spec":"remote-playback","status":"anchor-block","text":"compatible remote playback device","type":"dfn","url":"https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device"},
+"https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback": {"export":true,"for_":[],"level":"","normative":true,"shortname":"remote-playback","spec":"remote-playback","status":"anchor-block","text":"initiate remote playback","type":"dfn","url":"https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback"},
+"https://w3c.github.io/remote-playback/#dfn-media-element-state": {"export":true,"for_":[],"level":"","normative":true,"shortname":"remote-playback","spec":"remote-playback","status":"anchor-block","text":"media element state","type":"dfn","url":"https://w3c.github.io/remote-playback/#dfn-media-element-state"},
+"https://w3c.github.io/remote-playback/#dfn-remote-playback-devices": {"export":true,"for_":[],"level":"","normative":true,"shortname":"remote-playback","spec":"remote-playback","status":"anchor-block","text":"remote playback devices","type":"dfn","url":"https://w3c.github.io/remote-playback/#dfn-remote-playback-devices"},
+"https://w3c.github.io/remote-playback/#dfn-remote-playback-source": {"export":true,"for_":[],"level":"","normative":true,"shortname":"remote-playback","spec":"remote-playback","status":"anchor-block","text":"remote playback source","type":"dfn","url":"https://w3c.github.io/remote-playback/#dfn-remote-playback-source"},
+"https://www.iso.org/standard/62021.html#": {"export":true,"for_":[],"level":"","normative":true,"shortname":"iso18004","spec":"iso18004","status":"anchor-block","text":"qr code","type":"dfn","url":"https://www.iso.org/standard/62021.html#"},
+"https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display": {"export":true,"for_":[],"level":"","normative":true,"shortname":"presentation-api","spec":"presentation-api","status":"anchor-block","text":"available presentation display","type":"dfn","url":"https://www.w3.org/TR/presentation-api/#dfn-available-presentation-display"},
+"https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"presentation-api","spec":"presentation-api","status":"anchor-block","text":"controlling user agent","type":"dfn","url":"https://www.w3.org/TR/presentation-api/#dfn-controlling-user-agent"},
+"https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier": {"export":true,"for_":[],"level":"","normative":true,"shortname":"presentation-api","spec":"presentation-api","status":"anchor-block","text":"presentation identifier","type":"dfn","url":"https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier"},
+"https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url": {"export":true,"for_":[],"level":"","normative":true,"shortname":"presentation-api","spec":"presentation-api","status":"anchor-block","text":"presentation request url","type":"dfn","url":"https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url"},
+"https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context": {"export":true,"for_":[],"level":"","normative":true,"shortname":"presentation-api","spec":"presentation-api","status":"anchor-block","text":"presentation","type":"dfn","url":"https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context"},
+"https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"presentation-api","spec":"presentation-api","status":"anchor-block","text":"receiving user agent","type":"dfn","url":"https://www.w3.org/TR/presentation-api/#dfn-receiving-user-agent"},
+};
+
+function mkRefHint(link, ref) {
+    const linkText = link.textContent;
+    let dfnTextElements = '';
+    if (ref.text != linkText) {
+        dfnTextElements =
+            mk.li({},
+                mk.b({}, "Term: "),
+                mk.span({}, ref.text)
+            );
+    }
+    const forList = ref.for_;
+    let forListElements;
+    if(forList.length == 0) {
+        forListElements = [];
+    } else if(forList.length == 1) {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.span({}, forList[0]),
+        );
+    } else {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.ul({},
+                ...forList.map(forItem =>
+                    mk.li({},
+                        mk.span({}, forItem)
+                    ),
+                ),
+            ),
+        );
+    }
+    const url = ref.url;
+    const safeUrl = encodeURIComponent(url);
+    const hintPanel = mk.aside({
+        class: "ref-hint",
+        id: `ref-hint-for-${safeUrl}`,
+        "data-for": url,
+        "aria-labelled-by": `ref-hint-for-${safeUrl}`,
+    },
+        mk.ul({},
+            dfnTextElements,
+            mk.li({},
+                mk.b({}, "URL: "),
+                mk.a({ href: url, class: "ref" }, url),
+            ),
+            mk.li({},
+                mk.b({}, "Type: "),
+                mk.span({}, `${ref.type}`),
+            ),
+            mk.li({},
+                mk.b({}, "Spec: "),
+                mk.span({}, `${ref.spec ? ref.spec : ''}`),
+            ),
+            forListElements
+        ),
+    );
+    hintPanel.forLink = link;
+    setupRefHintEventListeners(link, hintPanel);
+    return hintPanel;
+}
+
+function hideAllRefHints() {
+    queryAll(".ref-hint").forEach(el=>hideRefHint(el));
+}
+
+function hideRefHint(refHint) {
+    const link = refHint.forLink;
+    link.setAttribute("aria-expanded", "false");
+    if(refHint.teardownEventListeners) {
+        refHint.teardownEventListeners();
+    }
+    refHint.remove();
+}
+
+function showRefHint(link) {
+    if(link.classList.contains("dfn-link")) return;
+    const url = link.getAttribute("href");
+    const ref = refsData[url];
+    if(!ref) return;
+
+    hideAllRefHints(); // Only display one at this time.
+
+    const refHint = mkRefHint(link, ref);
+    append(document.body, refHint);
+    link.setAttribute("aria-expanded", "true");
+    positionRefHint(refHint);
+}
+
+function setupRefHintEventListeners(link, refHint) {
+    if (refHint.teardownEventListeners) return;
+    // Add event handlers to hide the refHint after the user moves away
+    // from both the link and refHint, if not hovering either within one second.
+    let timeout = null;
+    const startHidingRefHint = (event) => {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            hideRefHint(refHint);
+        }, 1000);
+    }
+    const resetHidingRefHint = (event) => {
+        if (timeout) clearTimeout(timeout);
+        timeout = null;
+    };
+    link.addEventListener("mouseleave", startHidingRefHint);
+    link.addEventListener("mouseenter", resetHidingRefHint);
+    link.addEventListener("blur", startHidingRefHint);
+    link.addEventListener("focus", resetHidingRefHint);
+    refHint.addEventListener("mouseleave", startHidingRefHint);
+    refHint.addEventListener("mouseenter", resetHidingRefHint);
+    refHint.addEventListener("blur", startHidingRefHint);
+    refHint.addEventListener("focus", resetHidingRefHint);
+
+    refHint.teardownEventListeners = () => {
+        // remove event listeners
+        resetHidingRefHint();
+        link.removeEventListener("mouseleave", startHidingRefHint);
+        link.removeEventListener("mouseenter", resetHidingRefHint);
+        link.removeEventListener("blur", startHidingRefHint);
+        link.removeEventListener("focus", resetHidingRefHint);
+        refHint.removeEventListener("mouseleave", startHidingRefHint);
+        refHint.removeEventListener("mouseenter", resetHidingRefHint);
+        refHint.removeEventListener("blur", startHidingRefHint);
+        refHint.removeEventListener("focus", resetHidingRefHint);
+    };
+}
+
+function positionRefHint(refHint) {
+    const link = refHint.forLink;
+    const linkPos = getRootLevelAbsolutePosition(link);
+    refHint.style.top = linkPos.bottom + "px";
+    refHint.style.left = linkPos.left + "px";
+
+    const panelPos = refHint.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, linkPos.left - overflowAmount);
+        refHint.style.left = newLeft + "px";
+    }
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getRootLevelAbsolutePosition(el) {
+    const boundsRect = el.getBoundingClientRect();
+    let xPos = 0;
+    let yPos = 0;
+
+    while (el) {
+        let xScroll = el.scrollLeft;
+        let yScroll = el.scrollTop;
+
+        // Ignore scrolling of body.
+        if (el.tagName === "BODY") {
+            xScroll = 0;
+            yScroll = 0;
+        }
+        xPos += (el.offsetLeft - xScroll + el.clientLeft);
+        yPos += (el.offsetTop - yScroll + el.clientTop);
+
+        el = el.offsetParent;
+    }
+    return {
+        left: xPos,
+        top: yPos,
+        right: xPos + boundsRect.width,
+        bottom: yPos + boundsRect.height,
+    };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.body.addEventListener("mouseover", e=>{
+        let link = e.target.closest("a");
+        if(link) showRefHint(link);
+    });
+    document.body.addEventListener("focus", e=>{
+        let link = e.target.closest("a");
+        if(link) showRefHint(link);
+    });
+
+    document.body.addEventListener("click", (e) => {
+        // If not handled already, just hide all link panels.
+        hideAllRefHints();
+    });
+});
+
+window.addEventListener("resize", () => {
+    // Hide any open ref hint.
+    hideAllRefHints();
+});
 }
 </script>
