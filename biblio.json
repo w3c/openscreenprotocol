@@ -1,15 +1,4 @@
 {
-  "QUIC": {
-      "authors": [
-          "J. Iyengar",
-          "M. Thomson"
-      ],
-      "date": "12 September 2019",
-      "href": "https://tools.ietf.org/html/draft-ietf-quic-transport-23",
-      "title": "QUIC: A UDP-Based Multiplexed and Secure Transport",
-      "status": "Internet Draft",
-      "publisher": "IETF"
-  },
   "iso18004": {
     "href": "https://iso.org/standard/62021.html",
     "title": "Information technology — Automatic identification and data capture techniques — QR Code bar code symbology specification",
@@ -17,9 +6,12 @@
     "publisher": "ISO/IEC",
     "isoNumber": "ISO 18004:2015",
     "rawDate": "2015-02"
+  },
+  "ITU-R-BT.1359-1": {
+    "href": "https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf",
+    "title": "ITU-R BT.1359-1, Relative Timing of Sound and Vision for Broadcasting",
+    "status": "Recommendation",
+    "publisher": "ITU",
+    "rawDate": "1998-11"
   }
 }
-
-  
-
-

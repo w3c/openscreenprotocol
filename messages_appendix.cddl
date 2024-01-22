@@ -266,7 +266,7 @@ remote-playback-availability-event = {
 remote-playback-start-request = {
   request
   1: remote-playback-id ; remote-playback-id
-  2: [* remote-playback-source] ; sources
+  ? 2: [* remote-playback-source] ; sources
   ? 3: [* text] ; text-track-urls
   ? 4: [* http-header] ; headers
   ? 5: remote-playback-controls ; controls
@@ -337,7 +337,7 @@ remote-playback-state-event = {
 remote-playback-id = uint
 
 remote-playback-controls = {
-  ? 1: text ; source-url
+  ? 1: remote-playback-source ; source
   ? 2: &(none, metadata, auto) ; preload
   ? 3: bool ; loop
   ? 4: bool ; paused
@@ -360,7 +360,7 @@ remote-playback-state = {
          added-text-track:
          bool,
          added-cues: bool) ; supports
-  ? 2: text ; source-url
+  ? 2: remote-playback-source ; source
   ? 3: &(
     empty: 0
     idle: 1
@@ -503,13 +503,6 @@ data-frame = {
   ? 5: media-time ; sync-time
 }
 
-; type key 120
-video-frame-request = {
- 1: uint; encoding-id
- 2: uint; sequence-number
- ? 3: uint; highest-decoded-frame-sequence-number
-}
-
 ratio = [
   antecedent: uint
   consequent: uint
@@ -533,13 +526,7 @@ streaming-capabilities = {
 }
 
 format = {
-  0: string ; name
-  1: [* format-parameter] ; parameters
-}
-
-format-parameter = {
-  0: string ; key
-  1: bytes ; value
+  0: string ; codec-name
 }
 
 receive-audio-capability = {
@@ -565,7 +552,7 @@ receive-video-capability = {
   ? 3: uint ; max-pixels-per-second
   ? 4: uint ; min-bit-rate
   ? 5: ratio ; aspect-ratio
-  ? 6: [* string] ; color-gamuts
+  ? 6: string ; color-gamut
   ? 7: [* video-resolution] ; native-resolutions
   ? 8: bool ; supports-scaling
   ? 9: bool ; supports-rotation
@@ -611,7 +598,7 @@ streaming-session-start-response-params = (
 streaming-session-modify-request-params = (
   1: uint ; streaming-session-id
   2: [* media-stream-request] ; stream-requests
-}
+)
 
 ; type key 127
 streaming-session-modify-response = {
