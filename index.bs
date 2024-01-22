@@ -385,8 +385,7 @@ Let the <dfn>certificate serial number</dfn> be the result of the following step
     <li>Let the <dfn>certificate serial number base</dfn> be a 32-bit
         pseudorandom integer value.</il>
     <li>Let the <dfn>certificate serial number counter</dfn> be a 32-bit
-        unsigned integer.</li>
-    <li>Assign the [=certificate serial number counter=] to 0.</li>
+        unsigned integer, initially set to 0.</li>
   </ol>
   </li>
   <li>Generate a 64-bit value as follows:
