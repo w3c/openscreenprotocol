@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 4416b18d5, updated Tue Jan 2 15:52:39 2024 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="58e109cc4bec137a11e55276d72b2520faf568dd" name="revision">
+  <meta content="15ed7a5ac45bd575005a982f084a1abc3beddb2b" name="revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1041,8 +1041,6 @@ refuse incoming connections that lack these parameters.</p>
    </ul>
    <p>An OSP Agent must not send TLS early data.</p>
    <p class="issue" id="issue-808efb48"><a class="self-link" href="#issue-808efb48"></a> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">[Issue #228]</a></p>
-   <p class="issue" id="issue-08dfa2ca"><a class="self-link" href="#issue-08dfa2ca"></a> Make recommendations for cipher and signature algorithm preference
-list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">[Issue #218]</a></p>
    <h3 class="heading settled" data-level="4.2" id="certificates"><span class="secno">4.2. </span><span class="content">Agent Certificates</span><a class="self-link" href="#certificates"></a></h3>
    <p>Each OSP Agent must generate an <a data-link-type="biblio" href="#biblio-rfc5280" title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">X.509 v3</a> <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="agent certificate" data-noexport id="agent-certificate">agent
 certificate</dfn> containing a public key to be used with the TLS 1.3
@@ -1052,67 +1050,22 @@ QUIC connection.</p>
    <p>The <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate②">agent certificate</a> must have the following characteristics:</p>
    <ul>
     <li data-md>
-     <p>256-bit or 384-bit ECDSA public key.</p>
+     <p>256-bit ECDSA public key.</p>
     <li data-md>
      <p>Self-signed.</p>
     <li data-md>
-     <p>Supporting at least one of the <a data-link-type="dfn" href="#certificate-algorithms" id="ref-for-certificate-algorithms">certificate algorithms</a> listed below.</p>
+     <p>Support the <code>ecdsa_secp256r1_sha256</code> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3" id="ref-for-section-4.2.3">signature scheme</a> as defined in TLS 1.3.</p>
      <ul>
       <li data-md>
-       <p>The <code>AlgorithmIdentifiers</code> are defined in <a data-link-type="biblio" href="#biblio-rfc5480" title="Elliptic Curve Cryptography Subject Public Key Information">[RFC5480]</a> (for public keys) and <a data-link-type="biblio" href="#biblio-rfc5758" title="Internet X.509 Public Key Infrastructure: Additional Algorithms and Identifiers for DSA and ECDSA">[RFC5758]</a> (for signature schemes).</p>
+       <p>The <code>AlgorithmIdentifier</code> values are as defined in <a data-link-type="biblio" href="#biblio-rfc5480" title="Elliptic Curve Cryptography Subject Public Key Information">[RFC5480]</a> (for public
+keys) and <a data-link-type="biblio" href="#biblio-rfc5758" title="Internet X.509 Public Key Infrastructure: Additional Algorithms and Identifiers for DSA and ECDSA">[RFC5758]</a> (for signature schemes).</p>
       <li data-md>
-       <p><a data-link-type="biblio" href="#biblio-x690" title="Recommendation X.690 — Information Technology — ASN.1 Encoding Rules — Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER), and Distinguished Encoding Rules (DER)">[X690]</a> specifies the Distinguished Encoding Rules (DER) representation used to encode the identifiers.</p>
+       <p><a data-link-type="biblio" href="#biblio-x690" title="Recommendation X.690 — Information Technology — ASN.1 Encoding Rules — Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER), and Distinguished Encoding Rules (DER)">[X690]</a> specifies the Distinguished Encoding Rules (DER) representation
+used to encode the identifiers.</p>
      </ul>
     <li data-md>
      <p>Valid for signing.</p>
    </ul>
-   <table class="data" id="algorithms">
-    <caption><dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="certificate algorithms" data-noexport id="certificate-algorithms">Agent Certificate Algorithms</dfn></caption>
-    <thead>
-     <tr>
-      <th>TLS 1.3 <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3" id="ref-for-section-4.2.3">Signature Scheme</a>
-      <th>Public Key <code>AlgorithmIdentifier</code>
-      <th>Signature <code>AlgorithmIdentifier</code>
-    <tbody>
-     <tr>
-      <td><code>secp256r1_sha256</code>
-      <td>
-       <code>secp256r1</code> 
-       <p> Object Identifiers: </p>
-       <ol>
-        <li><code>1.2.840.10045.2.1</code> (ECC)
-        <li><code>1.2.840.10045.3.1.7</code> (ECDSA P256)
-       </ol>
-        DER representation: <code>301306072a8648ce3d020106082a8648ce3d030107</code> 
-       <p></p>
-      <td>
-       <code>ecdsa-with-SHA256</code> 
-       <p> Object identifier: </p>
-       <ol>
-        <li><code>1.2.840.10045.4.3.2</code>
-       </ol>
-        DER representation: <code>300a06082a8648ce3d040302</code> 
-       <p></p>
-     <tr>
-      <td><code>secp384r1_sha384</code>
-      <td>
-       <code>secp384r1</code> 
-       <p> Object Identifiers: </p>
-       <ol>
-        <li><code>1.2.840.10045.2.1</code> (ECC)
-        <li><code>1.3.132.0.34</code> (ECDSA P384)
-       </ol>
-        DER representation: <code>301006072a8648ce3d020106052b81040022</code> 
-       <p></p>
-      <td>
-       <code>ecdsa-with-SHA384</code> 
-       <p> Object identifier: </p>
-       <ol>
-        <li><code>1.2.840.10045.4.3.3</code>
-       </ol>
-        DER representation: <code>300a06082a8648ce3d040303</code> 
-       <p></p>
-   </table>
    <p>The following X.509 v3 fields are to be set as follows:</p>
    <div class="assertion">
     <table>
@@ -1129,10 +1082,19 @@ QUIC connection.</p>
        <td><code>&lt;fp></code>
       <tr>
        <td>Public Key <code>AlgorithmIdentifier</code>
-       <td>One of the supported <a data-link-type="dfn" href="#certificate-algorithms" id="ref-for-certificate-algorithms①">certificate algorithms</a>.
+       <td>
+        <ul>
+         <li>ECC OID: <code>1.2.840.10045.2.1</code>
+         <li>ECDSA 256 OID: <code>1.2.840.10045.3.1.7</code>
+         <li>DER representation: <code>301306072a8648ce3d020106082a8648ce3d030107</code>
+        </ul>
       <tr>
        <td>Signature <code>AlgorithmIdentifier</code>
-       <td>One of the supported <a data-link-type="dfn" href="#certificate-algorithms" id="ref-for-certificate-algorithms②">certificate algorithms</a>.
+       <td>
+        <ul>
+         <li>OID: <code>1.2.840.10045.4.3.2</code>
+         <li>DER representation: <code>300a06082a8648ce3d040302</code>
+        </ul>
       <tr>
        <td>Issuer Name
        <td>CN = The <code>model-name</code> from the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br> 
@@ -4078,7 +4040,6 @@ alphanumeric input.</p>
    <li><a href="#auth-spake2-handshake">auth-spake2-handshake</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-status">auth-status</a><span>, in § Unnumbered section</span>
-   <li><a href="#certificate-algorithms">certificate algorithms</a><span>, in § 4.2</span>
    <li><a href="#controller">controller</a><span>, in § 1.1</span>
    <li><a href="#data-encoding-offer">data-encoding-offer</a><span>, in § Unnumbered section</span>
    <li><a href="#data-frame">data-frame</a><span>, in § Unnumbered section</span>
@@ -4326,8 +4287,6 @@ alphanumeric input.</p>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">[Issue #228]</a> <a class="issue-return" href="#issue-808efb48" title="Jump to section">↵</a></div>
-   <div class="issue"> Make recommendations for cipher and signature algorithm preference
-list based on hardware characteristics of agents. <a href="https://github.com/w3c/openscreenprotocol/issues/218">[Issue #218]</a> <a class="issue-return" href="#issue-08dfa2ca" title="Jump to section">↵</a></div>
    <div class="issue"> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a> <a class="issue-return" href="#issue-3b9ff3bd" title="Jump to section">↵</a></div>
    <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a> <a class="issue-return" href="#issue-dc398825" title="Jump to section">↵</a></div>
    <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">[Issue #159]</a> <a class="issue-return" href="#issue-649c173f" title="Jump to section">↵</a></div>
@@ -4607,7 +4566,6 @@ let dfnPanelData = {
 "c5013a3b": {"dfnID":"c5013a3b","dfnText":"media element state","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-media-element-state"}],"title":"2.3. Remote Playback API Requirements"}],"url":"https://w3c.github.io/remote-playback/#dfn-media-element-state"},
 "c7313446": {"dfnID":"c7313446","dfnText":"signature scheme","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.2.3"}],"title":"4.2. Agent Certificates"}],"url":"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3"},
 "cb19d8be": {"dfnID":"cb19d8be","dfnText":"postMessage(message, targetOrigin, transfer)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-postmessage"}],"title":"13.1.4. Same-Origin Policy Violations"}],"url":"https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage"},
-"certificate-algorithms": {"dfnID":"certificate-algorithms","dfnText":"Agent Certificate Algorithms","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-algorithms"},{"id":"ref-for-certificate-algorithms\u2460"},{"id":"ref-for-certificate-algorithms\u2461"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-algorithms"},
 "controller": {"dfnID":"controller","dfnText":"controller","external":false,"refSections":[{"refs":[{"id":"ref-for-controller"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-controller\u2460"}],"title":"2.2. Presentation API Requirements"},{"refs":[{"id":"ref-for-controller\u2461"}],"title":"2.3. Remote Playback API Requirements"},{"refs":[{"id":"ref-for-controller\u2462"}],"title":"7.1. Presentation API"}],"url":"#controller"},
 "d0a3e1e6": {"dfnID":"d0a3e1e6","dfnText":"videoHeight","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-video-videoheight"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-video-videoheight\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight"},
 "d72c64a8": {"dfnID":"d72c64a8","dfnText":"sha-512","external":true,"refSections":[{"refs":[{"id":"ref-for-section-5"},{"id":"ref-for-section-5\u2460"},{"id":"ref-for-section-5\u2461"},{"id":"ref-for-section-5\u2462"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc8122#section-5"},
@@ -5106,7 +5064,6 @@ let refsData = {
 "#auth-spake2-handshake": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-handshake","type":"dfn","url":"#auth-spake2-handshake"},
 "#auth-spake2-need-psk": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-need-psk","type":"dfn","url":"#auth-spake2-need-psk"},
 "#auth-status": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-status","type":"dfn","url":"#auth-status"},
-"#certificate-algorithms": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"certificate algorithms","type":"dfn","url":"#certificate-algorithms"},
 "#controller": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"controller","type":"dfn","url":"#controller"},
 "#data-encoding-offer": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"data-encoding-offer","type":"dfn","url":"#data-encoding-offer"},
 "#data-frame": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"data-frame","type":"dfn","url":"#data-frame"},
