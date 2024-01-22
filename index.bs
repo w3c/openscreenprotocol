@@ -292,11 +292,11 @@ keys and values:
     the agent fingerprint are defined below.
 
 : mv
-:: An unsigned integer value that indicates that
-    metadata has changed.   The advertising agent must update it to a greater
-    value.  This signals to the listening agent that it should connect to the
-    advertising agent to discover updated metadata.  The value should be encoded
-    as a [=variable-length integer=].
+:: An unsigned integer value that indicates that metadata has changed.   The
+    advertising agent must update it to a greater value.  This signals to the
+    listening agent that it should connect to the advertising agent to discover
+    updated metadata.  The value should be encoded as a
+    [=variable-length integer=].
 
 : at
 :: An alphanumeric, unguessable token consisting of characters from the set
@@ -2700,9 +2700,10 @@ before being shown in full as a [=verified display name=].
 This means there are three categories of display names that agents should be
 capable of handling:
 <ol>
-  <li>Truncated and unverified DNS-SD Instance Names, which should not be shown to the user.</li>
-  <li>Complete but unverified DNS-SD Instance Names, which can be shown as
-     unverified prior to [[#authentication]].</li>
+  <li> Truncated and unverified DNS-SD Instance Names, which should not be shown
+       to the user.</li>
+  <li> Complete but unverified DNS-SD Instance Names, which can be shown as
+       unverified prior to [[#authentication]].</li>
   <li>Verified display names.</li>
 </ol>
 </div>
