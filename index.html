@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 4416b18d5, updated Tue Jan 2 15:52:39 2024 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="11a21a818423cfa5ea47e252cb3c149985551f9c" name="revision">
+  <meta content="58e109cc4bec137a11e55276d72b2520faf568dd" name="revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1657,9 +1657,6 @@ particular URL or set of URLs, the controller may send a <a data-link-type="dfn"
     <dt data-md>sources
     <dd data-md>
      <p>A list of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource">media resources</a>, the same as specified in the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request">remote-playback-start-request</a> message.  Must not be empty.</p>
-   </dl>
-   <p class="issue" id="issue-9145071e"><a class="self-link" href="#issue-9145071e"></a> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">[Issue #146]</a></p>
-   <dl>
     <dt data-md>headers
     <dd data-md>
      <p>headers that the receiver should use to fetch the
@@ -1714,16 +1711,15 @@ among all remote playbacks.</p>
    <p class="note" role="note"><span class="marker">Note:</span> A version 4 (pseudorandom) <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a> is recommended as it meets the
 requirements for a remote-playback-id.</p>
    <dl>
-    <dt data-md>sources
+    <dt data-md>sources (optional)
     <dd data-md>
      <p>The <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource①">media resources</a> that the controller has selected for playback
-on the receiver.  Each source must include a <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src" id="ref-for-attr-source-src">source URL</a></code> and should include an <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type" id="ref-for-attr-source-type">extended MIME type</a></code>.</p>
-   </dl>
-   <p class="issue" id="issue-74827562"><a class="self-link" href="#issue-74827562"></a> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">[Issue #265]</a></p>
-   <dl>
+on the receiver.  Each source must include a <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src" id="ref-for-attr-source-src">source URL</a></code> and should include an <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type" id="ref-for-attr-source-type">extended MIME type</a></code> when available
+for the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource②">media resource</a>.  If <code>sources</code> is missing or empty, the <code>remoting</code> field must be populated, as the controller will use a
+streaming session to send encoded media.</p>
     <dt data-md>text-track-urls
     <dd data-md>
-     <p>URLs of text tracks associated with the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource②">media resources</a>.</p>
+     <p>URLs of text tracks associated with the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource③">media resources</a>.</p>
     <dt data-md>controls
     <dd data-md>
      <p>Initial controls for modifying the initial state of the remote playback, as
@@ -1735,11 +1731,12 @@ the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-r
     <dt data-md>remoting (optional)
     <dd data-md>
      <p>Parameters for starting a streaming session associated with this
-remote playback.  If not included, no streaming session is started.</p>
+remote playback.  If not included, no streaming session is started.
+Required when <code>sources</code> is missing or empty.</p>
    </dl>
    <p>When the receiver receives a <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request②">remote-playback-start-request</a> message, it should
 send back a <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response①">remote-playback-start-response</a> message.  It should do so quickly,
-usually before the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource③">media resource</a> has been loaded and instead give updates
+usually before the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource④">media resource</a> has been loaded and instead give updates
 of the progress of  loading with <a data-link-type="dfn" href="#remote-playback-state-event" id="ref-for-remote-playback-state-event">remote-playback-state-event</a> messages, unless
 the receiver decides to not attempt to load the resource at all.  If it chooses
 not to, it must respond with the appropriate failure result (such as timeout or
@@ -1887,12 +1884,9 @@ control values every time.  A non-present control value indicates no change.  A
 present control value indicates the change defined below. These controls
 intentionally mirror settable attributes and methods of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement" id="ref-for-htmlmediaelement⑥">HTMLMediaElement</a></code>.</p>
    <dl>
-    <dt data-md>source-url
+    <dt data-md>source
     <dd data-md>
-     <p>Change the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource④">media resource</a> URL. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src" id="ref-for-dom-media-src">HTMLMediaElement.src</a></code> for more details. Must not be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request③">remote-playback-start-request</a> message (which already contains a list of URLs).</p>
-   </dl>
-   <p class="issue" id="issue-791c621c"><a class="self-link" href="#issue-791c621c"></a> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">[Issue #223]</a></p>
-   <dl>
+     <p>Change the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑤">media resource</a>. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-src" id="ref-for-dom-media-src">HTMLMediaElement.src</a></code> for more details. Must not be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request③">remote-playback-start-request</a> message (which already contains a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑥">media resource</a>).</p>
     <dt data-md>preload
     <dd data-md>
      <p>Set how aggressively to preload media. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-preload" id="ref-for-dom-media-preload">HTMLMediaElement.preload</a></code> for more details. Should only be used in the initial controls of the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request④">remote-playback-start-request</a> message or when the source is changed.  If not
@@ -2026,18 +2020,18 @@ changed.</p>
    <dl>
     <dt data-md>supports
     <dd data-md>
-     <p>The controls the receiver supports.  These may differ according to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑤">media
-resource</a> and should not change unless the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑥">media resource</a> also changes.
+     <p>The controls the receiver supports.  These may differ according to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑦">media
+resource</a> and should not change unless the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑧">media resource</a> also changes.
 The default is empty (support for nothing)
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②">remote-playback-start-response</a> message.</p>
-    <dt data-md>source-url
+    <dt data-md>source
     <dd data-md>
-     <p>The current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑦">media resource</a> URL. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc" id="ref-for-dom-media-currentsrc①">HTMLMediaElement.currentSrc</a></code>.
+     <p>The current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑨">media resource</a>. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-currentsrc" id="ref-for-dom-media-currentsrc①">HTMLMediaElement.currentSrc</a></code>.
 Must be present in the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response③">remote-playback-start-response</a> message
-so the controller knows what <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑧">media resource</a> was selected for playback.</p>
+so the controller knows what <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource①⓪">media resource</a> was selected for playback.</p>
     <dt data-md>loading
     <dd data-md>
-     <p>The state of network activity for loading the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑨">media resource</a>. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate" id="ref-for-dom-media-networkstate①">HTMLMediaElement.networkState</a></code>.
+     <p>The state of network activity for loading the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource①①">media resource</a>. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate" id="ref-for-dom-media-networkstate①">HTMLMediaElement.networkState</a></code>.
 The default is empty (<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty" id="ref-for-dom-media-network_empty">NETWORK_EMPTY</a></code>)
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response④">remote-playback-start-response</a> message.</p>
     <dt data-md>loaded
@@ -2514,6 +2508,9 @@ send at the target bitrate, possibly exceeding it by a small amount.</p>
 made for encodings by sending a <a data-link-type="dfn" href="#streaming-session-modify-request" id="ref-for-streaming-session-modify-request①">streaming-session-modify-request</a> containing a modified list of stream-requests.  When the sender receives
 a <a data-link-type="dfn" href="#streaming-session-modify-request" id="ref-for-streaming-session-modify-request②">streaming-session-modify-request</a>, it should send back a <a data-link-type="dfn" href="#streaming-session-modify-response" id="ref-for-streaming-session-modify-response">streaming-session-modify-response</a> indicate whether or not the
 application of the new request from the <a data-link-type="dfn" href="#streaming-session-modify-request" id="ref-for-streaming-session-modify-request③">streaming-session-modify-request</a> was successful.</p>
+   <p class="note" role="note"><span class="marker">NOTE:</span> If the sender wishes to send an encoding other than the one selected by
+the receiver in a <a data-link-type="dfn" href="#streaming-session-start-response" id="ref-for-streaming-session-start-response②">streaming-session-start-response</a> or <a data-link-type="dfn" href="#streaming-session-modify-request" id="ref-for-streaming-session-modify-request④">streaming-session-modify-request</a>, it must terminate the current session
+and start a new session.</p>
    <p>Finally, the sender may terminate the streaming session by sending
 a <a data-link-type="dfn" href="#streaming-session-terminate-request" id="ref-for-streaming-session-terminate-request">streaming-session-terminate-request</a> command.  When the receiver
 receives the <a data-link-type="dfn" href="#streaming-session-terminate-request" id="ref-for-streaming-session-terminate-request①">streaming-session-terminate-request</a>, it should send back
@@ -3445,7 +3442,7 @@ the wire smaller.</p>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="remote-playback-start-request">remote-playback-start-request</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="nx">request</span>
 <span class="nx">  1</span><span class="p">:</span> <span class="nx">remote-playback-id </span><span class="c1">; remote-playback-id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">remote-playback-source</span><span class="p">]</span> <span class="c1">; sources</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">remote-playback-source</span><span class="p">]</span> <span class="c1">; sources</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; text-track-urls</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">http-header</span><span class="p">]</span> <span class="c1">; headers</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">remote-playback-controls </span><span class="c1">; controls</span>
@@ -3516,7 +3513,7 @@ the wire smaller.</p>
 <span class="nc">remote-playback-id </span><span class="p">=</span> <span class="kt">uint</span>
 
 <span class="nc">remote-playback-controls </span><span class="p">=</span> <span class="p">{</span>
-  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; source-url</span>
+  <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">remote-playback-source </span><span class="c1">; source</span>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span><span class="nx">none</span><span class="p">,</span> <span class="nx">metadata</span><span class="p">,</span> <span class="nx">auto</span><span class="p">)</span> <span class="c1">; preload</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; loop</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; paused</span>
@@ -3539,7 +3536,7 @@ the wire smaller.</p>
          <span class="nx">added-text-track</span><span class="p">:</span>
          <span class="nx">bool</span><span class="p">,</span>
          <span class="nx">added-cues</span><span class="p">:</span> <span class="nx">bool</span><span class="p">)</span> <span class="c1">; supports</span>
-  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; source-url</span>
+  <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="nx">remote-playback-source </span><span class="c1">; source</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span>
     <span class="nx">empty</span><span class="p">:</span> <span class="mi">0</span>
     <span class="nx">idle</span><span class="p">:</span> <span class="mi">1</span>
@@ -4334,10 +4331,7 @@ list based on hardware characteristics of agents. <a href="https://github.com/w3
    <div class="issue"> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a> <a class="issue-return" href="#issue-3b9ff3bd" title="Jump to section">↵</a></div>
    <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a> <a class="issue-return" href="#issue-dc398825" title="Jump to section">↵</a></div>
    <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">[Issue #159]</a> <a class="issue-return" href="#issue-649c173f" title="Jump to section">↵</a></div>
-   <div class="issue"> Remote Playback HTTP headers. <a href="https://github.com/w3c/openscreenprotocol/issues/146">[Issue #146]</a> <a class="issue-return" href="#issue-9145071e" title="Jump to section">↵</a></div>
-   <div class="issue"> Should media resource URLs be optional? <a href="https://github.com/w3c/openscreenprotocol/issues/265">[Issue #265]</a> <a class="issue-return" href="#issue-74827562" title="Jump to section">↵</a></div>
    <div class="issue"> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">[Issue #241]</a> <a class="issue-return" href="#issue-9717419d" title="Jump to section">↵</a></div>
-   <div class="issue"> Codec switching when remoting. <a href="https://github.com/w3c/openscreenprotocol/issues/223">[Issue #223]</a> <a class="issue-return" href="#issue-791c621c" title="Jump to section">↵</a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a> <a class="issue-return" href="#issue-8bf4aa9f" title="Jump to section">↵</a></div>
   </div>
 <script>/* Boilerplate: script-dom-helper */
@@ -4572,7 +4566,7 @@ let dfnPanelData = {
 "613edb27": {"dfnID":"613edb27","dfnText":"play()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-play"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-play\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-play"},
 "62061ebf": {"dfnID":"62061ebf","dfnText":"initiate remote playback","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-initiate-remote-playback"}],"title":"2.3. Remote Playback API Requirements"}],"url":"https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback"},
 "621f3aeb": {"dfnID":"621f3aeb","dfnText":"readyState","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-readystate"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-readystate\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate"},
-"649ace3d": {"dfnID":"649ace3d","dfnText":"media resource","external":true,"refSections":[{"refs":[{"id":"ref-for-media-resource"},{"id":"ref-for-media-resource\u2460"},{"id":"ref-for-media-resource\u2461"},{"id":"ref-for-media-resource\u2462"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-media-resource\u2463"},{"id":"ref-for-media-resource\u2464"},{"id":"ref-for-media-resource\u2465"},{"id":"ref-for-media-resource\u2466"},{"id":"ref-for-media-resource\u2467"},{"id":"ref-for-media-resource\u2468"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#media-resource"},
+"649ace3d": {"dfnID":"649ace3d","dfnText":"media resource","external":true,"refSections":[{"refs":[{"id":"ref-for-media-resource"},{"id":"ref-for-media-resource\u2460"},{"id":"ref-for-media-resource\u2461"},{"id":"ref-for-media-resource\u2462"},{"id":"ref-for-media-resource\u2463"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-media-resource\u2464"},{"id":"ref-for-media-resource\u2465"},{"id":"ref-for-media-resource\u2466"},{"id":"ref-for-media-resource\u2467"},{"id":"ref-for-media-resource\u2468"},{"id":"ref-for-media-resource\u2460\u24ea"},{"id":"ref-for-media-resource\u2460\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#media-resource"},
 "6c09a22e": {"dfnID":"6c09a22e","dfnText":"variable-length integer","external":true,"refSections":[{"refs":[{"id":"ref-for-name-variable-length-integer-enc"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2460"},{"id":"ref-for-name-variable-length-integer-enc\u2461"}],"title":"5. Messages delivery using CBOR and QUIC streams"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2462"}],"title":"Appendix B: Message Type Key Ranges"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
 "6f0181fa": {"dfnID":"6f0181fa","dfnText":"service name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-7"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc6763#section-7"},
 "732fbcbd": {"dfnID":"732fbcbd","dfnText":"fastSeek(time)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-fastseek"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-fastseek\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-fastseek"},
@@ -4667,12 +4661,12 @@ let dfnPanelData = {
 "remote-playback-termination-response": {"dfnID":"remote-playback-termination-response","dfnText":"remote-playback-termination-response","external":false,"refSections":[{"refs":[{"id":"ref-for-remote-playback-termination-response"}],"title":"9. Remote Playback Protocol"}],"url":"#remote-playback-termination-response"},
 "streaming-capabilities-request": {"dfnID":"streaming-capabilities-request","dfnText":"streaming-capabilities-request","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-capabilities-request"}],"title":"10.1. Streaming Protocol Capabilities"}],"url":"#streaming-capabilities-request"},
 "streaming-capabilities-response": {"dfnID":"streaming-capabilities-response","dfnText":"streaming-capabilities-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-capabilities-response"}],"title":"10.1. Streaming Protocol Capabilities"}],"url":"#streaming-capabilities-response"},
-"streaming-session-modify-request": {"dfnID":"streaming-session-modify-request","dfnText":"streaming-session-modify-request","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-modify-request"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-streaming-session-modify-request\u2460"},{"id":"ref-for-streaming-session-modify-request\u2461"},{"id":"ref-for-streaming-session-modify-request\u2462"}],"title":"10.2. Sessions"}],"url":"#streaming-session-modify-request"},
+"streaming-session-modify-request": {"dfnID":"streaming-session-modify-request","dfnText":"streaming-session-modify-request","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-modify-request"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-streaming-session-modify-request\u2460"},{"id":"ref-for-streaming-session-modify-request\u2461"},{"id":"ref-for-streaming-session-modify-request\u2462"},{"id":"ref-for-streaming-session-modify-request\u2463"}],"title":"10.2. Sessions"}],"url":"#streaming-session-modify-request"},
 "streaming-session-modify-response": {"dfnID":"streaming-session-modify-response","dfnText":"streaming-session-modify-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-modify-response"}],"title":"10.2. Sessions"}],"url":"#streaming-session-modify-response"},
 "streaming-session-receiver-stats-event": {"dfnID":"streaming-session-receiver-stats-event","dfnText":"streaming-session-receiver-stats-event","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-receiver-stats-event"},{"id":"ref-for-streaming-session-receiver-stats-event\u2460"}],"title":"10.7. Stats"}],"url":"#streaming-session-receiver-stats-event"},
 "streaming-session-sender-stats-event": {"dfnID":"streaming-session-sender-stats-event","dfnText":"streaming-session-sender-stats-event","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-sender-stats-event"},{"id":"ref-for-streaming-session-sender-stats-event\u2460"}],"title":"10.7. Stats"}],"url":"#streaming-session-sender-stats-event"},
 "streaming-session-start-request": {"dfnID":"streaming-session-start-request","dfnText":"streaming-session-start-request","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-start-request"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-streaming-session-start-request\u2460"},{"id":"ref-for-streaming-session-start-request\u2461"}],"title":"10.2. Sessions"}],"url":"#streaming-session-start-request"},
-"streaming-session-start-response": {"dfnID":"streaming-session-start-response","dfnText":"streaming-session-start-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-start-response"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-streaming-session-start-response\u2460"}],"title":"10.2. Sessions"}],"url":"#streaming-session-start-response"},
+"streaming-session-start-response": {"dfnID":"streaming-session-start-response","dfnText":"streaming-session-start-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-start-response"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-streaming-session-start-response\u2460"},{"id":"ref-for-streaming-session-start-response\u2461"}],"title":"10.2. Sessions"}],"url":"#streaming-session-start-response"},
 "streaming-session-terminate-event": {"dfnID":"streaming-session-terminate-event","dfnText":"streaming-session-terminate-event","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-terminate-event"}],"title":"10.2. Sessions"}],"url":"#streaming-session-terminate-event"},
 "streaming-session-terminate-request": {"dfnID":"streaming-session-terminate-request","dfnText":"streaming-session-terminate-request","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-terminate-request"},{"id":"ref-for-streaming-session-terminate-request\u2460"}],"title":"10.2. Sessions"}],"url":"#streaming-session-terminate-request"},
 "streaming-session-terminate-response": {"dfnID":"streaming-session-terminate-response","dfnText":"streaming-session-terminate-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-terminate-response"}],"title":"10.2. Sessions"}],"url":"#streaming-session-terminate-response"},
