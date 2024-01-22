@@ -81,20 +81,9 @@ auth-spake2-psk-status = &(
  psk-input: 2
 )
 
-; type key 1005
-auth-spake2-handshake = {
-  0: auth-spake2-psk-status ; psk-status
-  1: bytes ; public-value
-}
-
 ; type key 1003
 auth-spake2-confirmation = {
   1 : bytes .size 64 ; confirmation-value
-}
-
-; type key 1004
-auth-status = {
-  1 : auth-status-result ; result
 }
 
 auth-status-result = &(
@@ -105,6 +94,17 @@ auth-status-result = &(
   validation-took-too-long : 4
   proof-invalid: 5
 )
+
+; type key 1004
+auth-status = {
+  1 : auth-status-result ; result
+}
+
+; type key 1005
+auth-spake2-handshake = {
+  0: auth-spake2-psk-status ; psk-status
+  1: bytes ; public-value
+}
 
 watch-id = uint
 

@@ -785,8 +785,9 @@ that message using the procedure in \[SPAKE2] and then replies with an
 other than `authenticated` means that authentication failed, and the agent must
 immediately disconnect.
 
-Note that this message is merely informative as each agent independently
-computes the outcome of SPAKE2 through key confirmation verification.
+NOTE: The [=auth-status=] message is merely informative as each agent
+independently computes the outcome of SPAKE2 through key confirmation
+verification.
 
 Presentation Protocol {#presentation-protocol}
 =====================
