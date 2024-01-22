@@ -357,9 +357,6 @@ An OSP Agent must not send TLS early data.
 
 Issue(228): Register ALPN with IANA.
 
-Issue(218): Make recommendations for cipher and signature algorithm preference
-list based on hardware characteristics of agents.
-
 Agent Certificates {#certificates}
 ----------------------------------
 
@@ -371,70 +368,14 @@ QUIC connection.
 
 The [=agent certificate=] must have the following characteristics:
 
-* 256-bit or 384-bit ECDSA public key.
+* 256-bit ECDSA public key.
 * Self-signed.
-* Supporting at least one of the [=certificate algorithms=] listed below.
-    * The `AlgorithmIdentifiers` are defined in [[!RFC5480]] (for public keys) and
-        [[!RFC5758]] (for signature schemes).
-    * [[!X690]] specifies the Distinguished Encoding Rules (DER) representation used to encode the identifiers.
+* Support the `ecdsa_secp256r1_sha256` [=signature scheme=] as defined in TLS 1.3.
+     * The `AlgorithmIdentifier` values are as defined in [[!RFC5480]] (for public
+        keys) and [[!RFC5758]] (for signature schemes).
+     * [[!X690]] specifies the Distinguished Encoding Rules (DER) representation
+        used to encode the identifiers.
 * Valid for signing.
-
-<table id="algorithms" class="data">
-<caption><dfn lt="certificate algorithms">Agent Certificate Algorithms</dfn></caption>
-<thead>
-<tr>
-  <th>TLS 1.3 [=Signature Scheme=]</th>
-  <th>Public Key `AlgorithmIdentifier`</th>
-  <th>Signature `AlgorithmIdentifier`</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>`secp256r1_sha256`</td>
-  <td>`secp256r1`
-     <p>
-      Object Identifiers:
-      <ol>
-        <li>`1.2.840.10045.2.1` (ECC)</li>
-        <li>`1.2.840.10045.3.1.7` (ECDSA P256)</li>
-      </ol>
-      DER representation: `301306072a8648ce3d020106082a8648ce3d030107`
-      </p>
-  </td>
-  <td>`ecdsa-with-SHA256`
-    <p>
-      Object identifier:
-      <ol>
-        <li>`1.2.840.10045.4.3.2`</li>
-      </ol>
-      DER representation: `300a06082a8648ce3d040302`
-    </p>
-  </td>
-</tr>
-<tr>
-  <td>`secp384r1_sha384`</td>
-  <td>`secp384r1`
-   <p>
-    Object Identifiers:
-    <ol>
-      <li>`1.2.840.10045.2.1` (ECC)</li>
-      <li>`1.3.132.0.34` (ECDSA P384)</li>
-    </ol>
-    DER representation: `301006072a8648ce3d020106052b81040022`
-  </p>
-  </td>
-  <td>`ecdsa-with-SHA384`
-    <p>
-      Object identifier:
-      <ol>
-        <li>`1.2.840.10045.4.3.3`</li>
-      </ol>
-      DER representation: `300a06082a8648ce3d040303`
-    </p>
-  </td>
-</tr>
-</tbody>
-</table>
 
 The following X.509 v3 fields are to be set as follows:
 
@@ -455,11 +396,22 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Public Key `AlgorithmIdentifier`</td>
-   <td>One of the supported  [=certificate algorithms=].</td>
+   <td>
+      <ul>
+        <li>ECC OID: `1.2.840.10045.2.1`</li>
+        <li>ECDSA 256 OID: `1.2.840.10045.3.1.7`</li>
+        <li>DER representation: `301306072a8648ce3d020106082a8648ce3d030107`</li>
+      </ol>
+   </td>
  </tr>
  <tr>
    <td>Signature `AlgorithmIdentifier`</td>
-   <td>One of the supported  [=certificate algorithms=].</td>
+   <td>
+     <ul>
+       <li>OID: `1.2.840.10045.4.3.2`</li>
+       <li>DER representation: `300a06082a8648ce3d040302`</li>
+     </ul>
+   </td>
  </tr>
  <tr>
    <td>Issuer Name</td>
