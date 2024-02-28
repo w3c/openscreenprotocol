@@ -5,9 +5,9 @@
   <title>Open Screen Protocol</title>
   <meta content="w3c/ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 4416b18d5, updated Tue Jan 2 15:52:39 2024 -0800" name="generator">
+  <meta content="Bikeshed version d5d58a306, updated Fri Jan 26 16:12:28 2024 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="15ed7a5ac45bd575005a982f084a1abc3beddb2b" name="revision">
+  <meta content="ca83371245111f6802680a7584c05990f72487a7" name="revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -630,7 +630,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-01-22">22 January 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-02-28">28 February 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -686,7 +686,11 @@ fashion.</p>
       <li><a href="#requirements-remote-playback"><span class="secno">2.3</span> <span class="content">Remote Playback API Requirements</span></a>
       <li><a href="#requirements-non-functional"><span class="secno">2.4</span> <span class="content">Non-Functional Requirements</span></a>
      </ol>
-    <li><a href="#discovery"><span class="secno">3</span> <span class="content">Discovery with mDNS</span></a>
+    <li>
+     <a href="#discovery"><span class="secno">3</span> <span class="content">Discovery with mDNS</span></a>
+     <ol class="toc">
+      <li><a href="#computing-agent-fingerprint"><span class="secno">3.1</span> <span class="content">Computing the Agent Fingerprint</span></a>
+     </ol>
     <li>
      <a href="#transport"><span class="secno">4</span> <span class="content">Transport and metadata discovery with QUIC</span></a>
      <ol class="toc">
@@ -988,17 +992,14 @@ keys and values:</p>
    <dl>
     <dt data-md>fp
     <dd data-md>
-     <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-fingerprint">agent fingerprint</dfn> of the advertising agent, computed over the <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate">agent certificate</a>. The format of the fingerprint is defined by <a data-link-type="biblio" href="#biblio-rfc5122" title="Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)">[RFC5122]</a>,
-excluding the "fingerprint:" prefix and including the hash function, space,
-and hex-encoded fingerprint.  The fingerprint value also functions as an ID
-for the agent. All agents must support the following hash functions: <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5">sha-256</a>, <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5①">sha-512</a>.  Agents must not support the following hash functions: <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5②">md2</a>, <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8122#section-5" id="ref-for-section-5③">md5</a>.</p>
+     <p>The <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint">agent fingerprint</a> of the advertising agent. The steps to compute
+the agent fingerprint are defined below.</p>
     <dt data-md>mv
     <dd data-md>
-     <p>An unsigned integer value that indicates that
-metadata has changed.   The advertising agent must update it to a greater
-value.  This signals to the listening agent that it should connect to the
-advertising agent to discover updated metadata.  The value should be encoded
-as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc">variable-length integer</a>.</p>
+     <p>An unsigned integer value that indicates that metadata has changed.   The
+advertising agent must update it to a greater value.  This signals to the
+listening agent that it should connect to the advertising agent to discover
+updated metadata.  The value should be encoded as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc">variable-length integer</a>.</p>
     <dt data-md>at
     <dd data-md>
      <p>An alphanumeric, unguessable token consisting of characters from the set <code>[A-Za-z0-9+/]</code>.</p>
@@ -1014,6 +1015,16 @@ capabilities mechanism to be determined. If a future version of the Open Screen
 Protocol uses mDNS but breaks compatibility with the metadata discovery process,
 it should change the DNS-SD service name to a new value, indicating a new
 mechanism for metadata discovery.</p>
+   <h3 class="heading settled" data-level="3.1" id="computing-agent-fingerprint"><span class="secno">3.1. </span><span class="content">Computing the Agent Fingerprint</span><a class="self-link" href="#computing-agent-fingerprint"></a></h3>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-fingerprint">agent fingerprint</dfn> of an agent is computed by following these
+steps:</p>
+   <ol>
+    <li data-md>
+     <p>Compute the <a href="https://www.rfc-editor.org/rfc/rfc7469#section-2.4">SKPI Fingerprint</a> of the <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate">agent certificate</a> according to <a data-link-type="biblio" href="#biblio-rfc7469" title="Public Key Pinning Extension for HTTP">[RFC7469]</a> using <a data-link-type="biblio" href="#biblio-rfc6234" title="US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)">SHA-256</a> as the hash algorithm.</p>
+    <li data-md>
+     <p>base64 encode the result of Step 1 according to <a data-link-type="biblio" href="#biblio-rfc4648" title="The Base16, Base32, and Base64 Data Encodings">[RFC4648]</a>.</p>
+   </ol>
+   <p class="note" role="note"><span class="marker">Note:</span> The resulting string will be 44 bytes in length.</p>
    <h2 class="heading settled" data-level="4" id="transport"><span class="secno">4. </span><span class="content">Transport and metadata discovery with QUIC</span><a class="self-link" href="#transport"></a></h2>
    <p>If a <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent①">listening agent</a> wants to connect to or learn further metadata about an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent①">advertising agent</a>, it initiates a <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a> connection to the IP and port
 from its SRV record.  Prior to authentication, a message may be exchanged (such
@@ -1036,7 +1047,7 @@ refuse incoming connections that lack these parameters.</p>
      <p>The <a data-link-type="biblio" href="#biblio-rfc6066" title="Transport Layer Security (TLS) Extensions: Extension Definitions">server_name extension</a> must be set to the following <code>host_name</code>: <code>&lt;fp>._openscreen._udp</code>.</p>
      <ul>
       <li data-md>
-       <p><code>&lt;fp></code> must be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint">agent fingerprint</a> as used in mDNS TXT.</p>
+       <p><code>&lt;fp></code> must be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a> as used in mDNS TXT.</p>
      </ul>
    </ul>
    <p>An OSP Agent must not send TLS early data.</p>
@@ -1110,7 +1121,7 @@ used to encode the identifiers.</p>
     </table>
    </div>
    <p>Mandatory fields not mentioned above should be set according to <a data-link-type="biblio" href="#biblio-rfc5280" title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</a>.</p>
-   <p>The value <code>&lt;fp></code> above should be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a> (as
+   <p>The value <code>&lt;fp></code> above should be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint②">agent fingerprint</a> (as
 serialized in mDNS TXT).</p>
    <p class="note" role="note"><span class="marker">Note:</span> The OSP agent may use the implementer or device model name as the value
 for the <code>O</code> key for user interface and debugging purposes. It may use the agent
@@ -1326,7 +1337,7 @@ phone, a keyboard or a TV remote control.</p>
 The client acts as Alice, the server acts as Bob.</p>
    <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
 SPAKE2 describes in detail how <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake①">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
-   <p>The values <code>A</code> and <code>B</code> used in SPAKE2 are the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint②">agent fingerprints</a> of the
+   <p>The values <code>A</code> and <code>B</code> used in SPAKE2 are the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint③">agent fingerprints</a> of the
 client and server, respectively. <code>K</code> is the PSK presented to the user. <code>S</code> and <code>T</code> from SPAKE2 are put into the <code>random</code> field of <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake②">auth-spake2-handshake</a>. <code>F</code> from SPAKE2 is put into the <code>transcript-mac</code> field of <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation②">auth-spake2-confirmation</a>.</p>
    <p>If the PSK presenter wants to authenticate, the PSK presenter starts the
 authentication process by presenting the PSK to the user and sending a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake③">auth-spake2-handshake</a> message. When the PSK consumer receives the <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake④">auth-spake2-handshake</a> message, the PSK consumer prompts the user for the PSK input
@@ -3115,9 +3126,10 @@ before being shown in full as a <a data-link-type="dfn" href="#verified-display-
      This means there are three categories of display names that agents should be
 capable of handling: 
     <ol>
-     <li>Truncated and unverified DNS-SD Instance Names, which should not be shown to the user.
-     <li>Complete but unverified DNS-SD Instance Names, which can be shown as
-     unverified prior to <a href="#authentication">§ 6 Authentication</a>.
+     <li> Truncated and unverified DNS-SD Instance Names, which should not be shown
+       to the user.
+     <li> Complete but unverified DNS-SD Instance Names, which can be shown as
+       unverified prior to <a href="#authentication">§ 6 Authentication</a>.
      <li>Verified display names.
     </ol>
    </div>
@@ -4025,7 +4037,7 @@ alphanumeric input.</p>
   <ul class="index">
    <li><a href="#advertising-agent">advertising agent</a><span>, in § 3</span>
    <li><a href="#agent-certificate">agent certificate</a><span>, in § 4.2</span>
-   <li><a href="#agent-fingerprint">agent fingerprint</a><span>, in § 3</span>
+   <li><a href="#agent-fingerprint">agent fingerprint</a><span>, in § 3.1</span>
    <li><a href="#agent-info">agent-info</a><span>, in § Unnumbered section</span>
    <li><a href="#agent-info-event">agent-info-event</a><span>, in § Unnumbered section</span>
    <li><a href="#agent-info-request">agent-info-request</a><span>, in § Unnumbered section</span>
@@ -4199,14 +4211,6 @@ alphanumeric input.</p>
      <li><span class="dfn-paneled" id="6f0181fa">service name</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[RFC8122]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="9d0cefbc">md2</span>
-     <li><span class="dfn-paneled" id="5cab86ab">md5</span>
-     <li><span class="dfn-paneled" id="9481333e">sha-256</span>
-     <li><span class="dfn-paneled" id="d72c64a8">sha-512</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[RFC8446]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="c7313446">signature scheme</span>
@@ -4240,8 +4244,8 @@ alphanumeric input.</p>
    <dd>Mark Foltz. <a href="https://w3c.github.io/remote-playback/"><cite>Remote Playback API</cite></a>. URL: <a href="https://w3c.github.io/remote-playback/">https://w3c.github.io/remote-playback/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
-   <dt id="biblio-rfc5122">[RFC5122]
-   <dd>P. Saint-Andre. <a href="https://www.rfc-editor.org/rfc/rfc5122"><cite>Internationalized Resource Identifiers (IRIs) and Uniform Resource Identifiers (URIs) for the Extensible Messaging and Presence Protocol (XMPP)</cite></a>. February 2008. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc5122">https://www.rfc-editor.org/rfc/rfc5122</a>
+   <dt id="biblio-rfc4648">[RFC4648]
+   <dd>S. Josefsson. <a href="https://www.rfc-editor.org/rfc/rfc4648"><cite>The Base16, Base32, and Base64 Data Encodings</cite></a>. October 2006. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>
    <dt id="biblio-rfc5280">[RFC5280]
    <dd>D. Cooper; et al. <a href="https://www.rfc-editor.org/rfc/rfc5280"><cite>Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</cite></a>. May 2008. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc5280">https://www.rfc-editor.org/rfc/rfc5280</a>
    <dt id="biblio-rfc5480">[RFC5480]
@@ -4260,8 +4264,8 @@ alphanumeric input.</p>
    <dd>S. Cheshire; M. Krochmal. <a href="https://www.rfc-editor.org/rfc/rfc6763"><cite>DNS-Based Service Discovery</cite></a>. February 2013. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc6763">https://www.rfc-editor.org/rfc/rfc6763</a>
    <dt id="biblio-rfc7301">[RFC7301]
    <dd>S. Friedl; et al. <a href="https://www.rfc-editor.org/rfc/rfc7301"><cite>Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension</cite></a>. July 2014. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc7301">https://www.rfc-editor.org/rfc/rfc7301</a>
-   <dt id="biblio-rfc8122">[RFC8122]
-   <dd>J. Lennox; C. Holmberg. <a href="https://www.rfc-editor.org/rfc/rfc8122"><cite>Connection-Oriented Media Transport over the Transport Layer Security (TLS) Protocol in the Session Description Protocol (SDP)</cite></a>. March 2017. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8122">https://www.rfc-editor.org/rfc/rfc8122</a>
+   <dt id="biblio-rfc7469">[RFC7469]
+   <dd>C. Evans; C. Palmer; R. Sleevi. <a href="https://www.rfc-editor.org/rfc/rfc7469"><cite>Public Key Pinning Extension for HTTP</cite></a>. April 2015. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc7469">https://www.rfc-editor.org/rfc/rfc7469</a>
    <dt id="biblio-rfc8446">[RFC8446]
    <dd>E. Rescorla. <a href="https://www.rfc-editor.org/rfc/rfc8446"><cite>The Transport Layer Security (TLS) Protocol Version 1.3</cite></a>. August 2018. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>
    <dt id="biblio-rfc8610">[RFC8610]
@@ -4279,6 +4283,8 @@ alphanumeric input.</p>
    <dd><a href="https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf"><cite>ITU-R BT.1359-1, Relative Timing of Sound and Vision for Broadcasting</cite></a>. Recommendation. URL: <a href="https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf">https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf</a>
    <dt id="biblio-rfc4122">[RFC4122]
    <dd>P. Leach; M. Mealling; R. Salz. <a href="https://www.rfc-editor.org/rfc/rfc4122"><cite>A Universally Unique IDentifier (UUID) URN Namespace</cite></a>. July 2005. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc4122">https://www.rfc-editor.org/rfc/rfc4122</a>
+   <dt id="biblio-rfc6234">[RFC6234]
+   <dd>D. Eastlake 3rd; T. Hansen. <a href="https://www.rfc-editor.org/rfc/rfc6234"><cite>US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)</cite></a>. May 2011. Informational. URL: <a href="https://www.rfc-editor.org/rfc/rfc6234">https://www.rfc-editor.org/rfc/rfc6234</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
    <dd>Theresa O'Connor; Peter Snyder. <a href="https://w3ctag.github.io/security-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. URL: <a href="https://w3ctag.github.io/security-questionnaire/">https://w3ctag.github.io/security-questionnaire/</a>
    <dt id="biblio-webcodecs-codec-registry">[WEBCODECS-CODEC-REGISTRY]
@@ -4521,7 +4527,6 @@ let dfnPanelData = {
 "5078a29a": {"dfnID":"5078a29a","dfnText":"volume","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-volume"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-volume\u2460"},{"id":"ref-for-dom-media-volume\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-volume"},
 "552e1f12": {"dfnID":"552e1f12","dfnText":"networkState","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-networkstate"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-networkstate\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-networkstate"},
 "565ece29": {"dfnID":"565ece29","dfnText":"poster frame","external":true,"refSections":[{"refs":[{"id":"ref-for-poster-frame"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#poster-frame"},
-"5cab86ab": {"dfnID":"5cab86ab","dfnText":"md5","external":true,"refSections":[{"refs":[{"id":"ref-for-section-5"},{"id":"ref-for-section-5\u2460"},{"id":"ref-for-section-5\u2461"},{"id":"ref-for-section-5\u2462"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc8122#section-5"},
 "613edb27": {"dfnID":"613edb27","dfnText":"play()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-play"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-play\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-play"},
 "62061ebf": {"dfnID":"62061ebf","dfnText":"initiate remote playback","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-initiate-remote-playback"}],"title":"2.3. Remote Playback API Requirements"}],"url":"https://w3c.github.io/remote-playback/#dfn-initiate-remote-playback"},
 "621f3aeb": {"dfnID":"621f3aeb","dfnText":"readyState","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-readystate"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-readystate\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate"},
@@ -4533,9 +4538,7 @@ let dfnPanelData = {
 "89da795b": {"dfnID":"89da795b","dfnText":"currentTime","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-currenttime"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-currenttime\u2460"},{"id":"ref-for-dom-media-currenttime\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-currenttime"},
 "8d87f944": {"dfnID":"8d87f944","dfnText":"muted","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-muted"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-muted\u2460"},{"id":"ref-for-dom-media-muted\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-muted"},
 "8f45ca65": {"dfnID":"8f45ca65","dfnText":"concise data definition language","external":true,"refSections":[{"refs":[{"id":"ref-for-section-3\u2460"}],"title":"Appendix A: Messages"}],"url":"https://tools.ietf.org/html/rfc8610#section-3"},
-"9481333e": {"dfnID":"9481333e","dfnText":"sha-256","external":true,"refSections":[{"refs":[{"id":"ref-for-section-5"},{"id":"ref-for-section-5\u2460"},{"id":"ref-for-section-5\u2461"},{"id":"ref-for-section-5\u2462"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc8122#section-5"},
 "99123207": {"dfnID":"99123207","dfnText":"playbackRate","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-playbackrate"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-playbackrate\u2460"},{"id":"ref-for-dom-media-playbackrate\u2461"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-playbackrate"},
-"9d0cefbc": {"dfnID":"9d0cefbc","dfnText":"md2","external":true,"refSections":[{"refs":[{"id":"ref-for-section-5"},{"id":"ref-for-section-5\u2460"},{"id":"ref-for-section-5\u2461"},{"id":"ref-for-section-5\u2462"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc8122#section-5"},
 "9e0b0141": {"dfnID":"9e0b0141","dfnText":"media error code","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-mediaerror-code"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code"},
 "a07c7f7e": {"dfnID":"a07c7f7e","dfnText":"availability sources set","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-availability-sources-set"}],"title":"9.2. Remote Playback API"}],"url":"https://w3c.github.io/remote-playback/#dfn-availability-sources-set"},
 "a17504bd": {"dfnID":"a17504bd","dfnText":"ended","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-ended"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-ended\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-ended"},
@@ -4544,8 +4547,8 @@ let dfnPanelData = {
 "a65cc4ee": {"dfnID":"a65cc4ee","dfnText":"buffered","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-buffered"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-buffered\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered"},
 "a6ddbb58": {"dfnID":"a6ddbb58","dfnText":"connection_close frames","external":true,"refSections":[{"refs":[{"id":"ref-for-name-connection_close-frames"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
 "advertising-agent": {"dfnID":"advertising-agent","dfnText":"advertising agent","external":false,"refSections":[{"refs":[{"id":"ref-for-advertising-agent"}],"title":"2.4. Non-Functional Requirements"},{"refs":[{"id":"ref-for-advertising-agent\u2460"}],"title":"4. Transport and metadata discovery with QUIC"},{"refs":[{"id":"ref-for-advertising-agent\u2461"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-advertising-agent\u2462"}],"title":"6. Authentication"},{"refs":[{"id":"ref-for-advertising-agent\u2463"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-advertising-agent\u2464"}],"title":"9.2. Remote Playback API"},{"refs":[{"id":"ref-for-advertising-agent\u2465"}],"title":"10. Streaming Protocol"}],"url":"#advertising-agent"},
-"agent-certificate": {"dfnID":"agent-certificate","dfnText":"agent\ncertificate","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-certificate"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-agent-certificate\u2460"},{"id":"ref-for-agent-certificate\u2461"},{"id":"ref-for-agent-certificate\u2462"},{"id":"ref-for-agent-certificate\u2463"}],"title":"4.2. Agent Certificates"}],"url":"#agent-certificate"},
-"agent-fingerprint": {"dfnID":"agent-fingerprint","dfnText":"agent fingerprint","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-fingerprint"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-fingerprint\u2460"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-agent-fingerprint\u2461"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#agent-fingerprint"},
+"agent-certificate": {"dfnID":"agent-certificate","dfnText":"agent\ncertificate","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-certificate"}],"title":"3.1. Computing the Agent Fingerprint"},{"refs":[{"id":"ref-for-agent-certificate\u2460"},{"id":"ref-for-agent-certificate\u2461"},{"id":"ref-for-agent-certificate\u2462"},{"id":"ref-for-agent-certificate\u2463"}],"title":"4.2. Agent Certificates"}],"url":"#agent-certificate"},
+"agent-fingerprint": {"dfnID":"agent-fingerprint","dfnText":"agent fingerprint","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-fingerprint"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-agent-fingerprint\u2460"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-fingerprint\u2461"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-agent-fingerprint\u2462"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#agent-fingerprint"},
 "agent-info": {"dfnID":"agent-info","dfnText":"agent-info","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info"},{"id":"ref-for-agent-info\u2460"},{"id":"ref-for-agent-info\u2461"},{"id":"ref-for-agent-info\u2462"},{"id":"ref-for-agent-info\u2463"}],"title":"4.3. Metadata Discovery"},{"refs":[{"id":"ref-for-agent-info\u2464"}],"title":"12. Protocol Extensions"},{"refs":[{"id":"ref-for-agent-info\u2465"}],"title":"12.1. Protocol Extension Fields"},{"refs":[{"id":"ref-for-agent-info\u2466"}],"title":"13.2.1. Personally Identifiable Information & High-Value Data"},{"refs":[{"id":"ref-for-agent-info\u2467"}],"title":"13.5.2. Local active network attackers"},{"refs":[{"id":"ref-for-agent-info\u2468"}],"title":"13.6.1. Instance and Display Names"}],"url":"#agent-info"},
 "agent-info-event": {"dfnID":"agent-info-event","dfnText":"agent-info-event","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info-event"}],"title":"4.3. Metadata Discovery"}],"url":"#agent-info-event"},
 "agent-info-request": {"dfnID":"agent-info-request","dfnText":"agent-info-request","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info-request"},{"id":"ref-for-agent-info-request\u2460"}],"title":"4.3. Metadata Discovery"},{"refs":[{"id":"ref-for-agent-info-request\u2461"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-agent-info-request\u2462"}],"title":"9.2. Remote Playback API"}],"url":"#agent-info-request"},
@@ -4568,7 +4571,6 @@ let dfnPanelData = {
 "cb19d8be": {"dfnID":"cb19d8be","dfnText":"postMessage(message, targetOrigin, transfer)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-postmessage"}],"title":"13.1.4. Same-Origin Policy Violations"}],"url":"https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage"},
 "controller": {"dfnID":"controller","dfnText":"controller","external":false,"refSections":[{"refs":[{"id":"ref-for-controller"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-controller\u2460"}],"title":"2.2. Presentation API Requirements"},{"refs":[{"id":"ref-for-controller\u2461"}],"title":"2.3. Remote Playback API Requirements"},{"refs":[{"id":"ref-for-controller\u2462"}],"title":"7.1. Presentation API"}],"url":"#controller"},
 "d0a3e1e6": {"dfnID":"d0a3e1e6","dfnText":"videoHeight","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-video-videoheight"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-video-videoheight\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight"},
-"d72c64a8": {"dfnID":"d72c64a8","dfnText":"sha-512","external":true,"refSections":[{"refs":[{"id":"ref-for-section-5"},{"id":"ref-for-section-5\u2460"},{"id":"ref-for-section-5\u2461"},{"id":"ref-for-section-5\u2462"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc8122#section-5"},
 "d834f763": {"dfnID":"d834f763","dfnText":"NETWORK_EMPTY","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-network_empty"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty"},
 "da57602e": {"dfnID":"da57602e","dfnText":"type","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-source-type"}],"title":"9. Remote Playback Protocol"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type"},
 "data-encoding-offer": {"dfnID":"data-encoding-offer","dfnText":"data-encoding-offer","external":false,"refSections":[{"refs":[{"id":"ref-for-data-encoding-offer"},{"id":"ref-for-data-encoding-offer\u2460"},{"id":"ref-for-data-encoding-offer\u2461"},{"id":"ref-for-data-encoding-offer\u2462"}],"title":"10.5. Data"}],"url":"#data-encoding-offer"},
@@ -4742,7 +4744,7 @@ function showDfnPanel(dfn) {
 
 function positionDfnPanel(dfnPanel) {
     const dfn = dfnPanel.dfn;
-    const dfnPos = getRootLevelAbsolutePosition(dfn);
+    const dfnPos = getBounds(dfn);
     dfnPanel.style.top = dfnPos.bottom + "px";
     dfnPanel.style.left = dfnPos.left + "px";
 
@@ -4811,40 +4813,19 @@ function refocusOnTarget(event) {
     });
 }
 
+// TODO: shared util
 // Returns the root-level absolute position {left and top} of element.
-function getRootLevelAbsolutePosition(el) {
-    const boundsRect = el.getBoundingClientRect();
-    let xPos = 0;
-    let yPos = 0;
-
-    while (el) {
-        let xScroll = el.scrollLeft;
-        let yScroll = el.scrollTop;
-
-        // Ignore scrolling of body.
-        if (el.tagName === "BODY") {
-            xScroll = 0;
-            yScroll = 0;
-        }
-        xPos += (el.offsetLeft - xScroll + el.clientLeft);
-        yPos += (el.offsetTop - yScroll + el.clientTop);
-
-        el = el.offsetParent;
-    }
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
     return {
-        left: xPos,
-        top: yPos,
-        right: xPos + boundsRect.width,
-        bottom: yPos + boundsRect.height,
-    };
-}
-
-function scrolledIntoView(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top > 0 &&
-        rect.bottom < window.innerHeight
-    );
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
 }
 
 function scrollToTargetAndHighlight(event) {
@@ -4853,10 +4834,6 @@ function scrollToTargetAndHighlight(event) {
         hash = decodeURIComponent(hash.substring(1));
         const dest = document.getElementById(hash);
         if (dest) {
-            // Maybe prevent default scroll.
-            if (scrolledIntoView(dest)) {
-                event.preventDefault();
-            }
             dest.classList.add('highlighted');
             setTimeout(() => dest.classList.remove('highlighted'), 1000);
         }
@@ -5168,7 +5145,6 @@ let refsData = {
 "https://tools.ietf.org/html/rfc6762#section-9": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6762","spec":"rfc6762","status":"anchor-block","text":"conflict resolution","type":"dfn","url":"https://tools.ietf.org/html/rfc6762#section-9"},
 "https://tools.ietf.org/html/rfc6763#section-4.1.1": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"instance name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-4.1.1"},
 "https://tools.ietf.org/html/rfc6763#section-7": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"service name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-7"},
-"https://tools.ietf.org/html/rfc8122#section-5": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8122","spec":"rfc8122","status":"anchor-block","text":"sha-256","type":"dfn","url":"https://tools.ietf.org/html/rfc8122#section-5"},
 "https://tools.ietf.org/html/rfc8610#section-3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8610","spec":"rfc8610","status":"anchor-block","text":"concise data definition language","type":"dfn","url":"https://tools.ietf.org/html/rfc8610#section-3"},
 "https://w3c.github.io/presentation-api/#dom-presentationconnection": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"presentation-api","spec":"presentation-api","status":"current","text":"PresentationConnection","type":"interface","url":"https://w3c.github.io/presentation-api/#dom-presentationconnection"},
 "https://w3c.github.io/remote-playback/#dfn-availability-sources-set": {"export":true,"for_":[],"level":"","normative":true,"shortname":"remote-playback","spec":"remote-playback","status":"anchor-block","text":"availability sources set","type":"dfn","url":"https://w3c.github.io/remote-playback/#dfn-availability-sources-set"},
@@ -5316,7 +5292,7 @@ function setupRefHintEventListeners(link, refHint) {
 
 function positionRefHint(refHint) {
     const link = refHint.forLink;
-    const linkPos = getRootLevelAbsolutePosition(link);
+    const linkPos = getBounds(link);
     refHint.style.top = linkPos.bottom + "px";
     refHint.style.left = linkPos.left + "px";
 
@@ -5332,47 +5308,46 @@ function positionRefHint(refHint) {
 
 // TODO: shared util
 // Returns the root-level absolute position {left and top} of element.
-function getRootLevelAbsolutePosition(el) {
-    const boundsRect = el.getBoundingClientRect();
-    let xPos = 0;
-    let yPos = 0;
-
-    while (el) {
-        let xScroll = el.scrollLeft;
-        let yScroll = el.scrollTop;
-
-        // Ignore scrolling of body.
-        if (el.tagName === "BODY") {
-            xScroll = 0;
-            yScroll = 0;
-        }
-        xPos += (el.offsetLeft - xScroll + el.clientLeft);
-        yPos += (el.offsetTop - yScroll + el.clientTop);
-
-        el = el.offsetParent;
-    }
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
     return {
-        left: xPos,
-        top: yPos,
-        right: xPos + boundsRect.width,
-        bottom: yPos + boundsRect.height,
-    };
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function showRefHintListener(e) {
+    // If the target isn't in a link (or is a link),
+    // just ignore it.
+    let link = e.target.closest("a");
+    if(!link) return;
+
+    // If the target is in a ref-hint panel
+    // (aka a link in the already-open one),
+    // also just ignore it.
+    if(link.closest(".ref-hint")) return;
+
+    // Otherwise, show the panel for the link.
+    showRefHint(link);
+}
+
+function hideAllHintsListener(e) {
+    // If the click is inside a ref-hint panel, ignore it.
+    if(e.target.closest(".ref-hint")) return;
+    // Otherwise, close all the current panels.
+    hideAllRefHints();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.body.addEventListener("mouseover", e=>{
-        let link = e.target.closest("a");
-        if(link) showRefHint(link);
-    });
-    document.body.addEventListener("focus", e=>{
-        let link = e.target.closest("a");
-        if(link) showRefHint(link);
-    });
+    document.body.addEventListener("mousedown", showRefHintListener);
+    document.body.addEventListener("focus", showRefHintListener);
 
-    document.body.addEventListener("click", (e) => {
-        // If not handled already, just hide all link panels.
-        hideAllRefHints();
-    });
+    document.body.addEventListener("click", hideAllHintsListener);
 });
 
 window.addEventListener("resize", () => {
