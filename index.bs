@@ -288,19 +288,15 @@ Advertising agents must include DNS TXT records with the following
 keys and values:
 
 : fp
-:: The <dfn>agent fingerprint</dfn> of the advertising agent, computed over the
-    [=agent certificate=]. The format of the fingerprint is defined by [[!RFC5122]],
-    excluding the "fingerprint:" prefix and including the hash function, space,
-    and hex-encoded fingerprint.  The fingerprint value also functions as an ID
-    for the agent. All agents must support the following hash functions: [=sha-256=],
-    [=sha-512=].  Agents must not support the following hash functions: [=md2=], [=md5=].
+:: The [=agent fingerprint=] of the advertising agent. The steps to compute
+    the agent fingerprint are defined below.
 
 : mv
-:: An unsigned integer value that indicates that
-    metadata has changed.   The advertising agent must update it to a greater
-    value.  This signals to the listening agent that it should connect to the
-    advertising agent to discover updated metadata.  The value should be encoded
-    as a [=variable-length integer=].
+:: An unsigned integer value that indicates that metadata has changed.   The
+    advertising agent must update it to a greater value.  This signals to the
+    listening agent that it should connect to the advertising agent to discover
+    updated metadata.  The value should be encoded as a
+    [=variable-length integer=].
 
 : at
 :: An alphanumeric, unguessable token consisting of characters from the set
@@ -322,6 +318,19 @@ capabilities mechanism to be determined. If a future version of the Open Screen
 Protocol uses mDNS but breaks compatibility with the metadata discovery process,
 it should change the DNS-SD service name to a new value, indicating a new
 mechanism for metadata discovery.
+
+
+Computing the Agent Fingerprint {#computing-agent-fingerprint}
+-------------------------------
+
+The <dfn>agent fingerprint</dfn> of an agent is computed by following these
+steps:
+
+1. Compute the [[RFC7469#section-2.4|SKPI Fingerprint]] of the [=agent certificate=]
+    according to [[!RFC7469]] using [[RFC6234|SHA-256]] as the hash algorithm.
+2. base64 encode the result of Step 1 according to [[!RFC4648]].
+
+Note: The resulting string will be 44 bytes in length.
 
 
 Transport and metadata discovery with QUIC {#transport}
@@ -2691,9 +2700,10 @@ before being shown in full as a [=verified display name=].
 This means there are three categories of display names that agents should be
 capable of handling:
 <ol>
-  <li>Truncated and unverified DNS-SD Instance Names, which should not be shown to the user.</li>
-  <li>Complete but unverified DNS-SD Instance Names, which can be shown as
-     unverified prior to [[#authentication]].</li>
+  <li> Truncated and unverified DNS-SD Instance Names, which should not be shown
+       to the user.</li>
+  <li> Complete but unverified DNS-SD Instance Names, which can be shown as
+       unverified prior to [[#authentication]].</li>
   <li>Verified display names.</li>
 </ol>
 </div>
