@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version d5d58a306, updated Fri Jan 26 16:12:28 2024 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="ca83371245111f6802680a7584c05990f72487a7" name="revision">
+  <meta content="21b7b4535c5b2f82fa4b2d07d837d01196763f61" name="revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1077,6 +1077,24 @@ used to encode the identifiers.</p>
     <li data-md>
      <p>Valid for signing.</p>
    </ul>
+   <p>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number">certificate serial number</dfn> be the result of the following steps:</p>
+   <ol>
+    <li>
+     If the agent has never generated an agent certificate: 
+     <ol>
+      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-base">certificate serial number base</dfn> be a 32-bit
+        pseudorandom integer value. 
+      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-counter">certificate serial number counter</dfn> be a 32-bit
+        unsigned integer, initially set to 0.
+     </ol>
+    <li>
+     Generate a 64-bit value as follows: 
+     <ol>
+      <li>Increment the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter">certificate serial number counter</a> by one.
+      <li>Assign the upper 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-base" id="ref-for-certificate-serial-number-base">certificate serial number base</a>.
+      <li>Assign the lower 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter①">certificate serial number counter</a>. 
+     </ol>
+   </ol>
    <p>The following X.509 v3 fields are to be set as follows:</p>
    <div class="assertion">
     <table>
@@ -1090,7 +1108,7 @@ used to encode the identifiers.</p>
        <td>3
       <tr>
        <td>Serial Number
-       <td><code>&lt;fp></code>
+       <td>The <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number">certificate serial number</a>.
       <tr>
        <td>Public Key <code>AlgorithmIdentifier</code>
        <td>
@@ -1121,8 +1139,8 @@ used to encode the identifiers.</p>
     </table>
    </div>
    <p>Mandatory fields not mentioned above should be set according to <a data-link-type="biblio" href="#biblio-rfc5280" title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</a>.</p>
-   <p>The value <code>&lt;fp></code> above should be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint②">agent fingerprint</a> (as
-serialized in mDNS TXT).</p>
+   <p>The value <code>&lt;sn></code> above should be substituted with the <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number①">certificate serial
+number</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> The OSP agent may use the implementer or device model name as the value
 for the <code>O</code> key for user interface and debugging purposes. It may use the agent
 implementer’s or device manufacturer’s location as the value for the location
@@ -1337,7 +1355,7 @@ phone, a keyboard or a TV remote control.</p>
 The client acts as Alice, the server acts as Bob.</p>
    <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
 SPAKE2 describes in detail how <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake①">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
-   <p>The values <code>A</code> and <code>B</code> used in SPAKE2 are the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint③">agent fingerprints</a> of the
+   <p>The values <code>A</code> and <code>B</code> used in SPAKE2 are the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint②">agent fingerprints</a> of the
 client and server, respectively. <code>K</code> is the PSK presented to the user. <code>S</code> and <code>T</code> from SPAKE2 are put into the <code>random</code> field of <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake②">auth-spake2-handshake</a>. <code>F</code> from SPAKE2 is put into the <code>transcript-mac</code> field of <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation②">auth-spake2-confirmation</a>.</p>
    <p>If the PSK presenter wants to authenticate, the PSK presenter starts the
 authentication process by presenting the PSK to the user and sending a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake③">auth-spake2-handshake</a> message. When the PSK consumer receives the <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake④">auth-spake2-handshake</a> message, the PSK consumer prompts the user for the PSK input
@@ -4052,6 +4070,9 @@ alphanumeric input.</p>
    <li><a href="#auth-spake2-handshake">auth-spake2-handshake</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-status">auth-status</a><span>, in § Unnumbered section</span>
+   <li><a href="#certificate-serial-number">certificate serial number</a><span>, in § 4.2</span>
+   <li><a href="#certificate-serial-number-base">certificate serial number base</a><span>, in § 4.2</span>
+   <li><a href="#certificate-serial-number-counter">certificate serial number counter</a><span>, in § 4.2</span>
    <li><a href="#controller">controller</a><span>, in § 1.1</span>
    <li><a href="#data-encoding-offer">data-encoding-offer</a><span>, in § Unnumbered section</span>
    <li><a href="#data-frame">data-frame</a><span>, in § Unnumbered section</span>
@@ -4548,7 +4569,7 @@ let dfnPanelData = {
 "a6ddbb58": {"dfnID":"a6ddbb58","dfnText":"connection_close frames","external":true,"refSections":[{"refs":[{"id":"ref-for-name-connection_close-frames"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
 "advertising-agent": {"dfnID":"advertising-agent","dfnText":"advertising agent","external":false,"refSections":[{"refs":[{"id":"ref-for-advertising-agent"}],"title":"2.4. Non-Functional Requirements"},{"refs":[{"id":"ref-for-advertising-agent\u2460"}],"title":"4. Transport and metadata discovery with QUIC"},{"refs":[{"id":"ref-for-advertising-agent\u2461"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-advertising-agent\u2462"}],"title":"6. Authentication"},{"refs":[{"id":"ref-for-advertising-agent\u2463"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-advertising-agent\u2464"}],"title":"9.2. Remote Playback API"},{"refs":[{"id":"ref-for-advertising-agent\u2465"}],"title":"10. Streaming Protocol"}],"url":"#advertising-agent"},
 "agent-certificate": {"dfnID":"agent-certificate","dfnText":"agent\ncertificate","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-certificate"}],"title":"3.1. Computing the Agent Fingerprint"},{"refs":[{"id":"ref-for-agent-certificate\u2460"},{"id":"ref-for-agent-certificate\u2461"},{"id":"ref-for-agent-certificate\u2462"},{"id":"ref-for-agent-certificate\u2463"}],"title":"4.2. Agent Certificates"}],"url":"#agent-certificate"},
-"agent-fingerprint": {"dfnID":"agent-fingerprint","dfnText":"agent fingerprint","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-fingerprint"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-agent-fingerprint\u2460"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-fingerprint\u2461"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-agent-fingerprint\u2462"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#agent-fingerprint"},
+"agent-fingerprint": {"dfnID":"agent-fingerprint","dfnText":"agent fingerprint","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-fingerprint"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-agent-fingerprint\u2460"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-fingerprint\u2461"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#agent-fingerprint"},
 "agent-info": {"dfnID":"agent-info","dfnText":"agent-info","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info"},{"id":"ref-for-agent-info\u2460"},{"id":"ref-for-agent-info\u2461"},{"id":"ref-for-agent-info\u2462"},{"id":"ref-for-agent-info\u2463"}],"title":"4.3. Metadata Discovery"},{"refs":[{"id":"ref-for-agent-info\u2464"}],"title":"12. Protocol Extensions"},{"refs":[{"id":"ref-for-agent-info\u2465"}],"title":"12.1. Protocol Extension Fields"},{"refs":[{"id":"ref-for-agent-info\u2466"}],"title":"13.2.1. Personally Identifiable Information & High-Value Data"},{"refs":[{"id":"ref-for-agent-info\u2467"}],"title":"13.5.2. Local active network attackers"},{"refs":[{"id":"ref-for-agent-info\u2468"}],"title":"13.6.1. Instance and Display Names"}],"url":"#agent-info"},
 "agent-info-event": {"dfnID":"agent-info-event","dfnText":"agent-info-event","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info-event"}],"title":"4.3. Metadata Discovery"}],"url":"#agent-info-event"},
 "agent-info-request": {"dfnID":"agent-info-request","dfnText":"agent-info-request","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-info-request"},{"id":"ref-for-agent-info-request\u2460"}],"title":"4.3. Metadata Discovery"},{"refs":[{"id":"ref-for-agent-info-request\u2461"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-agent-info-request\u2462"}],"title":"9.2. Remote Playback API"}],"url":"#agent-info-request"},
@@ -4569,6 +4590,9 @@ let dfnPanelData = {
 "c5013a3b": {"dfnID":"c5013a3b","dfnText":"media element state","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-media-element-state"}],"title":"2.3. Remote Playback API Requirements"}],"url":"https://w3c.github.io/remote-playback/#dfn-media-element-state"},
 "c7313446": {"dfnID":"c7313446","dfnText":"signature scheme","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.2.3"}],"title":"4.2. Agent Certificates"}],"url":"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3"},
 "cb19d8be": {"dfnID":"cb19d8be","dfnText":"postMessage(message, targetOrigin, transfer)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-postmessage"}],"title":"13.1.4. Same-Origin Policy Violations"}],"url":"https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage"},
+"certificate-serial-number": {"dfnID":"certificate-serial-number","dfnText":"certificate serial number","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number"},{"id":"ref-for-certificate-serial-number\u2460"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-serial-number"},
+"certificate-serial-number-base": {"dfnID":"certificate-serial-number-base","dfnText":"certificate serial number base","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number-base"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-serial-number-base"},
+"certificate-serial-number-counter": {"dfnID":"certificate-serial-number-counter","dfnText":"certificate serial number counter","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number-counter"},{"id":"ref-for-certificate-serial-number-counter\u2460"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-serial-number-counter"},
 "controller": {"dfnID":"controller","dfnText":"controller","external":false,"refSections":[{"refs":[{"id":"ref-for-controller"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-controller\u2460"}],"title":"2.2. Presentation API Requirements"},{"refs":[{"id":"ref-for-controller\u2461"}],"title":"2.3. Remote Playback API Requirements"},{"refs":[{"id":"ref-for-controller\u2462"}],"title":"7.1. Presentation API"}],"url":"#controller"},
 "d0a3e1e6": {"dfnID":"d0a3e1e6","dfnText":"videoHeight","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-video-videoheight"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-video-videoheight\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight"},
 "d834f763": {"dfnID":"d834f763","dfnText":"NETWORK_EMPTY","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-network_empty"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty"},
@@ -5041,6 +5065,9 @@ let refsData = {
 "#auth-spake2-handshake": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-handshake","type":"dfn","url":"#auth-spake2-handshake"},
 "#auth-spake2-need-psk": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-need-psk","type":"dfn","url":"#auth-spake2-need-psk"},
 "#auth-status": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-status","type":"dfn","url":"#auth-status"},
+"#certificate-serial-number": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"certificate serial number","type":"dfn","url":"#certificate-serial-number"},
+"#certificate-serial-number-base": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"certificate serial number base","type":"dfn","url":"#certificate-serial-number-base"},
+"#certificate-serial-number-counter": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"certificate serial number counter","type":"dfn","url":"#certificate-serial-number-counter"},
 "#controller": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"controller","type":"dfn","url":"#controller"},
 "#data-encoding-offer": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"data-encoding-offer","type":"dfn","url":"#data-encoding-offer"},
 "#data-frame": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"data-frame","type":"dfn","url":"#data-frame"},
