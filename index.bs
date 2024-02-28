@@ -386,6 +386,25 @@ The [=agent certificate=] must have the following characteristics:
         used to encode the identifiers.
 * Valid for signing.
 
+Let the <dfn>certificate serial number</dfn> be the result of the following steps:
+
+<ol>
+  <li>If the agent has never generated an agent certificate:
+  <ol>
+    <li>Let the <dfn>certificate serial number base</dfn> be a 32-bit
+        pseudorandom integer value.</il>
+    <li>Let the <dfn>certificate serial number counter</dfn> be a 32-bit
+        unsigned integer, initially set to 0.</li>
+  </ol>
+  </li>
+  <li>Generate a 64-bit value as follows:
+  <ol>
+    <li>Increment the [=certificate serial number counter=] by one.</li>
+    <li>Assign the upper 32 bits to the [=certificate serial number base=].</li>
+    <li>Assign the lower 32 bits to the [=certificate serial number counter=].</il>
+  </ol>
+</ol>
+
 The following X.509 v3 fields are to be set as follows:
 
 <div class="assertion">
@@ -401,7 +420,7 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Serial Number</td>
-   <td>`<fp>`</td>
+   <td>The [=certificate serial number=].</td>
  </tr>
  <tr>
    <td>Public Key `AlgorithmIdentifier`</td>
@@ -451,8 +470,8 @@ The following X.509 v3 fields are to be set as follows:
 
 Mandatory fields not mentioned above should be set according to [[!RFC5280]].
 
-The value `<fp>` above should be substituted with the [=agent fingerprint=] (as
-serialized in mDNS TXT).
+The value `<sn>` above should be substituted with the [=certificate serial
+number=].
 
 Note: The OSP agent may use the implementer or device model name as the value
 for the `O` key for user interface and debugging purposes. It may use the agent
