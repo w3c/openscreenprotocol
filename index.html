@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version d5d58a306, updated Fri Jan 26 16:12:28 2024 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="21b7b4535c5b2f82fa4b2d07d837d01196763f61" name="revision">
+  <meta content="d338b2437476a77af109dcf5cc3370d9ade0a4b9" name="revision">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -1324,50 +1324,57 @@ field, and at least as many bits of entropy as it sends in this field.</p>
 QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.</p>
-   <p>Appendix <a href="#appendix-c">Appendix C: PSK Encoding Schemes</a> describes two encoding schemes for PSKs that agents may support to produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something">QR code</a> for display to the user.</p>
+   <p>Appendix <a href="#appendix-c">Appendix C: PSK Encoding Schemes</a> describes two encoding schemes for PSKs that agents may
+support to produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something">QR code</a> for display to the user.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
-   <p class="issue" id="issue-3b9ff3bd"><a class="self-link" href="#issue-3b9ff3bd"></a> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a></p>
    <p class="issue" id="issue-dc398825"><a class="self-link" href="#issue-dc398825"></a> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a></p>
    <p>For all messages and objects defined in this section, see Appendix A for
 the full CDDL definitions.</p>
-   <p>The default authentication method is <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08">SPAKE2</a> with
+   <p>The default authentication method is <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-26">SPAKE2</a> with
 the following cipher suite:</p>
    <ol>
     <li data-md>
-     <p>Elliptic curve is <a href="https://tools.ietf.org/html/rfc7748#page-4">Curve25519</a>.</p>
+     <p>Elliptic curve is <a href="https://tools.ietf.org/html/rfc7748#page-4">edwards25519</a>.</p>
     <li data-md>
-     <p>Hash function is <a href="https://tools.ietf.org/html/rfc6234">SHA-512</a>.</p>
+     <p>Hash function is <a href="https://tools.ietf.org/html/rfc6234">SHA-256</a>.</p>
     <li data-md>
      <p>Key derivation function is <a href="https://tools.ietf.org/html/rfc5869">HKDF</a>.</p>
     <li data-md>
      <p>Message authentication code is <a href="https://tools.ietf.org/html/rfc2104">HMAC</a>.</p>
     <li data-md>
-     <p>Password hash function is SHA-512.</p>
+     <p>Password hash function is <a href="https://tools.ietf.org/html/rfc6234">SHA-512</a>.</p>
    </ol>
-   <p>Open Screen Protocol does not use a memory-hard hash function to hash PSKs
-with SPAKE2 and uses SHA-512 instead as the PSK is one-time use and
-is not stored in any form.</p>
+   <p>Open Screen Protocol does not use a memory-hard hash function to hash PSKs with
+SPAKE2 and uses SHA-512 instead, as the PSK is one-time use and is not stored in
+any form.</p>
    <p>SPAKE2 provides explicit mutual authentication.</p>
    <p>This authentication method assumes the agents share a low-entropy secret,
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.</p>
-   <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
-The client acts as Alice, the server acts as Bob.</p>
-   <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk">auth-spake2-need-psk</a>, <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.
-SPAKE2 describes in detail how <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake①">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
+   <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).</p>
+   <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.  [SPAKE2] describes in detail
+how <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake①">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
    <p>The values <code>A</code> and <code>B</code> used in SPAKE2 are the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint②">agent fingerprints</a> of the
-client and server, respectively. <code>K</code> is the PSK presented to the user. <code>S</code> and <code>T</code> from SPAKE2 are put into the <code>random</code> field of <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake②">auth-spake2-handshake</a>. <code>F</code> from SPAKE2 is put into the <code>transcript-mac</code> field of <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation②">auth-spake2-confirmation</a>.</p>
-   <p>If the PSK presenter wants to authenticate, the PSK presenter starts the
-authentication process by presenting the PSK to the user and sending a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake③">auth-spake2-handshake</a> message. When the PSK consumer receives the <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake④">auth-spake2-handshake</a> message, the PSK consumer prompts the user for the PSK input
-if it has not done so yet.</p>
-   <p>If the PSK consumer wants to authenticate, the PSK consumer sends a <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk①">auth-spake2-need-psk</a> message to the PSK presenter to start the authentication
-process and prompts the user to input the PSK. If the PSK presenter receives a <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk②">auth-spake2-need-psk</a> message after starting authentication from their side, the
-PSK presenter ignores the <a data-link-type="dfn" href="#auth-spake2-need-psk" id="ref-for-auth-spake2-need-psk③">auth-spake2-need-psk</a> message.</p>
-   <p>After the user inputs the PSK into the PSK consumer, the PSK consumer computes
-and sends a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑤">auth-spake2-handshake</a>.</p>
-   <p>When either agent both knows the PSK and has received a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑥">auth-spake2-handshake</a> message, the agent computes and sends a <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation③">auth-spake2-confirmation</a> message.</p>
-   <p>When either agent has received both <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑦">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation④">auth-spake2-confirmation</a> messages, the agent validates the confirmation message
-and sends the <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status①">auth-status</a> authenticated message.</p>
+client and server, respectively. <code>pw</code> is the PSK presented to the user.</p>
+   <p>The PSK presenter or the PSK consumer may initiate authentication (assuming the
+role of Alice in SPAKE2).</p>
+   <p>If the PSK presenter wants to initiate authentication, it starts the
+authentication process by presenting the PSK to the user and sending a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake②">auth-spake2-handshake</a> message.  The <code>public-value</code> field of the <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake③">auth-spake2-handshake</a> message must be set to the value of <code>pA</code> from SPAKE2
+and the <code>psk-status</code> field must be set to <code>psk-shown</code>.</p>
+   <p>When the PSK consumer receives the <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake④">auth-spake2-handshake</a> message, the PSK
+consumer prompts the user for the PSK input if it has not done so yet.  Once it
+receives the PSK, it sends an <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑤">auth-spake2-handshake</a> message with the <code>public-value</code> field set to the value of <code>pB</code> from SPAKE2 and the <code>psk-status</code> field set to <code>psk-input</code>.</p>
+   <p>If the PSK consumer wants to initiate authentication, the PSK consumer sends a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑥">auth-spake2-handshake</a> message to the PSK presenter with the <code>psk-status</code> field set to <code>psk-needs-presentation</code> and the <code>public-value</code> field set to <code>pA</code>. The PSK presenter, on receiving this message, creates a PSK and presents
+it to the the user.  Once that is done, it sends an <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑦">auth-spake2-handshake</a> message to the PSK consumer with <code>psk-status</code> set to <code>psk-input</code> and the <code>public-value</code> field set to <code>pB</code>.</p>
+   <p>Once an agent knows both <code>pA</code> and <code>pB</code> from <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑧">auth-spake2-handshake</a> messages,
+it computes and sends a <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation②">auth-spake2-confirmation</a> with the <code>confirmation-value</code> field set to <code>cA</code> (for Alice) or <code>cB</code> (for Bob) to the
+other agent.</p>
+   <p>Once an agent receives an <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation③">auth-spake2-confirmation</a> message, it validates
+that message using the procedure in [SPAKE2] and then replies with an <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status①">auth-status</a> authenticated message to the other agent.  Any value of <code>result</code> other than <code>authenticated</code> means that authentication failed, and the agent must
+immediately disconnect.</p>
+   <p class="note" role="note"><span class="marker">NOTE:</span> The <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status②">auth-status</a> message is merely informative as each agent
+independently computes the outcome of SPAKE2 through key confirmation
+verification.</p>
    <h2 class="heading settled" data-level="7" id="presentation-protocol"><span class="secno">7. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api" title="Presentation API">Presentation API</a>. <a href="#presentation-api">§ 7.1 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api" title="Presentation API">Presentation API</a> map to the
@@ -3243,25 +3250,15 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">text </span><span class="c1">; token</span>
 <span class="p">)</span>
 
-<span class="c1">; type key 1002</span>
-<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-need-psk">auth-spake2-need-psk</dfn> </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">auth-initiation-token</span>
-<span class="p">}</span>
+<span class="nc">auth-spake2-psk-status </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+ <span class="nx">psk-needs-presentation</span><span class="p">:</span> <span class="mi">0</span>
+ <span class="nx">psk-shown</span><span class="p">:</span> <span class="mi">1</span>
+ <span class="nx">psk-input</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">)</span>
 
 <span class="c1">; type key 1003</span>
-<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-handshake">auth-spake2-handshake</dfn> </span><span class="p">=</span> <span class="p">{</span>
-  <span class="nx">auth-initation-token</span>
-<span class="nx">  1 </span><span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; random</span>
-<span class="p">}</span>
-
-<span class="c1">; type key 1004</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-confirmation">auth-spake2-confirmation</dfn> </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 32 </span><span class="c1">; transcript-mac</span>
-<span class="p">}</span>
-
-<span class="c1">; type key 1005</span>
-<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-status">auth-status</dfn> </span><span class="p">=</span> <span class="p">{</span>
-  <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="nx">bytes .size 64 </span><span class="c1">; confirmation-value</span>
 <span class="p">}</span>
 
 <span class="nc">auth-status-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
@@ -3272,6 +3269,17 @@ the wire smaller.</p>
   <span class="nx">validation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
   <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
 <span class="p">)</span>
+
+<span class="c1">; type key 1004</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-status">auth-status</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">1</span> <span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 1005</span>
+<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-spake2-handshake">auth-spake2-handshake</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">auth-spake2-psk-status </span><span class="c1">; psk-status</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; public-value</span>
+<span class="p">}</span>
 
 <span class="nc">watch-id </span><span class="p">=</span> <span class="kt">uint</span>
 
@@ -4068,7 +4076,6 @@ alphanumeric input.</p>
    <li><a href="#auth-initiation-token">auth-initiation-token</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-spake2-confirmation">auth-spake2-confirmation</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-spake2-handshake">auth-spake2-handshake</a><span>, in § Unnumbered section</span>
-   <li><a href="#auth-spake2-need-psk">auth-spake2-need-psk</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-status">auth-status</a><span>, in § Unnumbered section</span>
    <li><a href="#certificate-serial-number">certificate serial number</a><span>, in § 4.2</span>
    <li><a href="#certificate-serial-number-base">certificate serial number base</a><span>, in § 4.2</span>
@@ -4314,7 +4321,6 @@ alphanumeric input.</p>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">[Issue #228]</a> <a class="issue-return" href="#issue-808efb48" title="Jump to section">↵</a></div>
-   <div class="issue"> Update SPAKE2 section according to current IETF draft <a href="https://github.com/w3c/openscreenprotocol/issues/235">[Issue #235]</a> <a class="issue-return" href="#issue-3b9ff3bd" title="Jump to section">↵</a></div>
    <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a> <a class="issue-return" href="#issue-dc398825" title="Jump to section">↵</a></div>
    <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">[Issue #159]</a> <a class="issue-return" href="#issue-649c173f" title="Jump to section">↵</a></div>
    <div class="issue"> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">[Issue #241]</a> <a class="issue-return" href="#issue-9717419d" title="Jump to section">↵</a></div>
@@ -4580,10 +4586,9 @@ let dfnPanelData = {
 "audio-frame": {"dfnID":"audio-frame","dfnText":"audio-frame","external":false,"refSections":[{"refs":[{"id":"ref-for-audio-frame"}],"title":"10.3. Audio"},{"refs":[{"id":"ref-for-audio-frame\u2460"}],"title":"12.1. Protocol Extension Fields"}],"url":"#audio-frame"},
 "auth-capabilities": {"dfnID":"auth-capabilities","dfnText":"auth-capabilities","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-capabilities"},{"id":"ref-for-auth-capabilities\u2460"}],"title":"6. Authentication"}],"url":"#auth-capabilities"},
 "auth-initiation-token": {"dfnID":"auth-initiation-token","dfnText":"auth-initiation-token","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-initiation-token"}],"title":"6. Authentication"}],"url":"#auth-initiation-token"},
-"auth-spake2-confirmation": {"dfnID":"auth-spake2-confirmation","dfnText":"auth-spake2-confirmation","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-confirmation"},{"id":"ref-for-auth-spake2-confirmation\u2460"},{"id":"ref-for-auth-spake2-confirmation\u2461"},{"id":"ref-for-auth-spake2-confirmation\u2462"},{"id":"ref-for-auth-spake2-confirmation\u2463"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-confirmation"},
-"auth-spake2-handshake": {"dfnID":"auth-spake2-handshake","dfnText":"auth-spake2-handshake","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-handshake"},{"id":"ref-for-auth-spake2-handshake\u2460"},{"id":"ref-for-auth-spake2-handshake\u2461"},{"id":"ref-for-auth-spake2-handshake\u2462"},{"id":"ref-for-auth-spake2-handshake\u2463"},{"id":"ref-for-auth-spake2-handshake\u2464"},{"id":"ref-for-auth-spake2-handshake\u2465"},{"id":"ref-for-auth-spake2-handshake\u2466"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-handshake"},
-"auth-spake2-need-psk": {"dfnID":"auth-spake2-need-psk","dfnText":"auth-spake2-need-psk","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-need-psk"},{"id":"ref-for-auth-spake2-need-psk\u2460"},{"id":"ref-for-auth-spake2-need-psk\u2461"},{"id":"ref-for-auth-spake2-need-psk\u2462"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-need-psk"},
-"auth-status": {"dfnID":"auth-status","dfnText":"auth-status","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-status"},{"id":"ref-for-auth-status\u2460"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-status"},
+"auth-spake2-confirmation": {"dfnID":"auth-spake2-confirmation","dfnText":"auth-spake2-confirmation","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-confirmation"},{"id":"ref-for-auth-spake2-confirmation\u2460"},{"id":"ref-for-auth-spake2-confirmation\u2461"},{"id":"ref-for-auth-spake2-confirmation\u2462"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-confirmation"},
+"auth-spake2-handshake": {"dfnID":"auth-spake2-handshake","dfnText":"auth-spake2-handshake","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-handshake"},{"id":"ref-for-auth-spake2-handshake\u2460"},{"id":"ref-for-auth-spake2-handshake\u2461"},{"id":"ref-for-auth-spake2-handshake\u2462"},{"id":"ref-for-auth-spake2-handshake\u2463"},{"id":"ref-for-auth-spake2-handshake\u2464"},{"id":"ref-for-auth-spake2-handshake\u2465"},{"id":"ref-for-auth-spake2-handshake\u2466"},{"id":"ref-for-auth-spake2-handshake\u2467"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-handshake"},
+"auth-status": {"dfnID":"auth-status","dfnText":"auth-status","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-status"},{"id":"ref-for-auth-status\u2460"},{"id":"ref-for-auth-status\u2461"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-status"},
 "b2b6fbb0": {"dfnID":"b2b6fbb0","dfnText":"remote playback source","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-remote-playback-source"}],"title":"9.2. Remote Playback API"}],"url":"https://w3c.github.io/remote-playback/#dfn-remote-playback-source"},
 "ba8a9b31": {"dfnID":"ba8a9b31","dfnText":"error","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-error"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-error\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-error"},
 "be4088c1": {"dfnID":"be4088c1","dfnText":"compatible remote playback device","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-compatible-remote-playback-device"}],"title":"9. Remote Playback Protocol"}],"url":"https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device"},
@@ -5063,7 +5068,6 @@ let refsData = {
 "#auth-initiation-token": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-initiation-token","type":"dfn","url":"#auth-initiation-token"},
 "#auth-spake2-confirmation": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-confirmation","type":"dfn","url":"#auth-spake2-confirmation"},
 "#auth-spake2-handshake": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-handshake","type":"dfn","url":"#auth-spake2-handshake"},
-"#auth-spake2-need-psk": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-spake2-need-psk","type":"dfn","url":"#auth-spake2-need-psk"},
 "#auth-status": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"auth-status","type":"dfn","url":"#auth-status"},
 "#certificate-serial-number": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"certificate serial number","type":"dfn","url":"#certificate-serial-number"},
 "#certificate-serial-number-base": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"certificate serial number base","type":"dfn","url":"#certificate-serial-number-base"},
