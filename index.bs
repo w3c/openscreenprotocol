@@ -1485,12 +1485,11 @@ changed.
     for the initial state in the [=remote-playback-start-response=] message.
 
 : epoch
-:: The "zero time" of the [=media timeline=], in seconds after the epoch. See
-    [=timeline offset=] and
+:: The "zero time" of the [=media timeline=], in milliseconds relative to the
+    epoch. See [=timeline offset=] and
     {{HTMLMediaElement/getStartDate()|HTMLMediaElement.getStartDate()}}.
-    The default is an unknown epoch
-    for the initial state in the [=remote-playback-start-response=] message,
-    which is represented by null.
+    The default is an unknown epoch for the initial state in the
+    [=remote-playback-start-response=] message, which is represented by null.
 
 : duration
 :: The duration of the [=media timeline=], in seconds. See
