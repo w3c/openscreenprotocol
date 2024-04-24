@@ -772,6 +772,11 @@ NOTE: The [=auth-status=] message is merely informative as each agent
 independently computes the outcome of SPAKE2 through key confirmation
 verification.
 
+Appendix [[#appendix-d]] shows the entire process when agents have not
+authenticated each other, including discovery, QUIC connection establishment,
+metadata exchange and authentication. When agents have completed authentication,
+the authentication phase can be omitted.
+
 Presentation Protocol {#presentation-protocol}
 =====================
 
@@ -2898,3 +2903,7 @@ To decode a PSK `P` given a QR code, follow these steps:
 
 1. Obtain the string `N` by decoding the QR code.
 2. Parse `N` as a hexadecimal number to obtain `P`.
+
+Appendix D: Entire Flow Chart {#appendix-d}
+=============================
+<img src="./images/entire_flow _chart.svg" alt="entire flow chart" width="100%" height="100%">
