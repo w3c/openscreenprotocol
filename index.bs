@@ -772,6 +772,11 @@ NOTE: The [=auth-status=] message is merely informative as each agent
 independently computes the outcome of SPAKE2 through key confirmation
 verification.
 
+Appendix [[#appendix-d]] shows the entire process when agents have not
+authenticated each other, including discovery, QUIC connection establishment,
+metadata exchange and authentication. When agents have completed authentication,
+the authentication phase can be omitted.
+
 Presentation Protocol {#presentation-protocol}
 =====================
 
@@ -2898,3 +2903,11 @@ To decode a PSK `P` given a QR code, follow these steps:
 
 1. Obtain the string `N` by decoding the QR code.
 2. Parse `N` as a hexadecimal number to obtain `P`.
+
+<section class="informative">
+Appendix D: Entire Flow Chart {#appendix-d}
+=============================
+*This section is non-normative.*
+
+<img no-autosize src="./images/entire_flow_chart.svg" alt="Before a listening agent (client) and an advertising agent (server) may exchange application messages, they first need to discover each other through an mDNS exchange, establish a QUIC connection through ClientHello and ServerHello exchanges and sharing of certificates, and run an SPAKE2 authentication handshake and confirmation. They may also exchange messages to discover metadata at any time after a QUIC connection has been established." style="width: 100%">
+</section>
