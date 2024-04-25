@@ -5,9 +5,11 @@
   <title>Open Screen Protocol</title>
   <meta content="w3c/ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version d5d58a306, updated Fri Jan 26 16:12:28 2024 -0800" name="generator">
+  <meta content="Bikeshed version d765c696b, updated Fri Mar 8 15:58:52 2024 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="d338b2437476a77af109dcf5cc3370d9ade0a4b9" name="revision">
+  <meta content="362a2fdc6fa2e1fade3e157988523631c0a392b2" name="revision">
+  <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
@@ -630,7 +632,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-02-28">28 February 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-04-25">25 April 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -783,6 +785,7 @@ fashion.</p>
       <li><a href="#appendix-c-base-10"><span class="secno"></span> <span class="content">Base-10 Numeric</span></a>
       <li><a href="#appendix-c-qr-code"><span class="secno"></span> <span class="content">QR Code</span></a>
      </ol>
+    <li><a href="#appendix-d"><span class="secno"></span> <span class="content">Appendix D: Entire Flow Chart</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
      <ol class="toc">
@@ -1375,6 +1378,10 @@ immediately disconnect.</p>
    <p class="note" role="note"><span class="marker">NOTE:</span> The <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status②">auth-status</a> message is merely informative as each agent
 independently computes the outcome of SPAKE2 through key confirmation
 verification.</p>
+   <p>Appendix <a href="#appendix-d">Appendix D: Entire Flow Chart</a> shows the entire process when agents have not
+authenticated each other, including discovery, QUIC connection establishment,
+metadata exchange and authentication. When agents have completed authentication,
+the authentication phase can be omitted.</p>
    <h2 class="heading settled" data-level="7" id="presentation-protocol"><span class="secno">7. </span><span class="content">Presentation Protocol</span><a class="self-link" href="#presentation-protocol"></a></h2>
    <p>This section defines the use of the Open Screen Protocol for starting,
 terminating, and controlling presentations as defined by <a data-link-type="biblio" href="#biblio-presentation-api" title="Presentation API">Presentation API</a>. <a href="#presentation-api">§ 7.1 Presentation API</a> defines how APIs in <a data-link-type="biblio" href="#biblio-presentation-api" title="Presentation API">Presentation API</a> map to the
@@ -4013,6 +4020,11 @@ alphanumeric input.</p>
     <li data-md>
      <p>Parse <code>N</code> as a hexadecimal number to obtain <code>P</code>.</p>
    </ol>
+   <section class="informative">
+    <h2 class="heading settled" id="appendix-d"><span class="content">Appendix D: Entire Flow Chart</span><a class="self-link" href="#appendix-d"></a></h2>
+     <em>This section is non-normative.</em> 
+    <p><img alt="Before a listening agent (client) and an advertising agent (server) may exchange application messages, they first need to discover each other through an mDNS exchange, establish a QUIC connection through ClientHello and ServerHello exchanges and sharing of certificates, and run an SPAKE2 authentication handshake and confirmation. They may also exchange messages to discover metadata at any time after a QUIC connection has been established." src="./images/entire_flow_chart.svg" style="width: 100%"></p>
+   </section>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -4057,7 +4069,7 @@ alphanumeric input.</p>
     Implementers are encouraged to optimize. </p>
    </section>
   </div>
-<script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
+  <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
@@ -4265,7 +4277,7 @@ alphanumeric input.</p>
    <dt id="biblio-iso18004">[ISO18004]
    <dd><a href="https://iso.org/standard/62021.html"><cite>Information technology — Automatic identification and data capture techniques — QR Code bar code symbology specification</cite></a>. Published. URL: <a href="https://iso.org/standard/62021.html">https://iso.org/standard/62021.html</a>
    <dt id="biblio-media-capabilities">[MEDIA-CAPABILITIES]
-   <dd>Jean-Yves Avenard; Will Cassella. <a href="https://w3c.github.io/media-capabilities/"><cite>Media Capabilities</cite></a>. URL: <a href="https://w3c.github.io/media-capabilities/">https://w3c.github.io/media-capabilities/</a>
+   <dd>Jean-Yves Avenard. <a href="https://w3c.github.io/media-capabilities/"><cite>Media Capabilities</cite></a>. URL: <a href="https://w3c.github.io/media-capabilities/">https://w3c.github.io/media-capabilities/</a>
    <dt id="biblio-presentation-api">[PRESENTATION-API]
    <dd>Mark Foltz; Dominik Röttsches. <a href="https://w3c.github.io/presentation-api/"><cite>Presentation API</cite></a>. URL: <a href="https://w3c.github.io/presentation-api/">https://w3c.github.io/presentation-api/</a>
    <dt id="biblio-remote-playback">[REMOTE-PLAYBACK]
