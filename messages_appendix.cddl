@@ -63,6 +63,11 @@ epoch-time = int
 
 media-timeline = float64
 
+media-timeline-range = [
+  start: media-timeline,
+  end: media-timeline
+]
+
 ; type key 1001
 auth-capabilities = {
   0: uint ; psk-ease-of-input
@@ -429,11 +434,6 @@ text-track-cue = {
   2: media-timeline-range ; range
   3: text ; text
 }
-
-media-timeline-range = [
-  start: media-timeline,
-  end: media-timeline
-]
 
 media-sync-time = [
   value: uint

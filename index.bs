@@ -695,7 +695,7 @@ QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.
 
-Appendix [[#appendix-c]] describes two encoding schemes for PSKs that agents may
+[[#appendix-c]] describes two encoding schemes for PSKs that agents may
 support to produce either a string or a [=QR code=] for display to the user.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
@@ -703,7 +703,7 @@ Authentication with SPAKE2 {#authentication-with-spake2}
 
 Issue(242): [Meta] Track CFRG PAKE competition outcome
 
-For all messages and objects defined in this section, see Appendix A for
+For all messages and objects defined in this section, see [[#appendix-a]] for
 the full CDDL definitions.
 
 The default authentication method is
@@ -772,6 +772,11 @@ immediately disconnect.
 NOTE: The [=auth-status=] message is merely informative as each agent
 independently computes the outcome of SPAKE2 through key confirmation
 verification.
+
+[[#appendix-d]] shows the entire process when agents have not
+authenticated each other, including discovery, QUIC connection establishment,
+metadata exchange and authentication. When agents have completed authentication,
+the authentication phase can be omitted.
 
 Presentation Protocol {#presentation-protocol}
 =====================
@@ -1090,8 +1095,8 @@ and controlling remote playback of media as defined by the
 APIs in [[REMOTE-PLAYBACK|Remote Playback API]] map to the protocol messages
 defined in this section.
 
-For all messages defined in this section, see Appendix A for the full
-CDDL definitions.
+For all messages defined in this section, see [[#appendix-a]] for the full CDDL
+definitions.
 
 To learn which receivers are [=compatible remote playback devices=] for a
 particular URL or set of URLs, the controller may send a
@@ -1600,7 +1605,8 @@ timeline=] specified in HTML, which are fractional seconds between zero and the
 media duration.
 
 NOTE: An Open Screen agent can convert between values on the media timeline and
-the media sync time sent with individual media frames. See Appendix D.
+the media sync time sent with individual media frames using the steps in
+[[#appendix-e]].
 
 <div class="note">
 <table>
@@ -2903,7 +2909,15 @@ To decode a PSK `P` given a QR code, follow these steps:
 1. Obtain the string `N` by decoding the QR code.
 2. Parse `N` as a hexadecimal number to obtain `P`.
 
-Appendix D: Media Time Conversions {#appendix-d}
+<section class="informative">
+Appendix D: Entire Flow Chart {#appendix-d}
+=============================
+*This section is non-normative.*
+
+<img no-autosize src="./images/entire_flow_chart.svg" alt="Before a listening agent (client) and an advertising agent (server) may exchange application messages, they first need to discover each other through an mDNS exchange, establish a QUIC connection through ClientHello and ServerHello exchanges and sharing of certificates, and run an SPAKE2 authentication handshake and confirmation. They may also exchange messages to discover metadata at any time after a QUIC connection has been established." style="width: 100%">
+</section>
+
+Appendix E: Media Time Conversions {#appendix-e}
 ==================================
 
 To convert between a media synchronization timestamp for a given audio or video
@@ -2914,6 +2928,12 @@ media-timeline-value = media-zero-time + (value / scale)
 ```
 
 Where:
-- `media-zero-time` is the origin of the [=media timeline=] as defined in HTML.
+- `media-zero-time` is the origin of the [=media timeline=] as defined in HTML,
+    converted to an IEEE-754 double precision floating point number [[IEEE-754]].
 - `value` and `scale` are the values passed in the `sync-time` field of the
     corresponding [=audio-frame=] or [=video-frame=].
+- `value / scale` should be computed with double floating point precision.
+- `media-timeline-value` is an IEEE-754 double precision floating point number [[IEEE-754]].
+
+In the event of an overflow in `media-timeline-value`, the maximum representable
+value should be used.
