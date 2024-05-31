@@ -59,6 +59,15 @@ request-id = uint
 
 microseconds = uint
 
+epoch-time = int
+
+media-timeline = float64
+
+media-timeline-range = [
+  start: media-timeline,
+  end: media-timeline
+]
+
 ; type key 1001
 auth-capabilities = {
   0: uint ; psk-ease-of-input
@@ -343,10 +352,10 @@ remote-playback-controls = {
   ? 3: bool ; loop
   ? 4: bool ; paused
   ? 5: bool ; muted
-  ? 6: float ; volume
-  ? 7: media-time ; seek
-  ? 8: media-time ; fast-seek
-  ? 9: float ; playback-rate
+  ? 6: float64 ; volume
+  ? 7: media-timeline ; seek
+  ? 8: media-timeline ; fast-seek
+  ? 9: float64 ; playback-rate
   ? 10: text ; poster
   ? 11: [* text] ; enabled-audio-track-ids
   ? 12: text ; selected-video-track-id
@@ -376,20 +385,20 @@ remote-playback-state = {
     enough: 4
   ) ; loaded
   ? 5: media-error : error
-  ? 6: media-time / unknown; epoch
-  ? 7: media-time / unknown / forever ; duration
-  ? 8: [* media-time-range] ; buffered-time-ranges
-  ? 9: [* media-time-range] ; seekable-time-ranges
-  ? 10: [* media-time-range] ; played-time-ranges
-  ? 11: media-time ; position
-  ? 12: float : playbackRate
+  ? 6: epoch-time / null; epoch
+  ? 7: media-timeline / null ; duration
+  ? 8: [* media-timeline-range] ; buffered-time-ranges
+  ? 9: [* media-timeline-range] ; seekable-time-ranges
+  ? 10: [* media-timeline-range] ; played-time-ranges
+  ? 11: media-timeline ; position
+  ? 12: float64 : playbackRate
   ? 13: bool ; paused
   ? 14: bool ; seeking
   ? 15: bool ; stalled
   ? 16: bool ; ended
-  ? 17: float ; volume
+  ? 17: float64 ; volume
   ? 18: bool ; muted
-  ? 19: video-resolution / unknown ; resolution
+  ? 19: video-resolution / null ; resolution
   ? 20: [* audio-track-state] audio-tracks
   ? 21: [* video-track-state] video-tracks
   ? 22: [* text-track-state] text-tracks
@@ -422,16 +431,11 @@ text-track-mode = &(
 
 text-track-cue = {
   1: text ; id
-  2: media-time-range ; range
+  2: media-timeline-range ; range
   3: text ; text
 }
 
-media-time-range = [
-  start: media-time,
-  end: media-time
-]
-
-media-time = [
+media-sync-time = [
   value: uint
   scale: uint
 ]
@@ -478,7 +482,7 @@ audio-frame = [
   payload: bytes
   ? optional: {
     ? 0: uint ; duration
-    ? 1: media-time ; sync-time
+    ? 1: media-sync-time ; sync-time
   }
 ]
 
@@ -491,7 +495,7 @@ video-frame = {
   ? 4: uint ; duration
   5: bytes ; payload
   ? 6: uint ; video-rotation
-  ? 7: media-time ; sync-time
+  ? 7: media-sync-time ; sync-time
 }
 
 ; type key 24
@@ -501,7 +505,7 @@ data-frame = {
   ? 2: uint ; start-time
   ? 3: uint ; duration
   4: any; payload
-  ? 5: media-time ; sync-time
+  ? 5: media-sync-time ; sync-time
 }
 
 ratio = [

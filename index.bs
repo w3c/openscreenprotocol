@@ -24,6 +24,7 @@ urlPrefix: https://html.spec.whatwg.org/multipage/media.html#; type: dfn; spec: 
     text: poster frame
     text: timeline offset
     text: media resource
+    text: media timeline
 urlPrefix: https://www.w3.org/TR/presentation-api/#dfn-; type: dfn; spec: PRESENTATION-API
     text: available presentation display
     text: controlling user agent
@@ -694,7 +695,7 @@ QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.
 
-Appendix [[#appendix-c]] describes two encoding schemes for PSKs that agents may
+[[#appendix-c]] describes two encoding schemes for PSKs that agents may
 support to produce either a string or a [=QR code=] for display to the user.
 
 Authentication with SPAKE2 {#authentication-with-spake2}
@@ -702,7 +703,7 @@ Authentication with SPAKE2 {#authentication-with-spake2}
 
 Issue(242): [Meta] Track CFRG PAKE competition outcome
 
-For all messages and objects defined in this section, see Appendix A for
+For all messages and objects defined in this section, see [[#appendix-a]] for
 the full CDDL definitions.
 
 The default authentication method is
@@ -732,7 +733,7 @@ The messages used in this authentication method are: [=auth-spake2-handshake=],
 how [=auth-spake2-handshake=] and [=auth-spake2-confirmation=] are computed.
 
 The values `A` and `B` used in SPAKE2 are the [=agent fingerprints=] of the
-client and server, respectively. `pw` is the PSK presented to the user. 
+client and server, respectively. `pw` is the PSK presented to the user.
 
 The PSK presenter or the PSK consumer may initiate authentication (assuming the
 role of Alice in SPAKE2).
@@ -772,7 +773,7 @@ NOTE: The [=auth-status=] message is merely informative as each agent
 independently computes the outcome of SPAKE2 through key confirmation
 verification.
 
-Appendix [[#appendix-d]] shows the entire process when agents have not
+[[#appendix-d]] shows the entire process when agents have not
 authenticated each other, including discovery, QUIC connection establishment,
 metadata exchange and authentication. When agents have completed authentication,
 the authentication phase can be omitted.
@@ -1094,10 +1095,8 @@ and controlling remote playback of media as defined by the
 APIs in [[REMOTE-PLAYBACK|Remote Playback API]] map to the protocol messages
 defined in this section.
 
-For all messages defined in this section, see Appendix A for the full
-CDDL definitions.
-
-Issue(159): Refinements to Remote Playback protocol.
+For all messages defined in this section, see [[#appendix-a]] for the full CDDL
+definitions.
 
 To learn which receivers are [=compatible remote playback devices=] for a
 particular URL or set of URLs, the controller may send a
@@ -1491,17 +1490,18 @@ changed.
     for the initial state in the [=remote-playback-start-response=] message.
 
 : epoch
-:: The "zero time" of the media timeline. See
-    [=timeline offset=] and
+:: The "zero time" of the [=media timeline=], in milliseconds relative to the
+    epoch. See [=timeline offset=] and
     {{HTMLMediaElement/getStartDate()|HTMLMediaElement.getStartDate()}}.
-    The default is an unknown epoch
-    for the initial state in the [=remote-playback-start-response=] message.
+    The default is an unknown epoch for the initial state in the
+    [=remote-playback-start-response=] message, which is represented by null.
 
 : duration
-:: The duration of the media timeline. See
+:: The duration of the [=media timeline=], in seconds. See
     {{HTMLMediaElement/duration|HTMLMediaElement.duration}}.
     The default is an unknown duration
-    for the initial state in the [=remote-playback-start-response=] message.
+    for the initial state in the [=remote-playback-start-response=] message,
+    which is represented by null.
 
 : buffered-time-ranges
 :: The time ranges for which media has been buffered. See
@@ -1577,8 +1577,9 @@ changed.
     {{HTMLVideoElement/videoWidth|HTMLVideoElement.videoWidth}}
     and
     {{HTMLVideoElement/videoHeight|HTMLVideoElement.videoHeight}}.
-    The default is unknown
-    for the initial state in the [=remote-playback-start-response=] message.
+    The default is an unknown resolution
+    for the initial state in the [=remote-playback-start-response=] message,
+    which is represented by null.
 
 : audio-tracks
 :: The available audio tracks, which can individually enabled or disabled. See
@@ -1599,9 +1600,13 @@ changed.
     The default is an empty array
     for the initial state in the [=remote-playback-start-response=] message.
 
-All times, time ranges, and durations (such as position, duration, and
-seekable-time-ranges) used above use a common [=media-time=] value (see Appendix A)
-which includes a [=time scale=].
+Media positions, durations, and time ranges are defined in terms of the [=media
+timeline=] specified in HTML, which are fractional seconds between zero and the
+media duration.
+
+NOTE: An Open Screen agent can convert between values on the media timeline and
+the media sync time sent with individual media frames using the steps in
+[[#appendix-e]].
 
 <div class="note">
 <table>
@@ -1611,12 +1616,12 @@ which includes a [=time scale=].
 <tr><td>loading</td>             <td>`empty`</td></tr>
 <tr><td>loaded</td>              <td>`nothing`</td></tr>
 <tr><td>error</td>               <td>No error</td></tr>
-<tr><td>epoch</td>               <td>`unknown`</td></tr>
-<tr><td>duration</td>            <td>`unknown`</td></tr>
+<tr><td>epoch</td>               <td>`null`</td></tr>
+<tr><td>duration</td>            <td>`null`</td></tr>
 <tr><td>buffered-time-ranges</td><td>Empty array</td></tr>
 <tr><td>played-time-ranges</td>  <td>Empty array</td></tr>
 <tr><td>seekable-time-ranges</td><td>Empty array</td></tr>
-<tr><td>position</td>            <td>0</td></tr>
+<tr><td>position</td>            <td>0.0</td></tr>
 <tr><td>playbackRate</td>        <td>1.0</td></tr>
 <tr><td>paused</td>              <td>False</td></tr>
 <tr><td>seeking</td>             <td>False</td></tr>
@@ -1624,7 +1629,7 @@ which includes a [=time scale=].
 <tr><td>ended</td>               <td>False</td></tr>
 <tr><td>volume</td>              <td>1.0</td></tr>
 <tr><td>muted</td>               <td>False</td></tr>
-<tr><td>resolution</td>          <td>`unknown`</td></tr>
+<tr><td>resolution</td>          <td>`null`</td></tr>
 <tr><td>audio-tracks</td>        <td>Empty array</td></tr>
 <tr><td>video-tracks</td>        <td>Empty array</td></tr>
 <tr><td>text-tracks</td>         <td>Empty array</td></tr>
@@ -2911,3 +2916,24 @@ Appendix D: Entire Flow Chart {#appendix-d}
 
 <img no-autosize src="./images/entire_flow_chart.svg" alt="Before a listening agent (client) and an advertising agent (server) may exchange application messages, they first need to discover each other through an mDNS exchange, establish a QUIC connection through ClientHello and ServerHello exchanges and sharing of certificates, and run an SPAKE2 authentication handshake and confirmation. They may also exchange messages to discover metadata at any time after a QUIC connection has been established." style="width: 100%">
 </section>
+
+Appendix E: Media Time Conversions {#appendix-e}
+==================================
+
+To convert between a media synchronization timestamp for a given audio or video
+frame and a media timeline value, the following formula can be used:
+
+```
+media-timeline-value = media-zero-time + (value / scale)
+```
+
+Where:
+- `media-zero-time` is the origin of the [=media timeline=] as defined in HTML,
+    converted to an IEEE-754 double precision floating point number [[IEEE-754]].
+- `value` and `scale` are the values passed in the `sync-time` field of the
+    corresponding [=audio-frame=] or [=video-frame=].
+- `value / scale` should be computed with double floating point precision.
+- `media-timeline-value` is an IEEE-754 double precision floating point number [[IEEE-754]].
+
+In the event of an overflow in `media-timeline-value`, the maximum representable
+value should be used.
