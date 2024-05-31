@@ -5,9 +5,9 @@
   <title>Open Screen Protocol</title>
   <meta content="w3c/ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version d765c696b, updated Fri Mar 8 15:58:52 2024 -0800" name="generator">
+  <meta content="Bikeshed version 4afc1fdf9, updated Tue May 28 15:43:17 2024 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="362a2fdc6fa2e1fade3e157988523631c0a392b2" name="revision">
+  <meta content="4a988e39d8445284d867d21cf6d06a479627ec4b" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -632,7 +632,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-04-25">25 April 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-05-31">31 May 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -786,6 +786,7 @@ fashion.</p>
       <li><a href="#appendix-c-qr-code"><span class="secno"></span> <span class="content">QR Code</span></a>
      </ol>
     <li><a href="#appendix-d"><span class="secno"></span> <span class="content">Appendix D: Entire Flow Chart</span></a>
+    <li><a href="#appendix-e"><span class="secno"></span> <span class="content">Appendix E: Media Time Conversions</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
      <ol class="toc">
@@ -1327,11 +1328,11 @@ field, and at least as many bits of entropy as it sends in this field.</p>
 QR-code and a numeric PSK), they should be for the same PSK.  If they were
 different, the PSK presenter would not know which one the user chose to use, and
 that may lead to authentication failures.</p>
-   <p>Appendix <a href="#appendix-c">Appendix C: PSK Encoding Schemes</a> describes two encoding schemes for PSKs that agents may
+   <p><a href="#appendix-c">Appendix C: PSK Encoding Schemes</a> describes two encoding schemes for PSKs that agents may
 support to produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something">QR code</a> for display to the user.</p>
    <h3 class="heading settled" data-level="6.1" id="authentication-with-spake2"><span class="secno">6.1. </span><span class="content">Authentication with SPAKE2</span><a class="self-link" href="#authentication-with-spake2"></a></h3>
    <p class="issue" id="issue-dc398825"><a class="self-link" href="#issue-dc398825"></a> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a></p>
-   <p>For all messages and objects defined in this section, see Appendix A for
+   <p>For all messages and objects defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for
 the full CDDL definitions.</p>
    <p>The default authentication method is <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-26">SPAKE2</a> with
 the following cipher suite:</p>
@@ -1378,7 +1379,7 @@ immediately disconnect.</p>
    <p class="note" role="note"><span class="marker">NOTE:</span> The <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status②">auth-status</a> message is merely informative as each agent
 independently computes the outcome of SPAKE2 through key confirmation
 verification.</p>
-   <p>Appendix <a href="#appendix-d">Appendix D: Entire Flow Chart</a> shows the entire process when agents have not
+   <p><a href="#appendix-d">Appendix D: Entire Flow Chart</a> shows the entire process when agents have not
 authenticated each other, including discovery, QUIC connection establishment,
 metadata exchange and authentication. When agents have completed authentication,
 the authentication phase can be omitted.</p>
@@ -1653,9 +1654,8 @@ video.</p>
 and controlling remote playback of media as defined by the <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a>. <a href="#remote-playback-api">§ 9.2 Remote Playback API</a> defines how
 APIs in <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> map to the protocol messages
 defined in this section.</p>
-   <p>For all messages defined in this section, see Appendix A for the full
-CDDL definitions.</p>
-   <p class="issue" id="issue-649c173f"><a class="self-link" href="#issue-649c173f"></a> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">[Issue #159]</a></p>
+   <p>For all messages defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for the full CDDL
+definitions.</p>
    <p>To learn which receivers are <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-compatible-remote-playback-device" id="ref-for-dfn-compatible-remote-playback-device">compatible remote playback devices</a> for a
 particular URL or set of URLs, the controller may send a <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request">remote-playback-availability-request</a> message with the following values:</p>
    <dl>
@@ -2051,14 +2051,15 @@ The default is no error
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑥">remote-playback-start-response</a> message.</p>
     <dt data-md>epoch
     <dd data-md>
-     <p>The "zero time" of the media timeline. See <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset" id="ref-for-timeline-offset①">timeline offset</a> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate" id="ref-for-dom-media-getstartdate">HTMLMediaElement.getStartDate()</a></code>.
-The default is an unknown epoch
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑦">remote-playback-start-response</a> message.</p>
+     <p>The "zero time" of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-timeline" id="ref-for-media-timeline">media timeline</a>, in milliseconds relative to the
+epoch. See <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#timeline-offset" id="ref-for-timeline-offset①">timeline offset</a> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-getstartdate" id="ref-for-dom-media-getstartdate">HTMLMediaElement.getStartDate()</a></code>.
+The default is an unknown epoch for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑦">remote-playback-start-response</a> message, which is represented by null.</p>
     <dt data-md>duration
     <dd data-md>
-     <p>The duration of the media timeline. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration" id="ref-for-dom-media-duration①">HTMLMediaElement.duration</a></code>.
+     <p>The duration of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-timeline" id="ref-for-media-timeline①">media timeline</a>, in seconds. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-duration" id="ref-for-dom-media-duration①">HTMLMediaElement.duration</a></code>.
 The default is an unknown duration
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑧">remote-playback-start-response</a> message.</p>
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response⑧">remote-playback-start-response</a> message,
+which is represented by null.</p>
     <dt data-md>buffered-time-ranges
     <dd data-md>
      <p>The time ranges for which media has been buffered. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-buffered" id="ref-for-dom-media-buffered①">HTMLMediaElement.buffered</a></code>.
@@ -2119,8 +2120,9 @@ for the initial state in the <a data-link-type="dfn" href="#remote-playback-star
     <dt data-md>resolution
     <dd data-md>
      <p>The "intrinsic width" and "intrinsic width" of the video. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videowidth" id="ref-for-dom-video-videowidth①">HTMLVideoElement.videoWidth</a></code> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight" id="ref-for-dom-video-videoheight①">HTMLVideoElement.videoHeight</a></code>.
-The default is unknown
-for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②⓪">remote-playback-start-response</a> message.</p>
+The default is an unknown resolution
+for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②⓪">remote-playback-start-response</a> message,
+which is represented by null.</p>
     <dt data-md>audio-tracks
     <dd data-md>
      <p>The available audio tracks, which can individually enabled or disabled. See <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/media.html#dom-media-audiotracks" id="ref-for-dom-media-audiotracks②">HTMLMediaElement.audioTracks</a></code>.
@@ -2138,9 +2140,11 @@ The controller can also add cues to and remove cues from text tracks.
 The default is an empty array
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②③">remote-playback-start-response</a> message.</p>
    </dl>
-   <p>All times, time ranges, and durations (such as position, duration, and
-seekable-time-ranges) used above use a common <a data-link-type="dfn" href="#media-time" id="ref-for-media-time">media-time</a> value (see Appendix A)
-which includes a <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale②">time scale</a>.</p>
+   <p>Media positions, durations, and time ranges are defined in terms of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-timeline" id="ref-for-media-timeline②">media
+timeline</a> specified in HTML, which are fractional seconds between zero and the
+media duration.</p>
+   <p class="note" role="note"><span class="marker">NOTE:</span> An Open Screen agent can convert between values on the media timeline and
+the media sync time sent with individual media frames using the steps in <a href="#appendix-e">Appendix E: Media Time Conversions</a>.</p>
    <div class="note" role="note">
     <table>
      <tbody>
@@ -2164,10 +2168,10 @@ which includes a <a data-link-type="dfn" href="#time-scale" id="ref-for-time-sca
        <td>No error
       <tr>
        <td>epoch
-       <td><code>unknown</code>
+       <td><code>null</code>
       <tr>
        <td>duration
-       <td><code>unknown</code>
+       <td><code>null</code>
       <tr>
        <td>buffered-time-ranges
        <td>Empty array
@@ -2179,7 +2183,7 @@ which includes a <a data-link-type="dfn" href="#time-scale" id="ref-for-time-sca
        <td>Empty array
       <tr>
        <td>position
-       <td>0
+       <td>0.0
       <tr>
        <td>playbackRate
        <td>1.0
@@ -2203,7 +2207,7 @@ which includes a <a data-link-type="dfn" href="#time-scale" id="ref-for-time-sca
        <td>False
       <tr>
        <td>resolution
-       <td><code>unknown</code>
+       <td><code>null</code>
       <tr>
        <td>audio-tracks
        <td>Empty array
@@ -2421,7 +2425,7 @@ with regards to the <code>state-token</code> as specified in <a href="#requests-
 rules as <code>codec-name</code> in <a href="#streaming-protocol-capabilities">§ 10.1 Streaming Protocol Capabilities</a>.</p>
     <dt data-md>time-scale
     <dd data-md>
-     <p>The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale③">time scale</a> used by all audio frames.  This allows senders to
+     <p>The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale②">time scale</a> used by all audio frames.  This allows senders to
 make audio-frame messages smaller by not including the time scale
 in each one.</p>
     <dt data-md>default-duration:
@@ -2443,7 +2447,7 @@ with regards to the <code>state-token</code> as specified in <a href="#requests-
 rules as <code>codec-name</code> in <a href="#streaming-protocol-capabilities">§ 10.1 Streaming Protocol Capabilities</a>.</p>
     <dt data-md>time-scale
     <dd data-md>
-     <p>The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale④">time scale</a> used by all video frames.  This allows senders to
+     <p>The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale③">time scale</a> used by all video frames.  This allows senders to
 make video-frame messages smaller by not including the time scale
 in each one.</p>
     <dt data-md>default-duration:
@@ -2469,7 +2473,7 @@ with regards to the <code>state-token</code> as specified in <a href="#requests-
      <p>The name of the data type used by the encoding.</p>
     <dt data-md>time-scale
     <dd data-md>
-     <p>The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑤">time scale</a> used by all data frames.  This allows senders to
+     <p>The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale④">time scale</a> used by all data frames.  This allows senders to
 make data-frame messages smaller by not including the time scale
 in each one.</p>
     <dt data-md>default-duration:
@@ -2541,18 +2545,18 @@ separate QUIC streams.</p>
     <dt data-md>encoding-id
     <dd data-md>
      <p>Identifies the media encoding to which this audio frame belongs.  This can be
-used to reference fields of the encoding (from the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer">audio-encoding-offer</a> message) such as the codec, codec properties, <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑥">time scale</a>, and default duration.
+used to reference fields of the encoding (from the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer">audio-encoding-offer</a> message) such as the codec, codec properties, <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑤">time scale</a>, and default duration.
 Referencing fields of the encoding through the encoding id
 helps to avoid sending duplicate information in every frame.</p>
     <dt data-md>start-time
     <dd data-md>
      <p>Identifies the beginning of the time range of the audio frame. The
-end time can be inferred from the start time and duration. The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑦">time scale</a> is equal to the value in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer①">audio-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
+end time can be inferred from the start time and duration. The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑥">time scale</a> is equal to the value in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer①">audio-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
      <p>If present, the duration of the audio frame. If not present, the
 duration is equal to the <code>default-duration</code> field of the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer②">audio-encoding-offer</a> message referenced by the <code>encoding-id</code>.
-The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑧">time scale</a> is equal to the value in the <code>time-scale</code> field of
+The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑦">time scale</a> is equal to the value in the <code>time-scale</code> field of
 the <a data-link-type="dfn" href="#audio-encoding-offer" id="ref-for-audio-encoding-offer③">audio-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
@@ -2579,7 +2583,7 @@ ending at the last dependent frame.</p>
     <dd data-md>
      <p>Identifies the media encoding to which this video frame belongs.
 This can be used to reference fields of the encoding such as the
-codec, codec properties, <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑨">time scale</a>, and default rotation.
+codec, codec properties, <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑧">time scale</a>, and default rotation.
 Referencing fields of the encoding through the encoding id helps
 to avoid sending duplicate information in every frame.</p>
     <dt data-md>sequence-number
@@ -2597,11 +2601,11 @@ If not present, the default value is [-1].</p>
     <dt data-md>start-time
     <dd data-md>
      <p>Identifies the beginning of the time range of the video frame.  The
-end time can be inferred from the start time and duration. The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale①⓪">time scale</a> is equal to the value in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#video-encoding-offer" id="ref-for-video-encoding-offer">video-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
+end time can be inferred from the start time and duration. The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale⑨">time scale</a> is equal to the value in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#video-encoding-offer" id="ref-for-video-encoding-offer">video-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
      <p>If present, the duration of the video frame. If not present, that
-means duration is unknown.  The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale①①">time scale</a> is equal to the value
+means duration is unknown.  The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale①⓪">time scale</a> is equal to the value
 in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#video-encoding-offer" id="ref-for-video-encoding-offer①">video-encoding-offer</a> message
 referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
@@ -2631,7 +2635,7 @@ that makes sense for a specific type of data.</p>
     <dt data-md>encoding-id
     <dd data-md>
      <p>Identifies the data encoding to which this data frame belongs.  This can be
-used to reference fields of the encoding such as the type of data and <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale①②">time scale</a>.  Referencing fields of the encoding through the encoding id
+used to reference fields of the encoding such as the type of data and <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale①①">time scale</a>.  Referencing fields of the encoding through the encoding id
 helps to avoid sending duplicate information in every frame.</p>
     <dt data-md>sequence-number
     <dd data-md>
@@ -2641,12 +2645,12 @@ Within an encoding, gaps in sequence numbers mean frames are missing.</p>
     <dt data-md>start-time
     <dd data-md>
      <p>Identifies the beginning of the time range of the data frame.  The
-end time can be inferred from the start time and duration.  The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale①③">time scale</a> is equal to the value in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#data-encoding-offer" id="ref-for-data-encoding-offer">data-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
+end time can be inferred from the start time and duration.  The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale①②">time scale</a> is equal to the value in the <code>time-scale</code> field of the <a data-link-type="dfn" href="#data-encoding-offer" id="ref-for-data-encoding-offer">data-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>duration
     <dd data-md>
      <p>If present, the duration of the data frame. If not present, the
 duration is equal to the <code>default-duration</code> field of the <a data-link-type="dfn" href="#data-encoding-offer" id="ref-for-data-encoding-offer①">data-encoding-offer</a> message referenced by the <code>encoding-id</code>.
-The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale①④">time scale</a> is equal to the value in the <code>time-scale</code> field of
+The <a data-link-type="dfn" href="#time-scale" id="ref-for-time-scale①③">time scale</a> is equal to the value in the <code>time-scale</code> field of
 the <a data-link-type="dfn" href="#data-encoding-offer" id="ref-for-data-encoding-offer②">data-encoding-offer</a> message referenced by the <code>encoding-id</code>.</p>
     <dt data-md>sync-time
     <dd data-md>
@@ -3241,6 +3245,15 @@ the wire smaller.</p>
 
 <span class="nc">microseconds </span><span class="p">=</span> <span class="kt">uint</span>
 
+<span class="nc">epoch-time </span><span class="p">=</span> <span class="kt">int</span>
+
+<span class="nc">media-timeline </span><span class="p">=</span> <span class="kt">float64</span>
+
+<span class="nc">media-timeline-range </span><span class="p">=</span> <span class="p">[</span>
+  <span class="nx">start</span><span class="p">:</span> <span class="nx">media-timeline</span><span class="p">,</span>
+  <span class="nx">end</span><span class="p">:</span> <span class="nx">media-timeline</span>
+<span class="p">]</span>
+
 <span class="c1">; type key 1001</span>
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auth-capabilities">auth-capabilities</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
@@ -3525,10 +3538,10 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; loop</span>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; paused</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; muted</span>
-  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="nx">float </span><span class="c1">; volume</span>
-  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; seek</span>
-  <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; fast-seek</span>
-  <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="nx">float </span><span class="c1">; playback-rate</span>
+  <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="kt">float64</span> <span class="c1">; volume</span>
+  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-timeline </span><span class="c1">; seek</span>
+  <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="nx">media-timeline </span><span class="c1">; fast-seek</span>
+  <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="kt">float64</span> <span class="c1">; playback-rate</span>
   <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; poster</span>
   <span class="p">?</span> <span class="mi">11</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text</span><span class="p">]</span> <span class="c1">; enabled-audio-track-ids</span>
   <span class="p">?</span> <span class="mi">12</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; selected-video-track-id</span>
@@ -3558,20 +3571,20 @@ the wire smaller.</p>
     <span class="nx">enough</span><span class="p">:</span> <span class="mi">4</span>
   <span class="p">)</span> <span class="c1">; loaded</span>
   <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-error </span><span class="p">:</span> <span class="nx">error</span>
-<span class="nx">  </span><span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="nx">media-time </span><span class="o">/</span> <span class="nx">unknown</span><span class="c1">; epoch</span>
-  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="o">/</span> <span class="nx">unknown </span><span class="o">/</span> <span class="nx">forever </span><span class="c1">; duration</span>
-  <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-time-range</span><span class="p">]</span> <span class="c1">; buffered-time-ranges</span>
-  <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-time-range</span><span class="p">]</span> <span class="c1">; seekable-time-ranges</span>
-  <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-time-range</span><span class="p">]</span> <span class="c1">; played-time-ranges</span>
-  <span class="p">?</span> <span class="mi">11</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; position</span>
-  <span class="p">?</span> <span class="mi">12</span><span class="p">:</span> <span class="nx">float </span><span class="p">:</span> <span class="nx">playbackRate</span>
+<span class="nx">  </span><span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="nx">epoch-time </span><span class="o">/</span> <span class="kc">null</span><span class="c1">; epoch</span>
+  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-timeline </span><span class="o">/</span> <span class="kc">null</span> <span class="c1">; duration</span>
+  <span class="p">?</span> <span class="mi">8</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-timeline-range</span><span class="p">]</span> <span class="c1">; buffered-time-ranges</span>
+  <span class="p">?</span> <span class="mi">9</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-timeline-range</span><span class="p">]</span> <span class="c1">; seekable-time-ranges</span>
+  <span class="p">?</span> <span class="mi">10</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">media-timeline-range</span><span class="p">]</span> <span class="c1">; played-time-ranges</span>
+  <span class="p">?</span> <span class="mi">11</span><span class="p">:</span> <span class="nx">media-timeline </span><span class="c1">; position</span>
+  <span class="p">?</span> <span class="mi">12</span><span class="p">:</span> <span class="kt">float64</span> <span class="p">:</span> <span class="nx">playbackRate</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">13</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; paused</span>
   <span class="p">?</span> <span class="mi">14</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; seeking</span>
   <span class="p">?</span> <span class="mi">15</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; stalled</span>
   <span class="p">?</span> <span class="mi">16</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; ended</span>
-  <span class="p">?</span> <span class="mi">17</span><span class="p">:</span> <span class="nx">float </span><span class="c1">; volume</span>
+  <span class="p">?</span> <span class="mi">17</span><span class="p">:</span> <span class="kt">float64</span> <span class="c1">; volume</span>
   <span class="p">?</span> <span class="mi">18</span><span class="p">:</span> <span class="nx">bool </span><span class="c1">; muted</span>
-  <span class="p">?</span> <span class="mi">19</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="o">/</span> <span class="nx">unknown </span><span class="c1">; resolution</span>
+  <span class="p">?</span> <span class="mi">19</span><span class="p">:</span> <span class="nx">video-resolution </span><span class="o">/</span> <span class="kc">null</span> <span class="c1">; resolution</span>
   <span class="p">?</span> <span class="mi">20</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">audio-track-state</span><span class="p">]</span> <span class="nx">audio-tracks</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">21</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">video-track-state</span><span class="p">]</span> <span class="nx">video-tracks</span>
 <span class="nx">  </span><span class="p">?</span> <span class="mi">22</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">text-track-state</span><span class="p">]</span> <span class="nx">text-tracks</span>
@@ -3604,16 +3617,11 @@ the wire smaller.</p>
 
 <span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="text-track-cue">text-track-cue</dfn> </span><span class="p">=</span> <span class="p">{</span>
   <span class="mi">1</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; id</span>
-  <span class="mi">2</span><span class="p">:</span> <span class="nx">media-time-range </span><span class="c1">; range</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">media-timeline-range </span><span class="c1">; range</span>
   <span class="mi">3</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; text</span>
 <span class="p">}</span>
 
-<span class="nc">media-time-range </span><span class="p">=</span> <span class="p">[</span>
-  <span class="nx">start</span><span class="p">:</span> <span class="nx">media-time</span><span class="p">,</span>
-  <span class="nx">end</span><span class="p">:</span> <span class="nx">media-time</span>
-<span class="p">]</span>
-
-<span class="nc"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="media-time">media-time</dfn> </span><span class="p">=</span> <span class="p">[</span>
+<span class="nc">media-sync-time </span><span class="p">=</span> <span class="p">[</span>
   <span class="nx">value</span><span class="p">:</span> <span class="kt">uint</span>
   <span class="nx">scale</span><span class="p">:</span> <span class="kt">uint</span>
 <span class="p">]</span>
@@ -3660,7 +3668,7 @@ the wire smaller.</p>
   <span class="nx">payload</span><span class="p">:</span> <span class="nx">bytes</span>
 <span class="nx">  </span><span class="p">?</span> <span class="nx">optional</span><span class="p">:</span> <span class="p">{</span>
     <span class="p">?</span> <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
-    <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+    <span class="p">?</span> <span class="mi">1</span><span class="p">:</span> <span class="nx">media-sync-time </span><span class="c1">; sync-time</span>
   <span class="p">}</span>
 <span class="p">]</span>
 
@@ -3673,7 +3681,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">4</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
   <span class="mi">5</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; payload</span>
   <span class="p">?</span> <span class="mi">6</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; video-rotation</span>
-  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+  <span class="p">?</span> <span class="mi">7</span><span class="p">:</span> <span class="nx">media-sync-time </span><span class="c1">; sync-time</span>
 <span class="p">}</span>
 
 <span class="c1">; type key 24</span>
@@ -3683,7 +3691,7 @@ the wire smaller.</p>
   <span class="p">?</span> <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; start-time</span>
   <span class="p">?</span> <span class="mi">3</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; duration</span>
   <span class="mi">4</span><span class="p">:</span> <span class="nx">any</span><span class="c1">; payload</span>
-  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-time </span><span class="c1">; sync-time</span>
+  <span class="p">?</span> <span class="mi">5</span><span class="p">:</span> <span class="nx">media-sync-time </span><span class="c1">; sync-time</span>
 <span class="p">}</span>
 
 <span class="nc">ratio </span><span class="p">=</span> <span class="p">[</span>
@@ -4025,6 +4033,26 @@ alphanumeric input.</p>
      <em>This section is non-normative.</em> 
     <p><img alt="Before a listening agent (client) and an advertising agent (server) may exchange application messages, they first need to discover each other through an mDNS exchange, establish a QUIC connection through ClientHello and ServerHello exchanges and sharing of certificates, and run an SPAKE2 authentication handshake and confirmation. They may also exchange messages to discover metadata at any time after a QUIC connection has been established." src="./images/entire_flow_chart.svg" style="width: 100%"></p>
    </section>
+   <h2 class="heading settled" id="appendix-e"><span class="content">Appendix E: Media Time Conversions</span><a class="self-link" href="#appendix-e"></a></h2>
+   <p>To convert between a media synchronization timestamp for a given audio or video
+frame and a media timeline value, the following formula can be used:</p>
+<pre>media-timeline-value = media-zero-time + (value / scale)
+</pre>
+   <p>Where:</p>
+   <ul>
+    <li data-md>
+     <p><code>media-zero-time</code> is the origin of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-timeline" id="ref-for-media-timeline③">media timeline</a> as defined in HTML,
+converted to an IEEE-754 double precision floating point number <a data-link-type="biblio" href="#biblio-ieee-754" title="IEEE Standard for Floating-Point Arithmetic">[IEEE-754]</a>.</p>
+    <li data-md>
+     <p><code>value</code> and <code>scale</code> are the values passed in the <code>sync-time</code> field of the
+corresponding <a data-link-type="dfn" href="#audio-frame" id="ref-for-audio-frame②">audio-frame</a> or <a data-link-type="dfn" href="#video-frame" id="ref-for-video-frame②">video-frame</a>.</p>
+    <li data-md>
+     <p><code>value / scale</code> should be computed with double floating point precision.</p>
+    <li data-md>
+     <p><code>media-timeline-value</code> is an IEEE-754 double precision floating point number <a data-link-type="biblio" href="#biblio-ieee-754" title="IEEE Standard for Floating-Point Arithmetic">[IEEE-754]</a>.</p>
+   </ul>
+   <p>In the event of an overflow in <code>media-timeline-value</code>, the maximum representable
+value should be used.</p>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -4099,7 +4127,6 @@ alphanumeric input.</p>
    <li><a href="#listening-agent">listening agent</a><span>, in § 3</span>
    <li><a href="#media-receiver">media receiver</a><span>, in § 1.1</span>
    <li><a href="#media-sender">media sender</a><span>, in § 1.1</span>
-   <li><a href="#media-time">media-time</a><span>, in § Unnumbered section</span>
    <li><a href="#open-screen-protocol-agent">open screen protocol agent</a><span>, in § 1.1</span>
    <li><a href="#open-screen-protocol-agent">osp agent</a><span>, in § 1.1</span>
    <li><a href="#presentation-change-event">presentation-change-event</a><span>, in § Unnumbered section</span>
@@ -4167,6 +4194,7 @@ alphanumeric input.</p>
      <li><span class="dfn-paneled" id="03499e48">media element</span>
      <li><span class="dfn-paneled" id="9e0b0141">media error code</span>
      <li><span class="dfn-paneled" id="649ace3d">media resource</span>
+     <li><span class="dfn-paneled" id="23808d57">media timeline</span>
      <li><span class="dfn-paneled" id="8d87f944">muted</span>
      <li><span class="dfn-paneled" id="552e1f12">networkState</span>
      <li><span class="dfn-paneled" id="3ce575bf">official playback position</span>
@@ -4319,6 +4347,8 @@ alphanumeric input.</p>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
+   <dt id="biblio-ieee-754">[IEEE-754]
+   <dd><a href="http://ieeexplore.ieee.org/servlet/opac?punumber=4610933"><cite>IEEE Standard for Floating-Point Arithmetic</cite></a>. 29 August 2008. URL: <a href="http://ieeexplore.ieee.org/servlet/opac?punumber=4610933">http://ieeexplore.ieee.org/servlet/opac?punumber=4610933</a>
    <dt id="biblio-itu-r-bt1359-1">[ITU-R-BT.1359-1]
    <dd><a href="https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf"><cite>ITU-R BT.1359-1, Relative Timing of Sound and Vision for Broadcasting</cite></a>. Recommendation. URL: <a href="https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf">https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1359-1-199811-I!!PDF-E.pdf</a>
    <dt id="biblio-rfc4122">[RFC4122]
@@ -4334,7 +4364,6 @@ alphanumeric input.</p>
   <div style="counter-reset:issue">
    <div class="issue"> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">[Issue #228]</a> <a class="issue-return" href="#issue-808efb48" title="Jump to section">↵</a></div>
    <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a> <a class="issue-return" href="#issue-dc398825" title="Jump to section">↵</a></div>
-   <div class="issue"> Refinements to Remote Playback protocol. <a href="https://github.com/w3c/openscreenprotocol/issues/159">[Issue #159]</a> <a class="issue-return" href="#issue-649c173f" title="Jump to section">↵</a></div>
    <div class="issue"> Add a back pressure signal for media remoting <a href="https://github.com/w3c/openscreenprotocol/issues/241">[Issue #241]</a> <a class="issue-return" href="#issue-9717419d" title="Jump to section">↵</a></div>
    <div class="issue"> Fate of metadata / authentication history when clearing browsing data. <a href="https://github.com/w3c/openscreenprotocol/issues/132">[Issue #132]</a> <a class="issue-return" href="#issue-8bf4aa9f" title="Jump to section">↵</a></div>
   </div>
@@ -4550,6 +4579,7 @@ let dfnPanelData = {
 "1d3efcfe": {"dfnID":"1d3efcfe","dfnText":"src (for source)","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-source-src"}],"title":"9. Remote Playback Protocol"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src"},
 "1fe3b46b": {"dfnID":"1fe3b46b","dfnText":"digitalsignature","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.2.1.3"}],"title":"4.2. Agent Certificates"}],"url":"https://tools.ietf.org/html/rfc5280#section-4.2.1.3"},
 "208b5961": {"dfnID":"208b5961","dfnText":"language tag","external":true,"refSections":[{"refs":[{"id":"ref-for-section-2"}],"title":"4.3. Metadata Discovery"}],"url":"https://tools.ietf.org/html/rfc5646#section-2"},
+"23808d57": {"dfnID":"23808d57","dfnText":"media timeline","external":true,"refSections":[{"refs":[{"id":"ref-for-media-timeline"},{"id":"ref-for-media-timeline\u2460"},{"id":"ref-for-media-timeline\u2461"}],"title":"9.1. Remote Playback State and Controls"},{"refs":[{"id":"ref-for-media-timeline\u2462"}],"title":"Appendix E: Media Time Conversions"}],"url":"https://html.spec.whatwg.org/multipage/media.html#media-timeline"},
 "34d12a4f": {"dfnID":"34d12a4f","dfnText":"instance name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.1.1"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-section-4.1.1\u2460"}],"title":"13.6.1. Instance and Display Names"}],"url":"https://tools.ietf.org/html/rfc6763#section-4.1.1"},
 "36aa3708": {"dfnID":"36aa3708","dfnText":"duration","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-duration"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-media-duration\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-duration"},
 "36c7793a": {"dfnID":"36c7793a","dfnText":"preload","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-preload"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-preload"},
@@ -4595,7 +4625,7 @@ let dfnPanelData = {
 "agent-status-request": {"dfnID":"agent-status-request","dfnText":"agent-status-request","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-status-request"},{"id":"ref-for-agent-status-request\u2460"},{"id":"ref-for-agent-status-request\u2461"}],"title":"4.3. Metadata Discovery"}],"url":"#agent-status-request"},
 "agent-status-response": {"dfnID":"agent-status-response","dfnText":"agent-status-response","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-status-response"},{"id":"ref-for-agent-status-response\u2460"}],"title":"4.3. Metadata Discovery"}],"url":"#agent-status-response"},
 "audio-encoding-offer": {"dfnID":"audio-encoding-offer","dfnText":"audio-encoding-offer","external":false,"refSections":[{"refs":[{"id":"ref-for-audio-encoding-offer"},{"id":"ref-for-audio-encoding-offer\u2460"},{"id":"ref-for-audio-encoding-offer\u2461"},{"id":"ref-for-audio-encoding-offer\u2462"},{"id":"ref-for-audio-encoding-offer\u2463"}],"title":"10.3. Audio"}],"url":"#audio-encoding-offer"},
-"audio-frame": {"dfnID":"audio-frame","dfnText":"audio-frame","external":false,"refSections":[{"refs":[{"id":"ref-for-audio-frame"}],"title":"10.3. Audio"},{"refs":[{"id":"ref-for-audio-frame\u2460"}],"title":"12.1. Protocol Extension Fields"}],"url":"#audio-frame"},
+"audio-frame": {"dfnID":"audio-frame","dfnText":"audio-frame","external":false,"refSections":[{"refs":[{"id":"ref-for-audio-frame"}],"title":"10.3. Audio"},{"refs":[{"id":"ref-for-audio-frame\u2460"}],"title":"12.1. Protocol Extension Fields"},{"refs":[{"id":"ref-for-audio-frame\u2461"}],"title":"Appendix E: Media Time Conversions"}],"url":"#audio-frame"},
 "auth-capabilities": {"dfnID":"auth-capabilities","dfnText":"auth-capabilities","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-capabilities"},{"id":"ref-for-auth-capabilities\u2460"}],"title":"6. Authentication"}],"url":"#auth-capabilities"},
 "auth-initiation-token": {"dfnID":"auth-initiation-token","dfnText":"auth-initiation-token","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-initiation-token"}],"title":"6. Authentication"}],"url":"#auth-initiation-token"},
 "auth-spake2-confirmation": {"dfnID":"auth-spake2-confirmation","dfnText":"auth-spake2-confirmation","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-confirmation"},{"id":"ref-for-auth-spake2-confirmation\u2460"},{"id":"ref-for-auth-spake2-confirmation\u2461"},{"id":"ref-for-auth-spake2-confirmation\u2462"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-confirmation"},
@@ -4633,7 +4663,6 @@ let dfnPanelData = {
 "listening-agent": {"dfnID":"listening-agent","dfnText":"listening agent","external":false,"refSections":[{"refs":[{"id":"ref-for-listening-agent"}],"title":"2.4. Non-Functional Requirements"},{"refs":[{"id":"ref-for-listening-agent\u2460"}],"title":"4. Transport and metadata discovery with QUIC"},{"refs":[{"id":"ref-for-listening-agent\u2461"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-listening-agent\u2462"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-listening-agent\u2463"}],"title":"9.2. Remote Playback API"},{"refs":[{"id":"ref-for-listening-agent\u2464"}],"title":"10. Streaming Protocol"}],"url":"#listening-agent"},
 "media-receiver": {"dfnID":"media-receiver","dfnText":"media receiver","external":false,"refSections":[{"refs":[{"id":"ref-for-media-receiver"}],"title":"10. Streaming Protocol"},{"refs":[{"id":"ref-for-media-receiver\u2460"}],"title":"10.3. Audio"}],"url":"#media-receiver"},
 "media-sender": {"dfnID":"media-sender","dfnText":"media sender","external":false,"refSections":[{"refs":[{"id":"ref-for-media-sender"}],"title":"10. Streaming Protocol"},{"refs":[{"id":"ref-for-media-sender\u2460"}],"title":"10.3. Audio"}],"url":"#media-sender"},
-"media-time": {"dfnID":"media-time","dfnText":"media-time","external":false,"refSections":[{"refs":[{"id":"ref-for-media-time"}],"title":"9.1. Remote Playback State and Controls"}],"url":"#media-time"},
 "open-screen-protocol-agent": {"dfnID":"open-screen-protocol-agent","dfnText":"Open Screen Protocol\nagent","external":false,"refSections":[{"refs":[{"id":"ref-for-open-screen-protocol-agent"}],"title":"2.1. General Requirements"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2460"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2461"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2462"}],"title":"5. Messages delivery using CBOR and QUIC streams"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2463"}],"title":"6. Authentication"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2464"},{"id":"ref-for-open-screen-protocol-agent\u2465"}],"title":"7.1. Presentation API"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2466"},{"id":"ref-for-open-screen-protocol-agent\u2467"}],"title":"9.2. Remote Playback API"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2468"}],"title":"10. Streaming Protocol"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2460\u24ea"}],"title":"12. Protocol Extensions"},{"refs":[{"id":"ref-for-open-screen-protocol-agent\u2460\u2460"}],"title":"13. Security and Privacy"}],"url":"#open-screen-protocol-agent"},
 "presentation-change-event": {"dfnID":"presentation-change-event","dfnText":"presentation-change-event","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-change-event"},{"id":"ref-for-presentation-change-event\u2460"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-change-event\u2461"},{"id":"ref-for-presentation-change-event\u2462"}],"title":"7.1. Presentation API"}],"url":"#presentation-change-event"},
 "presentation-connection-close-event": {"dfnID":"presentation-connection-close-event","dfnText":"presentation-connection-close-event","external":false,"refSections":[{"refs":[{"id":"ref-for-presentation-connection-close-event"},{"id":"ref-for-presentation-connection-close-event\u2460"}],"title":"7. Presentation Protocol"},{"refs":[{"id":"ref-for-presentation-connection-close-event\u2461"}],"title":"7.1. Presentation API"}],"url":"#presentation-connection-close-event"},
@@ -4673,10 +4702,10 @@ let dfnPanelData = {
 "streaming-session-terminate-response": {"dfnID":"streaming-session-terminate-response","dfnText":"streaming-session-terminate-response","external":false,"refSections":[{"refs":[{"id":"ref-for-streaming-session-terminate-response"}],"title":"10.2. Sessions"}],"url":"#streaming-session-terminate-response"},
 "suspicious-agent": {"dfnID":"suspicious-agent","dfnText":"suspicious\nagent","external":false,"refSections":[{"refs":[{"id":"ref-for-suspicious-agent"}],"title":"13.6. User Interface Considerations"}],"url":"#suspicious-agent"},
 "text-track-cue": {"dfnID":"text-track-cue","dfnText":"text-track-cue","external":false,"refSections":[{"refs":[{"id":"ref-for-text-track-cue"}],"title":"9.1. Remote Playback State and Controls"}],"url":"#text-track-cue"},
-"time-scale": {"dfnID":"time-scale","dfnText":"time\nscale","external":false,"refSections":[{"refs":[{"id":"ref-for-time-scale"},{"id":"ref-for-time-scale\u2460"}],"title":"8. Representation Of Time"},{"refs":[{"id":"ref-for-time-scale\u2461"}],"title":"9.1. Remote Playback State and Controls"},{"refs":[{"id":"ref-for-time-scale\u2462"},{"id":"ref-for-time-scale\u2463"},{"id":"ref-for-time-scale\u2464"}],"title":"10.2. Sessions"},{"refs":[{"id":"ref-for-time-scale\u2465"},{"id":"ref-for-time-scale\u2466"},{"id":"ref-for-time-scale\u2467"}],"title":"10.3. Audio"},{"refs":[{"id":"ref-for-time-scale\u2468"},{"id":"ref-for-time-scale\u2460\u24ea"},{"id":"ref-for-time-scale\u2460\u2460"}],"title":"10.4. Video"},{"refs":[{"id":"ref-for-time-scale\u2460\u2461"},{"id":"ref-for-time-scale\u2460\u2462"},{"id":"ref-for-time-scale\u2460\u2463"}],"title":"10.5. Data"}],"url":"#time-scale"},
+"time-scale": {"dfnID":"time-scale","dfnText":"time\nscale","external":false,"refSections":[{"refs":[{"id":"ref-for-time-scale"},{"id":"ref-for-time-scale\u2460"}],"title":"8. Representation Of Time"},{"refs":[{"id":"ref-for-time-scale\u2461"},{"id":"ref-for-time-scale\u2462"},{"id":"ref-for-time-scale\u2463"}],"title":"10.2. Sessions"},{"refs":[{"id":"ref-for-time-scale\u2464"},{"id":"ref-for-time-scale\u2465"},{"id":"ref-for-time-scale\u2466"}],"title":"10.3. Audio"},{"refs":[{"id":"ref-for-time-scale\u2467"},{"id":"ref-for-time-scale\u2468"},{"id":"ref-for-time-scale\u2460\u24ea"}],"title":"10.4. Video"},{"refs":[{"id":"ref-for-time-scale\u2460\u2460"},{"id":"ref-for-time-scale\u2460\u2461"},{"id":"ref-for-time-scale\u2460\u2462"}],"title":"10.5. Data"}],"url":"#time-scale"},
 "verified-display-name": {"dfnID":"verified-display-name","dfnText":"verified display name","external":false,"refSections":[{"refs":[{"id":"ref-for-verified-display-name"}],"title":"13.6.1. Instance and Display Names"}],"url":"#verified-display-name"},
 "video-encoding-offer": {"dfnID":"video-encoding-offer","dfnText":"video-encoding-offer","external":false,"refSections":[{"refs":[{"id":"ref-for-video-encoding-offer"},{"id":"ref-for-video-encoding-offer\u2460"},{"id":"ref-for-video-encoding-offer\u2461"},{"id":"ref-for-video-encoding-offer\u2462"}],"title":"10.4. Video"}],"url":"#video-encoding-offer"},
-"video-frame": {"dfnID":"video-frame","dfnText":"video-frame","external":false,"refSections":[{"refs":[{"id":"ref-for-video-frame"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-video-frame\u2460"}],"title":"10.4. Video"}],"url":"#video-frame"},
+"video-frame": {"dfnID":"video-frame","dfnText":"video-frame","external":false,"refSections":[{"refs":[{"id":"ref-for-video-frame"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-video-frame\u2460"}],"title":"10.4. Video"},{"refs":[{"id":"ref-for-video-frame\u2461"}],"title":"Appendix E: Media Time Conversions"}],"url":"#video-frame"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -5091,7 +5120,6 @@ let refsData = {
 "#listening-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"listening agent","type":"dfn","url":"#listening-agent"},
 "#media-receiver": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"media receiver","type":"dfn","url":"#media-receiver"},
 "#media-sender": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"media sender","type":"dfn","url":"#media-sender"},
-"#media-time": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"media-time","type":"dfn","url":"#media-time"},
 "#open-screen-protocol-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"open screen protocol agent","type":"dfn","url":"#open-screen-protocol-agent"},
 "#presentation-change-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-change-event","type":"dfn","url":"#presentation-change-event"},
 "#presentation-connection-close-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"presentation-connection-close-event","type":"dfn","url":"#presentation-connection-close-event"},
@@ -5177,6 +5205,7 @@ let refsData = {
 "https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"HTMLMediaElement","type":"interface","url":"https://html.spec.whatwg.org/multipage/media.html#htmlmediaelement"},
 "https://html.spec.whatwg.org/multipage/media.html#media-element": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"media element","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#media-element"},
 "https://html.spec.whatwg.org/multipage/media.html#media-resource": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"media resource","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#media-resource"},
+"https://html.spec.whatwg.org/multipage/media.html#media-timeline": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"media timeline","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#media-timeline"},
 "https://html.spec.whatwg.org/multipage/media.html#official-playback-position": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"official playback position","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#official-playback-position"},
 "https://html.spec.whatwg.org/multipage/media.html#poster-frame": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"poster frame","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#poster-frame"},
 "https://html.spec.whatwg.org/multipage/media.html#timeline-offset": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"timeline offset","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#timeline-offset"},
