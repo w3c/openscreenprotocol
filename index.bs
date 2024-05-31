@@ -601,7 +601,8 @@ groups of messages (with no ordering dependency across groups) should be sent in
 different QUIC streams.  In order to put multiple CBOR-serialized messages into
 the the same QUIC stream, the following is used.
 
-For each message, the [=OSP agent=] must write to the QUIC stream the following:
+For each message, the [=OSP agent=] must write into a unidirectional QUIC stream
+the following:
 
 1.  A type key representing the type of the message, encoded as a [=variable-length
     integer=] (see [[#appendix-a]] for type keys)
@@ -732,7 +733,7 @@ The messages used in this authentication method are: [=auth-spake2-handshake=],
 how [=auth-spake2-handshake=] and [=auth-spake2-confirmation=] are computed.
 
 The values `A` and `B` used in SPAKE2 are the [=agent fingerprints=] of the
-client and server, respectively. `pw` is the PSK presented to the user. 
+client and server, respectively. `pw` is the PSK presented to the user.
 
 The PSK presenter or the PSK consumer may initiate authentication (assuming the
 role of Alice in SPAKE2).
