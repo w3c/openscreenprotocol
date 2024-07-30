@@ -11,7 +11,7 @@ agent-info-response = {
 
 ; type key 120
 agent-info-event = {
-  1: agent-info ; agent-info
+  0: agent-info ; agent-info
 }
 
 agent-capability = &(
@@ -66,7 +66,7 @@ epoch-time = int
 media-timeline = float64
 
 media-timeline-range = [
-  start: media-timeline,
+  start: media-timeline
   end: media-timeline
 ]
 
@@ -164,7 +164,7 @@ presentation-start-response = {
   response
   1: &result ; result
   2: uint ; connection-id
-  3: ? uint ; http-response-code
+  ? 3: uint ; http-response-code
 }
 
 presentation-termination-source = &(
@@ -215,20 +215,20 @@ presentation-connection-open-request = {
 presentation-connection-open-response = {
   response
   1: &result ; result
-  2: uint; connection-id
-  3: uint; connection-count
+  2: uint ; connection-id
+  3: uint ; connection-count
 }
 
 ; type key 113
 presentation-connection-close-event = {
-  0: uint; connection-id
+  0: uint ; connection-id
   1: &(
     close-method-called: 1
     connection-object-discarded: 10
     unrecoverable-error-while-sending-or-receiving-message: 100
   ) ; reason
   ? 2: text ; error-message
-  3: uint; connection-count
+  3: uint ; connection-count
 }
 
 ; type key 121
@@ -265,7 +265,7 @@ remote-playback-availability-request = {
 ; type key 18
 remote-playback-availability-response = {
   response
-  1: [* url-availability]; url-availabilities
+  1: [* url-availability] ; url-availabilities
 }
 
 ; type key 114
@@ -350,7 +350,11 @@ remote-playback-id = uint
 
 remote-playback-controls = {
   ? 0: remote-playback-source ; source
-  ? 1: &(none, metadata, auto) ; preload
+  ? 1: &(
+    none: 0
+    metadata: 1
+    auto: 2
+  ) ; preload
   ? 2: bool ; loop
   ? 3: bool ; paused
   ? 4: bool ; muted
@@ -500,11 +504,11 @@ video-frame = {
 
 ; type key 24
 data-frame = {
-  0: uint; encoding-id
+  0: uint ; encoding-id
   ? 1: uint ; sequence-number
   ? 2: uint ; start-time
   ? 3: uint ; duration
-  4: any; payload
+  4: bytes ; payload
   ? 5: media-sync-time ; sync-time
 }
 
@@ -664,7 +668,6 @@ data-encoding-offer = {
   ? 3: uint ; default-duration
 }
 
-
 audio-encoding-request = {
   0: uint ; encoding-id
 }
@@ -687,21 +690,25 @@ video-rotation = &(
   video-rotation-270: 3
 )
 
+sender-stats-audio = {
+  0: uint ; encoding-id
+  ? 1: uint ; cumulative-sent-frames
+  ? 2: microseconds ; cumulative-encode-delay
+}
+
+sender-stats-video = {
+  0: uint ; encoding-id
+  ? 1: microseconds ; cumulative-sent-duration
+  ? 2: microseconds ; cumulative-encode-delay
+  ? 3: uint ; cumulative-dropped-frames
+}
+
 ; type key 131
 streaming-session-sender-stats-event = {
   0: uint; streaming-session-id
   1: microseconds ; system-time
-  ? 2: [1* {
-    0: uint ; encoding-id
-    ? 1: uint ; cumulative-sent-frames
-    ? 2: microseconds ; cumulative-encode-delay
-  }] ; audio
-  ? 3: [1* {
-    0: uint ; encoding-id
-    ? 1: microseconds ; cumulative-sent-duration
-    ? 2: microseconds ; cumulative-encode-delay
-    ? 3: uint ; cumulative-dropped-frames
-  }] ; video
+  ? 2: [1* sender-stats-audio] ; audio
+  ? 3: [1* sender-stats-video] ; video
 }
 
 streaming-buffer-status = &(
@@ -710,25 +717,29 @@ streaming-buffer-status = &(
   too-much-data: 2
 )
 
+receiver-stats-audio = {
+  0: uint ; encoding-id
+  ? 1: microseconds ; cumulative-received-duration
+  ? 2: microseconds ; cumulative-lost-duration
+  ? 3: microseconds ; cumulative-buffer-delay
+  ? 4: microseconds ; cumulative-decode-delay
+  ? 5: streaming-buffer-status ; remote-buffer-status
+}
+
+receiver-stats-video = {
+  0: uint ; encoding-id
+  ? 1: uint ; cumulative-decoded-frames
+  ? 2: uint ; cumulative-lost-frames
+  ? 3: microseconds ; cumulative-buffer-delay
+  ? 4: microseconds ; cumulative-decode-delay
+  ? 5: streaming-buffer-status ; remote-buffer-status
+}
+
 ; type key 132
 streaming-session-receiver-stats-event = {
   0: uint; streaming-session-id
   1: microseconds ; system-time
-  ? 2: [1* {
-    0: uint ; encoding-id
-    ? 1: microseconds ; cumulative-received-duration
-    ? 2: microseconds ; cumulative-lost-duration
-    ? 3: microseconds ; cumulative-buffer-delay
-    ? 4: microseconds ; cumulative-decode-delay
-    ? 5: streaming-buffer-status ; remote-buffer-status
-  }] ; audio
-  ? 3: [1* {
-    0: uint ; encoding-id
-    ? 1: uint ; cumulative-decoded-frames
-    ? 2: uint ; cumulative-lost-frames
-    ? 3: microseconds ; cumulative-buffer-delay
-    ? 4: microseconds ; cumulative-decode-delay
-    ? 5: streaming-buffer-status ; remote-buffer-status    
-  }] ; video
+  ? 2: [1* receiver-stats-audio] ; audio
+  ? 3: [1* receiver-stats-video] ; video
 }
 
