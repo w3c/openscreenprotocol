@@ -82,9 +82,9 @@ psk-input-method = &(
   qr-code: 1
 )
 
-auth-initiation-token = (
+auth-initiation-token = {
   ? 0: text ; token
-)
+}
 
 auth-spake2-psk-status = &(
   psk-needs-presentation: 0
