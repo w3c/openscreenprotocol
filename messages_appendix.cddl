@@ -82,9 +82,9 @@ psk-input-method = &(
   qr-code: 1
 )
 
-auth-initiation-token = (
+auth-initiation-token = {
   ? 0: text ; token
-)
+}
 
 auth-spake2-psk-status = &(
   psk-needs-presentation: 0
@@ -113,8 +113,9 @@ auth-status = {
 
 ; type key 1005
 auth-spake2-handshake = {
-  0: auth-spake2-psk-status ; psk-status
-  1: bytes ; public-value
+  0: auth-initiation-token; initiation-token
+  1: auth-spake2-psk-status ; psk-status
+  2: bytes ; public-value
 }
 
 watch-id = uint
