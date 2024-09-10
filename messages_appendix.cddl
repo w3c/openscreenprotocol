@@ -331,7 +331,7 @@ remote-playback-modify-request = {
   request
   1: remote-playback-id ; remote-playback-id
   2: remote-playback-controls ; controls
-)
+}
 
 ; type key 20
 remote-playback-modify-response = {
