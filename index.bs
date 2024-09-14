@@ -6,7 +6,7 @@ Status: w3c/ED
 ED: https://w3c.github.io/openscreenprotocol/
 TR: https://www.w3.org/TR/openscreenprotocol/
 Canonical URL: ED
-Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
+Editor: Mark Foltz, Google, https://github.com/markafoltz, w3cid 68454
 Repository: w3c/openscreenprotocol
 Abstract: The Open Screen Protocol is a suite of network protocols that allow
           user agents to implement the [[PRESENTATION-API|Presentation API]] and
