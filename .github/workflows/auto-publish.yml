@@ -50,3 +50,23 @@ jobs:
           W3C_WG_DECISION_URL: https://lists.w3.org/Archives/Public/public-secondscreen/2022Apr/0007.html
           W3C_BUILD_OVERRIDE: |
             status: WD
+
+      - name: Build and validate application.html, push to gh-pages branch if needed
+        uses: w3c/spec-prod@v2
+        with:
+          SOURCE: application.bs
+          GH_PAGES_BRANCH: gh-pages
+          W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
+          W3C_WG_DECISION_URL: https://lists.w3.org/Archives/Public/public-secondscreen/2022Apr/0007.html
+#          W3C_BUILD_OVERRIDE: |
+#            status: ED
+
+      - name: Build and validate network.html, push to gh-pages branch if needed
+        uses: w3c/spec-prod@v2
+        with:
+          SOURCE: network.bs
+          GH_PAGES_BRANCH: gh-pages
+          W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
+          W3C_WG_DECISION_URL: https://lists.w3.org/Archives/Public/public-secondscreen/2022Apr/0007.html
+#          W3C_BUILD_OVERRIDE: |
+#            status: ED
