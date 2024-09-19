@@ -4,7 +4,6 @@ Shortname: openscreenprotocol-network
 Level: None
 Status: w3c/ED
 ED: https://w3c.github.io/openscreenprotocol/network.html
-TR: https://www.w3.org/TR/openscreenprotocol/network.html
 Canonical URL: ED
 Editor: Mark Foltz, Google, https://github.com/markafoltz, w3cid 68454
 Repository: w3c/openscreenprotocol
