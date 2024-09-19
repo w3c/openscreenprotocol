@@ -6,7 +6,7 @@ Status: w3c/ED
 ED: https://w3c.github.io/openscreenprotocol/
 TR: https://www.w3.org/TR/openscreenprotocol/
 Canonical URL: ED
-Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
+Editor: Mark Foltz, Google, https://github.com/markafoltz, w3cid 68454
 Repository: w3c/openscreenprotocol
 Abstract: The Open Screen Protocol is a suite of network protocols that allow
           user agents to implement the [[PRESENTATION-API|Presentation API]] and
@@ -603,7 +603,8 @@ groups of messages (with no ordering dependency across groups) should be sent in
 different QUIC streams.  In order to put multiple CBOR-serialized messages into
 the the same QUIC stream, the following is used.
 
-For each message, the [=OSP agent=] must write to the QUIC stream the following:
+For each message, the [=OSP agent=] must write into a unidirectional QUIC stream
+the following:
 
 1.  A type key representing the type of the message, encoded as a [=variable-length
     integer=] (see [[#appendix-a]] for type keys)
