@@ -4,7 +4,6 @@ Shortname: openscreenprotocol-application
 Level: None
 Status: w3c/ED
 ED: https://w3c.github.io/openscreenprotocol/application.html
-TR: https://www.w3.org/TR/openscreenprotocol/application.html
 Canonical URL: ED
 Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
 Repository: w3c/openscreenprotocol
@@ -62,12 +61,13 @@ To maximize interoperability, browsers and devices should support the Open
 Screen Network Protocol, which provides a way for browsers and devices to
 discover, connect, and authenticate each other on a local area network.
 
-It allows a browser to present a URL, initiate remote playback of an HTML <l
-spec=html>[=media element=]</l>, and stream media data to another device.
+The Open Screen Application Protocol allows a browser to present a URL, initiate
+remote playback of an HTML <l spec=html>[=media element=]</l>, and stream media
+data to another device.
 
-The Open Screen Protocol is intended to be extensible, so that additional
-capabilities can be added over time.  This may include additions to existing Web
-APIs or new Web APIs.
+The Open Screen Application Protocol is intended to be extensible, so that
+additional capabilities can be added over time.  This may include additions to
+existing Web APIs or new Web APIs.
 
 The accompanying [explainer](https://w3c.github.io/openscreenprotocol/explainer.html)
 provides more background on the protocol.
