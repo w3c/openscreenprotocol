@@ -57,7 +57,7 @@ Internet-connected TVs, HDMI dongles, and smart speakers.
 The Open Screen Application Protocol is intended to be supported by a variety of
 connection technologies between browsers and devices.  There are specific
 requirements to allow browsers and devices to discover and authenticate to one
-another, but these requirements may be met by multiple possible implemenations.
+another, but these requirements may be met by multiple possible implementations.
 To maximize interoperability, browsers and devices should support the Open
 Screen Network Protocol, which provides a way for browsers and devices to
 discover, connect, and authenticate each other on a local area network.

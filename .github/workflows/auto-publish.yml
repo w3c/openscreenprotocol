@@ -57,6 +57,6 @@ jobs:
           SOURCE: application.bs
           TOOLCHAIN: bikeshed
           GH_PAGES_BRANCH: gh-pages
-          W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
+          W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN_APPLICATION }}
           W3C_WG_DECISION_URL: https://lists.w3.org/Archives/Public/public-secondscreen/2022Apr/0007.html
 
