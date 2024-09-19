@@ -43,6 +43,7 @@ url: https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-enco
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames; type: dfn; spec: RFC9000; text: CONNECTION_CLOSE Frames
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
+url: https://datatracker.ietf.org/doc/html/rfc9000#section-4.6; type: dfn; spec: RFC9000; text: max_streams
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
 url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
@@ -602,9 +603,9 @@ groups of messages (with no ordering dependency across groups) should be sent in
 different QUIC streams.  In order to put multiple CBOR-serialized messages into
 the the same QUIC stream, the following is used.
 
-NOTE: Open Screen Agents should configure QUIC stream limits to not hinder
-application performance, keeping in mind the number of concurrent streams that
-may be necessary for audio, video, or data streaming use cases.
+NOTE: Open Screen Agents should configure QUIC stream limits ([=MAX_STREAMS=])
+to not hinder application performance, keeping in mind the number of concurrent
+streams that may be necessary for audio, video, or data streaming use cases.
 
 For each message, the [=OSP agent=] must write into a unidirectional QUIC stream
 the following:
