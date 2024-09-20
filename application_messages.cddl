@@ -1,0 +1,698 @@
+; type key 10
+agent-info-request = {
+  request
+}
+
+; type key 11
+agent-info-response = {
+  response
+  1: agent-info ; agent-info
+}
+
+; type key 120
+agent-info-event = {
+  0: agent-info ; agent-info
+}
+
+agent-capability = &(
+  receive-audio: 1
+  receive-video: 2
+  receive-presentation: 3
+  control-presentation: 4
+  receive-remote-playback: 5
+  control-remote-playback: 6
+  receive-streaming: 7
+  send-streaming: 8
+)
+
+agent-info = {
+  0: text ; display-name
+  1: text ; model-name
+  2: [* agent-capability] ; capabilities
+  3: text ; state-token
+  4: [* text] ; locales
+}
+
+; type key 12
+agent-status-request = {
+  request
+  ? 1: status ; status
+}
+
+; type key 13
+agent-status-response = {
+  response
+  ? 1: status ; status
+}
+
+status = {
+  0: text ; status
+}
+
+request = (
+  0: request-id ; request-id
+)
+
+response = (
+  0: request-id ; request-id
+)
+
+request-id = uint
+
+microseconds = uint
+
+epoch-time = int
+
+media-timeline = float64
+
+media-timeline-range = [
+  start: media-timeline
+  end: media-timeline
+]
+
+watch-id = uint
+
+; type key 14
+presentation-url-availability-request = {
+  request
+  1: [1* text] ; urls
+  2: microseconds ; watch-duration
+  3: watch-id ; watch-id
+}
+
+; type key 15
+presentation-url-availability-response = {
+  response
+  1: [1* url-availability] ; url-availabilities
+}
+
+; type key 103
+presentation-url-availability-event = {
+  0: watch-id ; watch-id
+  1: [1* url-availability] ; url-availabilities
+}
+
+; idea: use HTTP response codes?
+url-availability = &(
+  available: 0
+  unavailable: 1
+  invalid: 10
+)
+
+; type key 104
+presentation-start-request = {
+  request
+  1: text ; presentation-id
+  2: text ; url
+  3: [* http-header] ; headers
+}
+
+http-header = [
+  key: text
+  value: text
+]
+
+; type key 105
+presentation-start-response = {
+  response
+  1: &result ; result
+  2: uint ; connection-id
+  ? 3: uint ; http-response-code
+}
+
+presentation-termination-source = &(
+  controller: 1
+  receiver: 2
+  unknown: 255
+)
+
+presentation-termination-reason = &(
+  application-request: 1
+  user-request: 2
+  receiver-replaced-presentation: 20
+  receiver-idle-too-long: 30
+  receiver-attempted-to-navigate: 31
+  receiver-powering-down: 100
+  receiver-error: 101
+  unknown: 255
+)
+
+; type key 106
+presentation-termination-request = {
+  request
+  1: text ; presentation-id
+  2: presentation-termination-reason ; reason
+}
+
+; type key 107
+presentation-termination-response = {
+  response
+  1: &result ; result
+}
+
+; type key 108
+presentation-termination-event = {
+  0: text ; presentation-id
+  1: presentation-termination-source ; source
+  2: presentation-termination-reason ; reason
+}
+
+; type key 109
+presentation-connection-open-request = {
+  request
+  1: text ; presentation-id
+  2: text ; url
+}
+
+; type key 110
+presentation-connection-open-response = {
+  response
+  1: &result ; result
+  2: uint ; connection-id
+  3: uint ; connection-count
+}
+
+; type key 113
+presentation-connection-close-event = {
+  0: uint ; connection-id
+  1: &(
+    close-method-called: 1
+    connection-object-discarded: 10
+    unrecoverable-error-while-sending-or-receiving-message: 100
+  ) ; reason
+  ? 2: text ; error-message
+  3: uint ; connection-count
+}
+
+; type key 121
+presentation-change-event = {
+  0: text ; presentation-id
+  1: uint ; connection-count
+}
+
+; type key 16
+presentation-connection-message = {
+  0: uint ; connection-id
+  1: bytes / text ; message
+}
+
+result = (
+  success: 1
+  invalid-url: 10
+  invalid-presentation-id: 11
+  timeout: 100
+  transient-error: 101
+  permanent-error: 102
+  terminating: 103
+  unknown-error: 199
+)
+
+; type key 17
+remote-playback-availability-request = {
+  request
+  1: [* remote-playback-source] ; sources
+  2: microseconds ; watch-duration
+  3: watch-id ; watch-id
+}
+
+; type key 18
+remote-playback-availability-response = {
+  response
+  1: [* url-availability] ; url-availabilities
+}
+
+; type key 114
+remote-playback-availability-event = {
+  0: watch-id ; watch-id
+  1: [* url-availability] ; url-availabilities
+}
+
+; type key 115
+remote-playback-start-request = {
+  request
+  1: remote-playback-id ; remote-playback-id
+  ? 2: [* remote-playback-source] ; sources
+  ? 3: [* text] ; text-track-urls
+  ? 4: [* http-header] ; headers
+  ? 5: remote-playback-controls ; controls
+  ? 6: {streaming-session-start-request-params} ; remoting
+}
+
+remote-playback-source = {
+  0: text; url
+  1: text; extended-mime-type
+}
+
+; type key 116
+remote-playback-start-response = {
+  response
+  ? 1: remote-playback-state ; state
+  ? 2: {streaming-session-start-response-params} ; remoting
+}
+
+; type key 117
+remote-playback-termination-request = {
+  request
+  1: remote-playback-id ; remote-playback-id
+  2: &(
+    user-terminated-via-controller: 11
+    unknown: 255
+  ) ; reason
+}
+
+; type key 118
+remote-playback-termination-response = {
+  response
+  1: &result ; result
+}
+
+; type key 119
+remote-playback-termination-event = {
+  0: remote-playback-id ; remote-playback-id
+  1: &(
+    receiver-called-terminate: 1
+    user-terminated-via-receiver: 2
+    receiver-idle-too-long: 30
+    receiver-powering-down: 100
+    receiver-crashed: 101
+    unknown: 255
+  ) ; reason
+}
+
+; type key 19
+remote-playback-modify-request = {
+  request
+  1: remote-playback-id ; remote-playback-id
+  2: remote-playback-controls ; controls
+)
+
+; type key 20
+remote-playback-modify-response = {
+  response
+  1: &result ; result
+  ? 2: remote-playback-state ; state
+}
+
+; type key 21
+remote-playback-state-event = {
+  0: remote-playback-id ; remote-playback-id
+  1: remote-playback-state ; state
+}
+
+remote-playback-id = uint
+
+remote-playback-controls = {
+  ? 0: remote-playback-source ; source
+  ? 1: &(
+    none: 0
+    metadata: 1
+    auto: 2
+  ) ; preload
+  ? 2: bool ; loop
+  ? 3: bool ; paused
+  ? 4: bool ; muted
+  ? 5: float64 ; volume
+  ? 6: media-timeline ; seek
+  ? 7: media-timeline ; fast-seek
+  ? 8: float64 ; playback-rate
+  ? 9: text ; poster
+  ? 10: [* text] ; enabled-audio-track-ids
+  ? 11: text ; selected-video-track-id
+  ? 12: [* added-text-track] ; added-text-tracks
+  ? 13: [* changed-text-track] ; changed-text-tracks
+}
+
+remote-playback-state = {
+  ? 0: {
+    0: bool ; rate
+    1: bool ; preload
+    2: bool ; poster
+    3: bool ; added-text-track
+    4: bool ; added-cues
+  } ; supports
+  ? 1: remote-playback-source ; source
+  ? 2: &(
+    empty: 0
+    idle: 1
+    loading: 2
+    no-source: 3
+  ) ; loading
+  ? 3: &(
+    nothing: 0
+    metadata: 1
+    current: 2
+    future: 3
+    enough: 4
+  ) ; loaded
+  ? 4: media-error ; error
+  ? 5: epoch-time / null ; epoch
+  ? 6: media-timeline / null ; duration
+  ? 7: [* media-timeline-range] ; buffered-time-ranges
+  ? 8: [* media-timeline-range] ; seekable-time-ranges
+  ? 9: [* media-timeline-range] ; played-time-ranges
+  ? 10: media-timeline ; position
+  ? 11: float64 ; playbackRate
+  ? 12: bool ; paused
+  ? 13: bool ; seeking
+  ? 14: bool ; stalled
+  ? 15: bool ; ended
+  ? 16: float64 ; volume
+  ? 17: bool ; muted
+  ? 18: video-resolution / null ; resolution
+  ? 19: [* audio-track-state] ; audio-tracks
+  ? 20: [* video-track-state] ; video-tracks
+  ? 21: [* text-track-state] ; text-tracks
+}
+
+added-text-track = {
+  0: &(
+    subtitles: 1
+    captions: 2
+    descriptions: 3
+    chapters: 4
+    metadata: 5
+  ) ; kind
+  ? 1: text ; label
+  ? 2: text ; language
+}
+
+changed-text-track = {
+  0: text ; id
+  1: text-track-mode ; mode
+  ? 2: [* text-track-cue] ; added-cues
+  ? 3: [* text] ; removed-cue-ids
+}
+
+text-track-mode = &(
+  disabled: 1
+  showing: 2
+  hidden: 3
+)
+
+text-track-cue = {
+  0: text ; id
+  1: media-timeline-range ; range
+  2: text ; text
+}
+
+media-sync-time = [
+  value: uint
+  scale: uint
+]
+
+media-error = [
+  code: &(
+    user-aborted: 1
+    network-error: 2
+    decode-error: 3
+    source-not-supported: 4
+    unknown-error: 5
+  )
+  message: text
+]
+
+track-state = (
+  0: text ; id
+  1: text ; label
+  2: text ; language
+)
+
+audio-track-state = {
+  track-state
+  3: bool ; enabled
+}
+
+video-track-state = {
+  track-state
+  3: bool ; selected
+}
+
+text-track-state = {
+  track-state
+  3: text-track-mode ; mode
+}
+
+; type key 22
+audio-frame = [
+  encoding-id: uint
+  start-time: uint
+  payload: bytes
+  ? optional: {
+    ? 0: uint ; duration
+    ? 1: media-sync-time ; sync-time
+  }
+]
+
+; type key 23
+video-frame = {
+  0: uint ; encoding-id
+  1: uint ; sequence-number
+  ? 2: [* int] ; depends-on
+  3: uint ; start-time
+  ? 4: uint ; duration
+  5: bytes ; payload
+  ? 6: uint ; video-rotation
+  ? 7: media-sync-time ; sync-time
+}
+
+; type key 24
+data-frame = {
+  0: uint ; encoding-id
+  ? 1: uint ; sequence-number
+  ? 2: uint ; start-time
+  ? 3: uint ; duration
+  4: bytes ; payload
+  ? 5: media-sync-time ; sync-time
+}
+
+ratio = [
+  antecedent: uint
+  consequent: uint
+]
+
+; type key 122
+streaming-capabilities-request = {
+  request
+}
+
+; type key 123
+streaming-capabilities-response = {
+  response
+  1: streaming-capabilities ; streaming-capabilities
+}
+
+streaming-capabilities = {
+  0: [* receive-audio-capability] ; receive-audio
+  1: [* receive-video-capability] ; receive-video
+  2: [* receive-data-capability] ; receive-data
+}
+
+format = {
+  0: text ; codec-name
+}
+
+receive-audio-capability = {
+  0: format ; codec
+  ? 1: uint ; max-audio-channels
+  ? 2: uint ; min-bit-rate
+}
+
+video-resolution = {
+  0: uint ; height
+  1: uint ; width
+}
+
+video-hdr-format = {
+  0: text; transfer-function
+  ? 1: text; hdr-metadata
+}
+
+receive-video-capability = {
+  0: format ; codec
+  ? 1: video-resolution ; max-resolution
+  ? 2: ratio ; max-frames-per-second
+  ? 3: uint ; max-pixels-per-second
+  ? 4: uint ; min-bit-rate
+  ? 5: ratio ; aspect-ratio
+  ? 6: text ; color-gamut
+  ? 7: [* video-resolution] ; native-resolutions
+  ? 8: bool ; supports-scaling
+  ? 9: bool ; supports-rotation
+  ? 10: [* video-hdr-format] ; hdr-formats
+}
+
+receive-data-capability = {
+  0: format ; data-type
+}
+
+; type key 124
+streaming-session-start-request = {
+  request
+  streaming-session-start-request-params
+}
+
+; type key 125
+streaming-session-start-response = {
+  response
+  streaming-session-start-response-params
+}
+
+; A separate group so it can be used in remote-playback-start-request
+streaming-session-start-request-params = (
+  1: uint ; streaming-session-id
+  2: [* media-stream-offer] ;  stream-offers
+  3: microseconds ; desired-stats-interval
+)
+
+; type key 126
+streaming-session-modify-request = {
+  request
+  streaming-session-modify-request-params
+}
+
+; A separate group so it can be used in remote-playback-start-response
+streaming-session-start-response-params = (
+  1: &result ; result
+  2: [* media-stream-request] ; stream-requests
+  3: microseconds ; desired-stats-interval  
+)
+
+streaming-session-modify-request-params = (
+  1: uint ; streaming-session-id
+  2: [* media-stream-request] ; stream-requests
+)
+
+; type key 127
+streaming-session-modify-response = {
+  response
+  1: &result ; result
+}
+
+; type key 128
+streaming-session-terminate-request = {
+  request
+  1: uint ; streaming-session-id
+}
+
+; type key 129
+streaming-session-terminate-response = {
+  response
+}
+
+; type key 130
+streaming-session-terminate-event = {
+  0: uint ; streaming-session-id
+}
+
+media-stream-offer = {
+  0: uint ; media-stream-id
+  ? 1: text ; display-name
+  ? 2: [1* audio-encoding-offer] ; audio
+  ? 3: [1* video-encoding-offer] ; video
+  ? 4: [1* data-encoding-offer] ; data
+}
+
+media-stream-request = {
+  0: uint ; media-stream-id
+  ? 1: audio-encoding-request ; audio
+  ? 2: video-encoding-request ; video
+  ? 3: data-encoding-request ; data
+}
+
+audio-encoding-offer = {
+  0: uint ; encoding-id
+  1: text ; codec-name
+  2: uint ; time-scale
+  ? 3: uint ; default-duration
+}
+
+video-encoding-offer = {
+  0: uint ; encoding-id
+  1: text ; codec-name
+  2: uint ; time-scale
+  ? 3: uint ; default-duration
+  ? 4: video-rotation ; default-rotation
+}
+
+data-encoding-offer = {
+  0: uint ; encoding-id
+  1: text ; data-type-name
+  2: uint ; time-scale
+  ? 3: uint ; default-duration
+}
+
+audio-encoding-request = {
+  0: uint ; encoding-id
+}
+
+video-encoding-request = {
+  0: uint ; encoding-id
+  ? 1: video-resolution ; target-resolution
+  ? 2: ratio ; max-frames-per-second
+}
+
+data-encoding-request = {
+  0: uint ; encoding-id
+}
+
+video-rotation = &(
+  ; Degrees clockwise
+  video-rotation-0: 0
+  video-rotation-90: 1
+  video-rotation-180: 2
+  video-rotation-270: 3
+)
+
+sender-stats-audio = {
+  0: uint ; encoding-id
+  ? 1: uint ; cumulative-sent-frames
+  ? 2: microseconds ; cumulative-encode-delay
+}
+
+sender-stats-video = {
+  0: uint ; encoding-id
+  ? 1: microseconds ; cumulative-sent-duration
+  ? 2: microseconds ; cumulative-encode-delay
+  ? 3: uint ; cumulative-dropped-frames
+}
+
+; type key 131
+streaming-session-sender-stats-event = {
+  0: uint; streaming-session-id
+  1: microseconds ; system-time
+  ? 2: [1* sender-stats-audio] ; audio
+  ? 3: [1* sender-stats-video] ; video
+}
+
+streaming-buffer-status = &(
+  enough-data: 0
+  insufficient-data: 1
+  too-much-data: 2
+)
+
+receiver-stats-audio = {
+  0: uint ; encoding-id
+  ? 1: microseconds ; cumulative-received-duration
+  ? 2: microseconds ; cumulative-lost-duration
+  ? 3: microseconds ; cumulative-buffer-delay
+  ? 4: microseconds ; cumulative-decode-delay
+  ? 5: streaming-buffer-status ; remote-buffer-status
+}
+
+receiver-stats-video = {
+  0: uint ; encoding-id
+  ? 1: uint ; cumulative-decoded-frames
+  ? 2: uint ; cumulative-lost-frames
+  ? 3: microseconds ; cumulative-buffer-delay
+  ? 4: microseconds ; cumulative-decode-delay
+  ? 5: streaming-buffer-status ; remote-buffer-status
+}
+
+; type key 132
+streaming-session-receiver-stats-event = {
+  0: uint; streaming-session-id
+  1: microseconds ; system-time
+  ? 2: [1* receiver-stats-audio] ; audio
+  ? 3: [1* receiver-stats-video] ; video
+}
+
