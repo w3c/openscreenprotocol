@@ -1,0 +1,48 @@
+<div class="highlight"><div><pre><span class="c1">; type key 1001</span>
+<span class="nc"><dfn>auth-capabilities</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-ease-of-input</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span> <span class="nx">psk-input-method</span><span class="p">]</span> <span class="c1">; psk-input-methods</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="kt">uint</span> <span class="c1">; psk-min-bits-of-entropy</span>
+<span class="p">}</span>
+
+<span class="nc">psk-input-method </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">numeric</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">qr-code</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="nc"><dfn>auth-initiation-token</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="p">?</span> <span class="mi">0</span><span class="p">:</span> <span class="nx">text </span><span class="c1">; token</span>
+<span class="p">}</span>
+
+<span class="nc">auth-spake2-psk-status </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">psk-needs-presentation</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">psk-shown</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">psk-input</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="c1">; type key 1003</span>
+<span class="nc"><dfn>auth-spake2-confirmation</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">bytes .size 64 </span><span class="c1">; confirmation-value</span>
+<span class="p">}</span>
+
+<span class="nc">auth-status-result </span><span class="p">=</span> <span class="o">&amp;</span><span class="p">(</span>
+  <span class="nx">authenticated</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="nx">unknown-error</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nx">timeout</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="nx">secret-unknown</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="nx">validation-took-too-long </span><span class="p">:</span> <span class="mi">4</span>
+  <span class="nx">proof-invalid</span><span class="p">:</span> <span class="mi">5</span>
+<span class="p">)</span>
+
+<span class="c1">; type key 1004</span>
+<span class="nc"><dfn>auth-status</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">auth-status-result </span><span class="c1">; result</span>
+<span class="p">}</span>
+
+<span class="c1">; type key 1005</span>
+<span class="nc"><dfn>auth-spake2-handshake</dfn> </span><span class="p">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="nx">auth-initiation-token</span><span class="c1">; initiation-token</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="nx">auth-spake2-psk-status </span><span class="c1">; psk-status</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="nx">bytes </span><span class="c1">; public-value</span>
+<span class="p">}</span>
+</pre></div></div>
