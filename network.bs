@@ -20,8 +20,9 @@ url: https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames;
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
 url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
-url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
+url: https://tools.ietf.org/html/rfc6763#section-4.1; type: dfn; spec: RFC6763; text: service instance name
 url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
+url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
 url: https://tools.ietf.org/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-256
 url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-512
@@ -203,7 +204,7 @@ steps:
 Note: The resulting string will be 44 bytes in length.
 
 
-Computing the certificate serial number {#computing-certificate-serial-number}
+Computing the Certificate Serial Number {#computing-certificate-serial-number}
 -------------------------------
 
 Let the <dfn>certificate serial number</dfn> be the result of the following
@@ -212,19 +213,40 @@ steps:
 <ol>
   <li>If the agent has never generated an agent certificate:
   <ol>
-    <li>Let the <dfn>certificate serial number base</dfn> be a 32-bit
-        pseudorandom integer value.</il>
+    <li>Let the <dfn>certificate serial number base</dfn> be a 128-bit
+        [=UUID=].</il>
     <li>Let the <dfn>certificate serial number counter</dfn> be a 32-bit
         unsigned integer, initially set to 0.</li>
   </ol>
   </li>
-  <li>Generate a 64-bit value as follows:
+  <li>Generate a 160-bit value as follows:
   <ol>
     <li>Increment the [=certificate serial number counter=] by one.</li>
-    <li>Assign the upper 32 bits to the [=certificate serial number base=].</li>
+    <li>Assign the upper 128 bits to the [=certificate serial number base=].</li>
     <li>Assign the lower 32 bits to the [=certificate serial number counter=].</il>
   </ol>
 </ol>
+
+Computing the Agent Hostname  {#computing-agent-hostname}
+-------------------------------
+
+Each time the agent changes its DNS-SD [=Service Instance Name=] or
+[=certificate serial number=] it must compute an <dfn>agent hostname</dfn> as
+follows.
+
+1. Set <var>hexSerialNumber</var> to the [[!RFC4648|base64]] encoded
+    [=certificate serial number=].
+1. Set <var>encodedInstanceName</var> to the result of the following:
+    1. Replace any character in the DNS-SD Instance Name other
+        than `[A-Za-z0-9-]` with a hyphen `-`.
+1. Set <var>encodedDomain</var> to the result of the following:
+    1. Replace any character in the DNS-SD Domain Name other
+        than `[A-Za-z0-9-]` with a hyphen `-`.
+1. Set the [=agent hostname=] to the string
+    <var>hexSerialNumber</var> + `.` + <var>encodedInstanceName</var> + `.` + <var>encodedDomain</var>
+
+TODO: Add an appendix with examples of metadata, DNS-SD records and certificate
+fields for an advertising agent.
 
 Transport and metadata discovery with QUIC {#transport}
 =======================================================
@@ -251,10 +273,7 @@ be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
 refuse incoming connections that lack these parameters.
 
 * The [[!RFC7301|ALPN]] used must be "osp".
-* The [[!RFC6066|server_name extension]] must be set to the following `host_name`:
-    `<sn>._openscreen._udp`.
-    * `<sn>` must be substituted with the [=certificate serial number=] as 
-        advertised in the `sn` mDNS TXT record by the advertising agent.
+* The [[!RFC6066|server_name extension]] must be set to the [=agent hostname=].
 * The [=agent fingerprints|agent fingerprint=] calculated for the received
     [=agent certificate=] must match the `fp` mDNS TXT record as advertised
     by the advertising agent.
@@ -283,6 +302,10 @@ The [=agent certificate=] must have the following characteristics:
         used to encode the identifiers.
 * Valid for signing.
 
+Each agent certificate has a unique [=certificate serial number=] computed
+using the steps above.  The value `<sn>` below should be substituted with that
+serial number.
+
 The following X.509 v3 fields are to be set as follows:
 
 <div class="assertion">
@@ -298,7 +321,7 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Serial Number</td>
-   <td>The [=certificate serial number=].</td>
+   <td>`<sn>` (as a big-endian integer)</td>
  </tr>
  <tr>
    <td>Public Key `AlgorithmIdentifier`</td>
@@ -331,7 +354,7 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Subject Name</td>
-   <td>CN = `<sn>`._openscreen._udp<br/>
+   <td>CN = [=agent hostname=]<br/>
        O = See note.<br/>
    </td>
  </tr>
@@ -348,9 +371,6 @@ The following X.509 v3 fields are to be set as follows:
 </div>
 
 Mandatory fields not mentioned above should be set according to [[!RFC5280]].
-
-The value `<sn>` above should be substituted with the [=certificate serial
-number=].
 
 Note: The OSP agent may use the implementer or device model name as the value
 for the `O` key for user interface and debugging purposes. It may use the agent
