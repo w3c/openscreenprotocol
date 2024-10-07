@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 6270e4735, updated Tue Aug 6 12:12:30 2024 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="ace18959a1ab0791a6a5095b02cc2821c280f531" name="revision">
+  <meta content="c76b1ccff785e888dab07dbd89734e4113710b69" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -632,7 +632,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-09-23">23 September 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-10-07">7 October 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1254,6 +1254,9 @@ order, that group of messages must be sent in one QUIC stream.  Independent
 groups of messages (with no ordering dependency across groups) should be sent in
 different QUIC streams.  In order to put multiple CBOR-serialized messages into
 the the same QUIC stream, the following is used.</p>
+   <p class="note" role="note"><span class="marker">NOTE:</span> Open Screen Agents should configure QUIC stream limits (<a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#section-4.6" id="ref-for-section-4.6">MAX_STREAMS</a>)
+to not hinder application performance, keeping in mind the number of concurrent
+streams that may be necessary for audio, video, or data streaming use cases.</p>
    <p>For each message, the <a data-link-type="dfn" href="#open-screen-protocol-agent" id="ref-for-open-screen-protocol-agent③">OSP agent</a> must write into a unidirectional QUIC stream
 the following:</p>
    <ol>
@@ -4305,6 +4308,7 @@ value should be used.</p>
     <a data-link-type="biblio">[RFC9000]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="a6ddbb58">connection_close frames</span>
+     <li><span class="dfn-paneled" id="d558f973">max_streams</span>
      <li><span class="dfn-paneled" id="fc89f77a">transport parameter encoding</span>
      <li><span class="dfn-paneled" id="6c09a22e">variable-length integer</span>
      <li><span class="dfn-paneled" id="4be354e2">variable-length integer encoding</span>
@@ -4655,6 +4659,7 @@ let dfnPanelData = {
 "certificate-serial-number-counter": {"dfnID":"certificate-serial-number-counter","dfnText":"certificate serial number counter","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number-counter"},{"id":"ref-for-certificate-serial-number-counter\u2460"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-serial-number-counter"},
 "controller": {"dfnID":"controller","dfnText":"controller","external":false,"refSections":[{"refs":[{"id":"ref-for-controller"}],"title":"1.1. Terminology"},{"refs":[{"id":"ref-for-controller\u2460"}],"title":"2.2. Presentation API Requirements"},{"refs":[{"id":"ref-for-controller\u2461"}],"title":"2.3. Remote Playback API Requirements"},{"refs":[{"id":"ref-for-controller\u2462"}],"title":"7.1. Presentation API"}],"url":"#controller"},
 "d0a3e1e6": {"dfnID":"d0a3e1e6","dfnText":"videoHeight","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-video-videoheight"}],"title":"9. Remote Playback Protocol"},{"refs":[{"id":"ref-for-dom-video-videoheight\u2460"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-video-videoheight"},
+"d558f973": {"dfnID":"d558f973","dfnText":"max_streams","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.6"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#section-4.6"},
 "d834f763": {"dfnID":"d834f763","dfnText":"NETWORK_EMPTY","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-media-network_empty"}],"title":"9.1. Remote Playback State and Controls"}],"url":"https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty"},
 "da57602e": {"dfnID":"da57602e","dfnText":"type","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-source-type"}],"title":"9. Remote Playback Protocol"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type"},
 "data-encoding-offer": {"dfnID":"data-encoding-offer","dfnText":"data-encoding-offer","external":false,"refSections":[{"refs":[{"id":"ref-for-data-encoding-offer"},{"id":"ref-for-data-encoding-offer\u2460"},{"id":"ref-for-data-encoding-offer\u2461"},{"id":"ref-for-data-encoding-offer\u2462"}],"title":"10.5. Data"}],"url":"#data-encoding-offer"},
@@ -5180,6 +5185,7 @@ let refsData = {
 "https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"connection_close frames","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
 "https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"transport parameter encoding","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin"},
 "https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"variable-length integer","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
+"https://datatracker.ietf.org/doc/html/rfc9000#section-4.6": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"max_streams","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#section-4.6"},
 "https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src": {"export":true,"for_":["source"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"src","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src"},
 "https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type": {"export":true,"for_":["source"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"type","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type"},
 "https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"media error code","type":"dfn","url":"https://html.spec.whatwg.org/multipage/media.html#concept-mediaerror-code"},
