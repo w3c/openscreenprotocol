@@ -203,6 +203,29 @@ steps:
 Note: The resulting string will be 44 bytes in length.
 
 
+Computing the certificate serial number {#computing-certificate-serial-number}
+-------------------------------
+
+Let the <dfn>certificate serial number</dfn> be the result of the following
+steps:
+
+<ol>
+  <li>If the agent has never generated an agent certificate:
+  <ol>
+    <li>Let the <dfn>certificate serial number base</dfn> be a 32-bit
+        pseudorandom integer value.</il>
+    <li>Let the <dfn>certificate serial number counter</dfn> be a 32-bit
+        unsigned integer, initially set to 0.</li>
+  </ol>
+  </li>
+  <li>Generate a 64-bit value as follows:
+  <ol>
+    <li>Increment the [=certificate serial number counter=] by one.</li>
+    <li>Assign the upper 32 bits to the [=certificate serial number base=].</li>
+    <li>Assign the lower 32 bits to the [=certificate serial number counter=].</il>
+  </ol>
+</ol>
+
 Transport and metadata discovery with QUIC {#transport}
 =======================================================
 
@@ -229,9 +252,13 @@ refuse incoming connections that lack these parameters.
 
 * The [[!RFC7301|ALPN]] used must be "osp".
 * The [[!RFC6066|server_name extension]] must be set to the following `host_name`:
-    `<fp>._openscreen._udp`.
-    * `<fp>` must be substituted with the [=agent fingerprint=] as used in mDNS TXT.
-
+    `<sn>._openscreen._udp`.
+    * `<sn>` must be substituted with the [=certificate serial number=] as 
+        advertised in the `sn` mDNS TXT record by the advertising agent.
+* The [=agent fingerprints|agent fingerprint=] calculated for the received
+    [=agent certificate=] must match the `fp` mDNS TXT record as advertised
+    by the advertising agent.
+    
 An OSP Agent must not send TLS early data.
 
 Issue(228): Register ALPN with IANA.
@@ -255,25 +282,6 @@ The [=agent certificate=] must have the following characteristics:
      * [[!X690]] specifies the Distinguished Encoding Rules (DER) representation
         used to encode the identifiers.
 * Valid for signing.
-
-Let the <dfn>certificate serial number</dfn> be the result of the following steps:
-
-<ol>
-  <li>If the agent has never generated an agent certificate:
-  <ol>
-    <li>Let the <dfn>certificate serial number base</dfn> be a 32-bit
-        pseudorandom integer value.</il>
-    <li>Let the <dfn>certificate serial number counter</dfn> be a 32-bit
-        unsigned integer, initially set to 0.</li>
-  </ol>
-  </li>
-  <li>Generate a 64-bit value as follows:
-  <ol>
-    <li>Increment the [=certificate serial number counter=] by one.</li>
-    <li>Assign the upper 32 bits to the [=certificate serial number base=].</li>
-    <li>Assign the lower 32 bits to the [=certificate serial number counter=].</il>
-  </ol>
-</ol>
 
 The following X.509 v3 fields are to be set as follows:
 
@@ -313,7 +321,8 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Issuer Name</td>
-   <td>CN = The `model-name` from the `agent-info` message.<br/>
+   <td>CN = The `model-name` from the `agent-info` message, as
+            also set in the `agent-info` message.<br/>
        O = See note.<br/>
        L = See note.<br/>
        ST = See note.<br/>
@@ -322,7 +331,7 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Subject Name</td>
-   <td>CN = `<fp>`._openscreen._udp<br/>
+   <td>CN = `<sn>`._openscreen._udp<br/>
        O = See note.<br/>
    </td>
  </tr>
@@ -579,7 +588,7 @@ considered public:
 
 1. IP addresses and ports used by the Open Screen Network Protocol.
 1. Data advertised through mDNS, including the display name prefix, the
-    certificate fingerprint, and the metadata version.
+    certificate fingerprint and serial number, and the metadata version.
 
 ### Cross Origin State Considerations ### {#cross-origin-state}
 
