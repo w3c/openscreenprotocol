@@ -1,0 +1,860 @@
+<pre class='metadata'>
+Title: Open Screen Network Protocol
+Shortname: openscreenprotocol-network
+Level: None
+Status: w3c/ED
+ED: https://w3c.github.io/openscreenprotocol/network.html
+Canonical URL: ED
+Editor: Mark Foltz, Google, https://github.com/markafoltz, w3cid 68454
+Repository: w3c/openscreenprotocol
+Abstract: The Open Screen Network Protocol is a network protocol that allows
+          two Open Screen agents to establish a secure network transport in an
+          interoperable fashion.
+Group: secondscreenwg
+Markup Shorthands: markdown yes, dfn yes, idl yes, markup yes
+</pre>
+
+<pre class="anchors">
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin; type: dfn; spec: RFC9000; text: Transport Parameter Encoding
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames; type: dfn; spec: RFC9000; text: CONNECTION_CLOSE Frames
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
+url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
+url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
+url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
+url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
+url: https://tools.ietf.org/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
+url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-256
+url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-512
+url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md2
+url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
+url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
+url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
+url: https://www.iso.org/standard/62021.html#; type: dfn; spec: iso18004; text: QR code
+url: https://tools.ietf.org/html/rfc5280#section-4.2.1.3; type: dfn; spec: RFC5280; text: digitalSignature
+url: https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3; type: dfn; spec: RFC8446; text: signature scheme
+</pre>
+
+Introduction {#introduction}
+============================
+
+The Open Screen Network Protocol provides a baseline set of network protocols
+for browsers and devices to discover each other and establish a secure network
+connection.  This connection can be used as the transport layer for the
+[Open Screen Application Protocol](https://w3c.github.io/openscreenprotocol/application.html).
+
+The Application Protocol and the Network Protocol are independent.  However the
+Network Protocol is designed to meet the requirements of the Application
+Protocol.  It may or may not be suitable for other application-level protocols
+that make use of its transport layer.
+
+<!-- TODO: Define xrefs for the protocol names below. -->
+
+The fundamental flow of the network protocol is:
+
+- Use of [[RFC6763|DNS-SD]] for agents to discover each other on the local area
+    network.
+- Use of [[!RFC8446|TLS 1.3]] with self-signed certificates to establish an
+    initial, unauthenticated connection.
+- Use of \[SPAKE2](https://tools.ietf.org/html/draft-irtf-cfrg-spake2-26) to
+    validate mutual identity and exchange certificates.
+- Use of [[!RFC9000|QUIC]] as a transport layer over IP.
+
+The flow chart in [[#appendix-c]] illustrates the entire sequence of events.
+
+The accompanying
+[explainer](https://w3c.github.io/openscreenprotocol/explainer.html) provides
+more background on the protocol.
+
+Terminology {#terminology}
+--------------------------
+
+An <dfn lt="open screen network protocol agent|osp agent">Open Screen Network
+Protocol agent</dfn> (or OSP agent) is any implementation of this protocol
+(browser, display, speaker, or other software).
+
+
+Requirements {#requirements}
+============================
+
+General Requirements {#requirements-general}
+--------------------------------------------------------------
+
+1.  An [=Open Screen Network Protocol agent=] must be able to discover the presence of
+    another OSP agent connected to the same IPv4 or IPv6 subnet and reachable by
+    IP multicast.
+
+2.  An OSP agent must be able to obtain the IPv4 or IPv6 address of
+    the agent, a display name for the agent, and an IP port number for
+    establishing a network transport to the agent.
+
+Non-Functional Requirements {#requirements-non-functional}
+----------------------------------------------------------
+
+1.  It should be possible to implement the Open Screen Network Protocol using modest
+    hardware requirements, similar to what is found in a low end smartphone,
+    smart TV or streaming device. See the [Device
+    Specifications](https://w3c.github.io/openscreenprotocol/device_specs.html)
+    document for agent hardware specifications.
+
+2.  The discovery and connection protocols should minimize power consumption,
+    especially on a [=listening agent=] which is likely to be battery
+    powered.
+
+3.  The protocol should minimize the amount of information provided to a passive
+    network observer about the identity of the user or activities on the agent, including
+    presentations, remote playbacks, or the content of media streams.
+
+4.  The protocol should prevent active network attackers from impersonating a
+    display and observing or altering data intended for the controller or
+    receiver.
+
+5.  A listening agent should be able to discover quickly when an [=advertising
+    agent=] becomes available or unavailable (i.e., when it connects or
+    disconnects from the network).
+
+6.  Agents should be able to remember that a user authenticated another agent.
+    This means it is not required for the user to intervene and re-authenticate
+    each time an agent wants to connect to an agent that the user has already
+    authenticated.
+
+7.  Message latency between agents should be minimized to permit interactive
+    use.  For example, it should be comfortable to type in a form in one agent
+    and have the text appear in the presentation in real time.  Real-time
+    latency for gaming or mouse use is ideal, but not a requirement.
+
+
+Discovery with mDNS {#discovery}
+===============================
+
+[=Open Screen Network Protocol Agents=] discover one another by advertising and
+listening for information identifying themselves along with an IP service
+endpoint.  Agent advertisement and discovery through [[RFC6763|DNS-SD]] and
+[[RFC6762|mDNS]] is defined by this specification and is mandatory to implement
+by all agents. However, agents are free to implement additional discovery
+mechanisms, such as querying for the same DNS-SD records via unicast DNS.
+
+OSP agents must use the DNS-SD [=Service Name=] `_openscreen._udp`.
+
+An <dfn noexport>advertising agent</dfn> is one that responds to mDNS queries
+for `_openscreen._udp.local`.  Such an agent should have a <dfn noexport>display
+name</dfn> (a non-empty string) that is a human readable description of the
+presentation display, e.g. "Living Room TV."
+
+A <dfn noexport>listening agent</dfn> is one that sends mDNS queries for
+`_openscreen._udp.local`.  Listening agents may have a display name.
+
+Advertising agents must use a DNS-SD [=Instance Name=] that is a prefix of the
+agent's display name.  If the Instance Name is not the complete display name, it
+must be terminated by a null (`\000`) character, so that a listening agent knows
+it has been truncated.
+
+Advertising agents must follow the mDNS [=conflict resolution=] procedure, to
+prevent multiple advertising agents from using the same DNS-SD Instance Name.
+
+Agents should be careful when displaying Instance Names to users; see
+[[#instance-names]] for guidelines on Instance Name display.
+
+Advertising agents must include DNS TXT records with the following
+keys and values:
+
+: fp
+:: The [=agent fingerprint=] of the advertising agent. The steps to compute
+    the agent fingerprint are defined below.
+
+: mv
+:: An unsigned integer value that indicates that metadata has changed.   The
+    advertising agent must update it to a greater value.  This signals to the
+    listening agent that it should connect to the advertising agent to discover
+    updated metadata.  The value should be encoded as a
+    [=variable-length integer=].
+
+: at
+:: An alphanumeric, unguessable token consisting of characters from the set
+    `[A-Za-z0-9+/]`.
+
+Note: `at` prevents off-LAN parties from attempting authentication; see
+[[#remote-active-mitigations]].  `at` should have at least 32 bits of true
+entropy to make brute force attacks impractical.
+
+NOTE: If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons) it should attempt to retain cached and valid mDNS records so that
+discovery state is preserved when the network connection is resumed.
+
+<!-- TODO: Add examples of sample mDNS records. -->
+
+Future extensions to this QUIC-based protocol can use the same metadata
+discovery process to indicate support for those extensions, through a
+capabilities mechanism to be determined. If a future version of the Open Screen
+Network Protocol uses mDNS but breaks compatibility with the metadata discovery process,
+it should change the DNS-SD service name to a new value, indicating a new
+mechanism for metadata discovery.
+
+
+Computing the Agent Fingerprint {#computing-agent-fingerprint}
+-------------------------------
+
+The <dfn>agent fingerprint</dfn> of an agent is computed by following these
+steps:
+
+1. Compute the [[RFC7469#section-2.4|SKPI Fingerprint]] of the [=agent certificate=]
+    according to [[!RFC7469]] using [[RFC6234|SHA-256]] as the hash algorithm.
+2. base64 encode the result of Step 1 according to [[!RFC4648]].
+
+Note: The resulting string will be 44 bytes in length.
+
+
+Transport and metadata discovery with QUIC {#transport}
+=======================================================
+
+If a [=listening agent=] wants to connect to or learn further metadata about an
+[=advertising agent=], it initiates a [[!RFC9000|QUIC]] connection to the IP and port
+from its SRV record.  Prior to authentication, a message may be exchanged (such
+as further metadata), but such info should be treated as unverified (such as
+indicating to a user that a display name of an unauthenticated agent is
+unverified).
+
+The connection IDs used both by agents should be zero length.  If zero length
+connection IDs are chosen, agents are restricted from changing IP or port
+without establishing a new QUIC connection.  In such cases, agents must
+establish a new QUIC connection in order to change IP or port.
+
+TLS 1.3 {#tls-13}
+-----------------
+
+When an [=OSP Agent=] makes a QUIC connection to another agent, it must use
+[[!RFC8446|TLS 1.3]] to secure the connection.  TLS 1.3 should be used with the
+following application-specific parameters to indicate that the connection will
+be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
+refuse incoming connections that lack these parameters.
+
+* The [[!RFC7301|ALPN]] used must be "osp".
+* The [[!RFC6066|server_name extension]] must be set to the following `host_name`:
+    `<fp>._openscreen._udp`.
+    * `<fp>` must be substituted with the [=agent fingerprint=] as used in mDNS TXT.
+
+An OSP Agent must not send TLS early data.
+
+Issue(228): Register ALPN with IANA.
+
+Agent Certificates {#certificates}
+----------------------------------
+
+Each OSP Agent must generate an [[!RFC5280|X.509 v3]] <dfn>agent
+certificate</dfn> containing a public key to be used with the TLS 1.3
+certificate exchange.  Both [=advertising agents=] and [=listening agents=] must
+use the [=agent certificate=] in TLS 1.3 `Certificate` messages when making a
+QUIC connection.
+
+The [=agent certificate=] must have the following characteristics:
+
+* 256-bit ECDSA public key.
+* Self-signed.
+* Support the `ecdsa_secp256r1_sha256` [=signature scheme=] as defined in TLS 1.3.
+     * The `AlgorithmIdentifier` values are as defined in [[!RFC5480]] (for public
+        keys) and [[!RFC5758]] (for signature schemes).
+     * [[!X690]] specifies the Distinguished Encoding Rules (DER) representation
+        used to encode the identifiers.
+* Valid for signing.
+
+Let the <dfn>certificate serial number</dfn> be the result of the following steps:
+
+<ol>
+  <li>If the agent has never generated an agent certificate:
+  <ol>
+    <li>Let the <dfn>certificate serial number base</dfn> be a 32-bit
+        pseudorandom integer value.</il>
+    <li>Let the <dfn>certificate serial number counter</dfn> be a 32-bit
+        unsigned integer, initially set to 0.</li>
+  </ol>
+  </li>
+  <li>Generate a 64-bit value as follows:
+  <ol>
+    <li>Increment the [=certificate serial number counter=] by one.</li>
+    <li>Assign the upper 32 bits to the [=certificate serial number base=].</li>
+    <li>Assign the lower 32 bits to the [=certificate serial number counter=].</il>
+  </ol>
+</ol>
+
+The following X.509 v3 fields are to be set as follows:
+
+<div class="assertion">
+<table>
+<thead>
+ <th>Field</th>
+ <th>Value</th>
+</thead>
+<tbody>
+ <tr>
+   <td>Version Number</td>
+   <td>3</td>
+ </tr>
+ <tr>
+   <td>Serial Number</td>
+   <td>The [=certificate serial number=].</td>
+ </tr>
+ <tr>
+   <td>Public Key `AlgorithmIdentifier`</td>
+   <td>
+      <ul>
+        <li>ECC OID: `1.2.840.10045.2.1`</li>
+        <li>ECDSA 256 OID: `1.2.840.10045.3.1.7`</li>
+        <li>DER representation: `301306072a8648ce3d020106082a8648ce3d030107`</li>
+      </ol>
+   </td>
+ </tr>
+ <tr>
+   <td>Signature `AlgorithmIdentifier`</td>
+   <td>
+     <ul>
+       <li>OID: `1.2.840.10045.4.3.2`</li>
+       <li>DER representation: `300a06082a8648ce3d040302`</li>
+     </ul>
+   </td>
+ </tr>
+ <tr>
+   <td>Issuer Name</td>
+   <td>CN = The `model-name` from the `agent-info` message.<br/>
+       O = See note.<br/>
+       L = See note.<br/>
+       ST = See note.<br/>
+       C = See note.<br/>
+    </td>
+ </tr>
+ <tr>
+   <td>Subject Name</td>
+   <td>CN = `<fp>`._openscreen._udp<br/>
+       O = See note.<br/>
+   </td>
+ </tr>
+ <tr>
+   <td>Subject Public Key Algorithm</td>
+   <td>Elliptic Curve Public Key</td>
+ </tr>
+ <tr>
+   <td>Certificate Key usage</td>
+   <td>[=digitalSignature=]</td>
+ </tr>
+</tbody>
+</table>
+</div>
+
+Mandatory fields not mentioned above should be set according to [[!RFC5280]].
+
+The value `<sn>` above should be substituted with the [=certificate serial
+number=].
+
+Note: The OSP agent may use the implementer or device model name as the value
+for the `O` key for user interface and debugging purposes. It may use the agent
+implementer's or device manufacturer's location as the value for the location
+keys (`L`, `ST`, and `C`) for user interface and debugging purposes.
+
+If an OSP agent sees an [=agent certificate=] it has not yet verified through
+[[#authentication]], it must treat that agent as unverified and initiate
+authentication with that agent before allowing additional messages to be
+exchanged with that agent.
+
+If an OSP agent sees a valid [=agent certificate=] it has verified through
+authentication, it is not required to initiate authentication with that agent
+before sending further messages.
+
+If a listening agent wishes to receive messages from an advertising agent or an
+advertising agent wishes to send messages to a listening agent, it may wish to
+keep the QUIC connection alive by periodically sending data on the connection.
+
+If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons), it should attempt to resume QUIC connections to the OSP agents to
+which it was previously connected once network connectivity is restored.
+
+Messages delivery using CBOR and QUIC streams {#messages}
+========================================================
+
+Messages are serialized using [[!RFC8949|CBOR]].  To send a group of messages in
+order, that group of messages must be sent in one QUIC stream.  Independent
+groups of messages (with no ordering dependency across groups) should be sent in
+different QUIC streams.  In order to put multiple CBOR-serialized messages into
+the the same QUIC stream, the following is used.
+
+For each message, the [=OSP agent=] must write into a unidirectional QUIC stream
+the following:
+
+1.  A type key representing the type of the message, encoded as a [=variable-length
+    integer=] (see [[#appendix-a]] for type keys)
+
+2.  The message encoded as CBOR.
+
+If an agent receives a message for which it does not recognize a type key, it
+must close the QUIC connection with an application error code of 404 and should
+include the unknown type key in the reason phrase of the [=CONNECTION_CLOSE
+frame=].
+
+Variable-length integers are encoded in the [=Variable-Length Integer Encoding=]
+used by [[!RFC9000|QUIC]].
+
+
+Authentication {#authentication}
+================================
+
+Each supported authentication method is implemeted via authentication messages
+specific to that method.  The authentication method is explicitly specified by
+the message itself.  The authentication status message is common for all authentication
+methods.  Any new authentication method added must define new authentication messages.
+
+[=Open Screen Network Protocol agents=] must implement [[#authentication-with-spake2]]
+with pre-shared keys.
+
+Prior to authentication, agents exchange [=auth-capabilities=] messages specifying
+pre-shared key (PSK) ease of input for the user and supported PSK input methods.
+The agent with the lowest PSK ease of input presents a PSK to the user when the agent
+either sends or receives an authentication request.  In case both agents have the same
+PSK ease of input value, the server presents the PSK to the user.  The same pre-shared key
+is used by both agents.  The agent presenting the PSK to the user is the PSK presenter,
+the agent requiring the user to input the PSK is the PSK consumer.
+
+PSK ease of input is an integer in the range from 0 to 100 inclusive, where 0 means
+it is not possible for the user to input PSK on this device and 100 means
+that it's easy for the user to input PSK on the device.  Supported PSK input methods
+are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
+support the numeric PSK input method.
+
+Any authentication method may require an [=auth-initiation-token=] before
+showing a PSK to the user or requesting PSK input from the user.  For an
+[=advertising agent=], the `at` field in its mDNS TXT record must be used as the
+`auth-initation-token` in the the first authentication message sent to or from
+that agent.  Agents should discard any authentication message whose
+`auth-initation-token` is set and does not match the `at` provided by the
+advertising agent.
+
+In the `psk-min-bits-of-entropy` field of the [=auth-capabilities=] messsage,
+agents may specify the minimum bits of entropy it requires for a PSK, in the
+range of 20 to 60 bits inclusive, with a default of 20.  The PSK presenter must
+generate a PSK that has at least as many bits of entropy as it receives in this
+field, and at least as many bits of entropy as it sends in this field.
+
+If an agent chooses to show a user a PSK in more than one way (such as both a
+QR-code and a numeric PSK), they should be for the same PSK.  If they were
+different, the PSK presenter would not know which one the user chose to use, and
+that may lead to authentication failures.
+
+[[#appendix-c]] describes two encoding schemes for PSKs that agents may
+support to produce either a string or a [=QR code=] for display to the user.
+
+Authentication with SPAKE2 {#authentication-with-spake2}
+--------------------------
+
+Issue(242): [Meta] Track CFRG PAKE competition outcome
+
+For all messages and objects defined in this section, see [[#appendix-a]] for
+the full CDDL definitions.
+
+The default authentication method is
+\[SPAKE2](https://tools.ietf.org/html/draft-irtf-cfrg-spake2-26) with
+the following cipher suite:
+
+1. Elliptic curve is \[edwards25519](https://tools.ietf.org/html/rfc7748#page-4).
+2. Hash function is \[SHA-256](https://tools.ietf.org/html/rfc6234).
+3. Key derivation function is \[HKDF](https://tools.ietf.org/html/rfc5869).
+4. Message authentication code is \[HMAC](https://tools.ietf.org/html/rfc2104).
+5. Password hash function is \[SHA-512](https://tools.ietf.org/html/rfc6234).
+
+Open Screen Network Protocol does not use a memory-hard hash function to hash PSKs with
+SPAKE2 and uses SHA-512 instead, as the PSK is one-time use and is not stored in
+any form.
+
+SPAKE2 provides explicit mutual authentication.
+
+This authentication method assumes the agents share a low-entropy secret,
+such as a number or a short password that could be entered by a user on a
+phone, a keyboard or a TV remote control.
+
+SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).
+
+The messages used in this authentication method are: [=auth-spake2-handshake=],
+[=auth-spake2-confirmation=] and [=auth-status=].  \[SPAKE2] describes in detail
+how [=auth-spake2-handshake=] and [=auth-spake2-confirmation=] are computed.
+
+The values `A` and `B` used in SPAKE2 are the [=agent fingerprints=] of the
+client and server, respectively. `pw` is the PSK presented to the user.
+
+The PSK presenter or the PSK consumer may initiate authentication (assuming the
+role of Alice in SPAKE2).
+
+If the PSK presenter wants to initiate authentication, it starts the
+authentication process by presenting the PSK to the user and sending a
+[=auth-spake2-handshake=] message.  The `public-value` field of the
+[=auth-spake2-handshake=] message must be set to the value of `pA` from SPAKE2
+and the `psk-status` field must be set to `psk-shown`.
+
+When the PSK consumer receives the [=auth-spake2-handshake=] message, the PSK
+consumer prompts the user for the PSK input if it has not done so yet.  Once it
+receives the PSK, it sends an [=auth-spake2-handshake=] message with the
+`public-value` field set to the value of `pB` from SPAKE2 and the `psk-status`
+field set to `psk-input`.
+
+If the PSK consumer wants to initiate authentication, the PSK consumer sends a
+[=auth-spake2-handshake=] message to the PSK presenter with the `psk-status`
+field set to `psk-needs-presentation` and the `public-value` field set to
+`pA`. The PSK presenter, on receiving this message, creates a PSK and presents
+it to the the user.  Once that is done, it sends an [=auth-spake2-handshake=]
+message to the PSK consumer with `psk-status` set to `psk-input` and the
+`public-value` field set to `pB`.
+
+Once an agent knows both `pA` and `pB` from [=auth-spake2-handshake=] messages,
+it computes and sends a [=auth-spake2-confirmation=] with the
+`confirmation-value` field set to `cA` (for Alice) or `cB` (for Bob) to the
+other agent.
+
+Once an agent receives an [=auth-spake2-confirmation=] message, it validates
+that message using the procedure in \[SPAKE2] and then replies with an
+[=auth-status=] authenticated message to the other agent.  Any value of `result`
+other than `authenticated` means that authentication failed, and the agent must
+immediately disconnect.
+
+NOTE: The [=auth-status=] message is merely informative as each agent
+independently computes the outcome of SPAKE2 through key confirmation
+verification.
+
+[[#appendix-c]] shows the entire process when agents have not
+authenticated each other, including discovery, QUIC connection establishment,
+metadata exchange and authentication. When agents have completed authentication,
+the authentication phase can be omitted.
+
+
+Security and Privacy {#security-privacy}
+====================
+
+The Open Screen Network Protocol allows two [=OSP agents=] to discover each other and
+exchange user and application data.  As such, its security and privacy
+considerations should be closely examined.  We evaluate the protocol itself
+using the W3C [[SECURITY-PRIVACY-QUESTIONNAIRE|Security and Privacy Questionnaire]]
+and also discuss recommended mitigations that agents can use to meet these
+security and privacy requirements.
+
+Threat Models {#threat-models}
+--------------------------------
+
+### Passive Network Attackers ### {#passive-network-attackers}
+
+The Open Screen Network Protocol should assume that all parties that are connected to
+the same LAN are able to observe all data flowing between OSP agents.
+
+These parties will be able collect any data exposed through unencrypted
+messages, such as mDNS records and the QUIC handshakes.
+
+These parties may attempt to learn cryptographic parameters by observing data
+flows on the QUIC connection, or by observing cryptographic timing.
+
+### Active Network Attackers ### {#active-network-attackers}
+
+Active attackers, such as compromised routers, will be able to manipulate data
+exchanged between agents.  They can inject traffic into existing QUIC
+connections and attempt to initiate new QUIC connections.  These abilities can
+be used to attempt the following:
+
+*   Impersonate an agent or one already authenticated by the user, in an attempt
+    to convince the user to authenticate to it.
+*   Connect to an agent and query its capabilities.
+
+One particular attack of concern is misconfigured or compromised routers that
+expose local network devices (such as OSP agents) to the Internet.  This vector
+of attack has been used by malicious parties to take control of printers and
+smart TVs by connecting to local network services that would normally be
+inaccessible from the Internet.
+
+### Denial of Service ### {#denial-of-service}
+
+Parties with connected to the LAN may attempt to deny access to OSP agents.  For
+example, an attacker my attempt to open a large number of QUIC connections to an
+agent in an attempt to block legitimate connections or exhaust the agent's
+system resources.  They may also multicast spurious DNS-SD records in an attempt
+to exhaust the cache capacity for mDNS listeners, or to get listeners to open a
+large number of bogus QUIC connections.
+
+Open Screen Network Protocol Security and Privacy Considerations {#security-privacy-questions}
+-----------------------------------
+
+### Personally Identifiable Information & High-Value Data ### {#personally-identifiable-information}
+
+The following data cannot be reasonably made confidential and should be
+considered public:
+
+1. IP addresses and ports used by the Open Screen Network Protocol.
+1. Data advertised through mDNS, including the display name prefix, the
+    certificate fingerprint, and the metadata version.
+
+### Cross Origin State Considerations ### {#cross-origin-state}
+
+The network protocol does not directly handle origin state.
+
+### Origin Access to Other Devices ### {#origin-access-devices}
+
+By design, the Open Screen Network Network Protocol allows access to devices from the
+Web, through application protocols that use it.  By implementing the protocol,
+these devices are knowingly making themselves available to the Web and should be
+designed accordingly.
+
+Below, we discuss mitigation steps to prevent malicious use of these devices.
+
+### Private Browsing Mode ### {#private-browsing-mode}
+
+It's recommended that user agents use separate authentication contexts (see
+[[#authentication]]) and QUIC connections (see [[#transport]]) for normal and
+private browsing from the same user agent instance. This makes it more difficult
+for other devices to match activities occurring in normal and private browsing
+by the same user.
+
+### Persistent State ### {#persistent-state}
+
+An agent is likely to persist the identity of agents that have successfully
+completed [[#authentication]].  This may include the public key fingerprints,
+metadata versions, and metadata for those parties.
+
+However, this data is not normally exposed to the Web, only through the native
+UI of the user agent during the display selection or display authentication
+process.  It can be an implementation choice whether the user agent clears or
+retains this data when the user clears browsing data.
+
+### Other Considerations ### {#other-considerations}
+
+The Open Screen Network Network Protocol does not grant to the Web additional access to
+the following:
+
+* New script loading mechanisms
+* Access to the user's location
+* Access to device sensors
+* Access to the user's local computing environment
+* Control over the user agent's native UI
+* Security characteristics of the user agent
+
+Mitigation Strategies {#security-mitigations}
+--------------------------------------------
+
+### Local passive network attackers ### {#local-passive-mitigations}
+
+Local passive attackers may attempt to harvest data about user activities and
+device capabilities using the Open Screen Network Protocol.  The main strategy to address
+this is data minimization, by only exposing opaque public key fingerprints
+before user-mediated authentication takes place.
+
+Passive attackers may also attempt timing attacks to learn the cryptographic
+parameters of the TLS 1.3 QUIC connection.  The application profile for TLS 1.3
+mandates constant-time ciphers and TLS 1.3 implementations should use elliptic
+curve signing operations that are resistant to side channel attacks.
+
+### Local active network attackers ### {#local-active-mitigations}
+
+Local active attackers may attempt to impersonate a presentation display the
+user would normally trust.  The [[#authentication]] step of the Open Screen
+Network Protocol prevents a man-in-the-middle from impersonating an agent, without
+knowledge of a shared secret.  However, it is possible for an attacker to
+impersonate an existing, trusted agent or a newly discovered agent that is not
+yet authenticated and try to convince the user to authenticate to it.  (Trust in
+this context means that a user has completed [[#authentication]] from their
+agent to another agent.)
+
+This can be addressed through a combination of techniques.  The first is
+detecting attempts at impersonation.  Agents should detect the following
+situations and flag an agent that meets any of the criteria as a <dfn>suspicious
+agent</dfn>:
+
+* Agents with distinct IP endpoints whose public key fingerprints collide during
+    concurrent advertisement.
+* Untrusted agents whose display name differs from the one previously
+    advertised under a given public key fingerprint.
+* Untrusted agents that fail the authentication challenge a certain number of times.
+* Untrusted agents that advertise a display name that is similar to that from an
+    already-trusted agent.
+
+The second is through management of the low-entropy secret during mutual
+authentication:
+
+* Rotate the low-entropy secret to prevent brute force attacks.
+* Use an increasing backoff to respond to authentication challenges, also to
+    prevent brute force attacks.
+* Use a cryptographically sound source of entropy to generate the shared secret.
+
+The active attacker may also attempt to disrupt data exchanged over the QUIC
+connection by injecting or modifying traffic.  These attacks should be mitigated
+by a correct implementation of TLS 1.3.  See Appendix E of [[RFC8446]] for a
+detailed security analysis of the TLS 1.3 protocol.
+
+### Remote active network attackers ### {#remote-active-mitigations}
+
+Unfortunately, we cannot rely on network devices to fully protect OSP agents,
+because a misconfigured firewall or NAT could expose a LAN-connected agent to
+the broader Internet.  OSP agents should be secure against attack from any
+Internet host.
+
+Advertising agents must set the `at` field in their mDNS TXT record to protect
+themselves from off-LAN attempts to initiate [[#authentication]], which result
+in user annoyance (display or input of PSK) and potential brute force attacks
+against the PSK.
+
+### Denial of service ### {#denial-of-service-mitigations}
+
+It will be difficult to completely prevent denial service of attacks that
+originate on the user's local area network.  OSP agents can refuse new
+connections, close connections that receive too many messages, or limit the
+number of mDNS records cached from a specific responder in an attempt to allow
+existing activities to continue in spite of such an attack.
+
+### Malicious input ### {#malicious-input-mitigations}
+
+OSP agents should be robust against malicious input that attempts to compromise
+the target device by exploiting parsing vulnerabilities.
+
+Where possible, OSP agents (including application level components like content
+and media rendering) should use defense-in-depth techniques like <a
+href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a>
+to prevent vulnerabilities from gaining access to user data or leading to
+persistent exploits.
+
+User Interface Considerations {#security-ui}
+-----------------------------
+
+This specification does not make any specific requirements of the security
+relevant user interfaces of OSP agents.  However there are important
+considerations when designing these user interfaces, as PSK-based authentication
+requires users to make informed decisions about which agents to trust.
+
+1. Before an agent has authenticated another device, the agent should make it
+    clear that any data from that device has not been verified by
+    authentication.  (See below for how this applies to DNS-SD Instance Names.)
+1. A [=suspicious agent=] should be displayed differently from trusted
+    agents that are not suspicious, or not displayed at all.
+1. The user interface to present a PSK during authentication should be done in
+    trusted UI and be difficult to spoof.  It should be clear to the user which
+    physical device is presenting the PSK.
+1. The user interface to input a PSK during authentication should be done in
+    trusted UI and be difficult to spoof.
+1. The user should be required to take action to input the PSK, to prevent the
+    user from blindly clicking through this step.
+1. The user interfaces to render and input a PSK should meet accessibility
+    guidelines.
+
+### Instance and Display Names  ### {#instance-names}
+
+Because DNS-SD [=Instance Names=] are the primary information that the user
+sees prior to authentication, careful presentation of these names is necessary.
+
+Issue(346): Rephrase to not link DNS-SD with an agent-info, an application
+message.
+
+Agents must treat Instance Names as unverified information, and should check
+that the Instance Name is a prefix of the display name received through the
+<code>agent-info</code> message after a successful QUIC connection.  Once an
+agent has done this check, it can show the name as a <dfn noexport>verified
+display name</dfn>.
+
+Agents should show only complete display names to the user, instead of truncated
+display names from DNS-SD.  A truncated display name should be verified as above
+before being shown in full as a [=verified display name=].
+
+<div class="note">
+This means there are three categories of display names that agents should be
+capable of handling:
+<ol>
+  <li> Truncated and unverified DNS-SD Instance Names, which should not be shown
+       to the user.</li>
+  <li> Complete but unverified DNS-SD Instance Names, which can be shown as
+       unverified prior to [[#authentication]].</li>
+  <li>Verified display names.</li>
+</ol>
+</div>
+
+Appendix A: Messages {#appendix-a}
+====================
+
+The following messages are defined using the [=Concise Data Definition
+Language=] syntax. When integer keys are used, a comment is appended to the line
+to indicate the name of the field. Object definitions in this specification have
+this unusual syntax to reduce the number of bytes-on-the-wire, while maintaining
+a human-readable name for each key. Integer keys are used instead of object
+arrays to allow for easy indexing of optional fields.
+
+Each root message (one that can be put into a QUIC stream without being enclosed
+by another message) has a comment indicating the message type key.
+
+Smaller numbers should be reserved for message that will be sent more frequently
+or are very small or both and larger numbers should be reserved for messages
+that are infrequently sent or large or both because smaller type keys encode on
+the wire smaller.
+
+<pre class=include-raw>
+path: network_messages.html
+</pre>
+
+<pre class=include>
+path: code-style.html
+</pre>
+
+Appendix B: PSK Encoding Schemes {#appendix-b}
+================================
+
+The following appendix describes two encoding schemes for PSKs that take a value
+`P` between 20 bits and 80 bits in length and produce either a string or a [=QR
+code=] for display to the user.
+
+Agents should use these encoding schemes to maximize the interoperability of the
+authentication step, which typically requires displaying the PSK on one
+device and the user inputting it on another device.
+
+Base-10 Numeric {#appendix-c-base-10}
+---------------
+
+To encode `P` into a numeric string, follow these steps:
+
+1. Convert `P` to a base-10 integer `N`.
+2. If `N` has fewer than 9 digits:
+    * Zero-pad `N` on the left with `3 - len(N) mod 3` digits.
+    * Output `N` in groups of three digits separated by dashes.
+3. If `N` has more than 9 digits:
+    * Zero-pad `N` on the left with `4 - len(N) mod 4` digits.
+    * Output `N` in groups of four digits separated by dashes.
+
+<div class="example">
+For PSK `61488548833`, the steps would produce the string `0614-8854-8833`.
+</div>
+
+To decode a string `N` into a PSK `P`, follow these steps:
+
+1. Remove dashes and leading zeros from `N`.
+2. Parse `N` as a base-10 decimal number to obtain `P`.
+
+Note: `P` values between approximately 2^30 and 2^40 will produce values between
+10 and 12 digits in length.  Values over 12 digits are inconvenient to input
+and have limited additional security value.
+
+Note: We do not allow the use of hexadecimal encoding here, because it would
+be ambiguous with base-10 numeric encodings, and not all devices may support
+alphanumeric input.
+
+QR Code {#appendix-c-qr-code}
+-------
+
+To encode a PSK into a QR code, follow these steps:
+
+1. Set `N` to the value of `P` converted to an ASCII-encoded, hexadecimal string.
+2. Construct a text [=QR code=] with the value of `N`.
+
+<div class="example">
+For PSK `61488548833`, the steps would produce the following QR code:
+<p>
+<svg width="20%" height="20%" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 29 29" stroke="none">
+        <rect width="100%" height="100%" fill="#FFFFFF"/>
+        <path d="M4,4h1v1h-1z M5,4h1v1h-1z M6,4h1v1h-1z M7,4h1v1h-1z M8,4h1v1h-1z M9,4h1v1h-1z M10,4h1v1h-1z M12,4h1v1h-1z M18,4h1v1h-1z M19,4h1v1h-1z M20,4h1v1h-1z M21,4h1v1h-1z M22,4h1v1h-1z M23,4h1v1h-1z M24,4h1v1h-1z M4,5h1v1h-1z M10,5h1v1h-1z M14,5h1v1h-1z M16,5h1v1h-1z M18,5h1v1h-1z M24,5h1v1h-1z M4,6h1v1h-1z M6,6h1v1h-1z M7,6h1v1h-1z M8,6h1v1h-1z M10,6h1v1h-1z M14,6h1v1h-1z M16,6h1v1h-1z M18,6h1v1h-1z M20,6h1v1h-1z M21,6h1v1h-1z M22,6h1v1h-1z M24,6h1v1h-1z M4,7h1v1h-1z M6,7h1v1h-1z M7,7h1v1h-1z M8,7h1v1h-1z M10,7h1v1h-1z M12,7h1v1h-1z M18,7h1v1h-1z M20,7h1v1h-1z M21,7h1v1h-1z M22,7h1v1h-1z M24,7h1v1h-1z M4,8h1v1h-1z M6,8h1v1h-1z M7,8h1v1h-1z M8,8h1v1h-1z M10,8h1v1h-1z M13,8h1v1h-1z M15,8h1v1h-1z M18,8h1v1h-1z M20,8h1v1h-1z M21,8h1v1h-1z M22,8h1v1h-1z M24,8h1v1h-1z M4,9h1v1h-1z M10,9h1v1h-1z M13,9h1v1h-1z M15,9h1v1h-1z M16,9h1v1h-1z M18,9h1v1h-1z M24,9h1v1h-1z M4,10h1v1h-1z M5,10h1v1h-1z M6,10h1v1h-1z M7,10h1v1h-1z M8,10h1v1h-1z M9,10h1v1h-1z M10,10h1v1h-1z M12,10h1v1h-1z M14,10h1v1h-1z M16,10h1v1h-1z M18,10h1v1h-1z M19,10h1v1h-1z M20,10h1v1h-1z M21,10h1v1h-1z M22,10h1v1h-1z M23,10h1v1h-1z M24,10h1v1h-1z M15,11h1v1h-1z M16,11h1v1h-1z M6,12h1v1h-1z M8,12h1v1h-1z M9,12h1v1h-1z M10,12h1v1h-1z M12,12h1v1h-1z M15,12h1v1h-1z M16,12h1v1h-1z M17,12h1v1h-1z M21,12h1v1h-1z M24,12h1v1h-1z M4,13h1v1h-1z M6,13h1v1h-1z M8,13h1v1h-1z M9,13h1v1h-1z M11,13h1v1h-1z M14,13h1v1h-1z M15,13h1v1h-1z M18,13h1v1h-1z M19,13h1v1h-1z M21,13h1v1h-1z M24,13h1v1h-1z M4,14h1v1h-1z M5,14h1v1h-1z M7,14h1v1h-1z M8,14h1v1h-1z M10,14h1v1h-1z M11,14h1v1h-1z M13,14h1v1h-1z M14,14h1v1h-1z M15,14h1v1h-1z M16,14h1v1h-1z M17,14h1v1h-1z M20,14h1v1h-1z M22,14h1v1h-1z M5,15h1v1h-1z M7,15h1v1h-1z M9,15h1v1h-1z M11,15h1v1h-1z M12,15h1v1h-1z M13,15h1v1h-1z M14,15h1v1h-1z M17,15h1v1h-1z M19,15h1v1h-1z M24,15h1v1h-1z M4,16h1v1h-1z M6,16h1v1h-1z M7,16h1v1h-1z M9,16h1v1h-1z M10,16h1v1h-1z M11,16h1v1h-1z M13,16h1v1h-1z M16,16h1v1h-1z M17,16h1v1h-1z M20,16h1v1h-1z M21,16h1v1h-1z M22,16h1v1h-1z M23,16h1v1h-1z M24,16h1v1h-1z M12,17h1v1h-1z M13,17h1v1h-1z M14,17h1v1h-1z M15,17h1v1h-1z M16,17h1v1h-1z M17,17h1v1h-1z M19,17h1v1h-1z M20,17h1v1h-1z M21,17h1v1h-1z M22,17h1v1h-1z M23,17h1v1h-1z M24,17h1v1h-1z M4,18h1v1h-1z M5,18h1v1h-1z M6,18h1v1h-1z M7,18h1v1h-1z M8,18h1v1h-1z M9,18h1v1h-1z M10,18h1v1h-1z M13,18h1v1h-1z M14,18h1v1h-1z M15,18h1v1h-1z M16,18h1v1h-1z M18,18h1v1h-1z M20,18h1v1h-1z M4,19h1v1h-1z M10,19h1v1h-1z M12,19h1v1h-1z M13,19h1v1h-1z M17,19h1v1h-1z M18,19h1v1h-1z M19,19h1v1h-1z M21,19h1v1h-1z M23,19h1v1h-1z M4,20h1v1h-1z M6,20h1v1h-1z M7,20h1v1h-1z M8,20h1v1h-1z M10,20h1v1h-1z M12,20h1v1h-1z M13,20h1v1h-1z M15,20h1v1h-1z M16,20h1v1h-1z M18,20h1v1h-1z M22,20h1v1h-1z M23,20h1v1h-1z M24,20h1v1h-1z M4,21h1v1h-1z M6,21h1v1h-1z M7,21h1v1h-1z M8,21h1v1h-1z M10,21h1v1h-1z M13,21h1v1h-1z M14,21h1v1h-1z M15,21h1v1h-1z M16,21h1v1h-1z M18,21h1v1h-1z M19,21h1v1h-1z M20,21h1v1h-1z M21,21h1v1h-1z M23,21h1v1h-1z M4,22h1v1h-1z M6,22h1v1h-1z M7,22h1v1h-1z M8,22h1v1h-1z M10,22h1v1h-1z M12,22h1v1h-1z M14,22h1v1h-1z M17,22h1v1h-1z M18,22h1v1h-1z M19,22h1v1h-1z M21,22h1v1h-1z M24,22h1v1h-1z M4,23h1v1h-1z M10,23h1v1h-1z M14,23h1v1h-1z M15,23h1v1h-1z M18,23h1v1h-1z M20,23h1v1h-1z M21,23h1v1h-1z M23,23h1v1h-1z M24,23h1v1h-1z M4,24h1v1h-1z M5,24h1v1h-1z M6,24h1v1h-1z M7,24h1v1h-1z M8,24h1v1h-1z M9,24h1v1h-1z M10,24h1v1h-1z M15,24h1v1h-1z M17,24h1v1h-1z M19,24h1v1h-1z M22,24h1v1h-1z M24,24h1v1h-1z" fill="#000000"/>
+</svg>
+</p>
+</div>
+
+To decode a PSK `P` given a QR code, follow these steps:
+
+1. Obtain the string `N` by decoding the QR code.
+2. Parse `N` as a hexadecimal number to obtain `P`.
+
+<section class="informative">
+Appendix C: Entire Flow Chart {#appendix-c}
+=============================
+*This section is non-normative.*
+
+<img no-autosize src="./images/entire_flow_chart.svg" alt="Before a listening agent (client) and an advertising agent (server) may exchange application messages, they first need to discover each other through an mDNS exchange, establish a QUIC connection through ClientHello and ServerHello exchanges and sharing of certificates, and run an SPAKE2 authentication handshake and confirmation. They may also exchange messages to discover metadata at any time after a QUIC connection has been established." style="width: 100%">
+</section>

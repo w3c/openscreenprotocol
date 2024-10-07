@@ -1,0 +1,49 @@
+; type key 1001
+auth-capabilities = {
+  0: uint ; psk-ease-of-input
+  1: [* psk-input-method] ; psk-input-methods
+  2: uint ; psk-min-bits-of-entropy
+}
+
+psk-input-method = &(
+  numeric: 0
+  qr-code: 1
+)
+
+auth-initiation-token = {
+  ? 0: text ; token
+}
+
+auth-spake2-psk-status = &(
+  psk-needs-presentation: 0
+  psk-shown: 1
+  psk-input: 2
+)
+
+; type key 1003
+auth-spake2-confirmation = {
+  0: bytes .size 64 ; confirmation-value
+}
+
+auth-status-result = &(
+  authenticated: 0
+  unknown-error: 1
+  timeout: 2
+  secret-unknown: 3
+  validation-took-too-long : 4
+  proof-invalid: 5
+)
+
+; type key 1004
+auth-status = {
+  0: auth-status-result ; result
+}
+
+; type key 1005
+auth-spake2-handshake = {
+  0: auth-initiation-token; initiation-token
+  1: auth-spake2-psk-status ; psk-status
+  2: bytes ; public-value
+}
+
+
