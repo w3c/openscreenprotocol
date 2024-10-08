@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 6270e4735, updated Tue Aug 6 12:12:30 2024 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/network.html" rel="canonical">
-  <meta content="3426640ce02ad79a1e5203c43a4cf6c6f83e273a" name="revision">
+  <meta content="e3eace344f40a35d2dda7b799ca1ba129a16dea1" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -632,7 +632,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Network Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-10-07">7 October 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-10-08">8 October 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -687,6 +687,8 @@ interoperable fashion.</p>
      <a href="#discovery"><span class="secno">3</span> <span class="content">Discovery with mDNS</span></a>
      <ol class="toc">
       <li><a href="#computing-agent-fingerprint"><span class="secno">3.1</span> <span class="content">Computing the Agent Fingerprint</span></a>
+      <li><a href="#computing-certificate-serial-number"><span class="secno">3.2</span> <span class="content">Computing the Certificate Serial Number</span></a>
+      <li><a href="#computing-agent-hostname"><span class="secno">3.3</span> <span class="content">Computing the Agent Hostname</span></a>
      </ol>
     <li>
      <a href="#transport"><span class="secno">4</span> <span class="content">Transport and metadata discovery with QUIC</span></a>
@@ -897,6 +899,50 @@ steps:</p>
      <p>base64 encode the result of Step 1 according to <a data-link-type="biblio" href="#biblio-rfc4648" title="The Base16, Base32, and Base64 Data Encodings">[RFC4648]</a>.</p>
    </ol>
    <p class="note" role="note"><span class="marker">Note:</span> The resulting string will be 44 bytes in length.</p>
+   <h3 class="heading settled" data-level="3.2" id="computing-certificate-serial-number"><span class="secno">3.2. </span><span class="content">Computing the Certificate Serial Number</span><a class="self-link" href="#computing-certificate-serial-number"></a></h3>
+   <p>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number">certificate serial number</dfn> be the result of the following
+steps:</p>
+   <ol>
+    <li>
+     If the agent has never generated an agent certificate: 
+     <ol>
+      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-base">certificate serial number base</dfn> be a 128-bit <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a>. 
+      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-counter">certificate serial number counter</dfn> be a 32-bit
+        unsigned integer, initially set to 0.
+     </ol>
+    <li>
+     Generate a 160-bit value as follows: 
+     <ol>
+      <li>Increment the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter">certificate serial number counter</a> by one.
+      <li>Assign the upper 128 bits to the <a data-link-type="dfn" href="#certificate-serial-number-base" id="ref-for-certificate-serial-number-base">certificate serial number base</a>.
+      <li>Assign the lower 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter①">certificate serial number counter</a>. 
+     </ol>
+   </ol>
+   <h3 class="heading settled" data-level="3.3" id="computing-agent-hostname"><span class="secno">3.3. </span><span class="content">Computing the Agent Hostname</span><a class="self-link" href="#computing-agent-hostname"></a></h3>
+   <p>Each time the agent changes its DNS-SD <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6763#section-4.1" id="ref-for-section-4.1">Service Instance Name</a> or <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number">certificate serial number</a> it must compute an <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-hostname">agent hostname</dfn> as
+follows.</p>
+   <ol>
+    <li data-md>
+     <p>Set <var>hexSerialNumber</var> to the <a data-link-type="biblio" href="#biblio-rfc4648" title="The Base16, Base32, and Base64 Data Encodings">base64</a> encoded <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number①">certificate serial number</a>.</p>
+    <li data-md>
+     <p>Set <var>encodedInstanceName</var> to the result of the following:</p>
+     <ol>
+      <li data-md>
+       <p>Replace any character in the DNS-SD Instance Name other
+than <code>[A-Za-z0-9-]</code> with a hyphen <code>-</code>.</p>
+     </ol>
+    <li data-md>
+     <p>Set <var>encodedDomain</var> to the result of the following:</p>
+     <ol>
+      <li data-md>
+       <p>Replace any character in the DNS-SD Domain Name other
+than <code>[A-Za-z0-9-]</code> with a hyphen <code>-</code>.</p>
+     </ol>
+    <li data-md>
+     <p>Set the <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname">agent hostname</a> to the string <var>hexSerialNumber</var> + <code>.</code> + <var>encodedInstanceName</var> + <code>.</code> + <var>encodedDomain</var></p>
+   </ol>
+   <p>TODO: Add an appendix with examples of metadata, DNS-SD records and certificate
+fields for an advertising agent.</p>
    <h2 class="heading settled" data-level="4" id="transport"><span class="secno">4. </span><span class="content">Transport and metadata discovery with QUIC</span><a class="self-link" href="#transport"></a></h2>
    <p>If a <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent①">listening agent</a> wants to connect to or learn further metadata about an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent①">advertising agent</a>, it initiates a <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a> connection to the IP and port
 from its SRV record.  Prior to authentication, a message may be exchanged (such
@@ -916,11 +962,10 @@ refuse incoming connections that lack these parameters.</p>
     <li data-md>
      <p>The <a data-link-type="biblio" href="#biblio-rfc7301" title="Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension">ALPN</a> used must be "osp".</p>
     <li data-md>
-     <p>The <a data-link-type="biblio" href="#biblio-rfc6066" title="Transport Layer Security (TLS) Extensions: Extension Definitions">server_name extension</a> must be set to the following <code>host_name</code>: <code>&lt;fp>._openscreen._udp</code>.</p>
-     <ul>
-      <li data-md>
-       <p><code>&lt;fp></code> must be substituted with the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a> as used in mDNS TXT.</p>
-     </ul>
+     <p>The <a data-link-type="biblio" href="#biblio-rfc6066" title="Transport Layer Security (TLS) Extensions: Extension Definitions">server_name extension</a> must be set to the <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname①">agent hostname</a>.</p>
+    <li data-md>
+     <p>The <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a> calculated for the received <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate①">agent certificate</a> must match the <code>fp</code> mDNS TXT record as advertised
+by the advertising agent.</p>
    </ul>
    <p>An OSP Agent must not send TLS early data.</p>
    <p class="issue" id="issue-808efb48"><a class="self-link" href="#issue-808efb48"></a> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">[Issue #228]</a></p>
@@ -928,9 +973,9 @@ refuse incoming connections that lack these parameters.</p>
    <p>Each OSP Agent must generate an <a data-link-type="biblio" href="#biblio-rfc5280" title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">X.509 v3</a> <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="agent certificate" data-noexport id="agent-certificate">agent
 certificate</dfn> containing a public key to be used with the TLS 1.3
 certificate exchange.  Both <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent②">advertising agents</a> and <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent②">listening agents</a> must
-use the <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate①">agent certificate</a> in TLS 1.3 <code>Certificate</code> messages when making a
+use the <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate②">agent certificate</a> in TLS 1.3 <code>Certificate</code> messages when making a
 QUIC connection.</p>
-   <p>The <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate②">agent certificate</a> must have the following characteristics:</p>
+   <p>The <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate③">agent certificate</a> must have the following characteristics:</p>
    <ul>
     <li data-md>
      <p>256-bit ECDSA public key.</p>
@@ -949,24 +994,9 @@ used to encode the identifiers.</p>
     <li data-md>
      <p>Valid for signing.</p>
    </ul>
-   <p>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number">certificate serial number</dfn> be the result of the following steps:</p>
-   <ol>
-    <li>
-     If the agent has never generated an agent certificate: 
-     <ol>
-      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-base">certificate serial number base</dfn> be a 32-bit
-        pseudorandom integer value. 
-      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-counter">certificate serial number counter</dfn> be a 32-bit
-        unsigned integer, initially set to 0.
-     </ol>
-    <li>
-     Generate a 64-bit value as follows: 
-     <ol>
-      <li>Increment the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter">certificate serial number counter</a> by one.
-      <li>Assign the upper 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-base" id="ref-for-certificate-serial-number-base">certificate serial number base</a>.
-      <li>Assign the lower 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter①">certificate serial number counter</a>. 
-     </ol>
-   </ol>
+   <p>Each agent certificate has a unique <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number②">certificate serial number</a> computed
+using the steps above.  The value <code>&lt;sn></code> below should be substituted with that
+serial number.</p>
    <p>The following X.509 v3 fields are to be set as follows:</p>
    <div class="assertion">
     <table>
@@ -980,7 +1010,7 @@ used to encode the identifiers.</p>
        <td>3
       <tr>
        <td>Serial Number
-       <td>The <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number">certificate serial number</a>.
+       <td><code>&lt;sn></code> (as a big-endian integer)
       <tr>
        <td>Public Key <code>AlgorithmIdentifier</code>
        <td>
@@ -998,10 +1028,11 @@ used to encode the identifiers.</p>
         </ul>
       <tr>
        <td>Issuer Name
-       <td>CN = The <code>model-name</code> from the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br> 
+       <td>CN = The <code>model-name</code> from the <code>agent-info</code> message, as
+            also set in the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br> 
       <tr>
        <td>Subject Name
-       <td>CN = <code>&lt;fp></code>._openscreen._udp<br> O = See note.<br> 
+       <td>CN = <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname②">agent hostname</a><br> O = See note.<br> 
       <tr>
        <td>Subject Public Key Algorithm
        <td>Elliptic Curve Public Key
@@ -1011,16 +1042,14 @@ used to encode the identifiers.</p>
     </table>
    </div>
    <p>Mandatory fields not mentioned above should be set according to <a data-link-type="biblio" href="#biblio-rfc5280" title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</a>.</p>
-   <p>The value <code>&lt;sn></code> above should be substituted with the <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number①">certificate serial
-number</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> The OSP agent may use the implementer or device model name as the value
 for the <code>O</code> key for user interface and debugging purposes. It may use the agent
 implementer’s or device manufacturer’s location as the value for the location
 keys (<code>L</code>, <code>ST</code>, and <code>C</code>) for user interface and debugging purposes.</p>
-   <p>If an OSP agent sees an <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate③">agent certificate</a> it has not yet verified through <a href="#authentication">§ 6 Authentication</a>, it must treat that agent as unverified and initiate
+   <p>If an OSP agent sees an <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate④">agent certificate</a> it has not yet verified through <a href="#authentication">§ 6 Authentication</a>, it must treat that agent as unverified and initiate
 authentication with that agent before allowing additional messages to be
 exchanged with that agent.</p>
-   <p>If an OSP agent sees a valid <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate④">agent certificate</a> it has verified through
+   <p>If an OSP agent sees a valid <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate⑤">agent certificate</a> it has verified through
 authentication, it is not required to initiate authentication with that agent
 before sending further messages.</p>
    <p>If a listening agent wishes to receive messages from an advertising agent or an
@@ -1185,7 +1214,7 @@ considered public:</p>
      <p>IP addresses and ports used by the Open Screen Network Protocol.</p>
     <li data-md>
      <p>Data advertised through mDNS, including the display name prefix, the
-certificate fingerprint, and the metadata version.</p>
+certificate fingerprint and serial number, and the metadata version.</p>
    </ol>
    <h4 class="heading settled" data-level="7.2.2" id="cross-origin-state"><span class="secno">7.2.2. </span><span class="content">Cross Origin State Considerations</span><a class="self-link" href="#cross-origin-state"></a></h4>
    <p>The network protocol does not directly handle origin state.</p>
@@ -1534,14 +1563,15 @@ alphanumeric input.</p>
    <li><a href="#advertising-agent">advertising agent</a><span>, in § 3</span>
    <li><a href="#agent-certificate">agent certificate</a><span>, in § 4.2</span>
    <li><a href="#agent-fingerprint">agent fingerprint</a><span>, in § 3.1</span>
+   <li><a href="#agent-hostname">agent hostname</a><span>, in § 3.3</span>
    <li><a href="#auth-capabilities">auth-capabilities</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-initiation-token">auth-initiation-token</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-spake2-confirmation">auth-spake2-confirmation</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-spake2-handshake">auth-spake2-handshake</a><span>, in § Unnumbered section</span>
    <li><a href="#auth-status">auth-status</a><span>, in § Unnumbered section</span>
-   <li><a href="#certificate-serial-number">certificate serial number</a><span>, in § 4.2</span>
-   <li><a href="#certificate-serial-number-base">certificate serial number base</a><span>, in § 4.2</span>
-   <li><a href="#certificate-serial-number-counter">certificate serial number counter</a><span>, in § 4.2</span>
+   <li><a href="#certificate-serial-number">certificate serial number</a><span>, in § 3.2</span>
+   <li><a href="#certificate-serial-number-base">certificate serial number base</a><span>, in § 3.2</span>
+   <li><a href="#certificate-serial-number-counter">certificate serial number counter</a><span>, in § 3.2</span>
    <li><a href="#display-name">display name</a><span>, in § 3</span>
    <li><a href="#listening-agent">listening agent</a><span>, in § 3</span>
    <li><a href="#open-screen-network-protocol-agent">open screen network protocol agent</a><span>, in § 1.1</span>
@@ -1557,6 +1587,11 @@ alphanumeric input.</p>
      <li><span class="dfn-paneled" id="a2a5cd12">qr code</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[RFC4122]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="1704ff9c">uuid</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[RFC5280]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="1fe3b46b">digitalsignature</span>
@@ -1570,6 +1605,7 @@ alphanumeric input.</p>
     <a data-link-type="biblio">[RFC6763]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="34d12a4f">instance name</span>
+     <li><span class="dfn-paneled" id="752a02b1">service instance name</span>
      <li><span class="dfn-paneled" id="6f0181fa">service name</span>
     </ul>
    <li>
@@ -1598,6 +1634,8 @@ alphanumeric input.</p>
    <dd><a href="https://iso.org/standard/62021.html"><cite>Information technology — Automatic identification and data capture techniques — QR Code bar code symbology specification</cite></a>. Published. URL: <a href="https://iso.org/standard/62021.html">https://iso.org/standard/62021.html</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
+   <dt id="biblio-rfc4122">[RFC4122]
+   <dd>P. Leach; M. Mealling; R. Salz. <a href="https://www.rfc-editor.org/rfc/rfc4122"><cite>A Universally Unique IDentifier (UUID) URN Namespace</cite></a>. July 2005. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc4122">https://www.rfc-editor.org/rfc/rfc4122</a>
    <dt id="biblio-rfc4648">[RFC4648]
    <dd>S. Josefsson. <a href="https://www.rfc-editor.org/rfc/rfc4648"><cite>The Base16, Base32, and Base64 Data Encodings</cite></a>. October 2006. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>
    <dt id="biblio-rfc5280">[RFC5280]
@@ -1841,27 +1879,30 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
+"1704ff9c": {"dfnID":"1704ff9c","dfnText":"uuid","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.4"}],"title":"3.2. Computing the Certificate Serial Number"}],"url":"https://tools.ietf.org/html/rfc4122#section-4.4"},
 "1fe3b46b": {"dfnID":"1fe3b46b","dfnText":"digitalsignature","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.2.1.3"}],"title":"4.2. Agent Certificates"}],"url":"https://tools.ietf.org/html/rfc5280#section-4.2.1.3"},
 "34d12a4f": {"dfnID":"34d12a4f","dfnText":"instance name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.1.1"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-section-4.1.1\u2460"}],"title":"7.4.1. Instance and Display Names"}],"url":"https://tools.ietf.org/html/rfc6763#section-4.1.1"},
 "38cb699f": {"dfnID":"38cb699f","dfnText":"conflict resolution","external":true,"refSections":[{"refs":[{"id":"ref-for-section-9"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc6762#section-9"},
 "4be354e2": {"dfnID":"4be354e2","dfnText":"variable-length integer encoding","external":true,"refSections":[{"refs":[{"id":"ref-for-name-variable-length-integer-enc"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2460"},{"id":"ref-for-name-variable-length-integer-enc\u2461"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
 "6c09a22e": {"dfnID":"6c09a22e","dfnText":"variable-length integer","external":true,"refSections":[{"refs":[{"id":"ref-for-name-variable-length-integer-enc"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2460"},{"id":"ref-for-name-variable-length-integer-enc\u2461"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
 "6f0181fa": {"dfnID":"6f0181fa","dfnText":"service name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-7"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc6763#section-7"},
+"752a02b1": {"dfnID":"752a02b1","dfnText":"service instance name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.1"}],"title":"3.3. Computing the Agent Hostname"}],"url":"https://tools.ietf.org/html/rfc6763#section-4.1"},
 "8f45ca65": {"dfnID":"8f45ca65","dfnText":"concise data definition language","external":true,"refSections":[{"refs":[{"id":"ref-for-section-3"}],"title":"Appendix A: Messages"}],"url":"https://tools.ietf.org/html/rfc8610#section-3"},
 "a2a5cd12": {"dfnID":"a2a5cd12","dfnText":"qr code","external":true,"refSections":[{"refs":[{"id":"ref-for-something"}],"title":"6. Authentication"},{"refs":[{"id":"ref-for-something\u2460"}],"title":"Appendix B: PSK Encoding Schemes"},{"refs":[{"id":"ref-for-something\u2461"}],"title":"QR Code"}],"url":"https://www.iso.org/standard/62021.html#"},
 "a6ddbb58": {"dfnID":"a6ddbb58","dfnText":"connection_close frames","external":true,"refSections":[{"refs":[{"id":"ref-for-name-connection_close-frames"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
 "advertising-agent": {"dfnID":"advertising-agent","dfnText":"advertising agent","external":false,"refSections":[{"refs":[{"id":"ref-for-advertising-agent"}],"title":"2.2. Non-Functional Requirements"},{"refs":[{"id":"ref-for-advertising-agent\u2460"}],"title":"4. Transport and metadata discovery with QUIC"},{"refs":[{"id":"ref-for-advertising-agent\u2461"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-advertising-agent\u2462"}],"title":"6. Authentication"}],"url":"#advertising-agent"},
-"agent-certificate": {"dfnID":"agent-certificate","dfnText":"agent\ncertificate","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-certificate"}],"title":"3.1. Computing the Agent Fingerprint"},{"refs":[{"id":"ref-for-agent-certificate\u2460"},{"id":"ref-for-agent-certificate\u2461"},{"id":"ref-for-agent-certificate\u2462"},{"id":"ref-for-agent-certificate\u2463"}],"title":"4.2. Agent Certificates"}],"url":"#agent-certificate"},
+"agent-certificate": {"dfnID":"agent-certificate","dfnText":"agent\ncertificate","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-certificate"}],"title":"3.1. Computing the Agent Fingerprint"},{"refs":[{"id":"ref-for-agent-certificate\u2460"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-certificate\u2461"},{"id":"ref-for-agent-certificate\u2462"},{"id":"ref-for-agent-certificate\u2463"},{"id":"ref-for-agent-certificate\u2464"}],"title":"4.2. Agent Certificates"}],"url":"#agent-certificate"},
 "agent-fingerprint": {"dfnID":"agent-fingerprint","dfnText":"agent fingerprint","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-fingerprint"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-agent-fingerprint\u2460"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-fingerprint\u2461"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#agent-fingerprint"},
+"agent-hostname": {"dfnID":"agent-hostname","dfnText":"agent hostname","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-hostname"}],"title":"3.3. Computing the Agent Hostname"},{"refs":[{"id":"ref-for-agent-hostname\u2460"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-hostname\u2461"}],"title":"4.2. Agent Certificates"}],"url":"#agent-hostname"},
 "auth-capabilities": {"dfnID":"auth-capabilities","dfnText":"auth-capabilities","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-capabilities"},{"id":"ref-for-auth-capabilities\u2460"}],"title":"6. Authentication"}],"url":"#auth-capabilities"},
 "auth-initiation-token": {"dfnID":"auth-initiation-token","dfnText":"auth-initiation-token","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-initiation-token"}],"title":"6. Authentication"}],"url":"#auth-initiation-token"},
 "auth-spake2-confirmation": {"dfnID":"auth-spake2-confirmation","dfnText":"auth-spake2-confirmation","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-confirmation"},{"id":"ref-for-auth-spake2-confirmation\u2460"},{"id":"ref-for-auth-spake2-confirmation\u2461"},{"id":"ref-for-auth-spake2-confirmation\u2462"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-confirmation"},
 "auth-spake2-handshake": {"dfnID":"auth-spake2-handshake","dfnText":"auth-spake2-handshake","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-spake2-handshake"},{"id":"ref-for-auth-spake2-handshake\u2460"},{"id":"ref-for-auth-spake2-handshake\u2461"},{"id":"ref-for-auth-spake2-handshake\u2462"},{"id":"ref-for-auth-spake2-handshake\u2463"},{"id":"ref-for-auth-spake2-handshake\u2464"},{"id":"ref-for-auth-spake2-handshake\u2465"},{"id":"ref-for-auth-spake2-handshake\u2466"},{"id":"ref-for-auth-spake2-handshake\u2467"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-spake2-handshake"},
 "auth-status": {"dfnID":"auth-status","dfnText":"auth-status","external":false,"refSections":[{"refs":[{"id":"ref-for-auth-status"},{"id":"ref-for-auth-status\u2460"},{"id":"ref-for-auth-status\u2461"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#auth-status"},
 "c7313446": {"dfnID":"c7313446","dfnText":"signature scheme","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.2.3"}],"title":"4.2. Agent Certificates"}],"url":"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3"},
-"certificate-serial-number": {"dfnID":"certificate-serial-number","dfnText":"certificate serial number","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number"},{"id":"ref-for-certificate-serial-number\u2460"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-serial-number"},
-"certificate-serial-number-base": {"dfnID":"certificate-serial-number-base","dfnText":"certificate serial number base","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number-base"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-serial-number-base"},
-"certificate-serial-number-counter": {"dfnID":"certificate-serial-number-counter","dfnText":"certificate serial number counter","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number-counter"},{"id":"ref-for-certificate-serial-number-counter\u2460"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-serial-number-counter"},
+"certificate-serial-number": {"dfnID":"certificate-serial-number","dfnText":"certificate serial number","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number"},{"id":"ref-for-certificate-serial-number\u2460"}],"title":"3.3. Computing the Agent Hostname"},{"refs":[{"id":"ref-for-certificate-serial-number\u2461"}],"title":"4.2. Agent Certificates"}],"url":"#certificate-serial-number"},
+"certificate-serial-number-base": {"dfnID":"certificate-serial-number-base","dfnText":"certificate serial number base","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number-base"}],"title":"3.2. Computing the Certificate Serial Number"}],"url":"#certificate-serial-number-base"},
+"certificate-serial-number-counter": {"dfnID":"certificate-serial-number-counter","dfnText":"certificate serial number counter","external":false,"refSections":[{"refs":[{"id":"ref-for-certificate-serial-number-counter"},{"id":"ref-for-certificate-serial-number-counter\u2460"}],"title":"3.2. Computing the Certificate Serial Number"}],"url":"#certificate-serial-number-counter"},
 "d558f973": {"dfnID":"d558f973","dfnText":"max_streams","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.6"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#section-4.6"},
 "display-name": {"dfnID":"display-name","dfnText":"display\nname","external":false,"refSections":[],"url":"#display-name"},
 "listening-agent": {"dfnID":"listening-agent","dfnText":"listening agent","external":false,"refSections":[{"refs":[{"id":"ref-for-listening-agent"}],"title":"2.2. Non-Functional Requirements"},{"refs":[{"id":"ref-for-listening-agent\u2460"}],"title":"4. Transport and metadata discovery with QUIC"},{"refs":[{"id":"ref-for-listening-agent\u2461"}],"title":"4.2. Agent Certificates"}],"url":"#listening-agent"},
@@ -2259,6 +2300,7 @@ let refsData = {
 "#advertising-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"advertising agent","type":"dfn","url":"#advertising-agent"},
 "#agent-certificate": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"agent certificate","type":"dfn","url":"#agent-certificate"},
 "#agent-fingerprint": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"agent fingerprint","type":"dfn","url":"#agent-fingerprint"},
+"#agent-hostname": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"agent hostname","type":"dfn","url":"#agent-hostname"},
 "#auth-capabilities": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-capabilities","type":"dfn","url":"#auth-capabilities"},
 "#auth-initiation-token": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-initiation-token","type":"dfn","url":"#auth-initiation-token"},
 "#auth-spake2-confirmation": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-spake2-confirmation","type":"dfn","url":"#auth-spake2-confirmation"},
@@ -2275,8 +2317,10 @@ let refsData = {
 "https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"connection_close frames","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
 "https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"variable-length integer","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
 "https://datatracker.ietf.org/doc/html/rfc9000#section-4.6": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"max_streams","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#section-4.6"},
+"https://tools.ietf.org/html/rfc4122#section-4.4": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc4122","spec":"rfc4122","status":"anchor-block","text":"uuid","type":"dfn","url":"https://tools.ietf.org/html/rfc4122#section-4.4"},
 "https://tools.ietf.org/html/rfc5280#section-4.2.1.3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc5280","spec":"rfc5280","status":"anchor-block","text":"digitalsignature","type":"dfn","url":"https://tools.ietf.org/html/rfc5280#section-4.2.1.3"},
 "https://tools.ietf.org/html/rfc6762#section-9": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6762","spec":"rfc6762","status":"anchor-block","text":"conflict resolution","type":"dfn","url":"https://tools.ietf.org/html/rfc6762#section-9"},
+"https://tools.ietf.org/html/rfc6763#section-4.1": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"service instance name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-4.1"},
 "https://tools.ietf.org/html/rfc6763#section-4.1.1": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"instance name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-4.1.1"},
 "https://tools.ietf.org/html/rfc6763#section-7": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"service name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-7"},
 "https://tools.ietf.org/html/rfc8610#section-3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8610","spec":"rfc8610","status":"anchor-block","text":"concise data definition language","type":"dfn","url":"https://tools.ietf.org/html/rfc8610#section-3"},
