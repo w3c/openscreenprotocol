@@ -3,11 +3,11 @@
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Open Screen Network Protocol</title>
-  <meta content="w3c/ED" name="w3c-status">
+  <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 6270e4735, updated Tue Aug 6 12:12:30 2024 -0700" name="generator">
+  <meta content="Bikeshed version 742f3d674, updated Mon Nov 4 14:56:54 2024 -0800" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/network.html" rel="canonical">
-  <meta content="886800d8b5e5bc509638a88eb5e56383e02333fa" name="revision">
+  <meta content="a0a747944fbdd3db052384e0e0cb0d63cb3f3313" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -632,7 +632,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Network Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-10-08">8 October 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-11-29">29 November 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1584,17 +1584,17 @@ alphanumeric input.</p>
    <li>
     <a data-link-type="biblio">[ISO18004]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="a2a5cd12">qr code</span>
+     <li><span class="dfn-paneled" id="a2a5cd12">QR code</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC4122]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="1704ff9c">uuid</span>
+     <li><span class="dfn-paneled" id="1704ff9c">UUID</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC5280]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="1fe3b46b">digitalsignature</span>
+     <li><span class="dfn-paneled" id="1fe3b46b">digitalSignature</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RFC6762]</a> defines the following terms:
@@ -1621,10 +1621,10 @@ alphanumeric input.</p>
    <li>
     <a data-link-type="biblio">[RFC9000]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="a6ddbb58">connection_close frames</span>
+     <li><span class="dfn-paneled" id="a6ddbb58">CONNECTION_CLOSE Frames</span>
      <li><span class="dfn-paneled" id="d558f973">max_streams</span>
      <li><span class="dfn-paneled" id="6c09a22e">variable-length integer</span>
-     <li><span class="dfn-paneled" id="4be354e2">variable-length integer encoding</span>
+     <li><span class="dfn-paneled" id="4be354e2">Variable-Length Integer Encoding</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -1879,17 +1879,17 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"1704ff9c": {"dfnID":"1704ff9c","dfnText":"uuid","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.4"}],"title":"3.2. Computing the Certificate Serial Number"}],"url":"https://tools.ietf.org/html/rfc4122#section-4.4"},
-"1fe3b46b": {"dfnID":"1fe3b46b","dfnText":"digitalsignature","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.2.1.3"}],"title":"4.2. Agent Certificates"}],"url":"https://tools.ietf.org/html/rfc5280#section-4.2.1.3"},
+"1704ff9c": {"dfnID":"1704ff9c","dfnText":"UUID","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.4"}],"title":"3.2. Computing the Certificate Serial Number"}],"url":"https://tools.ietf.org/html/rfc4122#section-4.4"},
+"1fe3b46b": {"dfnID":"1fe3b46b","dfnText":"digitalSignature","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.2.1.3"}],"title":"4.2. Agent Certificates"}],"url":"https://tools.ietf.org/html/rfc5280#section-4.2.1.3"},
 "34d12a4f": {"dfnID":"34d12a4f","dfnText":"instance name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.1.1"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-section-4.1.1\u2460"}],"title":"7.4.1. Instance and Display Names"}],"url":"https://tools.ietf.org/html/rfc6763#section-4.1.1"},
 "38cb699f": {"dfnID":"38cb699f","dfnText":"conflict resolution","external":true,"refSections":[{"refs":[{"id":"ref-for-section-9"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc6762#section-9"},
-"4be354e2": {"dfnID":"4be354e2","dfnText":"variable-length integer encoding","external":true,"refSections":[{"refs":[{"id":"ref-for-name-variable-length-integer-enc"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2460"},{"id":"ref-for-name-variable-length-integer-enc\u2461"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
+"4be354e2": {"dfnID":"4be354e2","dfnText":"Variable-Length Integer Encoding","external":true,"refSections":[{"refs":[{"id":"ref-for-name-variable-length-integer-enc"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2460"},{"id":"ref-for-name-variable-length-integer-enc\u2461"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
 "6c09a22e": {"dfnID":"6c09a22e","dfnText":"variable-length integer","external":true,"refSections":[{"refs":[{"id":"ref-for-name-variable-length-integer-enc"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-name-variable-length-integer-enc\u2460"},{"id":"ref-for-name-variable-length-integer-enc\u2461"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
 "6f0181fa": {"dfnID":"6f0181fa","dfnText":"service name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-7"}],"title":"3. Discovery with mDNS"}],"url":"https://tools.ietf.org/html/rfc6763#section-7"},
 "752a02b1": {"dfnID":"752a02b1","dfnText":"service instance name","external":true,"refSections":[{"refs":[{"id":"ref-for-section-4.1"}],"title":"3.3. Computing the Agent Hostname"}],"url":"https://tools.ietf.org/html/rfc6763#section-4.1"},
 "8f45ca65": {"dfnID":"8f45ca65","dfnText":"concise data definition language","external":true,"refSections":[{"refs":[{"id":"ref-for-section-3"}],"title":"Appendix A: Messages"}],"url":"https://tools.ietf.org/html/rfc8610#section-3"},
-"a2a5cd12": {"dfnID":"a2a5cd12","dfnText":"qr code","external":true,"refSections":[{"refs":[{"id":"ref-for-something"}],"title":"6. Authentication"},{"refs":[{"id":"ref-for-something\u2460"}],"title":"Appendix B: PSK Encoding Schemes"},{"refs":[{"id":"ref-for-something\u2461"}],"title":"QR Code"}],"url":"https://www.iso.org/standard/62021.html#"},
-"a6ddbb58": {"dfnID":"a6ddbb58","dfnText":"connection_close frames","external":true,"refSections":[{"refs":[{"id":"ref-for-name-connection_close-frames"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
+"a2a5cd12": {"dfnID":"a2a5cd12","dfnText":"QR code","external":true,"refSections":[{"refs":[{"id":"ref-for-something"}],"title":"6. Authentication"},{"refs":[{"id":"ref-for-something\u2460"}],"title":"Appendix B: PSK Encoding Schemes"},{"refs":[{"id":"ref-for-something\u2461"}],"title":"QR Code"}],"url":"https://www.iso.org/standard/62021.html#"},
+"a6ddbb58": {"dfnID":"a6ddbb58","dfnText":"CONNECTION_CLOSE Frames","external":true,"refSections":[{"refs":[{"id":"ref-for-name-connection_close-frames"}],"title":"5. Messages delivery using CBOR and QUIC streams"}],"url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
 "advertising-agent": {"dfnID":"advertising-agent","dfnText":"advertising agent","external":false,"refSections":[{"refs":[{"id":"ref-for-advertising-agent"}],"title":"2.2. Non-Functional Requirements"},{"refs":[{"id":"ref-for-advertising-agent\u2460"}],"title":"4. Transport and metadata discovery with QUIC"},{"refs":[{"id":"ref-for-advertising-agent\u2461"}],"title":"4.2. Agent Certificates"},{"refs":[{"id":"ref-for-advertising-agent\u2462"}],"title":"6. Authentication"}],"url":"#advertising-agent"},
 "agent-certificate": {"dfnID":"agent-certificate","dfnText":"agent\ncertificate","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-certificate"}],"title":"3.1. Computing the Agent Fingerprint"},{"refs":[{"id":"ref-for-agent-certificate\u2460"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-certificate\u2461"},{"id":"ref-for-agent-certificate\u2462"},{"id":"ref-for-agent-certificate\u2463"},{"id":"ref-for-agent-certificate\u2464"}],"title":"4.2. Agent Certificates"}],"url":"#agent-certificate"},
 "agent-fingerprint": {"dfnID":"agent-fingerprint","dfnText":"agent fingerprint","external":false,"refSections":[{"refs":[{"id":"ref-for-agent-fingerprint"}],"title":"3. Discovery with mDNS"},{"refs":[{"id":"ref-for-agent-fingerprint\u2460"}],"title":"4.1. TLS 1.3"},{"refs":[{"id":"ref-for-agent-fingerprint\u2461"}],"title":"6.1. Authentication with SPAKE2"}],"url":"#agent-fingerprint"},
@@ -2297,44 +2297,46 @@ function genLinkingSyntaxes(dfn) {
 "use strict";
 {
 let refsData = {
-"#advertising-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"advertising agent","type":"dfn","url":"#advertising-agent"},
-"#agent-certificate": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"agent certificate","type":"dfn","url":"#agent-certificate"},
-"#agent-fingerprint": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"agent fingerprint","type":"dfn","url":"#agent-fingerprint"},
-"#agent-hostname": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"agent hostname","type":"dfn","url":"#agent-hostname"},
-"#auth-capabilities": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-capabilities","type":"dfn","url":"#auth-capabilities"},
-"#auth-initiation-token": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-initiation-token","type":"dfn","url":"#auth-initiation-token"},
-"#auth-spake2-confirmation": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-spake2-confirmation","type":"dfn","url":"#auth-spake2-confirmation"},
-"#auth-spake2-handshake": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-spake2-handshake","type":"dfn","url":"#auth-spake2-handshake"},
-"#auth-status": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-status","type":"dfn","url":"#auth-status"},
-"#certificate-serial-number": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"certificate serial number","type":"dfn","url":"#certificate-serial-number"},
-"#certificate-serial-number-base": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"certificate serial number base","type":"dfn","url":"#certificate-serial-number-base"},
-"#certificate-serial-number-counter": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"certificate serial number counter","type":"dfn","url":"#certificate-serial-number-counter"},
-"#listening-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"listening agent","type":"dfn","url":"#listening-agent"},
-"#open-screen-network-protocol-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"open screen network protocol agent","type":"dfn","url":"#open-screen-network-protocol-agent"},
-"#suspicious-agent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"suspicious agent","type":"dfn","url":"#suspicious-agent"},
-"#verified-display-name": {"export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"verified display name","type":"dfn","url":"#verified-display-name"},
-"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8446","spec":"rfc8446","status":"anchor-block","text":"signature scheme","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3"},
-"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"connection_close frames","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
-"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"variable-length integer","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
-"https://datatracker.ietf.org/doc/html/rfc9000#section-4.6": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"max_streams","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#section-4.6"},
-"https://tools.ietf.org/html/rfc4122#section-4.4": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc4122","spec":"rfc4122","status":"anchor-block","text":"uuid","type":"dfn","url":"https://tools.ietf.org/html/rfc4122#section-4.4"},
-"https://tools.ietf.org/html/rfc5280#section-4.2.1.3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc5280","spec":"rfc5280","status":"anchor-block","text":"digitalsignature","type":"dfn","url":"https://tools.ietf.org/html/rfc5280#section-4.2.1.3"},
-"https://tools.ietf.org/html/rfc6762#section-9": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6762","spec":"rfc6762","status":"anchor-block","text":"conflict resolution","type":"dfn","url":"https://tools.ietf.org/html/rfc6762#section-9"},
-"https://tools.ietf.org/html/rfc6763#section-4.1": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"service instance name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-4.1"},
-"https://tools.ietf.org/html/rfc6763#section-4.1.1": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"instance name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-4.1.1"},
-"https://tools.ietf.org/html/rfc6763#section-7": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"service name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-7"},
-"https://tools.ietf.org/html/rfc8610#section-3": {"export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8610","spec":"rfc8610","status":"anchor-block","text":"concise data definition language","type":"dfn","url":"https://tools.ietf.org/html/rfc8610#section-3"},
-"https://www.iso.org/standard/62021.html#": {"export":true,"for_":[],"level":"","normative":true,"shortname":"iso18004","spec":"iso18004","status":"anchor-block","text":"qr code","type":"dfn","url":"https://www.iso.org/standard/62021.html#"},
+"#advertising-agent": {"displayText":"advertising agent","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"advertising agent","type":"dfn","url":"#advertising-agent"},
+"#agent-certificate": {"displayText":"agent certificate","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"agent certificate","type":"dfn","url":"#agent-certificate"},
+"#agent-fingerprint": {"displayText":"agent fingerprint","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"agent fingerprint","type":"dfn","url":"#agent-fingerprint"},
+"#agent-hostname": {"displayText":"agent hostname","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"agent hostname","type":"dfn","url":"#agent-hostname"},
+"#auth-capabilities": {"displayText":"auth-capabilities","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-capabilities","type":"dfn","url":"#auth-capabilities"},
+"#auth-initiation-token": {"displayText":"auth-initiation-token","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-initiation-token","type":"dfn","url":"#auth-initiation-token"},
+"#auth-spake2-confirmation": {"displayText":"auth-spake2-confirmation","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-spake2-confirmation","type":"dfn","url":"#auth-spake2-confirmation"},
+"#auth-spake2-handshake": {"displayText":"auth-spake2-handshake","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-spake2-handshake","type":"dfn","url":"#auth-spake2-handshake"},
+"#auth-status": {"displayText":"auth-status","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"auth-status","type":"dfn","url":"#auth-status"},
+"#certificate-serial-number": {"displayText":"certificate serial number","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"certificate serial number","type":"dfn","url":"#certificate-serial-number"},
+"#certificate-serial-number-base": {"displayText":"certificate serial number base","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"certificate serial number base","type":"dfn","url":"#certificate-serial-number-base"},
+"#certificate-serial-number-counter": {"displayText":"certificate serial number counter","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"certificate serial number counter","type":"dfn","url":"#certificate-serial-number-counter"},
+"#listening-agent": {"displayText":"listening agent","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"listening agent","type":"dfn","url":"#listening-agent"},
+"#open-screen-network-protocol-agent": {"displayText":"open screen network protocol agent","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"open screen network protocol agent","type":"dfn","url":"#open-screen-network-protocol-agent"},
+"#suspicious-agent": {"displayText":"suspicious agent","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"suspicious agent","type":"dfn","url":"#suspicious-agent"},
+"#verified-display-name": {"displayText":"verified display name","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol-network","spec":"openscreenprotocol-network","status":"local","text":"verified display name","type":"dfn","url":"#verified-display-name"},
+"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3": {"displayText":"signature scheme","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8446","spec":"rfc8446","status":"anchor-block","text":"signature scheme","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3"},
+"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames": {"displayText":"CONNECTION_CLOSE Frames","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"connection_close frames","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
+"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc": {"displayText":"variable-length integer","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"variable-length integer","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
+"https://datatracker.ietf.org/doc/html/rfc9000#section-4.6": {"displayText":"max_streams","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"max_streams","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#section-4.6"},
+"https://tools.ietf.org/html/rfc4122#section-4.4": {"displayText":"UUID","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc4122","spec":"rfc4122","status":"anchor-block","text":"uuid","type":"dfn","url":"https://tools.ietf.org/html/rfc4122#section-4.4"},
+"https://tools.ietf.org/html/rfc5280#section-4.2.1.3": {"displayText":"digitalSignature","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc5280","spec":"rfc5280","status":"anchor-block","text":"digitalsignature","type":"dfn","url":"https://tools.ietf.org/html/rfc5280#section-4.2.1.3"},
+"https://tools.ietf.org/html/rfc6762#section-9": {"displayText":"conflict resolution","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6762","spec":"rfc6762","status":"anchor-block","text":"conflict resolution","type":"dfn","url":"https://tools.ietf.org/html/rfc6762#section-9"},
+"https://tools.ietf.org/html/rfc6763#section-4.1": {"displayText":"service instance name","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"service instance name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-4.1"},
+"https://tools.ietf.org/html/rfc6763#section-4.1.1": {"displayText":"instance name","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"instance name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-4.1.1"},
+"https://tools.ietf.org/html/rfc6763#section-7": {"displayText":"service name","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6763","spec":"rfc6763","status":"anchor-block","text":"service name","type":"dfn","url":"https://tools.ietf.org/html/rfc6763#section-7"},
+"https://tools.ietf.org/html/rfc8610#section-3": {"displayText":"concise data definition language","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8610","spec":"rfc8610","status":"anchor-block","text":"concise data definition language","type":"dfn","url":"https://tools.ietf.org/html/rfc8610#section-3"},
+"https://www.iso.org/standard/62021.html#": {"displayText":"QR code","export":true,"for_":[],"level":"","normative":true,"shortname":"iso18004","spec":"iso18004","status":"anchor-block","text":"qr code","type":"dfn","url":"https://www.iso.org/standard/62021.html#"},
 };
 
 function mkRefHint(link, ref) {
     const linkText = link.textContent;
     let dfnTextElements = '';
-    if (ref.text != linkText) {
+    if (ref.displayText.toLowerCase() != linkText.toLowerCase()) {
+        // Give the original term if it's being displayed in a different way.
+        // But allow casing differences, they're insignificant.
         dfnTextElements =
             mk.li({},
                 mk.b({}, "Term: "),
-                mk.span({}, ref.text)
+                mk.span({}, ref.displayText)
             );
     }
     const forList = ref.for_;
