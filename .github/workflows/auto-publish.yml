@@ -19,15 +19,15 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      # See doc at https://github.com/actions/checkout#checkout-v2
+      # See doc at https://github.com/actions/checkout/
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      # See doc at https://github.com/actions/setup-python/#setup-python-v2
+      # See doc at https://github.com/actions/setup-python/
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: 3.9
 
