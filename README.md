@@ -1,17 +1,18 @@
 ## Open Screen Protocol
 
-This repository is used to incubate and develop the [Open Screen
-Protocol](https://w3c.github.io/openscreenprotocol/), which is a suite of
+This repository is used to develop
+the [Open Screen Application Protocol](https://www.w3.org/TR/openscreen-application/)
+and [Open Screen Network Protocol](https://www.w3.org/TR/openscreen-network/), a suite of
 network protocols that allow user agents to implement the [Presentation
-API](https://w3c.github.io/presentation-api/) and [Remote Playback
-API](https://w3c.github.io/remote-playback/) in an interoperable fashion.
+API](https://www.w3.org/TR/presentation-api/) and [Remote Playback
+API](https://www.w3.org/TR/remote-playback/) in an interoperable fashion.
 
 The [explainer](explainer.md) goes into more depth regarding the motivation, and
 rationale, and design choices for the protocol.
 
 This work is in scope for the [W3C Second Screen Working
 Group](https://www.w3.org/2014/secondscreen/)
-([Charter](https://www.w3.org/2014/secondscreen/charter-2020.html)).
+([Charter](https://www.w3.org/2024/05/charter-secondscreen-wg.html)).
 
 Please refer to the group's [Work
 Mode](https://www.w3.org/wiki/Second_Screen/Work_Mode) for instructions on how
