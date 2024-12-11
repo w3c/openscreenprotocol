@@ -1,9 +1,10 @@
 <pre class='metadata'>
 Title: Open Screen Network Protocol
-Shortname: openscreenprotocol-network
+Shortname: openscreen-network
 Level: None
 Status: w3c/ED
 ED: https://w3c.github.io/openscreenprotocol/network.html
+TR: https://www.w3.org/TR/openscreen-network/
 Canonical URL: ED
 Editor: Mark Foltz, Google, https://github.com/markafoltz, w3cid 68454
 Repository: w3c/openscreenprotocol
@@ -20,19 +21,19 @@ url: https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames;
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
 url: https://datatracker.ietf.org/doc/html/rfc9000#section-4.6; type: dfn; spec: RFC9000; text: max_streams
-url: https://tools.ietf.org/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
-url: https://tools.ietf.org/html/rfc6763#section-4.1; type: dfn; spec: RFC6763; text: service instance name
-url: https://tools.ietf.org/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
-url: https://tools.ietf.org/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
-url: https://tools.ietf.org/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
-url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-256
-url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-512
-url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md2
-url: https://tools.ietf.org/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
-url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
-url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
+url: https://datatracker.ietf.org/doc/html/rfc6762#section-9; type: dfn; spec: RFC6762; text: conflict resolution
+url: https://datatracker.ietf.org/doc/html/rfc6763#section-4.1; type: dfn; spec: RFC6763; text: service instance name
+url: https://datatracker.ietf.org/doc/html/rfc6763#section-4.1.1; type: dfn; spec: RFC6763; text: instance name
+url: https://datatracker.ietf.org/doc/html/rfc6763#section-7; type: dfn; spec: RFC6763; text: service name
+url: https://datatracker.ietf.org/doc/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
+url: https://datatracker.ietf.org/doc/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-256
+url: https://datatracker.ietf.org/doc/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: sha-512
+url: https://datatracker.ietf.org/doc/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md2
+url: https://datatracker.ietf.org/doc/html/rfc8122#section-5; type: dfn; spec: RFC8122; text: md5
+url: https://datatracker.ietf.org/doc/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
+url: https://datatracker.ietf.org/doc/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
 url: https://www.iso.org/standard/62021.html#; type: dfn; spec: iso18004; text: QR code
-url: https://tools.ietf.org/html/rfc5280#section-4.2.1.3; type: dfn; spec: RFC5280; text: digitalSignature
+url: https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.1.3; type: dfn; spec: RFC5280; text: digitalSignature
 url: https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3; type: dfn; spec: RFC8446; text: signature scheme
 </pre>
 
@@ -57,8 +58,8 @@ The fundamental flow of the network protocol is:
     network.
 - Use of [[!RFC8446|TLS 1.3]] with self-signed certificates to establish an
     initial, unauthenticated connection.
-- Use of \[SPAKE2](https://tools.ietf.org/html/draft-irtf-cfrg-spake2-26) to
-    validate mutual identity and exchange certificates.
+- Use of [[!RFC9382|SPAKE2]] to validate mutual identity and exchange
+    certificates.
 - Use of [[!RFC9000|QUIC]] as a transport layer over IP.
 
 The flow chart in [[#appendix-c]] illustrates the entire sequence of events.
@@ -480,15 +481,14 @@ Issue(242): [Meta] Track CFRG PAKE competition outcome
 For all messages and objects defined in this section, see [[#appendix-a]] for
 the full CDDL definitions.
 
-The default authentication method is
-\[SPAKE2](https://tools.ietf.org/html/draft-irtf-cfrg-spake2-26) with
-the following cipher suite:
+The default authentication method is [[RFC9382|SPAKE2]] with the following
+cipher suite:
 
-1. Elliptic curve is \[edwards25519](https://tools.ietf.org/html/rfc7748#page-4).
-2. Hash function is \[SHA-256](https://tools.ietf.org/html/rfc6234).
-3. Key derivation function is \[HKDF](https://tools.ietf.org/html/rfc5869).
-4. Message authentication code is \[HMAC](https://tools.ietf.org/html/rfc2104).
-5. Password hash function is \[SHA-512](https://tools.ietf.org/html/rfc6234).
+1. Elliptic curve is [[RFC7748#section-4.1|edwards25519]].
+2. Hash function is [[RFC6234|SHA-256]].
+3. Key derivation function is [[RFC5869|HKDF]].
+4. Message authentication code is [[RFC2104|HMAC]].
+5. Password hash function is [[RFC6234|SHA-512]].
 
 Open Screen Network Protocol does not use a memory-hard hash function to hash PSKs with
 SPAKE2 and uses SHA-512 instead, as the PSK is one-time use and is not stored in
