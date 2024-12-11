@@ -1,11 +1,12 @@
 <pre class='metadata'>
 Title: Open Screen Application Protocol
-Shortname: openscreenprotocol-application
+Shortname: openscreen-application
 Level: None
 Status: w3c/ED
 ED: https://w3c.github.io/openscreenprotocol/application.html
+TR: https://www.w3.org/TR/openscreen-application/
 Canonical URL: ED
-Editor: Mark Foltz, Google, https://github.com/mfoltzgoogle, w3cid 68454
+Editor: Mark Foltz, Google, https://github.com/markafoltz, w3cid 68454
 Repository: w3c/openscreenprotocol
 Abstract: The Open Screen Application Protocol allows user agents to implement the
           [[PRESENTATION-API|Presentation API]] and the
@@ -40,10 +41,10 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
     text: remote playback source
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
-url: https://tools.ietf.org/html/rfc5646#section-2; type: dfn; spec: RFC5646; text: language tag
-url: https://tools.ietf.org/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
-url: https://tools.ietf.org/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
-url: https://tools.ietf.org/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
+url: https://datatracker.ietf.org/doc/html/rfc5646#section-2; type: dfn; spec: RFC5646; text: language tag
+url: https://datatracker.ietf.org/doc/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
+url: https://datatracker.ietf.org/doc/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
+url: https://datatracker.ietf.org/doc/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
 </pre>
 
 Introduction {#introduction}
