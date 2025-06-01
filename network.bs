@@ -175,6 +175,11 @@ keys and values:
 :: An alphanumeric, unguessable token consisting of characters from the set
     `[A-Za-z0-9+/]`.
 
+: sn
+:: The [=certificate serial number=] of the advertising agent, encoded as a
+    base64 string according to [[!RFC4648]]. This is required for listening
+    agents to compute the [=agent hostname=] for TLS SNI.
+
 Note: `at` prevents off-LAN parties from attempting authentication; see
 [[#remote-active-mitigations]].  `at` should have at least 32 bits of true
 entropy to make brute force attacks impractical.
@@ -613,7 +618,7 @@ considered public:
 
 1. IP addresses and ports used by the Open Screen Network Protocol.
 1. Data advertised through mDNS, including the display name prefix, the
-    certificate fingerprint and serial number, and the metadata version.
+    certificate fingerprint, certificate serial number, and the metadata version.
 
 ### Cross Origin State Considerations ### {#cross-origin-state}
 
