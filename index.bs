@@ -410,7 +410,7 @@ Let the <dfn>certificate serial number</dfn> be the result of the following step
   <li>If the agent has never generated an agent certificate:
   <ol>
     <li>Let the <dfn>certificate serial number base</dfn> be a 32-bit
-        pseudorandom integer value.</il>
+        pseudorandom integer value.</li>
     <li>Let the <dfn>certificate serial number counter</dfn> be a 32-bit
         unsigned integer, initially set to 0.</li>
   </ol>
@@ -419,7 +419,7 @@ Let the <dfn>certificate serial number</dfn> be the result of the following step
   <ol>
     <li>Increment the [=certificate serial number counter=] by one.</li>
     <li>Assign the upper 32 bits to the [=certificate serial number base=].</li>
-    <li>Assign the lower 32 bits to the [=certificate serial number counter=].</il>
+    <li>Assign the lower 32 bits to the [=certificate serial number counter=].</li>
   </ol>
 </ol>
 
@@ -447,7 +447,7 @@ The following X.509 v3 fields are to be set as follows:
         <li>ECC OID: `1.2.840.10045.2.1`</li>
         <li>ECDSA 256 OID: `1.2.840.10045.3.1.7`</li>
         <li>DER representation: `301306072a8648ce3d020106082a8648ce3d030107`</li>
-      </ol>
+      </ul>
    </td>
  </tr>
  <tr>
