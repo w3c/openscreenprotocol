@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 9a7a6709a, updated Tue May 27 16:45:34 2025 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/network.html" rel="canonical">
-  <meta content="6fcfccb97d4abe6a348719217dd57c5e66cae27f" name="revision">
+  <meta content="84c3e07ab6acd85cff2a37681a3efe2d7f473d83" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -923,7 +923,7 @@ steps:</p>
 follows.</p>
    <ol>
     <li data-md>
-     <p>Set <var>hexSerialNumber</var> to the <a data-link-type="biblio" href="#biblio-rfc4648" title="The Base16, Base32, and Base64 Data Encodings">base64</a> encoded <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number①">certificate serial number</a>.</p>
+     <p>Set <var>base64SerialNumber</var> to the <a data-link-type="biblio" href="#biblio-rfc4648" title="The Base16, Base32, and Base64 Data Encodings">base64</a> encoded <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number①">certificate serial number</a>.</p>
     <li data-md>
      <p>Set <var>encodedInstanceName</var> to the result of the following:</p>
      <ol>
@@ -939,7 +939,7 @@ than <code>[A-Za-z0-9-]</code> with a hyphen <code>-</code>.</p>
 than <code>[A-Za-z0-9-]</code> with a hyphen <code>-</code>.</p>
      </ol>
     <li data-md>
-     <p>Set the <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname">agent hostname</a> to the string <var>hexSerialNumber</var> + <code>.</code> + <var>encodedInstanceName</var> + <code>.</code> + <var>encodedDomain</var></p>
+     <p>Set the <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname">agent hostname</a> to the string <var>base64SerialNumber</var> + <code>.</code> + <var>encodedInstanceName</var> + <code>.</code> + <var>encodedDomain</var></p>
    </ol>
    <p>TODO: Add an appendix with examples of metadata, DNS-SD records and certificate
 fields for an advertising agent.</p>
