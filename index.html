@@ -5,9 +5,9 @@
   <title>Open Screen Protocol</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version ac5ea272d, updated Fri Dec 6 15:45:15 2024 -0800" name="generator">
+  <meta content="Bikeshed version 9a7a6709a, updated Tue May 27 16:45:34 2025 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/" rel="canonical">
-  <meta content="a438c32c21ee9998acb491af6194531cc6755a16" name="revision">
+  <meta content="6fcfccb97d4abe6a348719217dd57c5e66cae27f" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -632,7 +632,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-12-11">11 December 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2025-06-09">9 June 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -650,7 +650,7 @@ dfn > a.self-link::before      { content: "#"; }
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2024 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -871,12 +871,10 @@ establishing a network transport to the agent.</p>
 capable of rendering a specific <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a>.</p>
     <li data-md>
      <p>A controller must be able to start a new <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context" id="ref-for-dfn-receiving-browsing-context①">presentation</a> on a
-receiver given a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier" id="ref-for-dfn-presentation-identifier">presentation
-identifier</a>.</p>
+receiver given a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier" id="ref-for-dfn-presentation-identifier">presentation identifier</a>.</p>
     <li data-md>
      <p>A controller must be able to create a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#dom-presentationconnection" id="ref-for-dom-presentationconnection">PresentationConnection</a></code> to an
-existing presentation on the receiver, given its <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request
-URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier" id="ref-for-dfn-presentation-identifier①">presentation identifier</a>.</p>
+existing presentation on the receiver, given its <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier" id="ref-for-dfn-presentation-identifier①">presentation identifier</a>.</p>
     <li data-md>
      <p>It must be possible to close a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#dom-presentationconnection" id="ref-for-dom-presentationconnection①">PresentationConnection</a></code> between a
 controller and a presentation, and signal both parties with the reason why
@@ -948,8 +946,7 @@ presentations, remote playbacks, or the content of media streams.</p>
 display and observing or altering data intended for the controller or
 receiver.</p>
     <li data-md>
-     <p>A listening agent should be able to discover quickly when an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
-agent</a> becomes available or unavailable (i.e., when it connects or
+     <p>A listening agent should be able to discover quickly when an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising agent</a> becomes available or unavailable (i.e., when it connects or
 disconnects from the network).</p>
     <li data-md>
      <p>Agents should present sensible information to the user when a protocol
@@ -1092,7 +1089,7 @@ used to encode the identifiers.</p>
      If the agent has never generated an agent certificate: 
      <ol>
       <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-base">certificate serial number base</dfn> be a 32-bit
-        pseudorandom integer value. 
+        pseudorandom integer value.
       <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-counter">certificate serial number counter</dfn> be a 32-bit
         unsigned integer, initially set to 0.
      </ol>
@@ -1101,7 +1098,7 @@ used to encode the identifiers.</p>
      <ol>
       <li>Increment the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter">certificate serial number counter</a> by one.
       <li>Assign the upper 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-base" id="ref-for-certificate-serial-number-base">certificate serial number base</a>.
-      <li>Assign the lower 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter①">certificate serial number counter</a>. 
+      <li>Assign the lower 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter①">certificate serial number counter</a>.
      </ol>
    </ol>
    <p>The following X.509 v3 fields are to be set as follows:</p>
@@ -1148,8 +1145,7 @@ used to encode the identifiers.</p>
     </table>
    </div>
    <p>Mandatory fields not mentioned above should be set according to <a data-link-type="biblio" href="#biblio-rfc5280" title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</a>.</p>
-   <p>The value <code>&lt;sn></code> above should be substituted with the <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number①">certificate serial
-number</a>.</p>
+   <p>The value <code>&lt;sn></code> above should be substituted with the <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number①">certificate serial number</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> The OSP agent may use the implementer or device model name as the value
 for the <code>O</code> key for user interface and debugging purposes. It may use the agent
 implementer’s or device manufacturer’s location as the value for the location
@@ -1266,16 +1262,14 @@ streams that may be necessary for audio, video, or data streaming use cases.</p>
 the following:</p>
    <ol>
     <li data-md>
-     <p>A type key representing the type of the message, encoded as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc①">variable-length
-integer</a> (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
+     <p>A type key representing the type of the message, encoded as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc①">variable-length integer</a> (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
     <li data-md>
      <p>The message encoded as CBOR.</p>
    </ol>
    <p>If an agent receives a message for which it does not recognize a type key, it
 must close the QUIC connection with an application error code of 404 and should
-include the unknown type key in the reason phrase of the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames" id="ref-for-name-connection_close-frames">CONNECTION_CLOSE
-frame</a>.</p>
-   <p>Variable-length integers are encoded in the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc②">Variable-Length Integer Encoding</a> used by <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a>.</p>
+include the unknown type key in the reason phrase of the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames" id="ref-for-name-connection_close-frames">CONNECTION_CLOSE frame</a>.</p>
+   <p>Variable-length integers are encoded in the <a data-link-type="dfn" data-refhint-key="09174256" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc②">Variable-Length Integer Encoding</a> used by <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a>.</p>
    <p>Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
@@ -1343,19 +1337,20 @@ support to produce either a string or a <a data-link-type="dfn" href="https://ww
    <p class="issue" id="issue-dc398825"><a class="self-link" href="#issue-dc398825"></a> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a></p>
    <p>For all messages and objects defined in this section, see <a href="#appendix-a">Appendix A: Messages</a> for
 the full CDDL definitions.</p>
-   <p>The default authentication method is <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-26">SPAKE2</a> with
+   <p>The default authentication method is
+[SPAKE2](https://tools.ietf.org/html/draft-irtf-cfrg-spake2-26) with
 the following cipher suite:</p>
    <ol>
     <li data-md>
-     <p>Elliptic curve is <a href="https://tools.ietf.org/html/rfc7748#page-4">edwards25519</a>.</p>
+     <p>Elliptic curve is [edwards25519](https://tools.ietf.org/html/rfc7748#page-4).</p>
     <li data-md>
-     <p>Hash function is <a href="https://tools.ietf.org/html/rfc6234">SHA-256</a>.</p>
+     <p>Hash function is [SHA-256](https://tools.ietf.org/html/rfc6234).</p>
     <li data-md>
-     <p>Key derivation function is <a href="https://tools.ietf.org/html/rfc5869">HKDF</a>.</p>
+     <p>Key derivation function is [HKDF](https://tools.ietf.org/html/rfc5869).</p>
     <li data-md>
-     <p>Message authentication code is <a href="https://tools.ietf.org/html/rfc2104">HMAC</a>.</p>
+     <p>Message authentication code is [HMAC](https://tools.ietf.org/html/rfc2104).</p>
     <li data-md>
-     <p>Password hash function is <a href="https://tools.ietf.org/html/rfc6234">SHA-512</a>.</p>
+     <p>Password hash function is [SHA-512](https://tools.ietf.org/html/rfc6234).</p>
    </ol>
    <p>Open Screen Protocol does not use a memory-hard hash function to hash PSKs with
 SPAKE2 and uses SHA-512 instead, as the PSK is one-time use and is not stored in
@@ -2034,8 +2029,7 @@ changed.</p>
    <dl>
     <dt data-md>supports
     <dd data-md>
-     <p>The controls the receiver supports.  These may differ according to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑦">media
-resource</a> and should not change unless the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑧">media resource</a> also changes.
+     <p>The controls the receiver supports.  These may differ according to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑦">media resource</a> and should not change unless the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑧">media resource</a> also changes.
 The default is empty (support for nothing)
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②">remote-playback-start-response</a> message.</p>
     <dt data-md>source
@@ -2149,8 +2143,7 @@ The controller can also add cues to and remove cues from text tracks.
 The default is an empty array
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②③">remote-playback-start-response</a> message.</p>
    </dl>
-   <p>Media positions, durations, and time ranges are defined in terms of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-timeline" id="ref-for-media-timeline②">media
-timeline</a> specified in HTML, which are fractional seconds between zero and the
+   <p>Media positions, durations, and time ranges are defined in terms of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-timeline" id="ref-for-media-timeline②">media timeline</a> specified in HTML, which are fractional seconds between zero and the
 media duration.</p>
    <p class="note" role="note"><span class="marker">NOTE:</span> An Open Screen agent can convert between values on the media timeline and
 the media sync time sent with individual media frames using the steps in <a href="#appendix-e">Appendix E: Media Time Conversions</a>.</p>
@@ -2241,14 +2234,12 @@ messages defined in <a href="#remote-playback-protocol">§ 9 Remote Playback P
 based on an implementation specific discovery mechanism" and <a href="https://w3c.github.io/remote-playback/#the-list-of-available-remote-playback-devices">section
 5.2.1.4</a> says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the mDNS, QUIC, <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request③">agent-info-request</a>, and <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request①">remote-playback-availability-request</a> messages
-defined previously in this spec to discover <a data-link-type="dfn" href="#receiver" id="ref-for-receiver④">receivers</a>.  The <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request②">remote-playback-availability-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability
-sources set</a>.</p>
+defined previously in this spec to discover <a data-link-type="dfn" href="#receiver" id="ref-for-receiver④">receivers</a>.  The <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request②">remote-playback-availability-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability sources set</a>.</p>
    <p>When <a href="https://w3c.github.io/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 5.2.4</a> says "Request connection of remote to device. The implementation of this
 step is specific to the user agent." and "Synchronize the current media element
 state with the remote playback state", the controller may send the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑦">remote-playback-start-request</a> message to the receiver to start remote
-playback.  The <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑧">remote-playback-start-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote
-playback source</a>.  The current <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> only
+playback.  The <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑧">remote-playback-start-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote playback source</a>.  The current <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> only
 allows a single source, but the protocol allows for several and future versions
 of <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> may allow for several.</p>
    <p>When <a href="https://w3c.github.io/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
@@ -2291,8 +2282,7 @@ Formats are composed of the following fields:</p>
      <p>A fully qualified codec string listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry" title="WebCodecs Codec Registry">[WEBCODECS-CODEC-REGISTRY]</a> and further
  specified by the codec-specific registrations referenced in that registry.</p>
    </dl>
-   <p>For <code>codec-name</code>, Open Screen agents may also accept a single-codec <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codec
-parameter</a> as described in <a data-link-type="biblio" href="#biblio-rfc6381" title="The &apos;Codecs&apos; and &apos;Profiles&apos; Parameters for &quot;Bucket&quot; Media Types">[RFC6381]</a> for codecs not listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry" title="WebCodecs Codec Registry">[WEBCODECS-CODEC-REGISTRY]</a>.</p>
+   <p>For <code>codec-name</code>, Open Screen agents may also accept a single-codec <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc6381#section-3" id="ref-for-section-3">codec parameter</a> as described in <a data-link-type="biblio" href="#biblio-rfc6381" title="The &apos;Codecs&apos; and &apos;Profiles&apos; Parameters for &quot;Bucket&quot; Media Types">[RFC6381]</a> for codecs not listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry" title="WebCodecs Codec Registry">[WEBCODECS-CODEC-REGISTRY]</a>.</p>
    <p>Audio capabilities are composed of the above format type, with the following
 additional fields:</p>
    <dl>
@@ -3179,8 +3169,7 @@ capable of handling:
     </ol>
    </div>
    <h2 class="heading settled" id="appendix-a"><span class="content">Appendix A: Messages</span><a class="self-link" href="#appendix-a"></a></h2>
-   <p>The following messages are defined using the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8610#section-3" id="ref-for-section-3①">Concise Data Definition
-Language</a> syntax. When integer keys are used, a comment is appended to the line
+   <p>The following messages are defined using the <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc8610#section-3" id="ref-for-section-3①">Concise Data Definition Language</a> syntax. When integer keys are used, a comment is appended to the line
 to indicate the name of the field. Object definitions in this specification have
 this unusual syntax to reduce the number of bytes-on-the-wire, while maintaining
 a human-readable name for each key. Integer keys are used instead of object
@@ -3984,8 +3973,7 @@ extensions.</p>
       <td>Reserved for future use
    </table>
    <h2 class="heading settled" id="appendix-c"><span class="content">Appendix C: PSK Encoding Schemes</span><a class="self-link" href="#appendix-c"></a></h2>
-   <p>The following appendix describes two encoding schemes for PSKs that take a value <code>P</code> between 20 bits and 80 bits in length and produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something①">QR
-code</a> for display to the user.</p>
+   <p>The following appendix describes two encoding schemes for PSKs that take a value <code>P</code> between 20 bits and 80 bits in length and produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something①">QR code</a> for display to the user.</p>
    <p>Agents should use these encoding schemes to maximize the interoperability of the
 authentication step, which typically requires displaying the PSK on one
 device and the user inputting it on another device.</p>
@@ -4378,9 +4366,9 @@ value should be used.</p>
    <dt id="biblio-rfc6234">[RFC6234]
    <dd>D. Eastlake 3rd; T. Hansen. <a href="https://www.rfc-editor.org/rfc/rfc6234"><cite>US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)</cite></a>. May 2011. Informational. URL: <a href="https://www.rfc-editor.org/rfc/rfc6234">https://www.rfc-editor.org/rfc/rfc6234</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
-   <dd>Theresa O'Connor; Peter Snyder. <a href="https://w3ctag.github.io/security-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. URL: <a href="https://w3ctag.github.io/security-questionnaire/">https://w3ctag.github.io/security-questionnaire/</a>
+   <dd>Theresa O'Connor; Peter Snyder; Simone Onofri. <a href="https://w3c.github.io/security-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. URL: <a href="https://w3c.github.io/security-questionnaire/">https://w3c.github.io/security-questionnaire/</a>
    <dt id="biblio-webcodecs-codec-registry">[WEBCODECS-CODEC-REGISTRY]
-   <dd>Chris Cunningham; Paul Adenot; Bernard Aboba. <a href="https://w3c.github.io/webcodecs/codec_registry.html"><cite>WebCodecs Codec Registry</cite></a>. URL: <a href="https://w3c.github.io/webcodecs/codec_registry.html">https://w3c.github.io/webcodecs/codec_registry.html</a>
+   <dd>Paul Adenot; Bernard Aboba. <a href="https://w3c.github.io/webcodecs/codec_registry.html"><cite>WebCodecs Codec Registry</cite></a>. URL: <a href="https://w3c.github.io/webcodecs/codec_registry.html">https://w3c.github.io/webcodecs/codec_registry.html</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
@@ -5186,6 +5174,7 @@ let refsData = {
 "#verified-display-name": {"displayText":"verified display name","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"verified display name","type":"dfn","url":"#verified-display-name"},
 "#video-encoding-offer": {"displayText":"video-encoding-offer","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"video-encoding-offer","type":"dfn","url":"#video-encoding-offer"},
 "#video-frame": {"displayText":"video-frame","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreenprotocol","spec":"openscreenprotocol","status":"local","text":"video-frame","type":"dfn","url":"#video-frame"},
+"09174256_https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc": {"displayText":"Variable-Length Integer Encoding","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"variable-length integer encoding","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
 "https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3": {"displayText":"signature scheme","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc8446","spec":"rfc8446","status":"anchor-block","text":"signature scheme","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3"},
 "https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames": {"displayText":"CONNECTION_CLOSE Frames","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"connection_close frames","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames"},
 "https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin": {"displayText":"Transport Parameter Encoding","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"transport parameter encoding","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-transport-parameter-encodin"},
@@ -5337,7 +5326,12 @@ function hideRefHint(refHint) {
 function showRefHint(link) {
     if(link.classList.contains("dfn-link")) return;
     const url = link.getAttribute("href");
-    const ref = refsData[url];
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
     if(!ref) return;
 
     hideAllRefHints(); // Only display one at this time.
