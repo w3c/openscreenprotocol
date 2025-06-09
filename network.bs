@@ -236,7 +236,7 @@ Each time the agent changes its DNS-SD [=Service Instance Name=] or
 [=certificate serial number=] it must compute an <dfn>agent hostname</dfn> as
 follows.
 
-1. Set <var>hexSerialNumber</var> to the [[!RFC4648|base64]] encoded
+1. Set <var>base64SerialNumber</var> to the [[!RFC4648|base64]] encoded
     [=certificate serial number=].
 1. Set <var>encodedInstanceName</var> to the result of the following:
     1. Replace any character in the DNS-SD Instance Name other
@@ -245,7 +245,7 @@ follows.
     1. Replace any character in the DNS-SD Domain Name other
         than `[A-Za-z0-9-]` with a hyphen `-`.
 1. Set the [=agent hostname=] to the string
-    <var>hexSerialNumber</var> + `.` + <var>encodedInstanceName</var> + `.` + <var>encodedDomain</var>
+    <var>base64SerialNumber</var> + `.` + <var>encodedInstanceName</var> + `.` + <var>encodedDomain</var>
 
 TODO: Add an appendix with examples of metadata, DNS-SD records and certificate
 fields for an advertising agent.
