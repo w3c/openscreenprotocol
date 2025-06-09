@@ -5,9 +5,9 @@
   <title>Open Screen Network Protocol</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version ac5ea272d, updated Fri Dec 6 15:45:15 2024 -0800" name="generator">
+  <meta content="Bikeshed version 9a7a6709a, updated Tue May 27 16:45:34 2025 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/network.html" rel="canonical">
-  <meta content="a438c32c21ee9998acb491af6194531cc6755a16" name="revision">
+  <meta content="6fcfccb97d4abe6a348719217dd57c5e66cae27f" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -632,7 +632,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Network Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-12-11">11 December 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2025-06-09">9 June 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -650,7 +650,7 @@ dfn > a.self-link::before      { content: "#"; }
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2024 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -661,14 +661,13 @@ interoperable fashion.</p>
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p> <em>This section describes the status of this document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
+   <p> <em>This section describes the status of this document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> standards and drafts index</a> at https://www.w3.org/TR/.</em> </p>
    <p> This document was published by the <a href="https://www.w3.org/groups/wg/secondscreen">Second Screen Working Group</a> as an Editor’s Draft. This document is intended to become a W3C Recommendation. </p>
    <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/w3c/openscreenprotocol/issues">Github issues</a>. </p>
    <p> Publication as an Editor’s Draft does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/policies/patent-policy/20200915/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential
     Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
    <p> This document is governed by the <a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
-   <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -830,8 +829,7 @@ presentations, remote playbacks, or the content of media streams.</p>
 display and observing or altering data intended for the controller or
 receiver.</p>
     <li data-md>
-     <p>A listening agent should be able to discover quickly when an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising
-agent</a> becomes available or unavailable (i.e., when it connects or
+     <p>A listening agent should be able to discover quickly when an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent">advertising agent</a> becomes available or unavailable (i.e., when it connects or
 disconnects from the network).</p>
     <li data-md>
      <p>Agents should be able to remember that a user authenticated another agent.
@@ -908,7 +906,7 @@ steps:</p>
     <li>
      If the agent has never generated an agent certificate: 
      <ol>
-      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-base">certificate serial number base</dfn> be a 128-bit <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a>. 
+      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-base">certificate serial number base</dfn> be a 128-bit <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a>.
       <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-counter">certificate serial number counter</dfn> be a 32-bit
         unsigned integer, initially set to 0.
      </ol>
@@ -917,7 +915,7 @@ steps:</p>
      <ol>
       <li>Increment the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter">certificate serial number counter</a> by one.
       <li>Assign the upper 128 bits to the <a data-link-type="dfn" href="#certificate-serial-number-base" id="ref-for-certificate-serial-number-base">certificate serial number base</a>.
-      <li>Assign the lower 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter①">certificate serial number counter</a>. 
+      <li>Assign the lower 32 bits to the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter①">certificate serial number counter</a>.
      </ol>
    </ol>
    <h3 class="heading settled" data-level="3.3" id="computing-agent-hostname"><span class="secno">3.3. </span><span class="content">Computing the Agent Hostname</span><a class="self-link" href="#computing-agent-hostname"></a></h3>
@@ -1073,16 +1071,14 @@ streams that may be necessary for audio, video, or data streaming use cases.</p>
 the following:</p>
    <ol>
     <li data-md>
-     <p>A type key representing the type of the message, encoded as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc①">variable-length
-integer</a> (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
+     <p>A type key representing the type of the message, encoded as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc①">variable-length integer</a> (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
     <li data-md>
      <p>The message encoded as CBOR.</p>
    </ol>
    <p>If an agent receives a message for which it does not recognize a type key, it
 must close the QUIC connection with an application error code of 404 and should
-include the unknown type key in the reason phrase of the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames" id="ref-for-name-connection_close-frames">CONNECTION_CLOSE
-frame</a>.</p>
-   <p>Variable-length integers are encoded in the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc②">Variable-Length Integer Encoding</a> used by <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a>.</p>
+include the unknown type key in the reason phrase of the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames" id="ref-for-name-connection_close-frames">CONNECTION_CLOSE frame</a>.</p>
+   <p>Variable-length integers are encoded in the <a data-link-type="dfn" data-refhint-key="09174256" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc②">Variable-Length Integer Encoding</a> used by <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a>.</p>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p>Each supported authentication method is implemeted via authentication messages
 specific to that method.  The authentication method is explicitly specified by
@@ -1379,8 +1375,7 @@ capable of handling:
     </ol>
    </div>
    <h2 class="heading settled" id="appendix-a"><span class="content">Appendix A: Messages</span><a class="self-link" href="#appendix-a"></a></h2>
-   <p>The following messages are defined using the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8610#section-3" id="ref-for-section-3">Concise Data Definition
-Language</a> syntax. When integer keys are used, a comment is appended to the line
+   <p>The following messages are defined using the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8610#section-3" id="ref-for-section-3">Concise Data Definition Language</a> syntax. When integer keys are used, a comment is appended to the line
 to indicate the name of the field. Object definitions in this specification have
 this unusual syntax to reduce the number of bytes-on-the-wire, while maintaining
 a human-readable name for each key. Integer keys are used instead of object
@@ -1444,8 +1439,7 @@ the wire smaller.</p>
     </div>
    </div>
    <h2 class="heading settled" id="appendix-b"><span class="content">Appendix B: PSK Encoding Schemes</span><a class="self-link" href="#appendix-b"></a></h2>
-   <p>The following appendix describes two encoding schemes for PSKs that take a value <code>P</code> between 20 bits and 80 bits in length and produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something①">QR
-code</a> for display to the user.</p>
+   <p>The following appendix describes two encoding schemes for PSKs that take a value <code>P</code> between 20 bits and 80 bits in length and produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something①">QR code</a> for display to the user.</p>
    <p>Agents should use these encoding schemes to maximize the interoperability of the
 authentication step, which typically requires displaying the PSK on one
 device and the user inputting it on another device.</p>
@@ -1680,7 +1674,7 @@ alphanumeric input.</p>
    <dt id="biblio-rfc6234">[RFC6234]
    <dd>D. Eastlake 3rd; T. Hansen. <a href="https://www.rfc-editor.org/rfc/rfc6234"><cite>US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)</cite></a>. May 2011. Informational. URL: <a href="https://www.rfc-editor.org/rfc/rfc6234">https://www.rfc-editor.org/rfc/rfc6234</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
-   <dd>Theresa O'Connor; Peter Snyder. <a href="https://w3ctag.github.io/security-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. URL: <a href="https://w3ctag.github.io/security-questionnaire/">https://w3ctag.github.io/security-questionnaire/</a>
+   <dd>Theresa O'Connor; Peter Snyder; Simone Onofri. <a href="https://w3c.github.io/security-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. URL: <a href="https://w3c.github.io/security-questionnaire/">https://w3c.github.io/security-questionnaire/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
@@ -2323,6 +2317,7 @@ let refsData = {
 "#open-screen-network-protocol-agent": {"displayText":"open screen network protocol agent","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreen-network","spec":"openscreen-network","status":"local","text":"open screen network protocol agent","type":"dfn","url":"#open-screen-network-protocol-agent"},
 "#suspicious-agent": {"displayText":"suspicious agent","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreen-network","spec":"openscreen-network","status":"local","text":"suspicious agent","type":"dfn","url":"#suspicious-agent"},
 "#verified-display-name": {"displayText":"verified display name","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreen-network","spec":"openscreen-network","status":"local","text":"verified display name","type":"dfn","url":"#verified-display-name"},
+"09174256_https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc": {"displayText":"Variable-Length Integer Encoding","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"variable-length integer encoding","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
 "https://datatracker.ietf.org/doc/html/rfc4122#section-4.4": {"displayText":"UUID","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc4122","spec":"rfc4122","status":"anchor-block","text":"uuid","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc4122#section-4.4"},
 "https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.1.3": {"displayText":"digitalSignature","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc5280","spec":"rfc5280","status":"anchor-block","text":"digitalsignature","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.1.3"},
 "https://datatracker.ietf.org/doc/html/rfc6762#section-9": {"displayText":"conflict resolution","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6762","spec":"rfc6762","status":"anchor-block","text":"conflict resolution","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc6762#section-9"},
@@ -2416,7 +2411,12 @@ function hideRefHint(refHint) {
 function showRefHint(link) {
     if(link.classList.contains("dfn-link")) return;
     const url = link.getAttribute("href");
-    const ref = refsData[url];
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
     if(!ref) return;
 
     hideAllRefHints(); // Only display one at this time.
