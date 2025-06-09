@@ -5,9 +5,9 @@
   <title>Open Screen Application Protocol</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version ac5ea272d, updated Fri Dec 6 15:45:15 2024 -0800" name="generator">
+  <meta content="Bikeshed version 9a7a6709a, updated Tue May 27 16:45:34 2025 -0700" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/application.html" rel="canonical">
-  <meta content="a438c32c21ee9998acb491af6194531cc6755a16" name="revision">
+  <meta content="6fcfccb97d4abe6a348719217dd57c5e66cae27f" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -632,7 +632,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Open Screen Application Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-12-11">11 December 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2025-06-09">9 June 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -650,7 +650,7 @@ dfn > a.self-link::before      { content: "#"; }
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2024 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -659,14 +659,13 @@ dfn > a.self-link::before      { content: "#"; }
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p> <em>This section describes the status of this document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
+   <p> <em>This section describes the status of this document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> standards and drafts index</a> at https://www.w3.org/TR/.</em> </p>
    <p> This document was published by the <a href="https://www.w3.org/groups/wg/secondscreen">Second Screen Working Group</a> as an Editor’s Draft. This document is intended to become a W3C Recommendation. </p>
    <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/w3c/openscreenprotocol/issues">Github issues</a>. </p>
    <p> Publication as an Editor’s Draft does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/policies/patent-policy/20200915/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential
     Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
    <p> This document is governed by the <a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
-   <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -825,12 +824,10 @@ please consult the respective specifications.</p>
 capable of rendering a specific <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url">presentation request URL</a>.</p>
     <li data-md>
      <p>A controller must be able to start a new <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-receiving-browsing-context" id="ref-for-dfn-receiving-browsing-context①">presentation</a> on a
-receiver given a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier" id="ref-for-dfn-presentation-identifier">presentation
-identifier</a>.</p>
+receiver given a <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url①">presentation request URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier" id="ref-for-dfn-presentation-identifier">presentation identifier</a>.</p>
     <li data-md>
      <p>A controller must be able to create a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#dom-presentationconnection" id="ref-for-dom-presentationconnection">PresentationConnection</a></code> to an
-existing presentation on the receiver, given its <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request
-URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier" id="ref-for-dfn-presentation-identifier①">presentation identifier</a>.</p>
+existing presentation on the receiver, given its <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-request-url" id="ref-for-dfn-presentation-request-url②">presentation request URL</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/presentation-api/#dfn-presentation-identifier" id="ref-for-dfn-presentation-identifier①">presentation identifier</a>.</p>
     <li data-md>
      <p>It must be possible to close a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/presentation-api/#dom-presentationconnection" id="ref-for-dom-presentationconnection①">PresentationConnection</a></code> between a
 controller and a presentation, and signal both parties with the reason why
@@ -1014,8 +1011,7 @@ the the same QUIC stream, the following is used.</p>
 the following:</p>
    <ol>
     <li data-md>
-     <p>A type key representing the type of the message, encoded as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc">variable-length
-integer</a> (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
+     <p>A type key representing the type of the message, encoded as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc">variable-length integer</a> (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</p>
     <li data-md>
      <p>The message encoded as CBOR.</p>
    </ol>
@@ -1023,7 +1019,7 @@ integer</a> (see <a href="#appendix-a">Appendix A: Messages</a> for type keys)</
 must close the QUIC connection with an application error code of 404 and should
 include the unknown type key in the reason phrase of the CONNECTION_CLOSE
 frame.</p>
-   <p>Variable-length integers are encoded in the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc①">Variable-Length Integer Encoding</a> used by <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a>.</p>
+   <p>Variable-length integers are encoded in the <a data-link-type="dfn" data-refhint-key="09174256" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc①">Variable-Length Integer Encoding</a> used by <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a>.</p>
    <p>Many messages are requests and responses, so a common format is defined for
 those.  A request and a response includes a request ID which is an unsigned
 integer chosen by the requester.  Responses must include the request ID of the
@@ -1699,8 +1695,7 @@ changed.</p>
    <dl>
     <dt data-md>supports
     <dd data-md>
-     <p>The controls the receiver supports.  These may differ according to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑦">media
-resource</a> and should not change unless the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑧">media resource</a> also changes.
+     <p>The controls the receiver supports.  These may differ according to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑦">media resource</a> and should not change unless the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-resource" id="ref-for-media-resource⑧">media resource</a> also changes.
 The default is empty (support for nothing)
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②">remote-playback-start-response</a> message.</p>
     <dt data-md>source
@@ -1814,8 +1809,7 @@ The controller can also add cues to and remove cues from text tracks.
 The default is an empty array
 for the initial state in the <a data-link-type="dfn" href="#remote-playback-start-response" id="ref-for-remote-playback-start-response②③">remote-playback-start-response</a> message.</p>
    </dl>
-   <p>Media positions, durations, and time ranges are defined in terms of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-timeline" id="ref-for-media-timeline②">media
-timeline</a> specified in HTML, which are fractional seconds between zero and the
+   <p>Media positions, durations, and time ranges are defined in terms of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/media.html#media-timeline" id="ref-for-media-timeline②">media timeline</a> specified in HTML, which are fractional seconds between zero and the
 media duration.</p>
    <p class="note" role="note"><span class="marker">NOTE:</span> An Open Screen agent can convert between values on the media timeline and
 the media sync time sent with individual media frames using the steps in <a href="#appendix-c">Appendix C: Media Time Conversions</a>.</p>
@@ -1905,14 +1899,12 @@ messages defined in <a href="#remote-playback-protocol">§ 7 Remote Playback P
 based on an implementation specific discovery mechanism" and <a href="https://w3c.github.io/remote-playback/#the-list-of-available-remote-playback-devices">section
 5.2.1.4</a> says "Retrieve available remote playback devices (using an
 implementation specific mechanism)", the user agent may use the mDNS, QUIC, <a data-link-type="dfn" href="#agent-info-request" id="ref-for-agent-info-request③">agent-info-request</a>, and <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request①">remote-playback-availability-request</a> messages
-defined previously in this spec to discover <a data-link-type="dfn" href="#receiver" id="ref-for-receiver④">receivers</a>.  The <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request②">remote-playback-availability-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability
-sources set</a>.</p>
+defined previously in this spec to discover <a data-link-type="dfn" href="#receiver" id="ref-for-receiver④">receivers</a>.  The <a data-link-type="dfn" href="#remote-playback-availability-request" id="ref-for-remote-playback-availability-request②">remote-playback-availability-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-availability-sources-set" id="ref-for-dfn-availability-sources-set">availability sources set</a>.</p>
    <p>When <a href="https://w3c.github.io/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
 5.2.4</a> says "Request connection of remote to device. The implementation of this
 step is specific to the user agent." and "Synchronize the current media element
 state with the remote playback state", the controller may send the <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑦">remote-playback-start-request</a> message to the receiver to start remote
-playback.  The <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑧">remote-playback-start-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote
-playback source</a>.  The current <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> only
+playback.  The <a data-link-type="dfn" href="#remote-playback-start-request" id="ref-for-remote-playback-start-request⑧">remote-playback-start-request</a> URLs must contain the <a data-link-type="dfn" href="https://w3c.github.io/remote-playback/#dfn-remote-playback-source" id="ref-for-dfn-remote-playback-source">remote playback source</a>.  The current <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> only
 allows a single source, but the protocol allows for several and future versions
 of <a data-link-type="biblio" href="#biblio-remote-playback" title="Remote Playback API">Remote Playback API</a> may allow for several.</p>
    <p>When <a href="https://w3c.github.io/remote-playback/#establishing-a-connection-with-a-remote-playback-device">section
@@ -1954,8 +1946,7 @@ Formats are composed of the following fields:</p>
      <p>A fully qualified codec string listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry" title="WebCodecs Codec Registry">[WEBCODECS-CODEC-REGISTRY]</a> and further
  specified by the codec-specific registrations referenced in that registry.</p>
    </dl>
-   <p>For <code>codec-name</code>, Open Screen agents may also accept a single-codec <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc6381#section-3" id="ref-for-section-3">codec
-parameter</a> as described in <a data-link-type="biblio" href="#biblio-rfc6381" title="The &apos;Codecs&apos; and &apos;Profiles&apos; Parameters for &quot;Bucket&quot; Media Types">[RFC6381]</a> for codecs not listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry" title="WebCodecs Codec Registry">[WEBCODECS-CODEC-REGISTRY]</a>.</p>
+   <p>For <code>codec-name</code>, Open Screen agents may also accept a single-codec <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc6381#section-3" id="ref-for-section-3">codec parameter</a> as described in <a data-link-type="biblio" href="#biblio-rfc6381" title="The &apos;Codecs&apos; and &apos;Profiles&apos; Parameters for &quot;Bucket&quot; Media Types">[RFC6381]</a> for codecs not listed in the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry" title="WebCodecs Codec Registry">[WEBCODECS-CODEC-REGISTRY]</a>.</p>
    <p>Audio capabilities are composed of the above format type, with the following
 additional fields:</p>
    <dl>
@@ -2722,8 +2713,7 @@ capable of handling:
     </ol>
    </div>
    <h2 class="heading settled" id="appendix-a"><span class="content">Appendix A: Messages</span><a class="self-link" href="#appendix-a"></a></h2>
-   <p>The following messages are defined using the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8610#section-3" id="ref-for-section-3①">Concise Data Definition
-Language</a> syntax. When integer keys are used, a comment is appended to the line
+   <p>The following messages are defined using the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8610#section-3" id="ref-for-section-3①">Concise Data Definition Language</a> syntax. When integer keys are used, a comment is appended to the line
 to indicate the name of the field. Object definitions in this specification have
 this unusual syntax to reduce the number of bytes-on-the-wire, while maintaining
 a human-readable name for each key. Integer keys are used instead of object
@@ -3733,9 +3723,9 @@ value should be used.</p>
    <dt id="biblio-rfc4122">[RFC4122]
    <dd>P. Leach; M. Mealling; R. Salz. <a href="https://www.rfc-editor.org/rfc/rfc4122"><cite>A Universally Unique IDentifier (UUID) URN Namespace</cite></a>. July 2005. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc4122">https://www.rfc-editor.org/rfc/rfc4122</a>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
-   <dd>Theresa O'Connor; Peter Snyder. <a href="https://w3ctag.github.io/security-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. URL: <a href="https://w3ctag.github.io/security-questionnaire/">https://w3ctag.github.io/security-questionnaire/</a>
+   <dd>Theresa O'Connor; Peter Snyder; Simone Onofri. <a href="https://w3c.github.io/security-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. URL: <a href="https://w3c.github.io/security-questionnaire/">https://w3c.github.io/security-questionnaire/</a>
    <dt id="biblio-webcodecs-codec-registry">[WEBCODECS-CODEC-REGISTRY]
-   <dd>Chris Cunningham; Paul Adenot; Bernard Aboba. <a href="https://w3c.github.io/webcodecs/codec_registry.html"><cite>WebCodecs Codec Registry</cite></a>. URL: <a href="https://w3c.github.io/webcodecs/codec_registry.html">https://w3c.github.io/webcodecs/codec_registry.html</a>
+   <dd>Paul Adenot; Bernard Aboba. <a href="https://w3c.github.io/webcodecs/codec_registry.html"><cite>WebCodecs Codec Registry</cite></a>. URL: <a href="https://w3c.github.io/webcodecs/codec_registry.html">https://w3c.github.io/webcodecs/codec_registry.html</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
@@ -4517,6 +4507,7 @@ let refsData = {
 "#verified-display-name": {"displayText":"verified display name","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreen-application","spec":"openscreen-application","status":"local","text":"verified display name","type":"dfn","url":"#verified-display-name"},
 "#video-encoding-offer": {"displayText":"video-encoding-offer","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreen-application","spec":"openscreen-application","status":"local","text":"video-encoding-offer","type":"dfn","url":"#video-encoding-offer"},
 "#video-frame": {"displayText":"video-frame","export":true,"for_":[],"level":"","normative":true,"shortname":"openscreen-application","spec":"openscreen-application","status":"local","text":"video-frame","type":"dfn","url":"#video-frame"},
+"09174256_https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc": {"displayText":"Variable-Length Integer Encoding","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9000","spec":"rfc9000","status":"anchor-block","text":"variable-length integer encoding","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc"},
 "https://datatracker.ietf.org/doc/html/rfc4122#section-4.4": {"displayText":"UUID","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc4122","spec":"rfc4122","status":"anchor-block","text":"uuid","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc4122#section-4.4"},
 "https://datatracker.ietf.org/doc/html/rfc5646#section-2": {"displayText":"language tag","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc5646","spec":"rfc5646","status":"anchor-block","text":"language tag","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc5646#section-2"},
 "https://datatracker.ietf.org/doc/html/rfc6381#section-3": {"displayText":"codecs parameter","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc6381","spec":"rfc6381","status":"anchor-block","text":"codecs parameter","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc6381#section-3"},
@@ -4659,7 +4650,12 @@ function hideRefHint(refHint) {
 function showRefHint(link) {
     if(link.classList.contains("dfn-link")) return;
     const url = link.getAttribute("href");
-    const ref = refsData[url];
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
     if(!ref) return;
 
     hideAllRefHints(); // Only display one at this time.
