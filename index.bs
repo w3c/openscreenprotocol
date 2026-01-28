@@ -428,8 +428,10 @@ The following X.509 v3 fields are to be set as follows:
 <div class="assertion">
 <table>
 <thead>
- <th>Field</th>
- <th>Value</th>
+ <tr>
+  <th>Field</th>
+  <th>Value</th>
+ </tr>
 </thead>
 <tbody>
  <tr>
