@@ -5,9 +5,9 @@
   <title>Open Screen Network Protocol</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 9a7a6709a, updated Tue May 27 16:45:34 2025 -0700" name="generator">
+  <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
   <link href="https://w3c.github.io/openscreenprotocol/network.html" rel="canonical">
-  <meta content="84c3e07ab6acd85cff2a37681a3efe2d7f473d83" name="revision">
+  <meta content="764eda491585c93f1ea51f24838119120e4f35bc" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -383,7 +383,7 @@ body {
 }
 .invalid.example:not(.no-marker)::before,
 .illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
+    content: "Invalid Example " counter(example);
 }
 
 figcaption {
@@ -630,9 +630,13 @@ dfn > a.self-link::before      { content: "#"; }
 </style>
  <body class="h-entry">
   <div class="head">
-   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
-   <h1 class="p-name no-ref" id="title">Open Screen Network Protocol</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2025-06-09">9 June 2025</time></p>
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
+    <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
+</a>
+</p>
+   <h1 class="no-ref p-name" id="title">Open Screen Network Protocol</h1>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
+    <time class="dt-updated" datetime="2026-01-28">28 January 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -645,34 +649,49 @@ dfn > a.self-link::before      { content: "#"; }
       <dd><a href="https://github.com/w3c/openscreenprotocol/issues/">GitHub</a>
       <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editor:
-      <dd class="editor p-author h-card vcard" data-editor-id="68454"><a class="p-name fn u-url url" href="https://github.com/markafoltz">Mark Foltz</a> (<span class="p-org org">Google</span>)
+      <dd class="editor h-card p-author vcard" data-editor-id="68454"><a class="fn p-name u-url url" href="https://github.com/markafoltz">Mark Foltz</a> (<span class="org p-org">Google</span>)
      </dl>
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2026 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+</p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
-   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>The Open Screen Network Protocol is a network protocol that allows
 two Open Screen agents to establish a secure network transport in an
 interoperable fashion.</p>
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
+  <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p> <em>This section describes the status of this document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> standards and drafts index</a> at https://www.w3.org/TR/.</em> </p>
-   <p> This document was published by the <a href="https://www.w3.org/groups/wg/secondscreen">Second Screen Working Group</a> as an Editor’s Draft. This document is intended to become a W3C Recommendation. </p>
-   <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/w3c/openscreenprotocol/issues">Github issues</a>. </p>
-   <p> Publication as an Editor’s Draft does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
-   <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/policies/patent-policy/20200915/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential
-    Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
-   <p> This document is governed by the <a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
+   <p>
+    <em>This section describes the status of this document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> standards and drafts index</a>.</em>
+  </p>
+   <p>
+    This document was published by the <a href="https://www.w3.org/groups/wg/secondscreen">Second Screen Working Group</a> as an Editor’s Draft. This document is intended to become a W3C Recommendation.
+  </p>
+   <p>
+    Feedback and comments on this specification are welcome. Please use
+    <a href="https://github.com/w3c/openscreenprotocol/issues">Github issues</a>.
+  </p>
+   <p>
+    Publication as an Editor’s Draft does not imply endorsement by
+    <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. This is a draft document and may be updated, replaced, or obsoleted by other documents at any time. It is inappropriate to cite this document as other than a work in progress.
+  </p>
+   <p>
+    This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/policies/patent-policy/20200915/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent that the individual believes contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential
+    Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+  </p>
+   <p>
+    This document is governed by the <a href="https://www.w3.org/policies/process/20250818/" id="w3c_process_revision">18 August 2025 W3C Process Document</a>.
+  </p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
-   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
-   <ol class="toc" role="directory">
+   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
+   <ol class="toc">
     <li>
      <a href="#introduction"><span class="secno">1</span> <span class="content">Introduction</span></a>
      <ol class="toc">
@@ -771,7 +790,8 @@ interoperable fashion.</p>
    <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
    <p>The Open Screen Network Protocol provides a baseline set of network protocols
 for browsers and devices to discover each other and establish a secure network
-connection.  This connection can be used as the transport layer for the <a href="https://w3c.github.io/openscreenprotocol/application.html">Open Screen Application Protocol</a>.</p>
+connection.  This connection can be used as the transport layer for the
+<a href="https://w3c.github.io/openscreenprotocol/application.html">Open Screen Application Protocol</a>.</p>
    <p>The Application Protocol and the Network Protocol are independent.  However the
 Network Protocol is designed to meet the requirements of the Application
 Protocol.  It may or may not be suitable for other application-level protocols
@@ -791,7 +811,8 @@ certificates.</p>
      <p>Use of <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a> as a transport layer over IP.</p>
    </ul>
    <p>The flow chart in <a href="#appendix-c">Appendix C: Entire Flow Chart</a> illustrates the entire sequence of events.</p>
-   <p>The accompanying <a href="https://w3c.github.io/openscreenprotocol/explainer.html">explainer</a> provides
+   <p>The accompanying
+<a href="https://w3c.github.io/openscreenprotocol/explainer.html">explainer</a> provides
 more background on the protocol.</p>
    <h3 class="heading settled" data-level="1.1" id="terminology"><span class="secno">1.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="open screen network protocol agent|osp agent" data-noexport id="open-screen-network-protocol-agent">Open Screen Network
@@ -815,7 +836,8 @@ establishing a network transport to the agent.</p>
      <p>It should be possible to implement the Open Screen Network Protocol using modest
 hardware requirements, similar to what is found in a low end smartphone,
 smart TV or streaming device. See the <a href="https://w3c.github.io/openscreenprotocol/device_specs.html">Device
-Specifications</a> document for agent hardware specifications.</p>
+Specifications</a>
+document for agent hardware specifications.</p>
     <li data-md>
      <p>The discovery and connection protocols should minimize power consumption,
 especially on a <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent">listening agent</a> which is likely to be battery
@@ -845,7 +867,8 @@ latency for gaming or mouse use is ideal, but not a requirement.</p>
    <h2 class="heading settled" data-level="3" id="discovery"><span class="secno">3. </span><span class="content">Discovery with mDNS</span><a class="self-link" href="#discovery"></a></h2>
    <p><a data-link-type="dfn" href="#open-screen-network-protocol-agent" id="ref-for-open-screen-network-protocol-agent①">Open Screen Network Protocol Agents</a> discover one another by advertising and
 listening for information identifying themselves along with an IP service
-endpoint.  Agent advertisement and discovery through <a data-link-type="biblio" href="#biblio-rfc6763" title="DNS-Based Service Discovery">DNS-SD</a> and <a data-link-type="biblio" href="#biblio-rfc6762" title="Multicast DNS">mDNS</a> is defined by this specification and is mandatory to implement
+endpoint.  Agent advertisement and discovery through <a data-link-type="biblio" href="#biblio-rfc6763" title="DNS-Based Service Discovery">DNS-SD</a> and
+<a data-link-type="biblio" href="#biblio-rfc6762" title="Multicast DNS">mDNS</a> is defined by this specification and is mandatory to implement
 by all agents. However, agents are free to implement additional discovery
 mechanisms, such as querying for the same DNS-SD records via unicast DNS.</p>
    <p>OSP agents must use the DNS-SD <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc6763#section-7" id="ref-for-section-7">Service Name</a> <code>_openscreen._udp</code>.</p>
@@ -853,14 +876,16 @@ mechanisms, such as querying for the same DNS-SD records via unicast DNS.</p>
 for <code>_openscreen._udp.local</code>.  Such an agent should have a <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="display name" data-noexport id="display-name">display
 name</dfn> (a non-empty string) that is a human readable description of the
 presentation display, e.g. "Living Room TV."</p>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="listening-agent">listening agent</dfn> is one that sends mDNS queries for <code>_openscreen._udp.local</code>.  Listening agents may have a display name.</p>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="listening-agent">listening agent</dfn> is one that sends mDNS queries for
+<code>_openscreen._udp.local</code>.  Listening agents may have a display name.</p>
    <p>Advertising agents must use a DNS-SD <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc6763#section-4.1.1" id="ref-for-section-4.1.1">Instance Name</a> that is a prefix of the
 agent’s display name.  If the Instance Name is not the complete display name, it
 must be terminated by a null (<code>\000</code>) character, so that a listening agent knows
 it has been truncated.</p>
    <p>Advertising agents must follow the mDNS <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc6762#section-9" id="ref-for-section-9">conflict resolution</a> procedure, to
 prevent multiple advertising agents from using the same DNS-SD Instance Name.</p>
-   <p>Agents should be careful when displaying Instance Names to users; see <a href="#instance-names">§ 7.4.1 Instance and Display Names</a> for guidelines on Instance Name display.</p>
+   <p>Agents should be careful when displaying Instance Names to users; see
+<a href="#instance-names">§ 7.4.1 Instance and Display Names</a> for guidelines on Instance Name display.</p>
    <p>Advertising agents must include DNS TXT records with the following
 keys and values:</p>
    <dl>
@@ -873,12 +898,15 @@ the agent fingerprint are defined below.</p>
      <p>An unsigned integer value that indicates that metadata has changed.   The
 advertising agent must update it to a greater value.  This signals to the
 listening agent that it should connect to the advertising agent to discover
-updated metadata.  The value should be encoded as a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc">variable-length integer</a>.</p>
+updated metadata.  The value should be encoded as a
+<a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc">variable-length integer</a>.</p>
     <dt data-md>at
     <dd data-md>
-     <p>An alphanumeric, unguessable token consisting of characters from the set <code>[A-Za-z0-9+/]</code>.</p>
+     <p>An alphanumeric, unguessable token consisting of characters from the set
+<code>[A-Za-z0-9+/]</code>.</p>
    </dl>
-   <p class="note" role="note"><span class="marker">Note:</span> <code>at</code> prevents off-LAN parties from attempting authentication; see <a href="#remote-active-mitigations">§ 7.3.3 Remote active network attackers</a>. <code>at</code> should have at least 32 bits of true
+   <p class="note" role="note"><span class="marker">Note:</span> <code>at</code> prevents off-LAN parties from attempting authentication; see
+<a href="#remote-active-mitigations">§ 7.3.3 Remote active network attackers</a>.  <code>at</code> should have at least 32 bits of true
 entropy to make brute force attacks impractical.</p>
    <p class="note" role="note"><span class="marker">NOTE:</span> If an OSP agent suspends its network connectivity (e.g. for power saving
 reasons) it should attempt to retain cached and valid mDNS records so that
@@ -894,7 +922,8 @@ mechanism for metadata discovery.</p>
 steps:</p>
    <ol>
     <li data-md>
-     <p>Compute the <a href="https://www.rfc-editor.org/rfc/rfc7469#section-2.4">SKPI Fingerprint</a> of the <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate">agent certificate</a> according to <a data-link-type="biblio" href="#biblio-rfc7469" title="Public Key Pinning Extension for HTTP">[RFC7469]</a> using <a data-link-type="biblio" href="#biblio-rfc6234" title="US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)">SHA-256</a> as the hash algorithm.</p>
+     <p>Compute the <a href="https://www.rfc-editor.org/rfc/rfc7469#section-2.4">SKPI Fingerprint</a> of the <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate">agent certificate</a>
+according to <a data-link-type="biblio" href="#biblio-rfc7469" title="Public Key Pinning Extension for HTTP">[RFC7469]</a> using <a data-link-type="biblio" href="#biblio-rfc6234" title="US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)">SHA-256</a> as the hash algorithm.</p>
     <li data-md>
      <p>base64 encode the result of Step 1 according to <a data-link-type="biblio" href="#biblio-rfc4648" title="The Base16, Base32, and Base64 Data Encodings">[RFC4648]</a>.</p>
    </ol>
@@ -904,14 +933,17 @@ steps:</p>
 steps:</p>
    <ol>
     <li>
-     If the agent has never generated an agent certificate: 
+     If the agent has never generated an agent certificate:
+  
      <ol>
-      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-base">certificate serial number base</dfn> be a 128-bit <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a>.
+      <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-base">certificate serial number base</dfn> be a 128-bit
+        <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc4122#section-4.4" id="ref-for-section-4.4">UUID</a>.
       <li>Let the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certificate-serial-number-counter">certificate serial number counter</dfn> be a 32-bit
         unsigned integer, initially set to 0.
      </ol>
     <li>
-     Generate a 160-bit value as follows: 
+     Generate a 160-bit value as follows:
+  
      <ol>
       <li>Increment the <a data-link-type="dfn" href="#certificate-serial-number-counter" id="ref-for-certificate-serial-number-counter">certificate serial number counter</a> by one.
       <li>Assign the upper 128 bits to the <a data-link-type="dfn" href="#certificate-serial-number-base" id="ref-for-certificate-serial-number-base">certificate serial number base</a>.
@@ -919,11 +951,13 @@ steps:</p>
      </ol>
    </ol>
    <h3 class="heading settled" data-level="3.3" id="computing-agent-hostname"><span class="secno">3.3. </span><span class="content">Computing the Agent Hostname</span><a class="self-link" href="#computing-agent-hostname"></a></h3>
-   <p>Each time the agent changes its DNS-SD <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc6763#section-4.1" id="ref-for-section-4.1">Service Instance Name</a> or <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number">certificate serial number</a> it must compute an <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-hostname">agent hostname</dfn> as
+   <p>Each time the agent changes its DNS-SD <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc6763#section-4.1" id="ref-for-section-4.1">Service Instance Name</a> or
+<a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number">certificate serial number</a> it must compute an <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="agent-hostname">agent hostname</dfn> as
 follows.</p>
    <ol>
     <li data-md>
-     <p>Set <var>base64SerialNumber</var> to the <a data-link-type="biblio" href="#biblio-rfc4648" title="The Base16, Base32, and Base64 Data Encodings">base64</a> encoded <a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number①">certificate serial number</a>.</p>
+     <p>Set <var>base64SerialNumber</var> to the <a data-link-type="biblio" href="#biblio-rfc4648" title="The Base16, Base32, and Base64 Data Encodings">base64</a> encoded
+<a data-link-type="dfn" href="#certificate-serial-number" id="ref-for-certificate-serial-number①">certificate serial number</a>.</p>
     <li data-md>
      <p>Set <var>encodedInstanceName</var> to the result of the following:</p>
      <ol>
@@ -939,12 +973,14 @@ than <code>[A-Za-z0-9-]</code> with a hyphen <code>-</code>.</p>
 than <code>[A-Za-z0-9-]</code> with a hyphen <code>-</code>.</p>
      </ol>
     <li data-md>
-     <p>Set the <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname">agent hostname</a> to the string <var>base64SerialNumber</var> + <code>.</code> + <var>encodedInstanceName</var> + <code>.</code> + <var>encodedDomain</var></p>
+     <p>Set the <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname">agent hostname</a> to the string
+<var>base64SerialNumber</var> + <code>.</code> + <var>encodedInstanceName</var> + <code>.</code> + <var>encodedDomain</var></p>
    </ol>
    <p>TODO: Add an appendix with examples of metadata, DNS-SD records and certificate
 fields for an advertising agent.</p>
    <h2 class="heading settled" data-level="4" id="transport"><span class="secno">4. </span><span class="content">Transport and metadata discovery with QUIC</span><a class="self-link" href="#transport"></a></h2>
-   <p>If a <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent①">listening agent</a> wants to connect to or learn further metadata about an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent①">advertising agent</a>, it initiates a <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a> connection to the IP and port
+   <p>If a <a data-link-type="dfn" href="#listening-agent" id="ref-for-listening-agent①">listening agent</a> wants to connect to or learn further metadata about an
+<a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent①">advertising agent</a>, it initiates a <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a> connection to the IP and port
 from its SRV record.  Prior to authentication, a message may be exchanged (such
 as further metadata), but such info should be treated as unverified (such as
 indicating to a user that a display name of an unauthenticated agent is
@@ -954,7 +990,8 @@ connection IDs are chosen, agents are restricted from changing IP or port
 without establishing a new QUIC connection.  In such cases, agents must
 establish a new QUIC connection in order to change IP or port.</p>
    <h3 class="heading settled" data-level="4.1" id="tls-13"><span class="secno">4.1. </span><span class="content">TLS 1.3</span><a class="self-link" href="#tls-13"></a></h3>
-   <p>When an <a data-link-type="dfn" href="#open-screen-network-protocol-agent" id="ref-for-open-screen-network-protocol-agent②">OSP Agent</a> makes a QUIC connection to another agent, it must use <a data-link-type="biblio" href="#biblio-rfc8446" title="The Transport Layer Security (TLS) Protocol Version 1.3">TLS 1.3</a> to secure the connection.  TLS 1.3 should be used with the
+   <p>When an <a data-link-type="dfn" href="#open-screen-network-protocol-agent" id="ref-for-open-screen-network-protocol-agent②">OSP Agent</a> makes a QUIC connection to another agent, it must use
+<a data-link-type="biblio" href="#biblio-rfc8446" title="The Transport Layer Security (TLS) Protocol Version 1.3">TLS 1.3</a> to secure the connection.  TLS 1.3 should be used with the
 following application-specific parameters to indicate that the connection will
 be used to communicate with a specific OSP Agent using OSP.  An OSP Agent may
 refuse incoming connections that lack these parameters.</p>
@@ -964,7 +1001,8 @@ refuse incoming connections that lack these parameters.</p>
     <li data-md>
      <p>The <a data-link-type="biblio" href="#biblio-rfc6066" title="Transport Layer Security (TLS) Extensions: Extension Definitions">server_name extension</a> must be set to the <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname①">agent hostname</a>.</p>
     <li data-md>
-     <p>The <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a> calculated for the received <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate①">agent certificate</a> must match the <code>fp</code> mDNS TXT record as advertised
+     <p>The <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint①">agent fingerprint</a> calculated for the received
+<a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate①">agent certificate</a> must match the <code>fp</code> mDNS TXT record as advertised
 by the advertising agent.</p>
    </ul>
    <p>An OSP Agent must not send TLS early data.</p>
@@ -1029,10 +1067,17 @@ serial number.</p>
       <tr>
        <td>Issuer Name
        <td>CN = The <code>model-name</code> from the <code>agent-info</code> message, as
-            also set in the <code>agent-info</code> message.<br> O = See note.<br> L = See note.<br> ST = See note.<br> C = See note.<br> 
+            also set in the <code>agent-info</code> message.<br>
+       O = See note.<br>
+       L = See note.<br>
+       ST = See note.<br>
+       C = See note.<br>
+    
       <tr>
        <td>Subject Name
-       <td>CN = <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname②">agent hostname</a><br> O = See note.<br> 
+       <td>CN = <a data-link-type="dfn" href="#agent-hostname" id="ref-for-agent-hostname②">agent hostname</a><br>
+       O = See note.<br>
+   
       <tr>
        <td>Subject Public Key Algorithm
        <td>Elliptic Curve Public Key
@@ -1046,7 +1091,8 @@ serial number.</p>
 for the <code>O</code> key for user interface and debugging purposes. It may use the agent
 implementer’s or device manufacturer’s location as the value for the location
 keys (<code>L</code>, <code>ST</code>, and <code>C</code>) for user interface and debugging purposes.</p>
-   <p>If an OSP agent sees an <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate④">agent certificate</a> it has not yet verified through <a href="#authentication">§ 6 Authentication</a>, it must treat that agent as unverified and initiate
+   <p>If an OSP agent sees an <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate④">agent certificate</a> it has not yet verified through
+<a href="#authentication">§ 6 Authentication</a>, it must treat that agent as unverified and initiate
 authentication with that agent before allowing additional messages to be
 exchanged with that agent.</p>
    <p>If an OSP agent sees a valid <a data-link-type="dfn" href="#agent-certificate" id="ref-for-agent-certificate⑤">agent certificate</a> it has verified through
@@ -1078,13 +1124,15 @@ the following:</p>
    <p>If an agent receives a message for which it does not recognize a type key, it
 must close the QUIC connection with an application error code of 404 and should
 include the unknown type key in the reason phrase of the <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9000#name-connection_close-frames" id="ref-for-name-connection_close-frames">CONNECTION_CLOSE frame</a>.</p>
-   <p>Variable-length integers are encoded in the <a data-link-type="dfn" data-refhint-key="09174256" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc②">Variable-Length Integer Encoding</a> used by <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a>.</p>
+   <p>Variable-length integers are encoded in the <a data-link-type="dfn" data-refhint-key="09174256" href="https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc" id="ref-for-name-variable-length-integer-enc②">Variable-Length Integer Encoding</a>
+used by <a data-link-type="biblio" href="#biblio-rfc9000" title="QUIC: A UDP-Based Multiplexed and Secure Transport">QUIC</a>.</p>
    <h2 class="heading settled" data-level="6" id="authentication"><span class="secno">6. </span><span class="content">Authentication</span><a class="self-link" href="#authentication"></a></h2>
    <p>Each supported authentication method is implemeted via authentication messages
 specific to that method.  The authentication method is explicitly specified by
 the message itself.  The authentication status message is common for all authentication
 methods.  Any new authentication method added must define new authentication messages.</p>
-   <p><a data-link-type="dfn" href="#open-screen-network-protocol-agent" id="ref-for-open-screen-network-protocol-agent④">Open Screen Network Protocol agents</a> must implement <a href="#authentication-with-spake2">§ 6.1 Authentication with SPAKE2</a> with pre-shared keys.</p>
+   <p><a data-link-type="dfn" href="#open-screen-network-protocol-agent" id="ref-for-open-screen-network-protocol-agent④">Open Screen Network Protocol agents</a> must implement <a href="#authentication-with-spake2">§ 6.1 Authentication with SPAKE2</a>
+with pre-shared keys.</p>
    <p>Prior to authentication, agents exchange <a data-link-type="dfn" href="#auth-capabilities" id="ref-for-auth-capabilities">auth-capabilities</a> messages specifying
 pre-shared key (PSK) ease of input for the user and supported PSK input methods.
 The agent with the lowest PSK ease of input presents a PSK to the user when the agent
@@ -1098,8 +1146,11 @@ that it’s easy for the user to input PSK on the device.  Supported PSK input m
 are numeric and scanning a QR-code.  Devices with non-zero PSK ease of input must
 support the numeric PSK input method.</p>
    <p>Any authentication method may require an <a data-link-type="dfn" href="#auth-initiation-token" id="ref-for-auth-initiation-token">auth-initiation-token</a> before
-showing a PSK to the user or requesting PSK input from the user.  For an <a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent③">advertising agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the <code>auth-initation-token</code> in the the first authentication message sent to or from
-that agent.  Agents should discard any authentication message whose <code>auth-initation-token</code> is set and does not match the <code>at</code> provided by the
+showing a PSK to the user or requesting PSK input from the user.  For an
+<a data-link-type="dfn" href="#advertising-agent" id="ref-for-advertising-agent③">advertising agent</a>, the <code>at</code> field in its mDNS TXT record must be used as the
+<code>auth-initation-token</code> in the the first authentication message sent to or from
+that agent.  Agents should discard any authentication message whose
+<code>auth-initation-token</code> is set and does not match the <code>at</code> provided by the
 advertising agent.</p>
    <p>In the <code>psk-min-bits-of-entropy</code> field of the <a data-link-type="dfn" href="#auth-capabilities" id="ref-for-auth-capabilities①">auth-capabilities</a> messsage,
 agents may specify the minimum bits of entropy it requires for a PSK, in the
@@ -1138,25 +1189,38 @@ any form.</p>
 such as a number or a short password that could be entered by a user on a
 phone, a keyboard or a TV remote control.</p>
    <p>SPAKE2 is not symmetric and has two roles, Alice (A) and Bob (B).</p>
-   <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>, <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.  [SPAKE2] describes in detail
+   <p>The messages used in this authentication method are: <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake">auth-spake2-handshake</a>,
+<a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation">auth-spake2-confirmation</a> and <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status">auth-status</a>.  [SPAKE2] describes in detail
 how <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake①">auth-spake2-handshake</a> and <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation①">auth-spake2-confirmation</a> are computed.</p>
    <p>The values <code>A</code> and <code>B</code> used in SPAKE2 are the <a data-link-type="dfn" href="#agent-fingerprint" id="ref-for-agent-fingerprint②">agent fingerprints</a> of the
 client and server, respectively. <code>pw</code> is the PSK presented to the user.</p>
    <p>The PSK presenter or the PSK consumer may initiate authentication (assuming the
 role of Alice in SPAKE2).</p>
    <p>If the PSK presenter wants to initiate authentication, it starts the
-authentication process by presenting the PSK to the user and sending a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake②">auth-spake2-handshake</a> message.  The <code>public-value</code> field of the <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake③">auth-spake2-handshake</a> message must be set to the value of <code>pA</code> from SPAKE2
+authentication process by presenting the PSK to the user and sending a
+<a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake②">auth-spake2-handshake</a> message.  The <code>public-value</code> field of the
+<a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake③">auth-spake2-handshake</a> message must be set to the value of <code>pA</code> from SPAKE2
 and the <code>psk-status</code> field must be set to <code>psk-shown</code>.</p>
    <p>When the PSK consumer receives the <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake④">auth-spake2-handshake</a> message, the PSK
 consumer prompts the user for the PSK input if it has not done so yet.  Once it
-receives the PSK, it sends an <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑤">auth-spake2-handshake</a> message with the <code>public-value</code> field set to the value of <code>pB</code> from SPAKE2 and the <code>psk-status</code> field set to <code>psk-input</code>.</p>
-   <p>If the PSK consumer wants to initiate authentication, the PSK consumer sends a <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑥">auth-spake2-handshake</a> message to the PSK presenter with the <code>psk-status</code> field set to <code>psk-needs-presentation</code> and the <code>public-value</code> field set to <code>pA</code>. The PSK presenter, on receiving this message, creates a PSK and presents
-it to the the user.  Once that is done, it sends an <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑦">auth-spake2-handshake</a> message to the PSK consumer with <code>psk-status</code> set to <code>psk-input</code> and the <code>public-value</code> field set to <code>pB</code>.</p>
+receives the PSK, it sends an <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑤">auth-spake2-handshake</a> message with the
+<code>public-value</code> field set to the value of <code>pB</code> from SPAKE2 and the <code>psk-status</code>
+field set to <code>psk-input</code>.</p>
+   <p>If the PSK consumer wants to initiate authentication, the PSK consumer sends a
+<a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑥">auth-spake2-handshake</a> message to the PSK presenter with the <code>psk-status</code>
+field set to <code>psk-needs-presentation</code> and the <code>public-value</code> field set to
+<code>pA</code>. The PSK presenter, on receiving this message, creates a PSK and presents
+it to the the user.  Once that is done, it sends an <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑦">auth-spake2-handshake</a>
+message to the PSK consumer with <code>psk-status</code> set to <code>psk-input</code> and the
+<code>public-value</code> field set to <code>pB</code>.</p>
    <p>Once an agent knows both <code>pA</code> and <code>pB</code> from <a data-link-type="dfn" href="#auth-spake2-handshake" id="ref-for-auth-spake2-handshake⑧">auth-spake2-handshake</a> messages,
-it computes and sends a <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation②">auth-spake2-confirmation</a> with the <code>confirmation-value</code> field set to <code>cA</code> (for Alice) or <code>cB</code> (for Bob) to the
+it computes and sends a <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation②">auth-spake2-confirmation</a> with the
+<code>confirmation-value</code> field set to <code>cA</code> (for Alice) or <code>cB</code> (for Bob) to the
 other agent.</p>
    <p>Once an agent receives an <a data-link-type="dfn" href="#auth-spake2-confirmation" id="ref-for-auth-spake2-confirmation③">auth-spake2-confirmation</a> message, it validates
-that message using the procedure in [SPAKE2] and then replies with an <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status①">auth-status</a> authenticated message to the other agent.  Any value of <code>result</code> other than <code>authenticated</code> means that authentication failed, and the agent must
+that message using the procedure in [SPAKE2] and then replies with an
+<a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status①">auth-status</a> authenticated message to the other agent.  Any value of <code>result</code>
+other than <code>authenticated</code> means that authentication failed, and the agent must
 immediately disconnect.</p>
    <p class="note" role="note"><span class="marker">NOTE:</span> The <a data-link-type="dfn" href="#auth-status" id="ref-for-auth-status②">auth-status</a> message is merely informative as each agent
 independently computes the outcome of SPAKE2 through key confirmation
@@ -1169,7 +1233,8 @@ the authentication phase can be omitted.</p>
    <p>The Open Screen Network Protocol allows two <a data-link-type="dfn" href="#open-screen-network-protocol-agent" id="ref-for-open-screen-network-protocol-agent⑤">OSP agents</a> to discover each other and
 exchange user and application data.  As such, its security and privacy
 considerations should be closely examined.  We evaluate the protocol itself
-using the W3C <a data-link-type="biblio" href="#biblio-security-privacy-questionnaire" title="Self-Review Questionnaire: Security and Privacy">Security and Privacy Questionnaire</a> and also discuss recommended mitigations that agents can use to meet these
+using the W3C <a data-link-type="biblio" href="#biblio-security-privacy-questionnaire" title="Self-Review Questionnaire: Security and Privacy">Security and Privacy Questionnaire</a>
+and also discuss recommended mitigations that agents can use to meet these
 security and privacy requirements.</p>
    <h3 class="heading settled" data-level="7.1" id="threat-models"><span class="secno">7.1. </span><span class="content">Threat Models</span><a class="self-link" href="#threat-models"></a></h3>
    <h4 class="heading settled" data-level="7.1.1" id="passive-network-attackers"><span class="secno">7.1.1. </span><span class="content">Passive Network Attackers</span><a class="self-link" href="#passive-network-attackers"></a></h4>
@@ -1223,7 +1288,8 @@ these devices are knowingly making themselves available to the Web and should be
 designed accordingly.</p>
    <p>Below, we discuss mitigation steps to prevent malicious use of these devices.</p>
    <h4 class="heading settled" data-level="7.2.4" id="private-browsing-mode"><span class="secno">7.2.4. </span><span class="content">Private Browsing Mode</span><a class="self-link" href="#private-browsing-mode"></a></h4>
-   <p>It’s recommended that user agents use separate authentication contexts (see <a href="#authentication">§ 6 Authentication</a>) and QUIC connections (see <a href="#transport">§ 4 Transport and metadata discovery with QUIC</a>) for normal and
+   <p>It’s recommended that user agents use separate authentication contexts (see
+<a href="#authentication">§ 6 Authentication</a>) and QUIC connections (see <a href="#transport">§ 4 Transport and metadata discovery with QUIC</a>) for normal and
 private browsing from the same user agent instance. This makes it more difficult
 for other devices to match activities occurring in normal and private browsing
 by the same user.</p>
@@ -1322,7 +1388,8 @@ existing activities to continue in spite of such an attack.</p>
    <p>OSP agents should be robust against malicious input that attempts to compromise
 the target device by exploiting parsing vulnerabilities.</p>
    <p>Where possible, OSP agents (including application level components like content
-and media rendering) should use defense-in-depth techniques like <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a> to prevent vulnerabilities from gaining access to user data or leading to
+and media rendering) should use defense-in-depth techniques like <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandboxing</a>
+to prevent vulnerabilities from gaining access to user data or leading to
 persistent exploits.</p>
    <h3 class="heading settled" data-level="7.4" id="security-ui"><span class="secno">7.4. </span><span class="content">User Interface Considerations</span><a class="self-link" href="#security-ui"></a></h3>
    <p>This specification does not make any specific requirements of the security
@@ -1357,15 +1424,18 @@ sees prior to authentication, careful presentation of these names is necessary.<
    <p class="issue" id="issue-40e518b1"><a class="self-link" href="#issue-40e518b1"></a> Rephrase to not link DNS-SD with an agent-info, an application
 message. <a href="https://github.com/w3c/openscreenprotocol/issues/346">[Issue #346]</a></p>
    <p>Agents must treat Instance Names as unverified information, and should check
-that the Instance Name is a prefix of the display name received through the <code>agent-info</code> message after a successful QUIC connection.  Once an
+that the Instance Name is a prefix of the display name received through the
+<code>agent-info</code> message after a successful QUIC connection.  Once an
 agent has done this check, it can show the name as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="verified display name" data-noexport id="verified-display-name">verified
 display name</dfn>.</p>
    <p>Agents should show only complete display names to the user, instead of truncated
 display names from DNS-SD.  A truncated display name should be verified as above
 before being shown in full as a <a data-link-type="dfn" href="#verified-display-name" id="ref-for-verified-display-name">verified display name</a>.</p>
    <div class="note" role="note">
-     This means there are three categories of display names that agents should be
-capable of handling: 
+    
+This means there are three categories of display names that agents should be
+capable of handling:
+
     <ol>
      <li> Truncated and unverified DNS-SD Instance Names, which should not be shown
        to the user.
@@ -1439,7 +1509,8 @@ the wire smaller.</p>
     </div>
    </div>
    <h2 class="heading settled" id="appendix-b"><span class="content">Appendix B: PSK Encoding Schemes</span><a class="self-link" href="#appendix-b"></a></h2>
-   <p>The following appendix describes two encoding schemes for PSKs that take a value <code>P</code> between 20 bits and 80 bits in length and produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something①">QR code</a> for display to the user.</p>
+   <p>The following appendix describes two encoding schemes for PSKs that take a value
+<code>P</code> between 20 bits and 80 bits in length and produce either a string or a <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something①">QR code</a> for display to the user.</p>
    <p>Agents should use these encoding schemes to maximize the interoperability of the
 authentication step, which typically requires displaying the PSK on one
 device and the user inputting it on another device.</p>
@@ -1465,7 +1536,9 @@ device and the user inputting it on another device.</p>
        <p>Output <code>N</code> in groups of four digits separated by dashes.</p>
      </ul>
    </ol>
-   <div class="example" id="example-7640121e"><a class="self-link" href="#example-7640121e"></a> For PSK <code>61488548833</code>, the steps would produce the string <code>0614-8854-8833</code>. </div>
+   <div class="example" id="example-7640121e"><a class="self-link" href="#example-7640121e"></a>
+For PSK <code>61488548833</code>, the steps would produce the string <code>0614-8854-8833</code>.
+</div>
    <p>To decode a string <code>N</code> into a PSK <code>P</code>, follow these steps:</p>
    <ol>
     <li data-md>
@@ -1488,7 +1561,9 @@ alphanumeric input.</p>
      <p>Construct a text <a data-link-type="dfn" href="https://www.iso.org/standard/62021.html#" id="ref-for-something②">QR code</a> with the value of <code>N</code>.</p>
    </ol>
    <div class="example" id="example-9c4041cf">
-    <a class="self-link" href="#example-9c4041cf"></a> For PSK <code>61488548833</code>, the steps would produce the following QR code: 
+    <a class="self-link" href="#example-9c4041cf"></a>
+For PSK <code>61488548833</code>, the steps would produce the following QR code:
+
     <p>
      <svg height="20%" stroke="none" version="1.1" viewBox="0 0 29 29" width="20%" xmlns="http://www.w3.org/2000/svg">
       <rect fill="#FFFFFF" height="100%" width="100%"></rect>
@@ -1505,13 +1580,16 @@ alphanumeric input.</p>
    </ol>
    <section class="informative">
     <h2 class="heading settled" id="appendix-c"><span class="content">Appendix C: Entire Flow Chart</span><a class="self-link" href="#appendix-c"></a></h2>
-     <em>This section is non-normative.</em> 
+    
+<em>This section is non-normative.</em>
+
+
     <p><img alt="Before a listening agent (client) and an advertising agent (server) may exchange application messages, they first need to discover each other through an mDNS exchange, establish a QUIC connection through ClientHello and ServerHello exchanges and sharing of certificates, and run an SPAKE2 authentication handshake and confirmation. They may also exchange messages to discover metadata at any time after a QUIC connection has been established." src="./images/entire_flow_chart.svg" style="width: 100%"></p>
    </section>
   </main>
   <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
-   <h3 class="no-ref no-num heading settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
+   <h2 class="heading no-num no-ref settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+   <h3 class="heading no-num no-ref settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
    <p>Conformance requirements are expressed
     with a combination of descriptive assertions
     and RFC 2119 terminology.
@@ -1519,42 +1597,55 @@ alphanumeric input.</p>
     in the normative parts of this document
     are to be interpreted as described in RFC 2119.
     However, for readability,
-    these words do not appear in all uppercase letters in this specification. </p>
+    these words do not appear in all uppercase letters in this specification.
+
+    </p>
    <p>All of the text of this specification is normative
-    except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a> </p>
+    except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a>
+
+    </p>
    <p>Examples in this specification are introduced with the words “for example”
     or are set apart from the normative text
     with <code>class="example"</code>,
-    like this: </p>
+    like this:
+
+    </p>
    <div class="example" id="w3c-example">
-    <a class="self-link" href="#w3c-example"></a> 
-    <p>This is an example of an informative example. </p>
+    <a class="self-link" href="#w3c-example"></a>
+        
+    <p>This is an example of an informative example.
+    </p>
    </div>
    <p>Informative notes begin with the word “Note”
     and are set apart from the normative text
     with <code>class="note"</code>,
-    like this: </p>
+    like this:
+
+    </p>
    <p class="note" role="note">Note, this is an informative note.</p>
    <section>
-    <h3 class="no-ref no-num heading settled" id="w3c-conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#w3c-conformant-algorithms"></a></h3>
+    <h3 class="heading no-num no-ref settled" id="w3c-conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#w3c-conformant-algorithms"></a></h3>
     <p>Requirements phrased in the imperative as part of algorithms
     (such as "strip any leading space characters"
     or "return false and abort these steps")
     are to be interpreted with the meaning of the key word
     ("must", "should", "may", etc)
-    used in introducing the algorithm. </p>
+    used in introducing the algorithm.
+
+    </p>
     <p>Conformance requirements phrased as algorithms or specific steps
     can be implemented in any manner,
     so long as the end result is equivalent.
     In particular, the algorithms defined in this specification
     are intended to be easy to understand
     and are not intended to be performant.
-    Implementers are encouraged to optimize. </p>
+    Implementers are encouraged to optimize.
+</p>
    </section>
   </div>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
-  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#advertising-agent">advertising agent</a><span>, in § 3</span>
    <li><a href="#agent-certificate">agent certificate</a><span>, in § 4.2</span>
@@ -1575,7 +1666,7 @@ alphanumeric input.</p>
    <li><a href="#suspicious-agent">suspicious agent</a><span>, in § 7.3.2</span>
    <li><a href="#verified-display-name">verified display name</a><span>, in § 7.4.1</span>
   </ul>
-  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[ISO18004]</a> defines the following terms:
@@ -1623,8 +1714,8 @@ alphanumeric input.</p>
      <li><span class="dfn-paneled" id="4be354e2">Variable-Length Integer Encoding</span>
     </ul>
   </ul>
-  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-iso18004">[ISO18004]
    <dd><a href="https://iso.org/standard/62021.html"><cite>Information technology — Automatic identification and data capture techniques — QR Code bar code symbology specification</cite></a>. Published. URL: <a href="https://iso.org/standard/62021.html">https://iso.org/standard/62021.html</a>
@@ -1665,7 +1756,7 @@ alphanumeric input.</p>
    <dt id="biblio-x690">[X690]
    <dd><a href="https://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf"><cite>Recommendation X.690 — Information Technology — ASN.1 Encoding Rules — Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER), and Distinguished Encoding Rules (DER)</cite></a>. URL: <a href="https://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf">https://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf</a>
   </dl>
-  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-rfc2104">[RFC2104]
    <dd>H. Krawczyk; M. Bellare; R. Canetti. <a href="https://www.rfc-editor.org/rfc/rfc2104"><cite>HMAC: Keyed-Hashing for Message Authentication</cite></a>. February 1997. Informational. URL: <a href="https://www.rfc-editor.org/rfc/rfc2104">https://www.rfc-editor.org/rfc/rfc2104</a>
@@ -1676,7 +1767,7 @@ alphanumeric input.</p>
    <dt id="biblio-security-privacy-questionnaire">[SECURITY-PRIVACY-QUESTIONNAIRE]
    <dd>Theresa O'Connor; Peter Snyder; Simone Onofri. <a href="https://w3c.github.io/security-questionnaire/"><cite>Self-Review Questionnaire: Security and Privacy</cite></a>. URL: <a href="https://w3c.github.io/security-questionnaire/">https://w3c.github.io/security-questionnaire/</a>
   </dl>
-  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Register ALPN with IANA. <a href="https://github.com/w3c/openscreenprotocol/issues/228">[Issue #228]</a> <a class="issue-return" href="#issue-808efb48" title="Jump to section">↵</a></div>
    <div class="issue"> [Meta] Track CFRG PAKE competition outcome <a href="https://github.com/w3c/openscreenprotocol/issues/242">[Issue #242]</a> <a class="issue-return" href="#issue-dc398825" title="Jump to section">↵</a></div>
