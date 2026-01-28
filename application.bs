@@ -45,6 +45,13 @@ url: https://datatracker.ietf.org/doc/html/rfc5646#section-2; type: dfn; spec: R
 url: https://datatracker.ietf.org/doc/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
 url: https://datatracker.ietf.org/doc/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 url: https://datatracker.ietf.org/doc/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
+urlPrefix: https://w3c.github.io/openscreenprotocol/network.html#; type: dfn; spec: openscreen-network
+    text: agent-info
+    text: agent-info-request
+    text: agent-info-response
+    text: agent-info-event
+    text: agent-status-request
+    text: agent-status-response
 </pre>
 
 Introduction {#introduction}
@@ -218,109 +225,62 @@ Non-Functional Requirements {#requirements-non-functional}
 Metadata Discovery {#metadata}
 ==============================
 
-To learn further metadata, an agent may send an [=agent-info-request=] message
-and receive back an [=agent-info-response=] message.  Any agent may send this
-request at any time to learn about the state and capabilities of another device,
-which are described by the [=agent-info=] message in the
-[=agent-info-response=].
+The [Open Screen Network
+Protocol](https://w3c.github.io/openscreenprotocol/network.html) defines the
+[=agent-info=] message exchange mechanism, including the
+[=agent-info-request=], [=agent-info-response=], and [=agent-info-event=]
+messages.  It also defines connection keep-alive via [=agent-status-request=]
+and [=agent-status-response=] messages.  See the Network Protocol for details
+on message timing, pre-authentication behavior, and connection management.
 
-If an agent changes any information in its [=agent-info=] message, it should
-send an [=agent-info-event=] message to all other connected agents with the new
-[=agent-info=] (without waiting for an [=agent-info-request=]).
+This section defines the capability IDs used by the Open Screen Application
+Protocol.  Capabilities indicate which protocol features an agent supports and
+are advertised in the capabilities field of the [=agent-info=] message.
 
-The [=agent-info=] message contains the following fields:
+Application Protocol Capabilities {#capabilities}
+--------------------------------------------------
 
-: display-name (required)
-:: The display name of the agent, intended to be displayed to a user by the
-     requester. The requester should indicate through the UI if the responder
-     is not authenticated or if the display name changes.
+The following capability IDs are defined by this specification:
 
-: model-name (optional)
-:: If the agent is a hardware device, the model name of
-    the device.  This is used mainly for debugging purposes, but may be
-    displayed to the user of the requesting agent.
-
-: capabilities (required)
-:: The control protocols, roles, and media types the agent supports.
-    Presence indicates a capability and absence indicates lack of a
-    capability.  Capabilities should should affect how an agent is
-    presented to a user, such as drawing a different icon depending on
-    the whether it receives audio, video or both.
-
-: state-token (required)
-:: A random alphanumeric value consisting of 8 characters in the range
-    [0-9A-Za-z].  This value is set before the agent makes its first connection
-    and must be set to a new value when the agent is reset or otherwise lost all
-    of its state related to this protocol.
-
-: locales (required)
-:: The agent's preferred locales for display of localized content, in the order
-    of user preference.  Each entry is an RFC5646 [=language tag=].
-
-The various capabilities have the following meanings:
-
-: receive-audio
+: <dfn>receive-audio</dfn> (1)
 :: The agent can render audio via the other protocols it supports.  Those other
     protocols may report more specific capabilities, such as support for
     certain audio codecs in the streaming protocol.
 
-: receive-video
+: <dfn>receive-video</dfn> (2)
 :: The agent can receive video via the other protocols it supports.  Those other
     protocols may report more specific capabilities, such as support for
     certain video codecs in the streaming protocol.
 
-: receive-presentation
+: <dfn>receive-presentation</dfn> (3)
 :: The agent can receive presentations using the presentation protocol.
 
-: control-presentation
+: <dfn>control-presentation</dfn> (4)
 :: The agent can control presentations using the presentation protocol.
 
-: receive-remote-playback
+: <dfn>receive-remote-playback</dfn> (5)
 :: The agent can receive remote playback using the remote playback
     protocol.
 
-: control-remote-playback
+: <dfn>control-remote-playback</dfn> (6)
 :: The agent can control remote playback using the remote playback
     protocol.
 
-: receive-streaming
-:: The agent can receiving streaming using the streaming protocol.
+: <dfn>receive-streaming</dfn> (7)
+:: The agent can receive streaming using the streaming protocol.
 
-: send-streaming
+: <dfn>send-streaming</dfn> (8)
 :: The agent can send streaming using the streaming protocol.
+
+Capabilities affect how an agent is presented to a user, such as drawing a
+different icon depending on whether it receives audio, video, or both.
 
 NOTE: See the [Capabilities Registry](https://github.com/w3c/openscreenprotocol/blob/main/capabilities.md)
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
 
-Issue(343): Rewrite to not depend on QUIC, or move agent-status messges to the network spec
-
-If a listening agent wishes to receive messages from an advertising agent or an
-advertising agent wishes to send messages to a listening agent, it may wish to
-keep the QUIC connection alive.  Once neither side needs to keep the connection
-alive for the purposes of sending or receiving messages, the connection should
-be closed with an error code of 5139.  In order to keep a QUIC connection alive, an
-agent may send an [=agent-status-request=] message, and any agent that receives an
-[=agent-status-request=] message should send an [=agent-status-response=] message. Such
-messages should be sent more frequently than the QUIC idle_timeout transport
-parameter (see Transport Parameter Encoding in QUIC) and QUIC PING
-frames should not be used.  An idle_timeout transport parameter of 25 seconds is
-recommended.  The agent should behave as though a timer less than the
-idle_timeout were reset every time a message is sent on a QUIC stream.  If the
-timer expires, a [=agent-status-request=] message should be sent.
-
-If a listening agent wishes to send messages to an advertising agent, the
-listening agent can connect to the advertising agent "on demand"; it does not
-need to keep the connection alive.
-
-If an OSP agent suspends its network connectivity (e.g. for power saving
-reasons), it should attempt to resume QUIC connections to the OSP agents to
-which it was previously connected once network connectivity is restored.  Once
-reconnected, it should send `agent-status-request` messages to those agents.
-
-The [=agent-info=] and [=agent-status-response=] messages may be extended to
-include additional information not defined in this spec, as described in
-[[#protocol-extension-fields]].
+The [=agent-info=] message may be extended to include additional information
+not defined in this spec, as described in [[#protocol-extension-fields]].
 
 Message delivery using CBOR {#messages}
 =======================================
