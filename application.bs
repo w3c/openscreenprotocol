@@ -7,6 +7,7 @@ ED: https://w3c.github.io/openscreenprotocol/application.html
 TR: https://www.w3.org/TR/openscreen-application/
 Canonical URL: ED
 Editor: Mark Foltz, Google, https://github.com/markafoltz, w3cid 68454
+Editor: Jordan Bayles, Google, https://github.com/baylesj, w3cid TBD
 Repository: w3c/openscreenprotocol
 Abstract: The Open Screen Application Protocol allows user agents to implement the
           [[PRESENTATION-API|Presentation API]] and the
