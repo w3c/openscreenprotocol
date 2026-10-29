@@ -677,10 +677,10 @@ This is how the [[PRESENTATION-API|Presentation API]] uses the
 
 When [[PRESENTATION-API#the-list-of-available-presentation-displays|section
 6.4.2]] says "This list of presentation displays ... is populated based on an
-implementation specific discovery mechanism", the [=controller=] may
-use the mDNS, QUIC, [=agent-info-request=], and
-[=presentation-url-availability-request=] messages defined previously in this spec
-to discover receivers.
+implementation specific discovery mechanism", the [=controller=] may use a
+discovery mechanism (see [[#guidelines-discovery]]), an [=OSP connection=], and
+the [=agent-info-request=] and [=presentation-url-availability-request=]
+messages defined previously in this spec to discover receivers.
 
 When [[PRESENTATION-API#the-list-of-available-presentation-displays|section
 6.4.2]] says "To further save power, ... implementation specific discovery of
@@ -1316,8 +1316,9 @@ When [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
 based on an implementation specific discovery mechanism" and
 [[REMOTE-PLAYBACK#the-list-of-available-remote-playback-devices|section
 5.2.1.4]] says "Retrieve available remote playback devices (using an
-implementation specific mechanism)", the user agent may use the mDNS, QUIC,
-[=agent-info-request=], and [=remote-playback-availability-request=] messages
+implementation specific mechanism)", the user agent may use a discovery
+mechanism (see [[#guidelines-discovery]]), an [=OSP connection=], and the
+[=agent-info-request=] and [=remote-playback-availability-request=] messages
 defined previously in this spec to discover [=receivers=].  The
 [=remote-playback-availability-request=] URLs must contain the [=availability
 sources set=].
@@ -2153,10 +2154,8 @@ The Open Screen Protocol itself does not distinguish between the user agent's no
 browsing and [private browsing](https://www.w3.org/2001/tag/doc/private-browsing-modes/)
 modes.
 
-Issue(342): Update to reflect generic transport requirements.
-
 However, it's recommended that user agents use separate authentication contexts
-and QUIC connections for normal and private browsing from the same user agent
+and [=OSP connections=] for normal and private browsing from the same user agent
 instance. This makes it more difficult for OSP agents to match activities
 occurring in normal and private browsing by the same user.
 
@@ -2198,12 +2197,11 @@ requirements on the Open Screen Protocol:
     confidential, per the guidelines for messaging between presentation
     connections.
 
-Issue(342): Update to reflect generic transport requirements.
-
 The Open Screen Protocol addresses these considerations by:
 
-1. Requiring mutual authentication and a TLS-secured QUIC connection before
-     presentation URLs, IDs, or messages are exchanged.
+1. Requiring an authenticated and confidential [=OSP connection=] (see
+     [[#requirements-transport]]) before presentation URLs, IDs, or messages
+     are exchanged.
 1. Adding explicit messages and connection IDs for individual
      {{PresentationConnection|PresentationConnections}} so that agents can track
      the number of active connections.
@@ -2215,11 +2213,9 @@ The [[REMOTE-PLAYBACK#security-and-privacy-considerations]] also state that
 messaging between controllers and receivers should also be authenticated and
 confidential.
 
-Issue(342): Update to reflect generic transport requirements.
-
-This consideration is handled by requiring mutual authentication and a
-TLS-secured QUIC connection before any remote playback related messages are
-exchanged.
+This consideration is handled by requiring an authenticated and confidential
+[=OSP connection=] (see [[#requirements-transport]]) before any remote playback
+related messages are exchanged.
 
 Mitigation Strategies {#security-mitigations}
 --------------------------------------------
@@ -2250,27 +2246,28 @@ authentication.
 
 ### Instance and Display Names  ### {#instance-names}
 
-Issue(342): Update to reflect generic discovery requirements.
+A discovery mechanism may give an agent a name for another agent before they
+authenticate, such as a DNS-SD Instance Name in the [Open Screen Network
+Protocol](https://w3c.github.io/openscreenprotocol/network.html).  Because these
+discovery names are the primary information that the user sees prior to
+authentication, careful presentation of these names is necessary.
 
-Because DNS-SD Instance Names are the primary information that the user
-sees prior to authentication, careful presentation of these names is necessary.
-
-Agents must treat Instance Names as unverified information, and should check
-that the Instance Name is a prefix of the display name received through the
-[=agent-info=] message after a successful QUIC connection.  Once an agent has done
-this check, it can show the name as a <dfn noexport>verified display name</dfn>.
+Agents must treat discovery names as unverified information, and should check
+that the discovery name is a prefix of the display name received through the
+[=agent-info=] message after an [=OSP connection=] is established.  Once an
+agent has done this check, it can show the name as a <dfn noexport>verified display name</dfn>.
 
 Agents should show only complete display names to the user, instead of truncated
-display names from DNS-SD.  A truncated display name should be verified as above
+discovery names.  A truncated discovery name should be verified as above
 before being shown in full as a [=verified display name=].
 
 <div class="note">
 This means there are three categories of display names that agents should be
 capable of handling:
 <ol>
-  <li> Truncated and unverified DNS-SD Instance Names, which should not be shown
+  <li> Truncated and unverified discovery names, which should not be shown
        to the user.</li>
-  <li> Complete but unverified DNS-SD Instance Names, which can be shown as
+  <li> Complete but unverified discovery names, which can be shown as
        unverified prior to authentication.</li>
   <li>Verified display names.</li>
 </ol>
