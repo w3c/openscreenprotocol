@@ -55,12 +55,15 @@ rendering Web content for a shared audience.  Typically, these are devices like
 Internet-connected TVs, HDMI dongles, and smart speakers.
 
 The Open Screen Application Protocol is intended to be supported by a variety of
-connection technologies between browsers and devices.  There are specific
-requirements to allow browsers and devices to discover and authenticate to one
-another, but these requirements may be met by multiple possible implementations.
-To maximize interoperability, browsers and devices should support the Open
-Screen Network Protocol, which provides a way for browsers and devices to
-discover, connect, and authenticate each other on a local area network.
+connection technologies between browsers and devices.  There are guidelines on
+how allow browsers and devices should discover one another, and requirements
+that communication between browsers and devices be authenticated and
+confidential.  These requirements and guidelines may be met by multiple possible
+implementations.  Browsers and devices that wish to interoperate may implement
+the [Open Screen Network
+Protocol](https://w3c.github.io/openscreenprotocol/network.html), which
+implements a suite of protocols for browsers and devices to discover, connect,
+and authenticate each other on a local area network.
 
 The Open Screen Application Protocol allows a browser to present a URL, initiate
 remote playback of an HTML <l spec=html>[=media element=]</l>, and stream media
@@ -80,21 +83,21 @@ An <dfn lt="open screen protocol agent|osp agent">Open Screen Protocol
 agent</dfn> (or OSP agent) is any implementation of this protocol (browser,
 display, speaker, or other software).
 
-Some OSP agents support the [[PRESENTATION-API|Presentation API]].  The
+Some [=OSP agents=] support the [[PRESENTATION-API|Presentation API]].  The
 API allows a [=controlling user agent=] to initiate presentation of Web content
 on another device.  We call this agent a <dfn>controller</dfn> for short.  A
 [=receiving user agent=] is responsible for rendering the Web content, which we
 will call a <dfn>receiver</dfn> for short.  The the Web content itself is called
 a [=presentation=].
 
-Some OSP agents also support the [[REMOTE-PLAYBACK|Remote Playback API]].  That
+Some [=OSP agents=] also support the [[REMOTE-PLAYBACK|Remote Playback API]].  That
 API allows an agent to render a <l spec="html">[=media element=]</l> on a
 [=remote playback device=].  In this document, we refer to it as a [=receiver=]
 because it is shorter and keeps terminology consistent between presentations and
 remote playbacks. Similarly, we use the term [=controller=] to refer to the
 agent that starts, terminates, and controls the remote playback.
 
-For media streaming, we refer to an OSP agent that sends a media stream
+For media streaming, we refer to an [=OSP agent=] that sends a media stream
 as a <dfn>media sender</dfn> and an agent that receives a media stream as a
 <dfn>media receiver</dfn>.  Note that an agent can be both a media sender and a
 media receiver.
@@ -103,18 +106,83 @@ For additional terms and idioms specific to the
 [[PRESENTATION-API|Presentation API]] or [[REMOTE-PLAYBACK|Remote Playback API]],
 please consult the respective specifications.
 
+Guidelines {#guidelines}
+============================
+
+This section is non-normative.
+
+Agent Discovery Guidelines {#guidelines-discovery}
+------------------------------------------------------
+
+Discovery mechanisms between [=OSP agents=] should provide sufficient information to
+initiate an network data transport between them, typically by obtaining an IP
+address of the peer, and to initiate an authentication handshake between them.
+The [Open Screen Network Protocol](https://w3c.github.io/openscreenprotocol/network.html)
+provides one such implementation using multicast DNS (mDNS).
+
+[=OSP agents=] are intended to support interactive media experiences to users
+who are in phyiscal proximity to both agents (i.e., browser and receiver
+device).  For that reason, discovery mechanisms that rely on phyical proximity
+such as WiFi or the display of a QR Code are good candidates to implement these
+mechanisms.  If an [=OSP agent=] is discovered by another solely by communicaiton
+with a server, then the connection and authentication process should validate
+physical proximity of the agents (e.g., using a code displayed on the
+screen).
+
 Requirements {#requirements}
 ============================
 
-Agent Discovery Requirements {#requirements-discovery}
+Transport Requirements {#requirements-transport}
 ------------------------------------------------------
 
-Issue(342): Define Discovery Requirements
+An <dfn>OSP message</dfn> is a series of binary octets from 1 to 2^30 bytes in length.
 
-Transport Layer Requirements {#requirements-transport}
-------------------------------------------------------
+An <dfn>OSP message stream</dfn> represents the in-order delivery of a series of [=OSP
+messages=] between two [=OSP agents=].
 
-Issue(342): Define Transport Layer Requirements
+The transport between two [=OSP agents=] that wish to use the Open Screen
+Application Protocol should meet the following functional requirements:
+
+1.  Support the bi-directional sending and receiving of [=OSP messages=].
+1.  Support the simultaneous and bi-directional [=OSP message streams=].  There
+    are no ordering requirements between [=OSP message streams=].
+1.  Support the reliable and in-order arrival of messages between two agents.
+1.  Support message authentication and integrity, so that an [=OSP message=] from
+    one [=OSP agent=] will arrive at the intended [=OSP agent=] and cannot be
+    intercepted or altered by a third party.
+1.  Support message privacy, so that an [=OSP message=] from one [=OSP agent=] to
+    another [=OSP agent=] can only be read by the recipient and cannot be read by a
+    third party
+1.  [=OSP messages=] should be delivered with the lowest possible latency between
+    agents. See [[#transport-latency]] for implementation guidelines.
+
+A <dfn>OSP transport</dfn> is a transport implementation that meets these
+functional requirements.
+
+A <dfn>OSP connection</dfn> represents an active instance of an [=OSP
+transport=] between two [=OSP agents=] capable of exchanging messages.
+
+Note: Although the transport may theoretically support messages up to 2^30 bytes
+in length, practical implementations may have a lower limit.
+
+Note: To support real-time media streaming, effective implementations should
+also meet a non-functional requirements, such as conserving battery
+power.
+
+Issue(373): Consider supporting datagrams
+
+Issue(374): Reconsider the message length requirement
+
+Issue(375): Expand on non-functional requirements
+
+### Transport Latency {#transport-latency}
+
+[=OSP message=] payloads should be treated as real-time data, as they may be
+used to synchronize playback of media streams between agents or other low
+latency use cases.  The synchronization thresholds recommended in
+[[ITU-R-BT.1359-1]] imply that the total agent-to-agent processing latency
+(including serialization, buffering, and network latency) must be no greater
+than 45 ms to permit effective lip sync during media playback.
 
 Presentation API Requirements {#requirements-presentation-api}
 --------------------------------------------------------------
@@ -293,30 +361,32 @@ NOTE: See the [Capabilities Registry](https://github.com/w3c/openscreenprotocol/
 for a list of all known capabilities (both defined by this specification, and
 through [[#protocol-extensions]]).
 
-Issue(343): Rewrite to not depend on QUIC, or move agent-status messges to the network spec
-
 If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
-keep the QUIC connection alive.  Once neither side needs to keep the connection
-alive for the purposes of sending or receiving messages, the connection should
-be closed with an error code of 5139.  In order to keep a QUIC connection alive, an
-agent may send an [=agent-status-request=] message, and any agent that receives an
-[=agent-status-request=] message should send an [=agent-status-response=] message. Such
-messages should be sent more frequently than the QUIC idle_timeout transport
-parameter (see Transport Parameter Encoding in QUIC) and QUIC PING
-frames should not be used.  An idle_timeout transport parameter of 25 seconds is
-recommended.  The agent should behave as though a timer less than the
-idle_timeout were reset every time a message is sent on a QUIC stream.  If the
-timer expires, a [=agent-status-request=] message should be sent.
+keep the [=OSP connection=] alive.  Once neither side needs to keep the
+connection alive for the purposes of sending or receiving messages, the
+connection should be closed.
 
-If a listening agent wishes to send messages to an advertising agent, the
-listening agent can connect to the advertising agent "on demand"; it does not
+In order to keep a [=OSP connection=] alive, an agent may send an
+[=agent-status-request=] message, and any agent that receives an
+[=agent-status-request=] message should send an [=agent-status-response=]
+message. Such messages should be sent with enough frequency to prevent the
+underlying transport from closing from inactivity.
+
+Note: An idle timeout of 25 seconds is recommended.  If an [=OSP agent=] does
+not send or receive a message within that period, it shoul send an an
+[=agent-status-request=] message.
+
+If an [=OSP agent=] wishes to send messages to another [=OSP agent=] that
+supports the creation of an [=OSP connection=] on demand, that agent does not
 need to keep the connection alive.
 
-If an OSP agent suspends its network connectivity (e.g. for power saving
-reasons), it should attempt to resume QUIC connections to the OSP agents to
-which it was previously connected once network connectivity is restored.  Once
-reconnected, it should send `agent-status-request` messages to those agents.
+Issue(376): Expose "on-demand" connection concept to application protocol
+
+If an [=OSP agent=] suspends its [=OSP connections=] (e.g. for power saving
+reasons), it should attempt to resume [=OSP connections=] to the [=OSP agents=]
+to which it was previously connected when possible.  Once reconnected, it should
+send `agent-status-request` messages to those agents.
 
 The [=agent-info=] and [=agent-status-response=] messages may be extended to
 include additional information not defined in this spec, as described in
@@ -325,26 +395,23 @@ include additional information not defined in this spec, as described in
 Message delivery using CBOR {#messages}
 =======================================
 
-Issue(343): Rewrite to not depend on QUIC
+[=OSP messages=] are serialized using [[!RFC8949|CBOR]].  To send a group of
+[=OSP messages=] in order, they must be sent in one [=OSP message stream=].
+Independent groups of [=OSP messages=] (with no ordering dependency across
+groups) should be sent in different [=OSP message streams=].  In order to put
+multiple CBOR-serialized messages into the the same [=OSP message stream=], the
+following is used.
 
-Messages are serialized using [[!RFC8949|CBOR]].  To send a group of messages in
-order, that group of messages must be sent in one QUIC stream.  Independent
-groups of messages (with no ordering dependency across groups) should be sent in
-different QUIC streams.  In order to put multiple CBOR-serialized messages into
-the the same QUIC stream, the following is used.
+For each [=OSP message=], the [=OSP agent=] must write into a unidirectional [=OSP
+message stream=] the following:
 
-For each message, the [=OSP agent=] must write into a unidirectional QUIC stream
-the following:
+1.  A type key representing the type of the [=OSP message=], encoded as a
+    [=variable-length integer=] (see [[#appendix-a]] for type keys)
 
-1.  A type key representing the type of the message, encoded as a [=variable-length
-    integer=] (see [[#appendix-a]] for type keys)
-
-2.  The message encoded as CBOR.
+2.  The [=OSP message=] body encoded as CBOR.
 
 If an agent receives a message for which it does not recognize a type key, it
-must close the QUIC connection with an application error code of 404 and should
-include the unknown type key in the reason phrase of the CONNECTION_CLOSE
-frame.
+must close the [=OSP connection=].
 
 Variable-length integers are encoded in the [=Variable-Length Integer Encoding=]
 used by [[!RFC9000|QUIC]].
@@ -431,13 +498,6 @@ individually to controllers that have requested availability for the URLs that
 have changed in availability state within the watch duration of the original
 availability request.
 
-Issue(342): Add power saving as a transport requirement and remove the following.
-
-To save power, the controller may disconnect the QUIC connection and
-later reconnect to send availability requests and receive availability
-responses and updates.  The QUIC connection ID may or may not be the same
-when reconnecting.
-
 To start a presentation, the controller may send a
 [=presentation-start-request=] message to the receiver with the following
 values:
@@ -487,18 +547,6 @@ To send a presentation message, the controller or receiver may send a
 
 : message
 :: The presentation message data.
-
-Issue(342): Rewrite the following NOTE as a transport requirement for any
-message transport.
-
-NOTE: An OSP agent should minimize buffering and processing of messages sent or
-received beyond what is strictly necessary (i.e., CBOR serialization).  Message
-payloads should be treated as real-time data, as they may be used to synchronize
-playback of media streams between agents or other low latency use cases.  The
-synchronization thresholds recommended in [[ITU-R-BT.1359-1]] imply that the
-total agent-to-agent processing latency (including serialization, buffering, and
-network latency) must be no greater than 45 ms to permit effective lip sync
-during media playback.
 
 To terminate a presentation, the controller may send a
 [=presentation-termination-request=] message with the following values:
@@ -751,13 +799,6 @@ Note that these messages are not broadcasted to all controllers. They are sent
 individually to controllers that have requested availability for the URLs that
 have changed in availability state within the watch duration of the original
 availability request.
-
-Issue(342): Add power saving as a transport requirement and remove the following.
-
-To save power, the controller may disconnect the QUIC connection and
-later reconnect to send availability requests and receive availability
-responses and updates. The QUIC connection ID may or may not be the same
-when reconnecting.
 
 To start remote playback, the controller may send a
 [=remote-playback-start-request=] message to the receiver with the following
@@ -1623,10 +1664,8 @@ optional field in the array is used to hold all optional values in a
 struct-based grouping.  This will hopefully provide a good balance of
 efficiency and flexibility.
 
-Issue(343): Rewrite the following to not depend on QUIC specifics.
-
 To allow for audio frames to be sent out of order, they should be sent in
-separate QUIC streams.
+separate [=OSP message streams=].
 
 : encoding-id
 :: Identifies the media encoding to which this audio frame belongs.  This can be
