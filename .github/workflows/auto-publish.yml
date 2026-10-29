@@ -77,3 +77,34 @@ jobs:
           W3C_WG_DECISION_URL: https://lists.w3.org/Archives/Public/public-secondscreen/2022Apr/0007.html
           W3C_BUILD_OVERRIDE: |
             status: WD
+
+      - name: Build PR preview bundle
+        if: github.event_name == 'pull_request'
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          export PATH="$(python -m site --user-base)/bin:${PATH}"
+          python -c "import pygments" 2>/dev/null || python -m pip install Pygments
+          if ! command -v bikeshed >/dev/null 2>&1; then
+            python -m pip install bikeshed
+            bikeshed update
+          fi
+          python scripts/pygmentize_dir.py
+          mkdir -p _pr_preview
+          for spec in index application network; do
+            bikeshed --print=plain --no-update spec "${spec}.bs" "_pr_preview/${spec}.html" --md-warning="not ready"
+          done
+          cp -r images _pr_preview/images
+          jq -n \
+            --argjson pr_number "$PR_NUMBER" \
+            --arg head_sha "$HEAD_SHA" \
+            '{pr_number: $pr_number, head_sha: $head_sha}' > _pr_preview/metadata.json
+
+      - name: Upload PR preview bundle
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-preview-bundle
+          path: _pr_preview/
+          retention-days: 5
