@@ -393,6 +393,12 @@ before sending further messages.
 If a listening agent wishes to receive messages from an advertising agent or an
 advertising agent wishes to send messages to a listening agent, it may wish to
 keep the QUIC connection alive by periodically sending data on the connection.
+Agents should do this by sending `agent-status-request` messages (defined in the
+Open Screen Application Protocol) more frequently than the QUIC idle_timeout
+transport parameter (see [=Transport Parameter Encoding=] in [[!RFC9000]]), and
+QUIC PING frames should not be used.  An idle_timeout transport parameter of 25
+seconds is recommended.  Once neither side needs to keep the connection alive,
+the connection should be closed with an application error code of 5139.
 
 If an OSP agent suspends its network connectivity (e.g. for power saving
 reasons), it should attempt to resume QUIC connections to the OSP agents to
