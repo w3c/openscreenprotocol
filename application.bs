@@ -184,6 +184,14 @@ latency use cases.  The synchronization thresholds recommended in
 (including serialization, buffering, and network latency) must be no greater
 than 45 ms to permit effective lip sync during media playback.
 
+### Sending an OSP message {#message-send}
+
+Issue(376): Describe steps to send and receive messages.
+
+### Receiving an OSP message {#message-receive}
+
+Issue(376): Describe steps to send and receive messages.
+
 Presentation API Requirements {#requirements-presentation-api}
 --------------------------------------------------------------
 
