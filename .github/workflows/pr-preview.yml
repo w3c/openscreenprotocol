@@ -1,0 +1,191 @@
+# Publishes multi-spec PR previews (index.html, application.html, network.html)
+# to pr-preview/pr-<N>/ on gh-pages using the artifacts already built by
+# auto-publish.yml, posts/updates a sticky PR comment with Preview and Diff
+# links, and removes the preview directory when the PR is closed.
+
+name: PR Preview
+
+on:
+  workflow_run:
+    workflows: ["Build, Validate, and Deploy"]
+    types: [completed]
+  pull_request_target:
+    types: [closed]
+
+jobs:
+  deploy-preview:
+    name: Deploy PR preview
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Find open PR and modified specs
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const headSha = context.payload.workflow_run.head_sha;
+            const openPRs = await github.paginate(github.rest.pulls.list, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              per_page: 100,
+            });
+            const pr = openPRs.find((p) => p.head.sha === headSha);
+            if (!pr || /<!--\s*no preview\s*-->/i.test(pr.body || "")) {
+              core.info(`No active previewable PR at ${headSha}; skipping.`);
+              core.setOutput("skip", "true");
+              return;
+            }
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            });
+            const changed = new Set(files.map((f) => f.filename));
+            const touches = (prefix) => [...changed].some((f) => f.startsWith(prefix));
+            const shared = changed.has("code-style.html") || changed.has("biblio.json") || touches("scripts/");
+
+            core.setOutput("skip", "false");
+            core.setOutput("number", String(pr.number));
+            core.setOutput("modified", JSON.stringify({
+              application: shared || changed.has("application.bs") || changed.has("application_messages.cddl"),
+              network: shared || touches("images/") || changed.has("network.bs") || changed.has("network_messages.cddl"),
+              index: shared || touches("images/") || changed.has("index.bs") || changed.has("messages_appendix.cddl"),
+            }));
+
+      - name: Download spec-prod artifacts from build workflow
+        if: steps.pr.outputs.skip != 'true'
+        uses: actions/download-artifact@v6
+        with:
+          pattern: spec-prod-result*
+          path: _artifacts
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Stage GitHub Pages preview files
+        if: steps.pr.outputs.skip != 'true'
+        run: |
+          mkdir -p _preview
+          for pair in "spec-prod-result:index.html" "spec-prod-result-applicationbs:application.html" "spec-prod-result-networkbs:network.html"; do
+            dir="_artifacts/${pair%%:*}"
+            file="${pair#*:}"
+            src=$(find "$dir" \( -path "*.gh/${file}" -o -path "${dir}/${file}" \) -type f | head -n 1)
+            cp "$src" "_preview/${file}"
+          done
+          img_dir=$(find _artifacts \( -path "*.gh/images" -o -path "*/spec-prod-result/images" \) -type d | head -n 1)
+          if [ -n "$img_dir" ]; then
+            cp -r "$img_dir" _preview/images
+          fi
+
+      - name: Deploy preview to gh-pages
+        if: steps.pr.outputs.skip != 'true'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _preview
+          destination_dir: pr-preview/pr-${{ steps.pr.outputs.number }}
+          keep_files: true
+
+      - name: Post or update PR preview comment
+        if: steps.pr.outputs.skip != 'true'
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          MODIFIED_JSON: ${{ steps.pr.outputs.modified }}
+        with:
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const shortSha = process.env.HEAD_SHA.slice(0, 7);
+            const modified = JSON.parse(process.env.MODIFIED_JSON);
+            const baseRoot = `https://${context.repo.owner.toLowerCase()}.github.io/${context.repo.repo}`;
+            const previewRoot = `${baseRoot}/pr-preview/pr-${prNumber}`;
+
+            const specs = [
+              ["application", "Open Screen Application Protocol", "application.bs", "application.html"],
+              ["network", "Open Screen Network Protocol", "network.bs", "network.html"],
+              ["index", "Open Screen Protocol (Discontinued)", "index.bs", "index.html"],
+            ];
+            const rows = specs.map(([key, label, src, file]) => {
+              const baseUrl = `${baseRoot}/${file}`;
+              const previewUrl = `${previewRoot}/${file}`;
+              const diffUrl = `https://services.w3.org/htmldiff?doc1=${encodeURIComponent(baseUrl)}&doc2=${encodeURIComponent(previewUrl)}`;
+              const status = modified[key] ? "**Modified**" : "Unchanged";
+              return `| **${label}** (\`${src}\`) | ${status} | [Preview](${previewUrl}) \\| [Diff](${diffUrl}) |`;
+            });
+
+            const marker = "<!-- osp-pr-preview-comment -->";
+            const body = [
+              marker,
+              `### PR Preview (commit \`${shortSha}\`)`,
+              "",
+              "| Specification | Status | Links |",
+              "| :--- | :--- | :--- |",
+              ...rows,
+            ].join("\n");
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+            const existing = comments.find((c) => c.user?.type === "Bot" && (c.body || "").includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner: context.repo.owner, repo: context.repo.repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, body });
+            }
+
+  cleanup-preview:
+    name: Clean up closed PR preview
+    if: github.event_name == 'pull_request_target' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Remove preview directory from gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          git clone --depth 1 --branch gh-pages "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" _gh_pages
+          cd _gh_pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -rf --ignore-unmatch "pr-preview/pr-${PR_NUMBER}"
+          git diff --cached --quiet || (git commit -m "Remove PR #${PR_NUMBER} preview" && git push origin gh-pages)
+
+      - name: Update PR preview comment after cleanup
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        with:
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const marker = "<!-- osp-pr-preview-comment -->";
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+            const existing = comments.find((c) => c.user?.type === "Bot" && (c.body || "").includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: `${marker}\n_PR preview for #${prNumber} has been removed now that this pull request is closed._`,
+              });
+            }
