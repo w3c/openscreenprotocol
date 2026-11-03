@@ -35,6 +35,7 @@ url: https://datatracker.ietf.org/doc/html/rfc8610#section-3; type: dfn; spec: R
 url: https://www.iso.org/standard/62021.html#; type: dfn; spec: iso18004; text: QR code
 url: https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.1.3; type: dfn; spec: RFC5280; text: digitalSignature
 url: https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3; type: dfn; spec: RFC8446; text: signature scheme
+url: https://datatracker.ietf.org/doc/html/rfc5646#section-2; type: dfn; spec: RFC5646; text: language tag
 </pre>
 
 Introduction {#introduction}
@@ -255,10 +256,27 @@ Transport and metadata discovery with QUIC {#transport}
 
 If a [=listening agent=] wants to connect to or learn further metadata about an
 [=advertising agent=], it initiates a [[!RFC9000|QUIC]] connection to the IP and port
-from its SRV record.  Prior to authentication, a message may be exchanged (such
-as further metadata), but such info should be treated as unverified (such as
-indicating to a user that a display name of an unauthenticated agent is
-unverified).
+from its SRV record.
+
+Agents MAY exchange [=agent-info=] messages before [[#authentication]] completes
+to allow early discovery of agent metadata for UI purposes.  However, any
+metadata received before authentication MUST be treated as unverified.  The
+network layer SHOULD indicate to users and application layers whether agent
+metadata has been verified through authentication.
+
+Prior to authentication, only the following messages are permitted:
+- [=agent-info-request=], [=agent-info-response=], and [=agent-info-event=]
+- Authentication messages defined in [[#authentication]]
+
+The network layer MUST NOT deliver any other messages to the application layer
+until authentication has completed successfully.  This ensures the network
+protocol maintains ownership over the security of unauthenticated connections.
+
+To protect against abuse of pre-authentication metadata exchange (e.g., using
+[=agent-info=] messages as a covert data transfer channel), the network layer
+SHOULD enforce size limits on [=agent-info=] messages and rate limits on
+metadata message exchanges.  Extension fields in [=agent-info=] are permitted
+but, like all pre-authentication data, MUST be treated as unverified.
 
 The connection IDs used both by agents should be zero length.  If zero length
 connection IDs are chosen, agents are restricted from changing IP or port
@@ -348,8 +366,7 @@ The following X.509 v3 fields are to be set as follows:
  </tr>
  <tr>
    <td>Issuer Name</td>
-   <td>CN = The `model-name` from the `agent-info` message, as
-            also set in the `agent-info` message.<br/>
+   <td>CN = The `model-name` from the [=agent-info=] message.<br/>
        O = See note.<br/>
        L = See note.<br/>
        ST = See note.<br/>
@@ -426,6 +443,92 @@ frame=].
 
 Variable-length integers are encoded in the [=Variable-Length Integer Encoding=]
 used by [[!RFC9000|QUIC]].
+
+
+Metadata Discovery {#metadata}
+----------------------------------
+
+To learn metadata about another agent, an agent may send an
+[=agent-info-request=] message and receive back an [=agent-info-response=]
+message.  Any agent may send this request at any time after a QUIC connection
+is established.
+
+If an agent changes any information in its [=agent-info=] message, it should
+send an [=agent-info-event=] message to all other connected agents with the new
+[=agent-info=] (without waiting for an [=agent-info-request=]).
+
+The [=agent-info=] message contains the following fields:
+
+: display-name (required)
+:: The display name of the agent, intended to be displayed to a user by the
+     requester. The requester should indicate through the UI if the responder
+     is not authenticated or if the display name changes.
+
+: model-name (optional)
+:: If the agent is a hardware device, the model name of the device.  This is
+    used mainly for debugging purposes, but may be displayed to the user of the
+    requesting agent.
+
+: capabilities (required)
+:: A list of capability IDs that the agent supports.  Capability IDs are
+    unsigned integers.  The meaning of specific capability IDs is defined by
+    application protocols that use this network protocol.  See
+    [[#capabilities-registry]] for the extensibility mechanism.
+
+: state-token (required)
+:: A random alphanumeric value consisting of 8 characters in the range
+    [0-9A-Za-z].  This value is set before the agent makes its first connection
+    and must be set to a new value when the agent is reset or otherwise loses
+    all of its state related to this protocol.
+
+: locales (required)
+:: The agent's preferred locales for display of localized content, in the order
+    of user preference.  Each entry is an RFC5646 [=language tag=].
+
+### Capabilities Registry ### {#capabilities-registry}
+
+Capability IDs allow agents to indicate which protocol features they support.
+The capabilities field in [=agent-info=] contains a list of capability IDs.
+
+Capability IDs 1-999 are reserved for the Open Screen Protocol.  The
+[Open Screen Application Protocol](https://w3c.github.io/openscreenprotocol/application.html)
+defines capabilities in this range.
+
+Capability IDs 1000 and above are available for extensions.  Extension authors
+should register their capability IDs in the public registry to prevent
+conflicts.
+
+See the [Capabilities
+Registry](https://github.com/w3c/openscreenprotocol/blob/main/capabilities.md)
+for a list of all known capabilities.
+
+Connection Keep-Alive {#keep-alive}
+----------------------------------
+
+If a listening agent wishes to receive messages from an advertising agent or an
+advertising agent wishes to send messages to a listening agent, it may wish to
+keep the QUIC connection alive by periodically sending data on the connection.
+
+To keep a QUIC connection alive, an agent may send an [=agent-status-request=]
+message, and any agent that receives an [=agent-status-request=] message should
+send an [=agent-status-response=] message.  Such messages should be sent more frequently than the QUIC
+idle_timeout transport parameter (see [=Transport Parameter Encoding=] in QUIC)
+and QUIC PING frames should not be used.  An idle_timeout transport parameter
+of 25 seconds is recommended.  The agent should behave as though a timer less
+than the idle_timeout were reset every time a message is sent on a QUIC stream.
+If the timer expires, an [=agent-status-request=] message should be sent.
+
+Once neither side needs to keep the connection alive for the purposes of
+sending or receiving messages, the connection should be closed with an error
+code of 5139.
+
+If a listening agent wishes to send messages to an advertising agent, the
+listening agent can connect to the advertising agent "on demand"; it does not
+need to keep the connection alive.
+
+If an OSP agent suspends its network connectivity (e.g. for power saving
+reasons), it should attempt to resume QUIC connections to the OSP agents to
+which it was previously connected once network connectivity is restored.
 
 
 Authentication {#authentication}
@@ -772,12 +875,9 @@ requires users to make informed decisions about which agents to trust.
 Because DNS-SD [=Instance Names=] are the primary information that the user
 sees prior to authentication, careful presentation of these names is necessary.
 
-Issue(346): Rephrase to not link DNS-SD with an agent-info, an application
-message.
-
 Agents must treat Instance Names as unverified information, and should check
 that the Instance Name is a prefix of the display name received through the
-<code>agent-info</code> message after a successful QUIC connection.  Once an
+[=agent-info=] message after a successful QUIC connection.  Once an
 agent has done this check, it can show the name as a <dfn noexport>verified
 display name</dfn>.
 

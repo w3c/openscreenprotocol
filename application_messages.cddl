@@ -1,19 +1,6 @@
-; type key 10
-agent-info-request = {
-  request
-}
-
-; type key 11
-agent-info-response = {
-  response
-  1: agent-info ; agent-info
-}
-
-; type key 120
-agent-info-event = {
-  0: agent-info ; agent-info
-}
-
+; Capability IDs defined by the Open Screen Application Protocol.
+; The agent-info message (which contains capabilities) is defined
+; in the Open Screen Network Protocol.
 agent-capability = &(
   receive-audio: 1
   receive-video: 2
@@ -24,30 +11,6 @@ agent-capability = &(
   receive-streaming: 7
   send-streaming: 8
 )
-
-agent-info = {
-  0: text ; display-name
-  1: text ; model-name
-  2: [* agent-capability] ; capabilities
-  3: text ; state-token
-  4: [* text] ; locales
-}
-
-; type key 12
-agent-status-request = {
-  request
-  ? 1: status ; status
-}
-
-; type key 13
-agent-status-response = {
-  response
-  ? 1: status ; status
-}
-
-status = {
-  0: text ; status
-}
 
 request = (
   0: request-id ; request-id
