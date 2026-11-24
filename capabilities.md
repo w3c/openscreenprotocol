@@ -20,7 +20,7 @@ Screen Protocol](https://webscreens.github.io/openscreenprotocol/#transport).
 | 5  | `receive-remote-playback` | Remote Playback Receiver    | 17,19,115,117,119     |
 | 6  | `control-remote-playback` | Remote Playback Controller  | 18,20,21,114,116,118  |
 | 7  | `receive-streaming`       | Streaming Receiver          | 122,124,127,129,131   |
-| 8  | `send-streaming`          | Streaming Sender            | 123,125,126,128,130,132 |
+| 8  | `send-streaming`          | Streaming Sender            | 123,125,126,128,130,132,133 |
 | 9  | `receive-data`            | Data Receiver               | 24                    |
 
 ## Extension Capabilities
