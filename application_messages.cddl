@@ -440,6 +440,7 @@ audio-frame = [
   ? optional: {
     ? 0: uint ; duration
     ? 1: media-sync-time ; sync-time
+    ? 2: bool ; end-of-stream
   }
 ]
 
@@ -453,6 +454,8 @@ video-frame = {
   5: bytes ; payload
   ? 6: uint ; video-rotation
   ? 7: media-sync-time ; sync-time
+  ? 8: [* hdr-metadata] ; hdr-metadata
+  ? 9: bool ; end-of-stream
 }
 
 ; type key 24
@@ -599,11 +602,26 @@ media-stream-request = {
   ? 3: data-encoding-request ; data
 }
 
+video-color-space = {
+  ? 0: text ; primaries
+  ? 1: text ; transfer
+  ? 2: text ; matrix
+  ? 3: bool ; full-range
+}
+
+hdr-metadata = {
+  0: text ; type
+  1: bytes ; value
+}
+
 audio-encoding-offer = {
   0: uint ; encoding-id
   1: text ; codec-name
   2: uint ; time-scale
   ? 3: uint ; default-duration
+  ? 4: uint ; sample-rate
+  ? 5: uint ; number-of-channels
+  ? 6: bytes ; description
 }
 
 video-encoding-offer = {
@@ -612,6 +630,11 @@ video-encoding-offer = {
   2: uint ; time-scale
   ? 3: uint ; default-duration
   ? 4: video-rotation ; default-rotation
+  ? 5: bytes ; description
+  ? 6: video-resolution ; coded-resolution
+  ? 7: video-resolution ; display-aspect-ratio
+  ? 8: video-color-space ; color-space
+  ? 9: [* hdr-metadata] ; hdr-metadata
 }
 
 data-encoding-offer = {

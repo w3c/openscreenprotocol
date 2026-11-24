@@ -1507,6 +1507,24 @@ Each audio encoding offered defines the following fields:
     audio-frame messages smaller by not including the duration for
     audio-frame messages that have the default duration.
 
+: sample-rate (optional)
+:: The number of audio sample frames per second in hertz, corresponding to
+    {{AudioDecoderConfig/sampleRate|sampleRate}} in {{AudioDecoderConfig}}
+    ([[!WEBCODECS|WebCodecs]]).
+
+: number-of-channels (optional)
+:: The number of audio channels, corresponding to
+    {{AudioDecoderConfig/numberOfChannels|numberOfChannels}} in
+    {{AudioDecoderConfig}}.
+
+: description (optional)
+:: Codec-specific initialization bytes needed to configure the audio decoder,
+    corresponding to {{AudioDecoderConfig/description|description}} in
+    {{AudioDecoderConfig}} and formatted according to the codec registration
+    in [[WEBCODECS-CODEC-REGISTRY]].  The presence or absence of `description`
+    also determines the bitstream format of [=audio-frame=] `payload` bytes
+    when specified by that codec registration.
+
 Each video encoding offered defines the following fields:
 
 : encoding-id
@@ -1533,6 +1551,43 @@ Each video encoding offered defines the following fields:
 :: The default rotation of a video frame.  This allows senders to make
     video-frame messages smaller by not including the rotation for
     video-frame messages that have the default rotation.
+
+: description (optional)
+:: Codec-specific initialization bytes needed to configure the video decoder,
+    corresponding to {{VideoDecoderConfig/description|description}} in
+    {{VideoDecoderConfig}} ([[!WEBCODECS|WebCodecs]]) and formatted according
+    to the codec registration in [[WEBCODECS-CODEC-REGISTRY]].  The presence
+    or absence of `description` also determines the bitstream format of
+    [=video-frame=] `payload` bytes when specified by that codec registration
+    (for example, length-prefixed samples when a decoder configuration record
+    is provided in `description`, or Annex-B start-code byte streams when
+    `description` is omitted).
+
+: coded-resolution (optional)
+:: The width and height of the coded video frames in pixels, corresponding to
+    {{VideoDecoderConfig/codedWidth|codedWidth}} and
+    {{VideoDecoderConfig/codedHeight|codedHeight}} in {{VideoDecoderConfig}}.
+
+: display-aspect-ratio (optional)
+:: The intended display aspect width and height in pixels, corresponding to
+    {{VideoDecoderConfig/displayAspectWidth|displayAspectWidth}} and
+    {{VideoDecoderConfig/displayAspectHeight|displayAspectHeight}} in
+    {{VideoDecoderConfig}}.
+
+: color-space (optional)
+:: Color space parameters of the video encoding, corresponding to
+    {{VideoColorSpaceInit}}.  A `video-color-space` map can include
+    `primaries` (a valid {{VideoColorPrimaries}} string), `transfer` (a valid
+    {{VideoTransferCharacteristics}} string), `matrix` (a valid
+    {{VideoMatrixCoefficients}} string), and `full-range` (`true` for
+    full-range values, `false` for studio-range values).
+
+: hdr-metadata (optional)
+:: Static HDR metadata entries that apply to the video encoding.  Each
+    `hdr-metadata` entry contains `type` (a valid
+    [[MEDIA-CAPABILITIES#hdrmetadatatype|HdrMetadataType]] string from
+    [[!MEDIA-CAPABILITIES|Media Capabilities]], such as `"smpteSt2086"`) and
+    `value` (the binary metadata descriptor defined for that metadata type).
 
 Each data encoding offered defines the following fields:
 
@@ -1657,8 +1712,13 @@ separate QUIC streams.
     be; it can be any clock chosen by the media sender.
 
 : payload
-:: The encoded audio.  The codec is equal to the `codec-name` field of the
-    [=audio-encoding-offer=] message referenced by the `encoding-id`.
+:: The encoded audio.  The codec and bitstream format follow the `codec-name`
+    and `description` fields of the [=audio-encoding-offer=] message referenced
+    by the `encoding-id`, as defined in [[WEBCODECS-CODEC-REGISTRY]].
+
+: end-of-stream
+:: If `true`, indicates that this is the final audio frame in the encoding so
+    the media receiver can flush and output any remaining decoded samples.
 
 Video {#streaming-video}
 --------------------------------------------
@@ -1721,9 +1781,21 @@ ending at the last dependent frame.
     referenced by the `encoding-id`.
 
 : payload
-:: The encoded video frame (encoded image).  The codec is equal to the
-    `codec-name` field of the [=video-encoding-offer=] message referenced
-    by the `encoding-id`.
+:: The encoded video frame (encoded image).  The codec and bitstream format
+    follow the `codec-name` and `description` fields of the
+    [=video-encoding-offer=] message referenced by the `encoding-id`, as
+    defined in [[WEBCODECS-CODEC-REGISTRY]].
+
+: hdr-metadata
+:: If present, dynamic per-frame HDR metadata entries for this frame.  Each
+    `hdr-metadata` entry contains `type` (a valid
+    [[MEDIA-CAPABILITIES#hdrmetadatatype|HdrMetadataType]] string, such as
+    `"smpteSt2094-40"` or `"smpteSt2094-10"`) and `value` (the binary metadata
+    payload for this frame).
+
+: end-of-stream
+:: If `true`, indicates that this is the final video frame in the encoding so
+    the media receiver can flush and output any remaining buffered frames.
 
 Data {#streaming-data}
 ------------------------------------
