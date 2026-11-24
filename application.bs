@@ -1685,8 +1685,10 @@ ending at the last dependent frame.
     to avoid sending duplicate information in every frame.
 
 : sequence-number
-:: Identifies the frame and its order in the encoding.
-    Within an encoding, larger sequence numbers mean later start times.
+:: Identifies the frame and its decode order in the encoding.
+    Within an encoding, sequence numbers increase in decode order, while
+    `start-time` gives the presentation time (which is non-monotonic when
+    B-frames are present).
     Within an encoding, gaps in sequence numbers mean frames are missing.
 
 : depends-on
