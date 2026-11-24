@@ -43,7 +43,6 @@ urlPrefix: https://w3c.github.io/remote-playback/#dfn-; type: dfn; spec: REMOTE-
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: Variable-Length Integer Encoding
 url: https://datatracker.ietf.org/doc/html/rfc9000#name-variable-length-integer-enc; type: dfn; spec: RFC9000; text: variable-length integer
 url: https://datatracker.ietf.org/doc/html/rfc5646#section-2; type: dfn; spec: RFC5646; text: language tag
-url: https://datatracker.ietf.org/doc/html/rfc4122#section-4.4; type: dfn; spec: RFC4122; text: UUID
 url: https://datatracker.ietf.org/doc/html/rfc6381#section-3; type: dfn; spec: RFC6381; text: codecs parameter
 url: https://datatracker.ietf.org/doc/html/rfc8610#section-3; type: dfn; spec: RFC8610; text: concise data definition language
 </pre>
@@ -765,11 +764,10 @@ To start remote playback, the controller may send a
 values:
 
 : remote-playback-id
-:: An identifier for this remote playback.  It should be universally unique
-    among all remote playbacks.
-
-Note: A version 4 (pseudorandom) [=UUID=] is recommended as it meets the
-requirements for a remote-playback-id.
+:: Identifies this remote playback.  Must be unique for the (controller,
+    receiver) pair.  Can be used later to modify or terminate the remote
+    playback.  These IDs should be treated like other IDs with regards to
+    the `state-token` as specified in [[#requests-responses-watches]].
 
 : sources (optional)
 :: The [=media resources=] that the controller has selected for playback
@@ -1073,8 +1071,10 @@ changed.
 : source
 :: The current [=media resource=]. See
     {{HTMLMediaElement/currentSrc|HTMLMediaElement.currentSrc}}.
-    Must be present in the initial state in the [=remote-playback-start-response=] message
-    so the controller knows what [=media resource=] was selected for playback.
+    When `sources` is non-empty in [=remote-playback-start-request=], must be
+    present in the initial state in the [=remote-playback-start-response=]
+    message so the controller knows what [=media resource=] was selected for
+    playback.  Omitted when starting media remoting without `sources`.
 
 : loading
 :: The state of network activity for loading the [=media resource=]. See
@@ -1218,7 +1218,7 @@ the media sync time sent with individual media frames using the steps in
 <table>
 <tr><th>Field</th>               <th>Default value for the initial state</th>
 <tr><td>supports</td>            <td>Empty</td></tr>
-<tr><td>source</td>              <td>`url` in `state` in [=remote-playback-start-response=] (required field)</td></tr>
+<tr><td>source</td>              <td>Selected entry from `sources` in [=remote-playback-start-request=] (required when `sources` is non-empty; omitted when remoting)</td></tr>
 <tr><td>loading</td>             <td>`empty`</td></tr>
 <tr><td>loaded</td>              <td>`nothing`</td></tr>
 <tr><td>error</td>               <td>No error</td></tr>
