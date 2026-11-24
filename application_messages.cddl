@@ -696,3 +696,10 @@ streaming-session-receiver-stats-event = {
   ? 3: [1* receiver-stats-video] ; video
 }
 
+; type key 133
+video-request = {
+  0: uint ; encoding-id
+  1: uint ; sequence-number
+  ? 2: uint ; highest-decoded-frame-sequence-number
+}
+
